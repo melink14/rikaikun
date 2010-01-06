@@ -694,9 +694,9 @@ var rcxContent = {
 		var rp = range.startContainer;
 		var ro = range.startOffset;
 		
- 		console.log( "offset: " + ro + " parentContainer: " +  rp.nodeName + 
+/*  		console.log( "offset: " + ro + " parentContainer: " +  rp.nodeName + 
 			" total size: " + (rp.data?rp.data.length:"") + " target: " + ev.target.nodeName + 
-			" parentparent: " + rp.parentNode.nodeName); 
+			" parentparent: " + rp.parentNode.nodeName);  */
 		
 
 		
