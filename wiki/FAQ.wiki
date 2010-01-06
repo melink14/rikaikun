@@ -20,3 +20,7 @@ I'm going to go ahead and make up a question or two as well.
   * There could be a couple of reasons.
     # There's no Japanese on the page. rikaikun translates Japanese.
     # If a page was open, before you installed rikaikun, you must refresh the page.  This is because before the extension was installed it couldn't be injected. (Obviously.)
+ # Are there Options?
+   * Yes.
+ # I don't see them.  Where are they?
+   * Right now you have to go to the extensions screen and click options there.  In future releases, this will be made easier by right clicking on the rikaikun icon.
