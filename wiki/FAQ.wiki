@@ -24,3 +24,5 @@ I'm going to go ahead and make up a question or two as well.
    * Yes.
  # I don't see them.  Where are they?
    * Right now you have to go to the extensions screen and click options there.  In future releases, this will be made easier by right clicking on the rikaikun icon.
+ # Why are they so ugly and incomplete.
+   * I didn't have time to completely finish, and css is stupid silly sometimes and likes to make my boxes different sizes for no reason.  Please someone create a good options menu for me.
