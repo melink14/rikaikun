@@ -659,7 +659,7 @@ var rcxContent = {
 		tdata = window.rikaichan;
 		
 		if (!e) {
-			this.hidePopup();
+			rcxContent.hidePopup();
 			return;
 		}
 
