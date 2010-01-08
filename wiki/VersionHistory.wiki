@@ -7,7 +7,5 @@ It all started with v0.7 a number I chose fairly randomly.  The first version, h
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+ * v0.8
+  * A small update on the way to 1.0, v0.8 fixes some functional bugs and creates non ugly icons.  At least, less ugly.
