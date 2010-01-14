@@ -451,7 +451,7 @@ var rcxContent = {
 	},
 
 	isInline: function(node) {
-		return this.inlineNames.hasOwnProperty(node.nodeName) || document.defaultView.getComputedStyle(node,null).getPropertyValue('display') == 'inline';
+		return this.inlineNames.hasOwnProperty(node.nodeName) || ((comStyle = document.defaultView.getComputedStyle(node,null))&& comStyle.getPropertyValue('display') == 'inline');
 	},
 
 	// XPath expression which evaluates to text nodes
@@ -701,10 +701,10 @@ var rcxContent = {
 		var rp = range.startContainer;
 		var ro = range.startOffset;
 		
-/*   		console.log( "offset: " + ro + " parentContainer: " +  rp.nodeName + 
+/*    		console.log( "offset: " + ro + " parentContainer: " +  rp.nodeName + 
 			" total size: " + (rp.data?rp.data.length:"") + " target: " + ev.target.nodeName + 
-			" parentparent: " + rp.parentNode.nodeName); */
-		
+			" parentparent: " + rp.parentNode.nodeName);
+ */		
 
 		
 		if (ev.target == tdata.prevTarget) {
