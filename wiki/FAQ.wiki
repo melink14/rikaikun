@@ -3,10 +3,6 @@
 
 = Introduction =
 
-This is brand new and nobody has asked me any questions but if you have some, http://polarcloud.com/rikaichan-faq might have some answers.
-
-The stuff about installing won't work of course, but if you visit the google gallery link on the main page, it will tell you about installing chrome extensions.
-
 File an issue if you want as well.  Or send me a message somehow.
 
 I'm going to go ahead and make up a question or two as well.
