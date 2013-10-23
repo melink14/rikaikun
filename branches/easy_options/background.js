@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener(
 		}
 	});
 	
-if(initStorage("v0.8.7", true)) {
+if(initStorage("v0.8.8", true)) {
 	// v0.7
 	initStorage("popupcolor", "blue");
 	initStorage("highlight", true);
@@ -53,7 +53,7 @@ if(initStorage("v0.8.7", true)) {
 
 	// v0.8.6
 	initStorage("onlyreading", false);
-	// v0.8.7
+	// v0.8.8
 	if (localStorage['highlight'] == "yes")
 		localStorage['highlight'] = "true";
 	if (localStorage['highlight'] == "no")
