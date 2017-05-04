@@ -10,7 +10,8 @@
 	
 	"permissions": [
 		"tabs",
-		"clipboardWrite"
+		"clipboardWrite",
+		"https://code.responsivevoice.org/*"
 	],
 
 	"background": {
@@ -37,6 +38,8 @@
 		"css/popup-blue.css",
 		"css/popup-lightblue.css",
 		"css/popup-yellow.css"
-	]
+	],
+
+	"content_security_policy": "script-src 'self' 'unsafe-eval' https://code.responsivevoice.org; object-src 'self'"
 
 }

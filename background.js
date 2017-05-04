@@ -1,3 +1,5 @@
+var last_time = new Date().valueOf();
+var previous_text = null;
 
 chrome.browserAction.onClicked.addListener(rcxMain.inlineToggle);
 chrome.tabs.onSelectionChanged.addListener(rcxMain.onTabSelect);
@@ -42,6 +44,10 @@ chrome.runtime.onMessage.addListener(
 			case 'copyToClip':
 				console.log('copyToClip');
 				rcxMain.copyToClip(sender.tab, request.entry);
+				break;
+			case 'playTTS':
+				console.log('playTTS');
+				playTTS(request.text);				
 				break;
 			default:
 				console.log(request);
@@ -88,6 +94,13 @@ if(initStorage("v0.8.92", true)) {
     // v0.8.92
 	initStorage("popupDelay", "150");
 	initStorage("showOnKey", "");
+
+
+	// v???
+	initStorage("ttsEnabled", "false");
+	if (localStorage['ttsEnabled'] == "yes")
+		initStorage("ttsEnabled", "true");
+	
 }
 
 /** 
@@ -108,6 +121,19 @@ function initStorage(key, initialValue) {
   return false;
 }
 
+function playTTS(text) {
+	var now = new Date().valueOf();
+	var limit = last_time + 1000; 
+	if(text != previous_text || now > limit) {
+		console.log("responsiveVoice.speak(" + text + ")");
+		responsiveVoice.speak(text, 'Japanese Female');
+		previous_text = text;
+		last_time = now;
+	} else {
+		console.log("Ignoring " + text);
+	}
+}
+
 rcxMain.config = {};
 rcxMain.config.css = localStorage["popupcolor"];
 rcxMain.config.highlight = localStorage["highlight"];
@@ -126,3 +152,4 @@ for (i = 0; i*2 < rcxDict.prototype.numList.length; i++) {
 	rcxMain.config.kanjiinfo[i] = localStorage[rcxDict.prototype.numList[i*2]];
 }
 
+rcxMain.config.ttsEnabled = localStorage["ttsEnabled"];
