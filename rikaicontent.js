@@ -39,6 +39,28 @@
 
 */
 
+var updateResponsiveVoiceDiv = function(enabled) {
+	var s = '<div style="width:300px;vertical-align:top;font-family: Arial;font-size:9pt;line-height: normal"><p>TTS powered by <a href="https://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"></p><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></div>';
+
+	if(enabled == true || enabled == 'true') {
+		var div = document.getElementById('responsiveVoiceDiv');
+		if(!div) {
+			var div = document.createElement('div');
+			div.innerHTML = s;
+			div.setAttribute('id', 'responsiveVoiceDiv');
+			document.body.insertBefore(div, document.body.childNodes[0]);
+		} else {
+			div.style.visibility = "visible";
+		}
+	} else {
+		var div = document.getElementById('responsiveVoiceDiv');
+		if(div) {
+			var p = div.parentNode;
+			p.removeChild(div);
+		}
+	}
+}
+
 var rcxContent = {
 
 	dictCount: 3,
@@ -683,7 +705,7 @@ var rcxContent = {
 	},
 
 	highlightMatch: function (doc, rp, ro, matchLen, selEndList, tdata) {
-	    var sel = doc.defaultView.getSelection();
+		var sel = doc.defaultView.getSelection();
 	    
 		// If selEndList is empty then we're dealing with a textarea/input situation
 		if (selEndList.length === 0) { 
@@ -748,6 +770,14 @@ var rcxContent = {
 		sel.removeAllRanges();
 		sel.addRange(range);
 		tdata.selText = sel.toString();
+
+		if(window.rikaichan.config.ttsEnabled == 'true') {
+			var text = sel.toString();
+			if(typeof text === 'string' && text.length > 0) {
+				console.log("Sending playTTS " + text);
+				chrome.extension.sendMessage({"type": "playTTS", "text": text});
+			}
+		}
 	},
 
 	showTitle: function(tdata) {
@@ -1032,10 +1062,12 @@ chrome.runtime.onMessage.addListener(
 			case 'enable':
 				rcxContent.enableTab();
 				window.rikaichan.config = request.config;
+				updateResponsiveVoiceDiv(window.rikaichan.config.ttsEnabled);
 				console.log("enable");
 				break;
 			case 'disable':
 				rcxContent.disableTab();
+				updateResponsiveVoiceDiv(false);
 				console.log("disable");
 				break;
 			case 'showPopup':
