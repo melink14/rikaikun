@@ -1,4 +1,4 @@
- <html>
+ <html>            
 <head>
 	<link rel="stylesheet" type="text/css" href="css/options.css" />
 </head>
@@ -138,8 +138,15 @@
 					</div>
                   <div id="kanjikoohii"  class="tabContent">
                     <h1>Kanji Koohii Stories</h1>
-                      <div id="dict-importer" class="form-group">
-                      <input type="file" id="dict-file">
+                    <div id="dict-groups" class="dict-groups novisible"></div>
+                    <div id="dict-import-progress" class="opt-text-danger novisible">
+                        Dictionary data is being imported, please wait...
+                        <div class="progress">
+                            <div id="dict-progress-bar" class="progress-bar progress-bar-striped" style="width: 0%"></div>
+                        </div>
+                    </div>                    
+                      <div id="dict-importer" name="dict-importer" class="form-group">
+                      <input type="file" id="dictfile"  name="dictfile">
                       </div>                
                     </div>                    
 				</div>

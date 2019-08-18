@@ -45,3 +45,58 @@
 	margin: 0;
 	padding: 0;
 }
+
+
+
+/* KanjiKoohii Stories   
+
+.novisible {
+    display: none;
+}
+
+.tab-content {
+    border-bottom: 1px #ddd solid;
+    border-left: 1px #ddd solid;
+    border-right: 1px #ddd solid;
+    padding: 10px;
+}
+.input-opt{
+    width: 20%;
+}
+.row-group{
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.dict-groups{
+    background-color: #939393;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.dict{
+    margin-bottom: 5px;
+    padding: 5px;
+    display: grid;
+    width: 100%;
+}
+
+
+.btn-dict-up{
+    grid-column-start: 8;
+}
+.btn-dict-down{
+    grid-column-start: 9;
+}
+.btn-dict-drop{
+    grid-column-start: 10;
+}
+.dict-title{
+    grid-column-start: 1;
+    grid-column-end: 8;
+}
+.opt-text-danger{
+    font-weight: bold;
+}
+
+*/     

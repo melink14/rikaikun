@@ -637,8 +637,7 @@ if (0) {
 		if (a.length != 6) return null;
 
 		entry = { };
-		entry.kanji = a[0];
-
+		entry.kanji = a[0];        
 		entry.misc = {};
 		entry.misc['U'] = hex[(i >>> 12) & 15] + hex[(i >>> 8) & 15] + hex[(i >>> 4) & 15] + hex[i & 15];
 
@@ -654,7 +653,7 @@ if (0) {
 		entry.nanori = a[3].replace(/\s+/g, '\u3001 ');
 		entry.bushumei = a[4].replace(/\s+/g, '\u3001 ');
 		entry.eigo = a[5];
-
+        
 		return entry;
 	},
 
@@ -753,6 +752,7 @@ if (0) {
 			j = 0;
 
 			kanjiinfo = rcxMain.config.kanjiinfo;
+            
 			for (i = 0; i*2 < this.numList.length; i++) {
 				c = this.numList[i*2];
 				if (kanjiinfo[i] == 'true') {
@@ -767,8 +767,19 @@ if (0) {
 			b.push(box);
 			b.push('<span class="k-kanji">' + entry.kanji + '</span><br/>');
 			b.push('<div class="k-eigo">' + entry.eigo + '</div>');
-			b.push('<div class="k-yomi">' + yomi + '</div>');
-			b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');
+			b.push('<div class="k-yomi">' + yomi + '</div>');   
+			b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');			
+			/*
+			b.push('</td></tr><tr><td>' + nums + '</td></tr>');			
+            if (typeof rcxMain.config.rtkStories != null && typeof rcxMain.config.rtkStories != 'undefined') {
+                if (typeof rcxMain.config.rtkStories[entry.misc.L] !='undefined' || typeof rcxMain.config.rtkStories[entry.misc.L] != null ){
+                  b.push('<tr><td>');        
+                  b.push(this.makeKprHtml(entry.misc.L));
+                  b.push('</tr></td>');
+                }               
+              }
+              b.push('</table>');			  
+			*/
 			return b.join('');
 		}
 
@@ -963,5 +974,44 @@ if (0) {
 			}
 		}
 		return b.join('');
-	}
+	},
+  makeKprHtml: function (idxHeisig){
+    var  str="",text = rcxMain.config.rtkStories[idxHeisig][5];  
+    
+    res = text.match(/\*(.*?)\*/g);
+    if (res != null){
+      for (var i = 0; i < res.length; i++) {
+        if (res[i]!=""){
+          //eliminar "*"
+          var x  = "<em>"+res[i].replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "")+"</em>";
+          // reemplazamos los *xxxx* que haya por el valor de x
+          text = text.replace(new RegExp(res[i].replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'), x );
+        }            
+      }
+    }
+    
+    res = text.match(/#(.*?)#/g);
+    if (res != null){
+      for (var i = 0; i < res.length; i++) {
+        if(res[i]!=""){
+        //eliminar "*"                            
+        var x  = "<strong>"+res[i].replace(/#/g, "")+"</strong>";
+        // reemplazamos los *xxxx* que haya por el valor de x
+        text = text.replace(new RegExp(res[i].replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'), x );            
+        }            
+      }
+    }        
+
+    str+='<div class="kpr-dv">';
+    str+='<div class="kpr-datos">';
+    str+= 'KPR Index:'+rcxMain.config.rtkStories[idxHeisig][0]+'  keyword:'+rcxMain.config.rtkStories[idxHeisig][2];
+    str+='</div>';    
+    str+='<div class="kpr-story">';
+    str+= text;
+    str+='</div>';
+    str+='</div>';
+
+    return str;
+    
+  }    
 };

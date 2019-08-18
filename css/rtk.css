@@ -1,0 +1,28 @@
+#rikaichan-window .kpr-story b,strong{
+     color:black !important;
+     font-weight: bold !important;      
+}
+
+#rikaichan-window .kpr-story i,em{
+  color:black !important;
+  font-style: italic !important;
+}
+
+#rikaichan-window .kpr-dv{
+  width:100%;
+  margin: 6px 0 0 -2px;
+}
+#rikaichan-window .kpr-datos{
+  width:100%;
+  padding:2px;
+  background:#006699;
+  color:#FFFFF !important;
+  font: bold 14px sans-serif !important;
+      
+}
+#rikaichan-window .kpr-story{
+  width:100%;
+  padding:2px;
+  color:#00496B !important;
+  background:#E1EEF4;
+}
