@@ -78,13 +78,19 @@ function fillVals() {
     //RTK
  
     function removeRtkStories(){
-        const dictGroups = document.getElementById('dict-groups');
+        const dictGroups = document.getElementById('dict-kpr');
         localStorage.removeItem("rtkFilename");
         localStorage.removeItem("rtkStories");
         dictGroups.classList.add("novisible");   
         chrome.extension.getBackgroundPage().rcxMain.config.rtkStories = null;    
+		// remove styleSheetId				
+		/*
+		var sheet = document.getElementById('rtk-css');
+		sheet.disabled = true;
+		sheet.parentNode.removeChild(sheet);		
+		*/
     }
-    const dictGroups = document.getElementById('dict-groups');
+    const dictGroups = document.getElementById('dict-kpr');
     
                 
       if (localStorage["rtkStories"]){
@@ -269,5 +275,5 @@ window.onload = fillVals;
 document.querySelector('#submit').addEventListener('click', getVals);
 
 //RTK
-document.getElementById('dictfile').onchange = onRTKStoriesImport;
+document.getElementById('rtkfile').onchange = onRTKStoriesImport;
 

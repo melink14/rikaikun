@@ -112,9 +112,25 @@ var rcxContent = {
 			css.setAttribute('id', 'rikaichan-css');
 			topdoc.getElementsByTagName('head')[0].appendChild(css);
 
+			if (window.rikaichan.config.rtkStories != null && typeof window.rikaichan.config.rtkStories != 'undefined') {
+				var cssRtk = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'link');
+				cssRtk.setAttribute('rel', 'stylesheet');
+				cssRtk.setAttribute('type', 'text/css');
+						
+				var cssRtkdoc = 'css/rtk.css';
+				cssRtk.setAttribute('href', chrome.extension.getURL(cssRtkdoc));
+				cssRtk.setAttribute('id', 'rtk-css');
+				topdoc.getElementsByTagName('head')[0].appendChild(cssRtk);
+
+			}
+			
+			
 			popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
 			popup.setAttribute('id', 'rikaichan-window');
 			topdoc.documentElement.appendChild(popup);
+
+
+			
 
 			popup.addEventListener('dblclick',
 				function (ev) {

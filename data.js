@@ -770,8 +770,8 @@ if (0) {
 			b.push('<div class="k-yomi">' + yomi + '</div>');   
 //			b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');			
 			b.push('</td></tr><tr><td>' + nums + '</td></tr>');			
-            if (typeof rcxMain.config.rtkStories != null && typeof rcxMain.config.rtkStories != 'undefined') {
-                if (typeof rcxMain.config.rtkStories[entry.misc.L] !='undefined' || typeof rcxMain.config.rtkStories[entry.misc.L] != null ){
+            if (rcxMain.config.rtkStories != null && typeof rcxMain.config.rtkStories != 'undefined') {
+                if ( rcxMain.config.rtkStories[entry.misc.L] != null || typeof rcxMain.config.rtkStories[entry.misc.L] !='undefined' ){
                   b.push('<tr><td>');        
                   b.push(this.makeRtkHtml(entry.misc.L));
                   b.push('</tr></td>');

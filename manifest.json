@@ -4,7 +4,7 @@
 	"name": "rikaikunRTK",
 	"version": "0.9.1",
 	
-	"description": "A port of rikaichan for chrome. Translate Japanese by hovering over words.",
+	"description": "Fork from RikaiKun for Chrome. Translate Japanese by hovering over words with your own Kanji stories from Kanji koohii",
 	"icons": { "48": "images/icon48.png",
 				"128": "images/icon128.png"},
 	
@@ -36,7 +36,8 @@
 		"css/popup-black.css",
 		"css/popup-blue.css",
 		"css/popup-lightblue.css",
-		"css/popup-yellow.css"
+		"css/popup-yellow.css",
+		"css/rtk.css"
 	]
 
 }
