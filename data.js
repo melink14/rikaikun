@@ -768,18 +768,16 @@ if (0) {
 			b.push('<span class="k-kanji">' + entry.kanji + '</span><br/>');
 			b.push('<div class="k-eigo">' + entry.eigo + '</div>');
 			b.push('<div class="k-yomi">' + yomi + '</div>');   
-			b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');			
-			/*
+//			b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');			
 			b.push('</td></tr><tr><td>' + nums + '</td></tr>');			
             if (typeof rcxMain.config.rtkStories != null && typeof rcxMain.config.rtkStories != 'undefined') {
                 if (typeof rcxMain.config.rtkStories[entry.misc.L] !='undefined' || typeof rcxMain.config.rtkStories[entry.misc.L] != null ){
                   b.push('<tr><td>');        
-                  b.push(this.makeKprHtml(entry.misc.L));
+                  b.push(this.makeRtkHtml(entry.misc.L));
                   b.push('</tr></td>');
                 }               
               }
               b.push('</table>');			  
-			*/
 			return b.join('');
 		}
 
@@ -975,7 +973,7 @@ if (0) {
 		}
 		return b.join('');
 	},
-  makeKprHtml: function (idxHeisig){
+  makeRtkHtml: function (idxHeisig){
     var  str="",text = rcxMain.config.rtkStories[idxHeisig][5];  
     
     res = text.match(/\*(.*?)\*/g);

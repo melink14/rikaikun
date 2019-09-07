@@ -76,7 +76,7 @@ function fillVals() {
 	}
     
     //RTK
-    /*
+ 
     function removeRtkStories(){
         const dictGroups = document.getElementById('dict-groups');
         localStorage.removeItem("rtkFilename");
@@ -107,7 +107,7 @@ function fillVals() {
       }else{
         dictGroups.classList.add("novisible");
       }         
-	*/
+ 
 
 }
 
@@ -147,7 +147,6 @@ function getVals() {
     
     
     // RTK
-	/*
     if(  document.optform.dictfile.files.length != 0 ){
      var vidFile = document.optform.dictfile.files[0].name;  
       // Save
@@ -155,8 +154,7 @@ function getVals() {
       localStorage["rtkStories"] = JSON.stringify(arrRtkStories);   
       chrome.extension.getBackgroundPage().rcxMain.config.rtkStories = JSON.parse(localStorage["rtkStories"]);  
     }
-      
-	*/      
+        
 
 	chrome.extension.getBackgroundPage().rcxMain.config.css = localStorage["popupcolor"];
 	chrome.extension.getBackgroundPage().rcxMain.config.highlight = localStorage["highlight"];
@@ -177,7 +175,7 @@ function getVals() {
 
 
 
-// KanjiKoohii
+// RTK
   /**
  * CSVToArray parses any String of Data including '\r' '\n' characters,
  * and returns an array with the rows of data.
@@ -250,26 +248,11 @@ function CSVToArray (CSV_string, delimiter) {
     }
 
 
-function onRTKStoriesImport(e) {
-    
-    //dictionaryErrorShow(null);
-    /*
-    const dictFile = document.getElementById('dict-file'); //$('#dict-file');
-    const dictImporter =  document.getElementById('dict-file');
-    dictImporter.setAttribute('style', 'display:none');
-    const dictProgress = document.getElementById('dict-import-progress');
-    dictProgress.classList.remove("novisible");
-    const dictProgressBar = document.getElementById('dict-progress-bar');
-    const setProgress = percent => dictProgressBar.setAttribute('style','width:'+percent+'%');// dictProgress.find('.progress-bar').css('width', `${percent}%`);
-    const updateProgress = (total, current) => setProgress(current / total * 100.0);
-
-    setProgress(0.0);
-    */
-    
-    //importDictionary(e.target.files[0], updateProgress);
+function onRTKStoriesImport(e) { 
     getAsText (e.target.files[0]);
-    
 }
+
+
 window.onload = fillVals;
 
 
@@ -284,6 +267,7 @@ window.onload = fillVals;
 
 
 document.querySelector('#submit').addEventListener('click', getVals);
-//
-//document.getElementById('dictfile').onchange = onRTKStoriesImport;
+
+//RTK
+document.getElementById('dictfile').onchange = onRTKStoriesImport;
 

@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	
-	"name": "rikaikunKanjiKoohii",
+	"name": "rikaikunRTK",
 	"version": "0.9.1",
 	
 	"description": "A port of rikaichan for chrome. Translate Japanese by hovering over words.",
