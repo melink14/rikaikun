@@ -1,0 +1,2 @@
+Fork from RikaiKun for Chrome. Translate Japanese by hovering over words with your own Kanji stories from Kanji koohii
+Just export your  stories from https://kanji.koohii.com and go to RikaiKunRTK options to import your file csv to get all your kanji stories displayed in the Kanji Dictionary PopUp.
