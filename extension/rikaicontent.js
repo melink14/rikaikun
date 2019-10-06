@@ -1,41 +1,41 @@
 /*
 
-	Rikaikun
-	Copyright (C) 2010 Erek Speed
-	http://code.google.com/p/rikaikun/
+  Rikaikun
+  Copyright (C) 2010 Erek Speed
+  http://code.google.com/p/rikaikun/
 
-	---
+  ---
 
-	Originally based on Rikaichan 1.07
-	by Jonathan Zarate
-	http://www.polarcloud.com/
+  Originally based on Rikaichan 1.07
+  by Jonathan Zarate
+  http://www.polarcloud.com/
 
-	---
+  ---
 
-	Originally based on RikaiXUL 0.4 by Todd Rudick
-	http://www.rikai.com/
-	http://rikaixul.mozdev.org/
+  Originally based on RikaiXUL 0.4 by Todd Rudick
+  http://www.rikai.com/
+  http://rikaixul.mozdev.org/
 
-	---
+  ---
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-	---
+  ---
 
-	Please do not change or remove any of the copyrights or links to web pages
-	when modifying any of the files. - Jon
+  Please do not change or remove any of the copyrights or links to web pages
+  when modifying any of the files. - Jon
 
 */
 
@@ -129,11 +129,11 @@ const rcxContent = {
       );
 
       /* if (this.cfg.resizedoc) {
-				if ((topdoc.body.clientHeight < 1024) && (topdoc.body.style.minHeight == '')) {
-					topdoc.body.style.minHeight = '1024px';
-					topdoc.body.style.overflow = 'auto';
-				}
-			} */
+        if ((topdoc.body.clientHeight < 1024) && (topdoc.body.style.minHeight == '')) {
+          topdoc.body.style.minHeight = '1024px';
+          topdoc.body.style.overflow = 'auto';
+        }
+      } */
     }
 
     popup.style.width = 'auto';
@@ -208,20 +208,20 @@ const rcxContent = {
         }
 
         /*
-				// in some cases (ex: google.co.jp), ebo doesn't add the width of the scroller (?), so use SELECT's width
-				const epbo = elem.ownerDocument.getBoxObjectFor(elem.parentNode);
+        // in some cases (ex: google.co.jp), ebo doesn't add the width of the scroller (?), so use SELECT's width
+        const epbo = elem.ownerDocument.getBoxObjectFor(elem.parentNode);
 
-				const ebo = elem.ownerDocument.getBoxObjectFor(elem);
-				x = ebo.screenX - bbo.screenX;
-				y = ebo.screenY - bbo.screenY;
+        const ebo = elem.ownerDocument.getBoxObjectFor(elem);
+        x = ebo.screenX - bbo.screenX;
+        y = ebo.screenY - bbo.screenY;
 
-				if (x > (window.innerWidth - (x + epbo.width))) {
-					x = (x - popup.offsetWidth - 5);
-					if (x < 0) x = 0;
-				}
-				else {
-					x += epbo.width + 5;
-				}
+        if (x > (window.innerWidth - (x + epbo.width))) {
+          x = (x - popup.offsetWidth - 5);
+          if (x < 0) x = 0;
+        }
+        else {
+          x += epbo.width + 5;
+        }
 */
       } else {
         // x -= bbo.screenX;
@@ -888,19 +888,19 @@ const rcxContent = {
     );
   },
   /*
-	inRange: function (event) {
-		let selection = event.view.getSelection();
-		if ((selection.rangeCount === 0) || (!event.rangeParent)) return false;
-		let newRange = event.view.document.createRange();
-		newRange.setStart(event.rangeParent, event.rangeOffset);
-		newRange.setEnd(event.rangeParent, event.rangeOffset);
+  inRange: function (event) {
+    let selection = event.view.getSelection();
+    if ((selection.rangeCount === 0) || (!event.rangeParent)) return false;
+    let newRange = event.view.document.createRange();
+    newRange.setStart(event.rangeParent, event.rangeOffset);
+    newRange.setEnd(event.rangeParent, event.rangeOffset);
 
-		let curRange = selection.getRangeAt(0);
-		if (newRange.compareBoundaryPoints(Range.START_TO_START, curRange) > -1 &&
-			newRange.compareBoundaryPoints(Range.END_TO_END, curRange) < 0)
-			return true;
-		else return false;
-	},
+    let curRange = selection.getRangeAt(0);
+    if (newRange.compareBoundaryPoints(Range.START_TO_START, curRange) > -1 &&
+      newRange.compareBoundaryPoints(Range.END_TO_END, curRange) < 0)
+      return true;
+    else return false;
+  },
 
 */
 
@@ -1001,8 +1001,8 @@ const rcxContent = {
       }
 
       /*   		console.log( "offset: " + ro + " parentContainer: " +  rp.nodeName +
-				" total size: " + (rp.data?rp.data.length:"") + " target: " + ev.target.nodeName +
-				" parentparent: " + rp.parentNode.nodeName); */
+        " total size: " + (rp.data?rp.data.length:"") + " target: " + ev.target.nodeName +
+        " parentparent: " + rp.parentNode.nodeName); */
 
       // This is to account for bugs in caretRangeFromPoint
       // It includes the fact that it returns text nodes over non text nodes
@@ -1085,9 +1085,9 @@ const rcxContent = {
     }
 
     /*  		if ((rp) && (rp.nodeType != Node.TEXT_NODE) && !('form' in rp)) {
-			rp = null;
-			ro = -1;
-		}  */
+      rp = null;
+      ro = -1;
+    }  */
 
     tdata.prevTarget = ev.target;
     tdata.prevRangeNode = rp;
