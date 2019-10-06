@@ -4,6 +4,7 @@
   "description": "Chrome extension that provides Japanese to English translations when hovering over words.",
   "private": true,
   "scripts": {
+    "lint": "eslint extension/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
