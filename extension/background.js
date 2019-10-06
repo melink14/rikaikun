@@ -1,6 +1,6 @@
 chrome.browserAction.onClicked.addListener(rcxMain.inlineToggle);
 chrome.tabs.onSelectionChanged.addListener(rcxMain.onTabSelect);
-chrome.runtime.onMessage.addListener(function(request, sender, response) {
+chrome.runtime.onMessage.addListener(function (request, sender, response) {
   switch (request.type) {
     case 'enable?':
       console.log('enable?');
@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
       console.log('switchOnlyReading');
       rcxMain.config.onlyreading = !rcxMain.config.onlyreading;
       chrome.storage.sync.set({
-        onlyreading: rcxMain.config.onlyreading
+        onlyreading: rcxMain.config.onlyreading,
       });
       break;
     case 'copyToClip':
@@ -66,11 +66,11 @@ const optionsList = [
   'popupLocation',
   'textboxhl',
   'ttsEnabled',
-  'showOnKey'
+  'showOnKey',
 ];
 
 /** Get option data from cloud and initialize into memory. */
-chrome.storage.sync.get(optionsList, function(items) {
+chrome.storage.sync.get(optionsList, function (items) {
   initializeConfigFromCloudOrLocalStorageOrDefaults(items);
 
   // Save right away incase we initialized from localStorage or defaults.
@@ -163,7 +163,7 @@ function saveOptionsToCloudStorage() {
     // Saving Copy to Clipboard settings
     copySeparator: rcxMain.config.copySeparator,
     lineEnding: rcxMain.config.lineEnding,
-    maxClipCopyEntries: rcxMain.config.maxClipCopyEntries
+    maxClipCopyEntries: rcxMain.config.maxClipCopyEntries,
   });
 }
 
