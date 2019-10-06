@@ -171,82 +171,82 @@ rcxDict.prototype = {
 		//	this.test_kanji();
 	},
 	/*
-	test_kanji: function() {
-		var a = this.kanjiData.split('\n');
+		test_kanji: function() {
+			var a = this.kanjiData.split('\n');
 
-		alert('begin test. a.length=' + a.length);
-		var start = (new Date()).getTime();
-		for (var i = 0; i < a.length; ++i) {
-			if (!this.kanjiSearch(a[i].charAt(0))) {
-				alert('error @' + i + ': ' + a[i]);
-				return;
+			alert('begin test. a.length=' + a.length);
+			var start = (new Date()).getTime();
+			for (var i = 0; i < a.length; ++i) {
+				if (!this.kanjiSearch(a[i].charAt(0))) {
+					alert('error @' + i + ': ' + a[i]);
+					return;
+				}
 			}
-		}
-		alert('time = ' + ((new Date()).getTime() - start));
-	},
-*/
+			alert('time = ' + ((new Date()).getTime() - start));
+		},
+	*/
 
 	/*
-	test_index: function() {
-		var ixF = this.fileRead('chrome://rikaichan/content/dict.idx', 'EUC-JP');
-		var ixA = ixF.split('\n');
+		test_index: function() {
+			var ixF = this.fileRead('chrome://rikaichan/content/dict.idx', 'EUC-JP');
+			var ixA = ixF.split('\n');
 
 		while ((ixA.length > 0) && (ixA[ixA.length - 1].length === 0)) ixA.pop();
 
-//		alert('length=' + ixA.length + ' / ' + ixF.length);
-if (0) {
-		var timeA = (new Date()).getTime();
-		for (var i = ixA.length - 1; i >= 0; --i) {
+	//		alert('length=' + ixA.length + ' / ' + ixF.length);
+	if (0) {
+			var timeA = (new Date()).getTime();
+			for (var i = ixA.length - 1; i >= 0; --i) {
 			if ((i & 0xFF) === 0) window.status = 'A: ' + i;
-			var s = ixA[i];
-			var r = this.binSearchX(ixA, s.substr(0, s.indexOf(',') + 1));
+				var s = ixA[i];
+				var r = this.binSearchX(ixA, s.substr(0, s.indexOf(',') + 1));
 			if ((r === -1) || (ixA[r] !== s)) {
-				alert('A failed: ' + s);
-				return;
+					alert('A failed: ' + s);
+					return;
+				}
 			}
-	}
 			timeA = ((new Date()).getTime() - timeA) / 1000;
 
-		var timeF = (new Date()).getTime();
-		for (var i = ixA.length - 1; i >= 0; --i) {
+			var timeF = (new Date()).getTime();
+			for (var i = ixA.length - 1; i >= 0; --i) {
 			if ((i & 0xFF) === 0) window.status = 'F: ' + i;
-			var s = ixA[i];
-			var r = this.find(ixF, s.substr(0, s.indexOf(',') + 1));
+				var s = ixA[i];
+				var r = this.find(ixF, s.substr(0, s.indexOf(',') + 1));
 			if (r !== s) {
-				alert('F failed: ' + s);
-				return;
-			}
+					alert('F failed: ' + s);
+					return;
+				}
 			timeF = ((new Date()).getTime() - timeF) / 1000;
 
-		var timeX = (new Date()).getTime();
-if (0) {
-		for (var i = ixA.length - 1; i >= 0; --i) {
+			var timeX = (new Date()).getTime();
+	if (0) {
+			for (var i = ixA.length - 1; i >= 0; --i) {
 			if ((i & 0xFF) === 0) window.status = 'X: ' + i;
-			var s = ixA[i];
+				var s = ixA[i];
 
-			var w = s.substr(0, s.indexOf(',') + 1);
-			var j = 0;
-			r = '';
+				var w = s.substr(0, s.indexOf(',') + 1);
+				var j = 0;
+				r = '';
 			if (ixF.substr(0, w.length) === w) {
-				r = ixF.substr(0, ixF.indexOf('\n'));
-			}
-			else {
-				w = '\n' + w;
-				j = ixF.indexOf(w);
+					r = ixF.substr(0, ixF.indexOf('\n'));
+				}
+				else {
+					w = '\n' + w;
+					j = ixF.indexOf(w);
 				if (j !== -1) r = ixF.substring(j + 1, ixF.indexOf('\n', j + 1));
-			}
+				}
 
 			if (r !== s) {
-				alert('X failed:\n[' + s + ']\n[' + r + ']');
-				return;
+					alert('X failed:\n[' + s + ']\n[' + r + ']');
+					return;
+				}
 			}
-	}
 			timeX = ((new Date()).getTime() - timeX) / 1000;
 
 			alert('A=' + timeA + ' / F=' + timeF + ' / X=' + timeX);
 		},
 
-*/
+	*/
 
 	loadDIF: function () {
 		this.difReasons = [];
@@ -374,22 +374,22 @@ if (0) {
 			if ((u >= 0x30A1) && (u <= 0x30F3)) {
 				u -= 0x60;
 			} else if ((u >= 0xFF66) && (u <= 0xFF9D)) {
-				// half-width katakana to hiragana
+			// half-width katakana to hiragana
 				u = this.ch[u - 0xFF66];
 			} else if (u === 0xFF9E) {
-				// voiced (used in half-width katakana) to hiragana
+			// voiced (used in half-width katakana) to hiragana
 				if ((p >= 0xFF73) && (p <= 0xFF8E)) {
 					r = r.substr(0, r.length - 1);
 					u = this.cv[p - 0xFF73];
 				}
 			} else if (u === 0xFF9F) {
-				// semi-voiced (used in half-width katakana) to hiragana
+			// semi-voiced (used in half-width katakana) to hiragana
 				if ((p >= 0xFF8A) && (p <= 0xFF8E)) {
 					r = r.substr(0, r.length - 1);
 					u = this.cs[p - 0xFF8A];
 				}
 			} else if (u === 0xFF5E) {
-				// ignore J~
+			// ignore J~
 				p = 0;
 				continue;
 			}
@@ -580,7 +580,7 @@ if (0) {
 			d = this.nameDict;
 		} else {
 			e.names = 0;
-			max = 7;// this.config.wmax;
+			max = rcxMain.config.maxDictEntries;
 			d = this.wordDict;
 		}
 
@@ -638,16 +638,16 @@ if (0) {
 
 	numList: [
 		/*
-		'C', 	'Classical Radical',
-		'DR',	'Father Joseph De Roo Index',
-		'DO',	'P.G. O\'Neill Index',
-		'O', 	'P.G. O\'Neill Japanese Names Index',
-		'Q', 	'Four Corner Code',
-		'MN',	'Morohashi Daikanwajiten Index',
-		'MP',	'Morohashi Daikanwajiten Volume/Page',
-		'K',	'Gakken Kanji Dictionary Index',
-		'W',	'Korean Reading',
-*/
+				'C', 	'Classical Radical',
+				'DR',	'Father Joseph De Roo Index',
+				'DO',	'P.G. O\'Neill Index',
+				'O', 	'P.G. O\'Neill Japanese Names Index',
+				'Q', 	'Four Corner Code',
+				'MN',	'Morohashi Daikanwajiten Index',
+				'MP',	'Morohashi Daikanwajiten Volume/Page',
+				'K',	'Gakken Kanji Dictionary Index',
+				'W',	'Korean Reading',
+		*/
 		'H',	'Halpern',
 		'L',	'Heisig 5th Edition',
 		'LF',	'Heisig 6th Edition',
