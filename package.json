@@ -1,0 +1,29 @@
+{
+  "name": "rikaikun",
+  "version": "0.9.1",
+  "description": "Chrome extension that provides Japanese to English translations when hovering over words.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melink14/rikaikun.git"
+  },
+  "keywords": [
+    "Japanese",
+    "chrome",
+    "extension",
+    "javascript"
+  ],
+  "author": "melink14",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/melink14/rikaikun/issues"
+  },
+  "homepage": "https://github.com/melink14/rikaikun#readme",
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0"
+  }
+}
