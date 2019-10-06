@@ -57,10 +57,12 @@ function populateFormFromCloudStorage() {
         }
       }
 
-      // Kanji Info check boxes created dynamically from whatever info is available.
+      // Kanji Info check boxes created dynamically from whatever info is
+      // available.
       for (let i = 0; i < kanjiInfoLabelList.length; i += 2) {
-        // Need to get every other element in the storage, so increment by 2.
-        // We have abbreviation and full names. We use the abbrevations as form IDs.
+        // Need to get every other element in the storage, so increment by 2. We
+        // have abbreviation and full names. We use the abbrevations as form
+        // IDs.
         document.getElementById(kanjiInfoLabelList[i]).checked =
           cloudStorage.kanjiInfo[kanjiInfoLabelList[i]];
       }

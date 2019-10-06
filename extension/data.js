@@ -40,7 +40,8 @@
 */
 
 /**
- * Exposes abstraction over dictionary files allowing letious searches and lookups.
+ * Exposes abstraction over dictionary files allowing letious searches and
+ * lookups.
  */
 function RcxDict() {}
 
@@ -98,7 +99,8 @@ RcxDict.prototype = {
 
   fileReadArray: function (name, charset) {
     const a = this.fileRead(name, charset).split('\n');
-    // Is this just in case there is blank shit in the file.  It was writtin by Jon though.
+    // Is this just in case there is blank shit in the file.  It was writtin
+    // by Jon though.
     // I suppose this is more robust
     while (a.length > 0 && a[a.length - 1].length === 0) a.pop();
     return a;
@@ -144,10 +146,12 @@ RcxDict.prototype = {
     );
   },
 
-  //	Note: These are mostly flat text files; loaded as one continous string to reduce memory use
-  loadDictionary: function (includeNames) {
-    /* this.wordDict = this.fileRead(rcxWordDict.datURI, rcxWordDict.datCharset);
-		this.wordIndex = this.fileRead(rcxWordDict.idxURI, rcxWordDict.idxCharset); */
+  //	Note: These are mostly flat text files; loaded as one continous string to
+  //	reduce memory use
+  loadDictionary: function(includeNames) {
+    /* this.wordDict = this.fileRead(rcxWordDict.datURI,
+		rcxWordDict.datCharset); this.wordIndex = this.fileRead(rcxWordDict.idxURI,
+		rcxWordDict.idxCharset); */
 
     const promises = [
       this.loadFileToTarget('dict.dat', false, 'wordDict'),
@@ -165,8 +169,10 @@ RcxDict.prototype = {
 
     // this.wordDict = this.fileRead(chrome.extension.getURL("data/dict.dat"));
     // this.wordIndex = this.fileRead(chrome.extension.getURL("data/dict.idx"));
-    // this.kanjiData = this.fileRead(chrome.extension.getURL("data/kanji.dat"), 'UTF-8');
-    // this.radData = this.fileReadArray(chrome.extension.getURL("data/radicals.dat"), 'UTF-8');
+    // this.kanjiData = this.fileRead(chrome.extension.getURL("data/kanji.dat"),
+    // 'UTF-8'); this.radData =
+    // this.fileReadArray(chrome.extension.getURL("data/radicals.dat"),
+    // 'UTF-8');
 
     //	this.test_kanji();
   },
@@ -326,8 +332,8 @@ if (0) {
                 o = r[have[newWord]];
                 o.type |= rule.type >> 8;
 
-                // o.reason += ' / ' + r[i].reason + ' ' + this.difReasons[rule.reason];
-                // o.debug += ' @ ' + rule.debug;
+                // o.reason += ' / ' + r[i].reason + ' ' +
+                // this.difReasons[rule.reason]; o.debug += ' @ ' + rule.debug;
                 continue;
               }
               have[newWord] = r.length;
@@ -490,7 +496,9 @@ if (0) {
       }
 
       r += String.fromCharCode(u);
-      trueLen[r.length] = i + 1; // need to keep real length because of the half-width semi/voiced conversion
+      // need to keep real length because of the half-width semi/voiced
+      // conversion
+      trueLen[r.length] = i + 1;
       p = v;
     }
     word = r;
@@ -937,7 +945,8 @@ if (0) {
         e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
 
-        // the next two lines re-process the entries that contain separate search key and spelling due to mixed hiragana/katakana spelling
+        // the next two lines re-process the entries that contain separate
+        // search key and spelling due to mixed hiragana/katakana spelling
         const e3 = e[3].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (e3) e = e3;
 
