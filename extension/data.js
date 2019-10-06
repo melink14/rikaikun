@@ -42,9 +42,9 @@
 /**
  * Exposes abstraction over dictionary files allowing letious searches and lookups.
  */
-function rcxDict() {}
+function RcxDict() {}
 
-rcxDict.prototype = {
+RcxDict.prototype = {
   config: {},
 
   init: function (loadNames) {
