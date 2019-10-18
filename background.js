@@ -69,6 +69,7 @@ var optionsList = [
 	"textboxhl",
 	"ttsEnabled",
 	"showOnKey",
+	"inlineDivs"
 ];
 
 /** Get option data from cloud and initialize into memory. */
@@ -118,6 +119,7 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
 	initConfig('showOnKey', '');
 	initConfig('textboxhl', false);
 	initConfig('ttsEnabled', false);
+	initConfig('inlineDivs', false);
 
 	/**
 	 * Set kanjiInfo option values 
@@ -145,27 +147,7 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
  * https://developer.chrome.com/storage
  */
 function saveOptionsToCloudStorage() {
-	chrome.storage.sync.set({
-		// Saving General options
-		"disablekeys": rcxMain.config.disablekeys,
-		"highlight": rcxMain.config.highlight,
-		"kanjicomponents": rcxMain.config.kanjicomponents,
-		"kanjiInfo": rcxMain.config.kanjiInfo,
-		"maxDictEntries": rcxMain.config.maxDictEntries,
-		"minihelp": rcxMain.config.minihelp,
-		"onlyreading": rcxMain.config.onlyreading,
-		"popupcolor": rcxMain.config.popupcolor,
-		"popupDelay": rcxMain.config.popupDelay,
-		"popupLocation": rcxMain.config.popupLocation,
-		"showOnKey": rcxMain.config.showOnKey,
-		"textboxhl": rcxMain.config.textboxhl,
-		"ttsEnabled": rcxMain.config.ttsEnabled,
-
-		// Saving Copy to Clipboard settings
-		"copySeparator": rcxMain.config.copySeparator,
-		"lineEnding": rcxMain.config.lineEnding,
-		"maxClipCopyEntries": rcxMain.config.maxClipCopyEntries
-	});
+	chrome.storage.sync.set(rcxMain.config);
 }
 
 /**

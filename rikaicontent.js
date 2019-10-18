@@ -538,7 +538,7 @@ var rcxContent = {
 		'RP': true
 	},	
 	isInline: function(node) {
-		return this.inlineNames.hasOwnProperty(node.nodeName) || 
+		return this.inlineNames.hasOwnProperty(node.nodeName) || (node.nodeName == 'DIV' && window.rikaichan.config.inlineDivs) || 
 		// only check styles for elements
 		// comments do not have getComputedStyle method
 		(document.nodeType == Node.ELEMENT_NODE && 
