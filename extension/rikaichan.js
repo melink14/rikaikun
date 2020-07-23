@@ -157,7 +157,7 @@ const rcxMain = {
 	},
 */
 
-  loadDictionary: function() {
+  loadDictionary: function () {
     this.dict = new RcxDict();
     return this.dict.init(this.haveNames /* && !this.cfg.nadelay*/);
     // this.dict.setConfig(this.dconfig);
@@ -206,18 +206,18 @@ const rcxMain = {
   // The callback for onSelectionChanged
   // Just sends a message to the tab to enable itself if it hasn't
   // already
-  onTabSelect: function(tabId) {
+  onTabSelect: function (tabId) {
     rcxMain._onTabSelect(tabId);
   },
-  _onTabSelect: function(tabId) {
+  _onTabSelect: function (tabId) {
     if (this.enabled == 1)
       chrome.tabs.sendMessage(tabId, {
         type: 'enable',
-        config: rcxMain.config
+        config: rcxMain.config,
       });
   },
 
-  savePrep: function(clip, entry) {
+  savePrep: function (clip, entry) {
     let me;
     let text;
     let i;
@@ -262,11 +262,11 @@ const rcxMain = {
   },
 
   // Needs entirely new implementation and dependent on savePrep
-  copyToClip: function(tab, entry) {
+  copyToClip: function (tab, entry) {
     let text;
 
     if ((text = this.savePrep(1, entry)) != null) {
-      document.oncopy = function(event) {
+      document.oncopy = function (event) {
         event.clipboardData.setData('Text', text);
         event.preventDefault();
       };
@@ -274,7 +274,7 @@ const rcxMain = {
       document.oncopy = undefined;
       chrome.tabs.sendMessage(tab.id, {
         type: 'showPopup',
-        text: 'Copied to clipboard.'
+        text: 'Copied to clipboard.',
       });
     }
   },
@@ -299,16 +299,16 @@ const rcxMain = {
 
   // Function which enables the inline mode of rikaikun
   // Unlike rikaichan there is no lookup bar so this is the only enable.
-  inlineEnable: function(tab, mode) {
+  inlineEnable: function (tab, mode) {
     if (!this.dict) {
       //	var time = (new Date()).getTime();
       this.loadDictionary()
         .then(
-          function() {
+          function () {
             // Send message to current tab to add listeners and create stuff
             chrome.tabs.sendMessage(tab.id, {
               type: 'enable',
-              config: rcxMain.config
+              config: rcxMain.config,
             });
             this.enabled = 1;
 
@@ -316,21 +316,21 @@ const rcxMain = {
               if (rcxMain.config.minihelp)
                 chrome.tabs.sendMessage(tab.id, {
                   type: 'showPopup',
-                  text: rcxMain.miniHelp
+                  text: rcxMain.miniHelp,
                 });
               else
                 chrome.tabs.sendMessage(tab.id, {
                   type: 'showPopup',
-                  text: 'Rikaikun enabled!'
+                  text: 'Rikaikun enabled!',
                 });
             }
             chrome.browserAction.setBadgeBackgroundColor({
-              color: [255, 0, 0, 255]
+              color: [255, 0, 0, 255],
             });
             chrome.browserAction.setBadgeText({ text: 'On' });
           }.bind(this)
         )
-        .catch(function(err) {
+        .catch(function (err) {
           alert('Error loading dictionary: ' + err);
         });
 
@@ -339,7 +339,7 @@ const rcxMain = {
   },
 
   // This function diables
-  inlineDisable: function() {
+  inlineDisable: function () {
     // Delete dictionary object after we implement it
     delete this.dict;
 
@@ -348,7 +348,7 @@ const rcxMain = {
     chrome.browserAction.setBadgeText({ text: '' });
   },
 
-  inlineToggle: function(tab) {
+  inlineToggle: function (tab) {
     if (rcxMain.enabled) rcxMain.inlineDisable(tab, 1);
     else rcxMain.inlineEnable(tab, 1);
   },
@@ -358,11 +358,11 @@ const rcxMain = {
 
   showMode: 0,
 
-  nextDict: function() {
+  nextDict: function () {
     this.showMode = (this.showMode + 1) % this.dictCount;
   },
 
-  resetDict: function() {
+  resetDict: function () {
     this.showMode = 0;
   },
 
@@ -371,7 +371,7 @@ const rcxMain = {
   defaultDict: '2',
   nextDict: '3',
 
-  search: function(text, dictOption) {
+  search: function (text, dictOption) {
     switch (dictOption) {
       case this.forceKanji:
         const e = this.dict.kanjiSearch(text.charAt(0));
@@ -405,7 +405,7 @@ const rcxMain = {
     } while (this.showMode != m);
 
     return e;
-  }
+  },
 };
 
 /*

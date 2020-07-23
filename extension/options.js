@@ -10,7 +10,7 @@ const kanjiInfoLabelList = chrome.extension.getBackgroundPage().rcxDict
 function populateFormFromCloudStorage() {
   chrome.storage.sync.get(
     chrome.extension.getBackgroundPage().optionsList,
-    function(cloudStorage) {
+    function (cloudStorage) {
       // Simple values
       document.optform.disablekeys.checked = cloudStorage.disablekeys;
       document.optform.highlighttext.checked = cloudStorage.highlight;
@@ -119,7 +119,7 @@ function saveOptions() {
     // Saving Copy to Clipboard settings
     copySeparator: copySeparator,
     lineEnding: lineEnding,
-    maxClipCopyEntries: maxClipCopyEntries
+    maxClipCopyEntries: maxClipCopyEntries,
   });
 
   // TODO: Inline this above and call saveOptionsToCloudStorage.

@@ -49,7 +49,7 @@ const rcxContent = {
   nextDict: 3,
 
   // Adds the listeners and stuff.
-  enableTab: function(config) {
+  enableTab: function (config) {
     if (window.rikaichan == null) {
       window.rikaichan = {};
       window.addEventListener('mousemove', this.onMouseMove, false);
@@ -63,7 +63,7 @@ const rcxContent = {
   },
 
   // Removes the listeners and stuff
-  disableTab: function() {
+  disableTab: function () {
     if (window.rikaichan != null) {
       let e;
       window.removeEventListener('mousemove', this.onMouseMove, false);
@@ -82,7 +82,7 @@ const rcxContent = {
     }
   },
 
-  getContentType: function(tDoc) {
+  getContentType: function (tDoc) {
     const m = tDoc.getElementsByTagName('meta');
     for (const i in m) {
       if (m[i].httpEquiv == 'Content-Type') {
@@ -94,7 +94,7 @@ const rcxContent = {
     return null;
   },
 
-  showPopup: function(text, elem, x, y, looseWidth) {
+  showPopup: function (text, elem, x, y, looseWidth) {
     topdoc = window.document;
 
     if (isNaN(x) || isNaN(y)) x = y = 0;
@@ -121,7 +121,7 @@ const rcxContent = {
 
       popup.addEventListener(
         'dblclick',
-        function(ev) {
+        function (ev) {
           rcxContent.hidePopup();
           ev.stopPropagation();
         },
@@ -263,7 +263,7 @@ const rcxContent = {
     popup.style.display = '';
   },
 
-  hidePopup: function() {
+  hidePopup: function () {
     const popup = document.getElementById('rikaichan-window');
     if (popup) {
       popup.style.display = 'none';
@@ -272,12 +272,12 @@ const rcxContent = {
     this.title = null;
   },
 
-  isVisible: function() {
+  isVisible: function () {
     const popup = document.getElementById('rikaichan-window');
     return popup && popup.style.display != 'none';
   },
 
-  clearHi: function() {
+  clearHi: function () {
     const tdata = window.rikaichan;
     if (!tdata || !tdata.prevSelView) return;
     if (tdata.prevSelView.closed) {
@@ -316,7 +316,7 @@ const rcxContent = {
   // operating on the value after rendering (for copying for example).
   lastFound: null,
 
-  configPage: function() {
+  configPage: function () {
     window.openDialog(
       'chrome://rikaichan/content/prefs.xul',
       '',
@@ -328,10 +328,10 @@ const rcxContent = {
   lastPos: { x: null, y: null },
   lastTarget: null,
 
-  onKeyDown: function(ev) {
+  onKeyDown: function (ev) {
     rcxContent._onKeyDown(ev);
   },
-  _onKeyDown: function(ev) {
+  _onKeyDown: function (ev) {
     //		this.status("keyCode=" + ev.keyCode + ' charCode=' + ev.charCode + ' detail=' + ev.detail);
 
     if (
@@ -347,7 +347,7 @@ const rcxContent = {
           altKey: ev.altKey || ev.key == 'AltGraph',
           ctrlKey: ev.ctrlKey,
           shiftKey: ev.shiftKey,
-          noDelay: true
+          noDelay: true,
         };
         this.tryUpdatePopup(myEv);
       }
@@ -422,7 +422,7 @@ const rcxContent = {
         } else {
           chrome.extension.sendMessage({
             type: 'copyToClip',
-            entry: rcxContent.lastFound
+            entry: rcxContent.lastFound,
           });
         }
         break;
@@ -472,10 +472,10 @@ const rcxContent = {
 
   mDown: false,
 
-  onMouseDown: function(ev) {
+  onMouseDown: function (ev) {
     rcxContent._onMouseDown(ev);
   },
-  _onMouseDown: function(ev) {
+  _onMouseDown: function (ev) {
     if (ev.button != 0) return;
     if (this.isVisible()) this.clearHi();
     mDown = true;
@@ -488,19 +488,19 @@ const rcxContent = {
     else window.rikaichan.oldTA = ev.target;
   },
 
-  onMouseUp: function(ev) {
+  onMouseUp: function (ev) {
     rcxContent._onMouseUp(ev);
   },
-  _onMouseUp: function(ev) {
+  _onMouseUp: function (ev) {
     if (ev.button != 0) return;
     mDown = false;
   },
 
-  onKeyUp: function(ev) {
+  onKeyUp: function (ev) {
     if (rcxContent.keysDown[ev.keyCode]) rcxContent.keysDown[ev.keyCode] = 0;
   },
 
-  unicodeInfo: function(c) {
+  unicodeInfo: function (c) {
     hex = '0123456789ABCDEF';
     u = c.charCodeAt(0);
     return (
@@ -558,9 +558,9 @@ const rcxContent = {
     RTC: true,
     RB: true,
     RT: true,
-    RP: true
+    RP: true,
   },
-  isInline: function(node) {
+  isInline: function (node) {
     return (
       this.inlineNames.hasOwnProperty(node.nodeName) ||
       // only check styles for elements
@@ -593,7 +593,7 @@ const rcxContent = {
   // maxLength: the maximum length of returned string
   // xpathExpr: an XPath expression, which evaluates to text nodes, will be evaluated
   // relative to "node" argument
-  getInlineText: function(node, selEndList, maxLength, xpathExpr) {
+  getInlineText: function (node, selEndList, maxLength, xpathExpr) {
     let text = '';
     let endIndex;
 
@@ -621,7 +621,7 @@ const rcxContent = {
   // given a node which must not be null,
   // returns either the next sibling or next sibling of the father or
   // next sibling of the fathers father and so on or null
-  getNext: function(node) {
+  getNext: function (node) {
     let nextNode;
 
     if ((nextNode = node.nextSibling) != null) return nextNode;
@@ -631,7 +631,7 @@ const rcxContent = {
     return null;
   },
 
-  getTextFromRange: function(rangeParent, offset, selEndList, maxLength) {
+  getTextFromRange: function (rangeParent, offset, selEndList, maxLength) {
     if (rangeParent.nodeName == 'TEXTAREA' || rangeParent.nodeName == 'INPUT') {
       const endIndex = Math.min(rangeParent.data.length, offset + maxLength);
       return rangeParent.value.substring(offset, endIndex);
@@ -682,7 +682,7 @@ const rcxContent = {
   // Hack because ro was coming out always 0 for some reason.
   lastRo: 0,
 
-  show: function(tdata, dictOption) {
+  show: function (tdata, dictOption) {
     const rp = tdata.prevRangeNode;
     let ro = tdata.prevRangeOfs + tdata.uofs;
     let u;
@@ -739,7 +739,7 @@ const rcxContent = {
     return 1;
   },
 
-  processEntry: function(e) {
+  processEntry: function (e) {
     tdata = window.rikaichan;
     ro = lastRo;
     selEndList = lastSelEnd;
@@ -780,13 +780,13 @@ const rcxContent = {
     );
   },
 
-  processHtml: function(html) {
+  processHtml: function (html) {
     tdata = window.rikaichan;
     rcxContent.showPopup(html, tdata.prevTarget, tdata.popX, tdata.popY, false);
     return 1;
   },
 
-  highlightMatch: function(doc, rp, ro, matchLen, selEndList, tdata) {
+  highlightMatch: function (doc, rp, ro, matchLen, selEndList, tdata) {
     const sel = doc.defaultView.getSelection();
 
     // If selEndList is empty then we're dealing with a textarea/input situation
@@ -858,14 +858,14 @@ const rcxContent = {
     }
   },
 
-  showTitle: function(tdata) {
+  showTitle: function (tdata) {
     chrome.extension.sendMessage(
       { type: 'translate', title: tdata.title },
       rcxContent.processTitle
     );
   },
 
-  processTitle: function(e) {
+  processTitle: function (e) {
     tdata = window.rikaichan;
 
     if (!e) {
@@ -875,7 +875,7 @@ const rcxContent = {
 
     e.title = tdata.title
       .substr(0, e.textLen)
-      .replace(/[\x00-\xff]/g, function(c) {
+      .replace(/[\x00-\xff]/g, function (c) {
         return '&#' + c.charCodeAt(0) + ';';
       });
     if (tdata.title.length > e.textLen) e.title += '...';
@@ -904,7 +904,7 @@ const rcxContent = {
 
 */
 
-  getFirstTextChild: function(node) {
+  getFirstTextChild: function (node) {
     return document
       .evaluate(
         'descendant::text()[not(parent::rp) and not(ancestor::rt)]',
@@ -917,7 +917,7 @@ const rcxContent = {
     //
   },
 
-  makeFake: function(real) {
+  makeFake: function (real) {
     const fake = document.createElement('div');
     const realRect = real.getBoundingClientRect();
     fake.innerText = real.value;
@@ -935,7 +935,7 @@ const rcxContent = {
     return fake;
   },
 
-  getTotalOffset: function(parent, tNode, offset) {
+  getTotalOffset: function (parent, tNode, offset) {
     let fChild = parent.firstChild;
     let realO = offset;
     if (fChild == tNode) return offset;
@@ -952,13 +952,13 @@ const rcxContent = {
     return realO;
   },
 
-  onMouseMove: function(ev) {
+  onMouseMove: function (ev) {
     rcxContent.lastPos.x = ev.clientX;
     rcxContent.lastPos.y = ev.clientY;
     rcxContent.lastTarget = ev.target;
     rcxContent.tryUpdatePopup(ev);
   },
-  tryUpdatePopup: function(ev) {
+  tryUpdatePopup: function (ev) {
     const altGraph = ev.getModifierState && ev.getModifierState('AltGraph');
 
     if (
@@ -1103,7 +1103,7 @@ const rcxContent = {
       tdata.popX = ev.clientX;
       tdata.popY = ev.clientY;
       tdata.timer = setTimeout(
-        function(rangeNode, rangeOffset) {
+        function (rangeNode, rangeOffset) {
           if (
             !window.rikaichan ||
             rangeNode != window.rikaichan.prevRangeNode ||
@@ -1144,7 +1144,7 @@ const rcxContent = {
       tdata.popX = ev.clientX;
       tdata.popY = ev.clientY;
       tdata.timer = setTimeout(
-        function(tdata, title) {
+        function (tdata, title) {
           if (!window.rikaichan || title !== window.rikaichan.title) {
             return;
           }
@@ -1164,11 +1164,11 @@ const rcxContent = {
         this.hidePopup();
       }
     }
-  }
+  },
 };
 
 // Event Listeners
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   switch (request.type) {
     case 'enable':
       rcxContent.enableTab(request.config);

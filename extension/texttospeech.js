@@ -26,5 +26,5 @@ TTS.prototype = {
     } else {
       console.log('Ignoring ' + text);
     }
-  }
+  },
 };

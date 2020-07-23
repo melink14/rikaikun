@@ -148,7 +148,7 @@ RcxDict.prototype = {
 
   //	Note: These are mostly flat text files; loaded as one continous string to
   //	reduce memory use
-  loadDictionary: function(includeNames) {
+  loadDictionary: function (includeNames) {
     /* this.wordDict = this.fileRead(rcxWordDict.datURI,
 		rcxWordDict.datCharset); this.wordIndex = this.fileRead(rcxWordDict.idxURI,
 		rcxWordDict.idxCharset); */
