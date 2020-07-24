@@ -236,7 +236,7 @@ const rcxMain = {
 			//mk = this.cfg.smaxfk;
 		}*/
 
-    if (!this.fromLB) text = '';
+    text = '';
     for (i = 0; i < f.length; ++i) {
       e = f[i];
       if (e.kanji) {
@@ -346,6 +346,16 @@ const rcxMain = {
     this.enabled = 0;
     chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 0, 0] });
     chrome.browserAction.setBadgeText({ text: '' });
+
+    // Send a disable message to all browsers
+    chrome.windows.getAll({ populate: true }, function (windows) {
+      for (let i = 0; i < windows.length; ++i) {
+        const tabs = windows[i].tabs;
+        for (let j = 0; j < tabs.length; ++j) {
+          chrome.tabs.sendMessage(tabs[j].id, { type: 'disable' });
+        }
+      }
+    });
   },
 
   inlineToggle: function (tab) {
