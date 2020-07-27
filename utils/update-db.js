@@ -33,24 +33,26 @@ const SEMIVOICED_KATAKANA_TO_HIRAGANA = [
   0x3071, 0x3074, 0x3077, 0x307a, 0x307d
 ];
 
-// Since we only get the first letter, two letter codes need to processed
-// later.
-const SUPPORTED_REF_TYPES = new Set([
+// List of reference types that we copy to the kanji DB file.
+// See http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Content_.26_Format
+const SUPPORTED_REF_TYPES = [
   'B',
   'H',
   'L',
   'E',
-  'D', // DK and DN
+  'DK',
+  'DN',
   'N',
   'V',
   'Y',
   'P',
-  'I', // I and IN
+  'I',
+  'IN',
   // Not really supported, just here to make the diff smaller
   'S',
   'G',
   'F',
-]);
+];
 
 const normalizeEntry = (entry) => {
   let previous = 0;
@@ -299,11 +301,10 @@ class KanjiDictParser extends Writable {
     const refsToKeep = [];
     let hasB = false;
     for (const ref of refs) {
-      if (ref.length && SUPPORTED_REF_TYPES.has(ref[0])) {
-        // Special case Dx types since we only support DK and DN types
-        if (ref[0] === 'D' && !['K', 'N'].includes(ref[1])) {
-          continue;
-        }
+      if (
+        ref.length &&
+        SUPPORTED_REF_TYPES.some((supportedRef) => ref.startsWith(supportedRef))
+      ) {
         if (ref[0] === 'B') {
           hasB = true;
         }
