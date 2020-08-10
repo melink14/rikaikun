@@ -10,6 +10,7 @@ const path = require('path');
 const iconv = require('iconv-lite');
 const LineStream = require('byline').LineStream;
 const { Transform, Writable } = require('stream');
+const loadWanikani = require('./update-wanikani');
 
 // prettier-ignore
 const HANKAKU_KATAKANA_TO_HIRAGANA = [
@@ -222,6 +223,9 @@ class KanjiDictParser extends Writable {
   constructor(options) {
     super(options);
     this._index = {};
+    if (options && options.wanikani) {
+      this.wanikani = options.wanikani;
+    }
   }
 
   /**
@@ -322,6 +326,11 @@ class KanjiDictParser extends Writable {
     if (!hasB) {
       throw new Error(`No radical reference found for ${line}`);
     }
+
+    if (this.wanikani && this.wanikani.has(matches[1])) {
+      refsToKeep.push(`WK${this.wanikani.get(matches[1])}`);
+    }
+
     matches[2] = refsToKeep.join(' ');
 
     // Prepare meanings
@@ -366,7 +375,8 @@ class KanjiDictParser extends Writable {
 }
 
 const parseKanjiDic = async (sources, dataFile) => {
-  const parser = new KanjiDictParser();
+  const wanikani = await loadWanikani();
+  const parser = new KanjiDictParser({ wanikani });
 
   const readFile = (url, encoding) =>
     new Promise((resolve, reject) => {
