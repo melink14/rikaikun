@@ -3,8 +3,7 @@ const kanjiInfoLabelList = chrome.extension.getBackgroundPage().RcxDict
   .prototype.kanjiInfoLabelList;
 
 /**
- * Retrieves saved options from chrome.storage.sync and populates form
- * elements.
+ * Retrieves saved options from chrome.storage.sync and populates form elements.
  * TODO: Perhaps using form map data, we can set these directly.
  */
 function populateFormFromCloudStorage() {
@@ -71,9 +70,9 @@ function populateFormFromCloudStorage() {
 }
 
 /**
- * Collects all options from form fields and updates in memory
- * config object as well as saves to cloud storage.
- * String values from form are converted to number/boolean if appropriate.
+ * Collects all options from form fields and updates in memory config object as
+ * well as saves to cloud storage. String values from form are converted to
+ * number/boolean if appropriate.
  */
 function saveOptions() {
   const copySeparator = document.optform.copySeparator.value;
@@ -140,9 +139,10 @@ function saveOptions() {
   chrome.extension.getBackgroundPage().rcxMain.config.ttsEnabled = ttsEnabled;
 }
 /**
- * Returns number popup Delay from form as number.
- * If value cannot be parsed, returns default 150.
- * @return {number}
+ * Returns number popup Delay from form as number. If value cannot be parsed,
+ * returns default 150.
+ *
+ * @returns {number}
  */
 function getPopUpDelay() {
   let popupDelay;

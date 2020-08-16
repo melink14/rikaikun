@@ -1,4 +1,12 @@
 {
   "singleQuote": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "overrides":[
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "jsdoc-parser"
+      }
+    }
+  ]
 }
