@@ -1,41 +1,41 @@
 ﻿/*
 
-	Rikaikun
-	Copyright (C) 2010 Erek Speed
-	http://code.google.com/p/rikaikun/
+  Rikaikun
+  Copyright (C) 2010 Erek Speed
+  http://code.google.com/p/rikaikun/
 
-	---
+  ---
 
-	Originally based on Rikaichan 1.07
-	by Jonathan Zarate
-	http://www.polarcloud.com/
+  Originally based on Rikaichan 1.07
+  by Jonathan Zarate
+  http://www.polarcloud.com/
 
-	---
+  ---
 
-	Originally based on RikaiXUL 0.4 by Todd Rudick
-	http://www.rikai.com/
-	http://rikaixul.mozdev.org/
+  Originally based on RikaiXUL 0.4 by Todd Rudick
+  http://www.rikai.com/
+  http://rikaixul.mozdev.org/
 
-	---
+  ---
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-	---
+  ---
 
-	Please do not change or remove any of the copyrights or links to web pages
-	when modifying any of the files. - Jon
+  Please do not change or remove any of the copyrights or links to web pages
+  when modifying any of the files. - Jon
 
 */
 
@@ -48,37 +48,36 @@ function RcxDict() {}
 RcxDict.prototype = {
   config: {},
 
-  init: function (loadNames) {
+  init: function(loadNames) {
     const started = +new Date();
 
     const promises = [this.loadDictionary(loadNames), this.loadDIF()];
 
-    return Promise.all(promises).then(function () {
+    return Promise.all(promises).then(function() {
       const ended = +new Date();
       console.log('rcxDict main then in ' + (ended - started));
     });
   },
 
-  setConfig: function (c) {
+  setConfig: function(c) {
     this.config = c;
   },
 
   //
 
-  fileReadAsync: function (url, asArray) {
+  fileReadAsync: function(url, asArray) {
     return new Promise(function prom(resolve) {
       const req = new XMLHttpRequest();
 
-      req.onreadystatechange = function () {
+      req.onreadystatechange = function() {
         if (req.readyState === 4) {
           if (!asArray) {
             resolve(req.responseText);
           } else {
-            const array = req.responseText
-              .split('\n')
-              .filter(function removeBlanks(o) {
-                return o && o.length > 0;
-              });
+            const array =
+                req.responseText.split('\n').filter(function removeBlanks(o) {
+                  return o && o.length > 0;
+                });
 
             resolve(array);
           }
@@ -90,14 +89,14 @@ RcxDict.prototype = {
     });
   },
 
-  fileRead: function (url) {
+  fileRead: function(url) {
     const req = new XMLHttpRequest();
     req.open('GET', url, false);
     req.send(null);
     return req.responseText;
   },
 
-  fileReadArray: function (name, charset) {
+  fileReadArray: function(name, charset) {
     const a = this.fileRead(name, charset).split('\n');
     // Is this just in case there is blank shit in the file.  It was writtin
     // by Jon though.
@@ -106,7 +105,7 @@ RcxDict.prototype = {
     return a;
   },
 
-  find: function (data, text) {
+  find: function(data, text) {
     const tlen = text.length;
     let beg = 0;
     let end = data.length - 1;
@@ -119,39 +118,40 @@ RcxDict.prototype = {
       i = data.lastIndexOf('\n', mi) + 1;
 
       mis = data.substr(i, tlen);
-      if (text < mis) end = i - 1;
-      else if (text > mis) beg = data.indexOf('\n', mi + 1) + 1;
-      else return data.substring(i, data.indexOf('\n', mi + 1));
+      if (text < mis)
+        end = i - 1;
+      else if (text > mis)
+        beg = data.indexOf('\n', mi + 1) + 1;
+      else
+        return data.substring(i, data.indexOf('\n', mi + 1));
     }
     return null;
   },
 
   //
 
-  loadNames: function () {
+  loadNames: function() {
     if (this.nameDict && this.nameIndex) return;
 
     this.nameDict = this.fileRead(chrome.extension.getURL('data/names.dat'));
     this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
   },
 
-  loadFileToTarget: function (file, isArray, target) {
+  loadFileToTarget: function(file, isArray, target) {
     const url = chrome.extension.getURL('data/' + file);
 
-    return this.fileReadAsync(url, isArray).then(
-      function (data) {
-        this[target] = data;
-        console.log('async read complete for ' + target);
-      }.bind(this)
-    );
+    return this.fileReadAsync(url, isArray).then(function(data) {
+      this[target] = data;
+      console.log('async read complete for ' + target);
+    }.bind(this));
   },
 
   //	Note: These are mostly flat text files; loaded as one continous string to
   //	reduce memory use
-  loadDictionary: function (includeNames) {
+  loadDictionary: function(includeNames) {
     /* this.wordDict = this.fileRead(rcxWordDict.datURI,
-		rcxWordDict.datCharset); this.wordIndex = this.fileRead(rcxWordDict.idxURI,
-		rcxWordDict.idxCharset); */
+    rcxWordDict.datCharset); this.wordIndex = this.fileRead(rcxWordDict.idxURI,
+    rcxWordDict.idxCharset); */
 
     const promises = [
       this.loadFileToTarget('dict.dat', false, 'wordDict'),
@@ -177,124 +177,121 @@ RcxDict.prototype = {
     //	this.test_kanji();
   },
   /*
-	test_kanji: function() {
-		let a = this.kanjiData.split('\n');
+  test_kanji: function() {
+    let a = this.kanjiData.split('\n');
 
-		alert('begin test. a.length=' + a.length);
-		let start = (new Date()).getTime();
-		for (let i = 0; i < a.length; ++i) {
-			if (!this.kanjiSearch(a[i].charAt(0))) {
-				alert('error @' + i + ': ' + a[i]);
-				return;
-			}
-			alert('time = ' + ((new Date()).getTime() - start));
-		},
-	*/
+    alert('begin test. a.length=' + a.length);
+    let start = (new Date()).getTime();
+    for (let i = 0; i < a.length; ++i) {
+      if (!this.kanjiSearch(a[i].charAt(0))) {
+        alert('error @' + i + ': ' + a[i]);
+        return;
+      }
+      alert('time = ' + ((new Date()).getTime() - start));
+    },
+  */
 
   /*
-	test_index: function() {
-		let ixF = this.fileRead('chrome://rikaichan/content/dict.idx', 'EUC-JP');
-		let ixA = ixF.split('\n');
+  test_index: function() {
+    let ixF = this.fileRead('chrome://rikaichan/content/dict.idx', 'EUC-JP');
+    let ixA = ixF.split('\n');
 
-		while ((ixA.length > 0) && (ixA[ixA.length - 1].length === 0)) ixA.pop();
+    while ((ixA.length > 0) && (ixA[ixA.length - 1].length === 0)) ixA.pop();
 
 //		alert('length=' + ixA.length + ' / ' + ixF.length);
 if (0) {
-		let timeA = (new Date()).getTime();
-		for (let i = ixA.length - 1; i >= 0; --i) {
-			if ((i & 0xFF) === 0) window.status = 'A: ' + i;
-			let s = ixA[i];
-			let r = this.binSearchX(ixA, s.substr(0, s.indexOf(',') + 1));
-			if ((r === -1) || (ixA[r] !== s)) {
-					alert('A failed: ' + s);
-					return;
-				}
-			}
-			timeA = ((new Date()).getTime() - timeA) / 1000;
+    let timeA = (new Date()).getTime();
+    for (let i = ixA.length - 1; i >= 0; --i) {
+      if ((i & 0xFF) === 0) window.status = 'A: ' + i;
+      let s = ixA[i];
+      let r = this.binSearchX(ixA, s.substr(0, s.indexOf(',') + 1));
+      if ((r === -1) || (ixA[r] !== s)) {
+          alert('A failed: ' + s);
+          return;
+        }
+      }
+      timeA = ((new Date()).getTime() - timeA) / 1000;
 
-		let timeF = (new Date()).getTime();
-		for (let i = ixA.length - 1; i >= 0; --i) {
-			if ((i & 0xFF) === 0) window.status = 'F: ' + i;
-			let s = ixA[i];
-			let r = this.find(ixF, s.substr(0, s.indexOf(',') + 1));
-			if (r !== s) {
-					alert('F failed: ' + s);
-					return;
-				}
-			timeF = ((new Date()).getTime() - timeF) / 1000;
+    let timeF = (new Date()).getTime();
+    for (let i = ixA.length - 1; i >= 0; --i) {
+      if ((i & 0xFF) === 0) window.status = 'F: ' + i;
+      let s = ixA[i];
+      let r = this.find(ixF, s.substr(0, s.indexOf(',') + 1));
+      if (r !== s) {
+          alert('F failed: ' + s);
+          return;
+        }
+      timeF = ((new Date()).getTime() - timeF) / 1000;
 
-		let timeX = (new Date()).getTime();
+    let timeX = (new Date()).getTime();
 if (0) {
-		for (let i = ixA.length - 1; i >= 0; --i) {
-			if ((i & 0xFF) === 0) window.status = 'X: ' + i;
-			let s = ixA[i];
+    for (let i = ixA.length - 1; i >= 0; --i) {
+      if ((i & 0xFF) === 0) window.status = 'X: ' + i;
+      let s = ixA[i];
 
-			let w = s.substr(0, s.indexOf(',') + 1);
-			let j = 0;
-			r = '';
-			if (ixF.substr(0, w.length) === w) {
-					r = ixF.substr(0, ixF.indexOf('\n'));
-				}
-				else {
-					w = '\n' + w;
-					j = ixF.indexOf(w);
-				if (j !== -1) r = ixF.substring(j + 1, ixF.indexOf('\n', j + 1));
-				}
+      let w = s.substr(0, s.indexOf(',') + 1);
+      let j = 0;
+      r = '';
+      if (ixF.substr(0, w.length) === w) {
+          r = ixF.substr(0, ixF.indexOf('\n'));
+        }
+        else {
+          w = '\n' + w;
+          j = ixF.indexOf(w);
+        if (j !== -1) r = ixF.substring(j + 1, ixF.indexOf('\n', j + 1));
+        }
 
-			if (r !== s) {
-					alert('X failed:\n[' + s + ']\n[' + r + ']');
-					return;
-				}
-			}
-			timeX = ((new Date()).getTime() - timeX) / 1000;
+      if (r !== s) {
+          alert('X failed:\n[' + s + ']\n[' + r + ']');
+          return;
+        }
+      }
+      timeX = ((new Date()).getTime() - timeX) / 1000;
 
-			alert('A=' + timeA + ' / F=' + timeF + ' / X=' + timeX);
-		},
+      alert('A=' + timeA + ' / F=' + timeF + ' / X=' + timeX);
+    },
 
-	*/
+  */
 
-  loadDIF: function () {
+  loadDIF: function() {
     this.difReasons = [];
     this.difRules = [];
     this.difExact = [];
 
     /* asArray */
-    return this.fileReadAsync(
-      chrome.extension.getURL('data/deinflect.dat'),
-      true
-    ).then(
-      function (buffer) {
-        let prevLen = -1;
-        let g;
-        let o;
+    return this
+        .fileReadAsync(chrome.extension.getURL('data/deinflect.dat'), true)
+        .then(function(buffer) {
+          let prevLen = -1;
+          let g;
+          let o;
 
-        // i = 1: skip header
-        for (let i = 1; i < buffer.length; ++i) {
-          const f = buffer[i].split('\t');
+          // i = 1: skip header
+          for (let i = 1; i < buffer.length; ++i) {
+            const f = buffer[i].split('\t');
 
-          if (f.length === 1) {
-            this.difReasons.push(f[0]);
-          } else if (f.length === 4) {
-            o = {};
-            o.from = f[0];
-            o.to = f[1];
-            o.type = f[2];
-            o.reason = f[3];
+            if (f.length === 1) {
+              this.difReasons.push(f[0]);
+            } else if (f.length === 4) {
+              o = {};
+              o.from = f[0];
+              o.to = f[1];
+              o.type = f[2];
+              o.reason = f[3];
 
-            if (prevLen !== o.from.length) {
-              prevLen = o.from.length;
-              g = [];
-              g.flen = prevLen;
-              this.difRules.push(g);
+              if (prevLen !== o.from.length) {
+                prevLen = o.from.length;
+                g = [];
+                g.flen = prevLen;
+                this.difRules.push(g);
+              }
+              g.push(o);
             }
-            g.push(o);
           }
-        }
-      }.bind(this)
-    );
+        }.bind(this));
   },
 
-  deinflect: function (word) {
+  deinflect: function(word) {
     const r = [];
     const have = [];
     let o;
@@ -325,7 +322,7 @@ if (0) {
             const rule = g[k];
             if (type & rule.type && end === rule.from) {
               const newWord =
-                word.substr(0, word.length - rule.from.length) + rule.to;
+                  word.substr(0, word.length - rule.from.length) + rule.to;
               if (newWord.length <= 1) continue;
               o = {};
               if (have[newWord] !== undefined) {
@@ -339,8 +336,9 @@ if (0) {
               have[newWord] = r.length;
               if (r[i].reason.length)
                 o.reason =
-                  this.difReasons[rule.reason] + ' &lt; ' + r[i].reason;
-              else o.reason = this.difReasons[rule.reason];
+                    this.difReasons[rule.reason] + ' &lt; ' + r[i].reason;
+              else
+                o.reason = this.difReasons[rule.reason];
               o.type = rule.type >> 8;
               o.word = newWord;
               // o.debug = r[i].debug + ' $ ' + rule.debug;
@@ -356,96 +354,23 @@ if (0) {
 
   // katakana -> hiragana conversion tables
   ch: [
-    0x3092,
-    0x3041,
-    0x3043,
-    0x3045,
-    0x3047,
-    0x3049,
-    0x3083,
-    0x3085,
-    0x3087,
-    0x3063,
-    0x30fc,
-    0x3042,
-    0x3044,
-    0x3046,
-    0x3048,
-    0x304a,
-    0x304b,
-    0x304d,
-    0x304f,
-    0x3051,
-    0x3053,
-    0x3055,
-    0x3057,
-    0x3059,
-    0x305b,
-    0x305d,
-    0x305f,
-    0x3061,
-    0x3064,
-    0x3066,
-    0x3068,
-    0x306a,
-    0x306b,
-    0x306c,
-    0x306d,
-    0x306e,
-    0x306f,
-    0x3072,
-    0x3075,
-    0x3078,
-    0x307b,
-    0x307e,
-    0x307f,
-    0x3080,
-    0x3081,
-    0x3082,
-    0x3084,
-    0x3086,
-    0x3088,
-    0x3089,
-    0x308a,
-    0x308b,
-    0x308c,
-    0x308d,
-    0x308f,
-    0x3093,
+    0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085,
+    0x3087, 0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a,
+    0x304b, 0x304d, 0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059,
+    0x305b, 0x305d, 0x305f, 0x3061, 0x3064, 0x3066, 0x3068, 0x306a,
+    0x306b, 0x306c, 0x306d, 0x306e, 0x306f, 0x3072, 0x3075, 0x3078,
+    0x307b, 0x307e, 0x307f, 0x3080, 0x3081, 0x3082, 0x3084, 0x3086,
+    0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d, 0x308f, 0x3093,
   ],
   cv: [
-    0x30f4,
-    0xff74,
-    0xff75,
-    0x304c,
-    0x304e,
-    0x3050,
-    0x3052,
-    0x3054,
-    0x3056,
-    0x3058,
-    0x305a,
-    0x305c,
-    0x305e,
-    0x3060,
-    0x3062,
-    0x3065,
-    0x3067,
-    0x3069,
-    0xff85,
-    0xff86,
-    0xff87,
-    0xff88,
-    0xff89,
-    0x3070,
-    0x3073,
-    0x3076,
-    0x3079,
-    0x307c,
+    0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052,
+    0x3054, 0x3056, 0x3058, 0x305a, 0x305c, 0x305e, 0x3060,
+    0x3062, 0x3065, 0x3067, 0x3069, 0xff85, 0xff86, 0xff87,
+    0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079, 0x307c,
   ],
   cs: [0x3071, 0x3074, 0x3077, 0x307a, 0x307d],
 
-  wordSearch: function (word, doNames, max) {
+  wordSearch: function(word, doNames, max) {
     let i;
     let u;
     let v;
@@ -517,7 +442,7 @@ if (0) {
       this.loadNames();
       dict = this.nameDict;
       index = this.nameIndex;
-      maxTrim = 20; // this.config.namax;
+      maxTrim = 20;  // this.config.namax;
       entry.names = 1;
       console.log('doNames');
     } else {
@@ -534,8 +459,10 @@ if (0) {
       const showInf = count !== 0;
       let trys;
 
-      if (doNames) trys = [{ word: word, type: 0xff, reason: null }];
-      else trys = this.deinflect(word);
+      if (doNames)
+        trys = [{word: word, type: 0xff, reason: null}];
+      else
+        trys = this.deinflect(word);
 
       for (i = 0; i < trys.length; i++) {
         u = trys[i];
@@ -593,20 +520,22 @@ if (0) {
             if (maxLen === 0) maxLen = trueLen[word.length];
 
             if (trys[i].reason) {
-              if (showInf) r = '&lt; ' + trys[i].reason + ' &lt; ' + word;
-              else r = '&lt; ' + trys[i].reason;
+              if (showInf)
+                r = '&lt; ' + trys[i].reason + ' &lt; ' + word;
+              else
+                r = '&lt; ' + trys[i].reason;
             } else {
               r = null;
             }
 
             entry.data.push([dentry, r]);
           }
-        } // for j < ix.length
+        }  // for j < ix.length
         if (count >= maxTrim) break;
-      } // for i < trys.length
+      }  // for i < trys.length
       if (count >= maxTrim) break;
       word = word.substr(0, word.length - 1);
-    } // while word.length > 0
+    }  // while word.length > 0
 
     if (entry.data.length === 0) return null;
 
@@ -614,7 +543,7 @@ if (0) {
     return entry;
   },
 
-  translate: function (text) {
+  translate: function(text) {
     let e;
     const o = {};
     let skip;
@@ -646,7 +575,7 @@ if (0) {
     return o;
   },
 
-  bruteSearch: function (text, doNames) {
+  bruteSearch: function(text, doNames) {
     let r;
     let d;
     let j;
@@ -674,19 +603,16 @@ if (0) {
         text = text.substr(0, text.length - 1);
         we = '';
       }
-      text =
-        wb +
-        text.replace(/[[\\^$.|?*+()]/g, function (c) {
-          return '\\' + c;
-        }) +
-        we;
+      text = wb + text.replace(/[[\\^$.|?*+()]/g, function(c) {
+        return '\\' + c;
+      }) + we;
     }
 
-    const e = { data: [], reason: [], kanji: 0, more: 0 };
+    const e = {data: [], reason: [], kanji: 0, more: 0};
 
     if (doNames) {
       e.names = 1;
-      max = 20; // this.config.namax;
+      max = 20;  // this.config.namax;
       this.loadNames();
       d = this.nameDict;
     } else {
@@ -712,7 +638,7 @@ if (0) {
     return e.data.length ? e : null;
   },
 
-  kanjiSearch: function (kanji) {
+  kanjiSearch: function(kanji) {
     const hex = '0123456789ABCDEF';
     let i;
 
@@ -729,11 +655,8 @@ if (0) {
     entry.kanji = a[0];
 
     entry.misc = {};
-    entry.misc.U =
-      hex[(i >>> 12) & 15] +
-      hex[(i >>> 8) & 15] +
-      hex[(i >>> 4) & 15] +
-      hex[i & 15];
+    entry.misc.U = hex[(i >>> 12) & 15] + hex[(i >>> 8) & 15] +
+        hex[(i >>> 4) & 15] + hex[i & 15];
 
     const b = a[1].split(' ');
     for (i = 0; i < b.length; ++i) {
@@ -760,43 +683,31 @@ if (0) {
 
   kanjiInfoLabelList: [
     /*
-				'C', 	'Classical Radical',
-				'DR',	'Father Joseph De Roo Index',
-				'DO',	'P.G. O\'Neill Index',
-				'O', 	'P.G. O\'Neill Japanese Names Index',
-				'Q', 	'Four Corner Code',
-				'MN',	'Morohashi Daikanwajiten Index',
-				'MP',	'Morohashi Daikanwajiten Volume/Page',
-				'K',	'Gakken Kanji Dictionary Index',
-				'W',	'Korean Reading',
-		*/
-    'H',
-    'Halpern',
-    'L',
-    'Heisig 5th Edition',
-    'DN',
-    'Heisig 6th Edition',
-    'E',
-    'Henshall',
-    'DK',
-    'Kanji Learners Dictionary',
-    'N',
-    'Nelson',
-    'V',
-    'New Nelson',
-    'Y',
-    'PinYin',
-    'P',
-    'Skip Pattern',
-    'IN',
-    'Tuttle Kanji &amp; Kana',
-    'I',
-    'Tuttle Kanji Dictionary',
-    'U',
-    'Unicode',
+        'C', 	'Classical Radical',
+        'DR',	'Father Joseph De Roo Index',
+        'DO',	'P.G. O\'Neill Index',
+        'O', 	'P.G. O\'Neill Japanese Names Index',
+        'Q', 	'Four Corner Code',
+        'MN',	'Morohashi Daikanwajiten Index',
+        'MP',	'Morohashi Daikanwajiten Volume/Page',
+        'K',	'Gakken Kanji Dictionary Index',
+        'W',	'Korean Reading',
+    */
+    'H',  'Halpern',
+    'L',  'Heisig 5th Edition',
+    'DN', 'Heisig 6th Edition',
+    'E',  'Henshall',
+    'DK', 'Kanji Learners Dictionary',
+    'N',  'Nelson',
+    'V',  'New Nelson',
+    'Y',  'PinYin',
+    'P',  'Skip Pattern',
+    'IN', 'Tuttle Kanji &amp; Kana',
+    'I',  'Tuttle Kanji Dictionary',
+    'U',  'Unicode',
   ],
 
-  makeHtml: function (entry) {
+  makeHtml: function(entry) {
     let e;
     let c;
     let s;
@@ -816,18 +727,14 @@ if (0) {
       let nums;
 
       yomi = entry.onkun.replace(
-        /\.([^\u3001]+)/g,
-        '<span class="k-yomi-hi">$1</span>'
-      );
+          /\.([^\u3001]+)/g, '<span class="k-yomi-hi">$1</span>');
       if (entry.nanori.length) {
-        yomi +=
-          '<br/><span class="k-yomi-ti">\u540D\u4E57\u308A</span> ' +
-          entry.nanori;
+        yomi += '<br/><span class="k-yomi-ti">\u540D\u4E57\u308A</span> ' +
+            entry.nanori;
       }
       if (entry.bushumei.length) {
-        yomi +=
-          '<br/><span class="k-yomi-ti">\u90E8\u9996\u540D</span> ' +
-          entry.bushumei;
+        yomi += '<br/><span class="k-yomi-ti">\u90E8\u9996\u540D</span> ' +
+            entry.bushumei;
       }
 
       const bn = entry.misc.B - 1;
@@ -843,59 +750,30 @@ if (0) {
           k = isNaN(k) ? '-' : 'grade<br/>' + k;
           break;
       }
-      box =
-        '<table class="k-abox-tb"><tr>' +
-        '<td class="k-abox-r">radical<br/>' +
-        this.radData[bn].charAt(0) +
-        ' ' +
-        (bn + 1) +
-        '</td>' +
-        '<td class="k-abox-g">' +
-        k +
-        '</td>' +
-        '</tr><tr>' +
-        '<td class="k-abox-f">freq<br/>' +
-        (entry.misc.F ? entry.misc.F : '-') +
-        '</td>' +
-        '<td class="k-abox-s">strokes<br/>' +
-        entry.misc.S +
-        '</td>' +
-        '</tr></table>';
+      box = '<table class="k-abox-tb"><tr>' +
+          '<td class="k-abox-r">radical<br/>' + this.radData[bn].charAt(0) +
+          ' ' + (bn + 1) + '</td>' +
+          '<td class="k-abox-g">' + k + '</td>' +
+          '</tr><tr>' +
+          '<td class="k-abox-f">freq<br/>' +
+          (entry.misc.F ? entry.misc.F : '-') + '</td>' +
+          '<td class="k-abox-s">strokes<br/>' + entry.misc.S + '</td>' +
+          '</tr></table>';
       if (rcxMain.config.kanjicomponents) {
         k = this.radData[bn].split('\t');
-        box +=
-          '<table class="k-bbox-tb">' +
-          '<tr><td class="k-bbox-1a">' +
-          k[0] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[2] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[3] +
-          '</td></tr>';
+        box += '<table class="k-bbox-tb">' +
+            '<tr><td class="k-bbox-1a">' + k[0] + '</td>' +
+            '<td class="k-bbox-1b">' + k[2] + '</td>' +
+            '<td class="k-bbox-1b">' + k[3] + '</td></tr>';
         j = 1;
         for (i = 0; i < this.radData.length; ++i) {
           s = this.radData[i];
           if (bn !== i && s.indexOf(entry.kanji) !== -1) {
             k = s.split('\t');
             c = ' class="k-bbox-' + (j ^= 1);
-            box +=
-              '<tr><td' +
-              c +
-              'a">' +
-              k[0] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[2] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[3] +
-              '</td></tr>';
+            box += '<tr><td' + c + 'a">' + k[0] + '</td>' +
+                '<td' + c + 'b">' + k[2] + '</td>' +
+                '<td' + c + 'b">' + k[3] + '</td></tr>';
           }
         }
         box += '</table>';
@@ -910,16 +788,8 @@ if (0) {
         if (kanjiInfo[c]) {
           s = entry.misc[c];
           c = ' class="k-mix-td' + (j ^= 1) + '"';
-          nums +=
-            '<tr><td' +
-            c +
-            '>' +
-            this.kanjiInfoLabelList[i * 2 + 1] +
-            '</td><td' +
-            c +
-            '>' +
-            (s || '-') +
-            '</td></tr>';
+          nums += '<tr><td' + c + '>' + this.kanjiInfoLabelList[i * 2 + 1] +
+              '</td><td' + c + '>' + (s || '-') + '</td></tr>';
         }
       }
       if (nums.length) nums = '<table class="k-mix-tb">' + nums + '</table>';
@@ -939,8 +809,7 @@ if (0) {
       c = [];
 
       b.push(
-        '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>'
-      );
+          '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>');
       for (i = 0; i < entry.data.length; ++i) {
         e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
@@ -957,13 +826,10 @@ if (0) {
 
         if (e[2])
           c.push(
-            '<span class="w-kanji">' +
-              e[1] +
-              '</span> &#32; <span class="w-kana">' +
-              e[2] +
-              '</span><br/> '
-          );
-        else c.push('<span class="w-kana">' + e[1] + '</span><br/> ');
+              '<span class="w-kanji">' + e[1] +
+              '</span> &#32; <span class="w-kana">' + e[2] + '</span><br/> ');
+        else
+          c.push('<span class="w-kana">' + e[1] + '</span><br/> ');
 
         s = e[3];
         console.log('e[1]: ' + e[1]);
@@ -1008,23 +874,18 @@ if (0) {
       if (entry.index !== 0)
         b.push('<span class="small-info">... (\'j\' for more)</span><br/>');
 
-      for (
-        i = entry.index;
-        i <
-        Math.min(
-          rcxMain.config.maxDictEntries + entry.index,
-          entry.data.length
-        );
-        ++i
-      ) {
+      for (i = entry.index; i <
+           Math.min(
+               rcxMain.config.maxDictEntries + entry.index, entry.data.length);
+           ++i) {
         e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
 
         /*
-					e[1] = kanji/kana
-					e[2] = kana
-					e[3] = definition
-				*/
+          e[1] = kanji/kana
+          e[2] = kana
+          e[3] = definition
+        */
 
         if (s !== e[3]) {
           b.push(t);
@@ -1037,12 +898,8 @@ if (0) {
           if (pK === e[1])
             k = '\u3001 <span class="w-kana">' + e[2] + '</span>';
           else
-            k +=
-              '<span class="w-kanji">' +
-              e[1] +
-              '</span> &#32; <span class="w-kana">' +
-              e[2] +
-              '</span>';
+            k += '<span class="w-kanji">' + e[1] +
+                '</span> &#32; <span class="w-kana">' + e[2] + '</span>';
           pK = e[1];
         } else {
           k += '<span class="w-kana">' + e[1] + '</span>';
@@ -1064,17 +921,15 @@ if (0) {
         }
       }
       b.push(t);
-      if (
-        entry.more &&
-        entry.index < entry.data.length - rcxMain.config.maxDictEntries
-      )
+      if (entry.more &&
+          entry.index < entry.data.length - rcxMain.config.maxDictEntries)
         b.push('<span class="small-info">... (\'k\' for more)</span><br/>');
     }
 
     return b.join('');
   },
 
-  makeHtmlForRuby: function (entry) {
+  makeHtmlForRuby: function(entry) {
     let e;
     let s;
     let t;
@@ -1105,7 +960,7 @@ if (0) {
     return b.join('');
   },
 
-  makeText: function (entry, max) {
+  makeText: function(entry, max) {
     let e;
     let i;
     let j;
@@ -1131,11 +986,8 @@ if (0) {
         e = this.kanjiInfoLabelList[i];
         j = entry.misc[e];
         b.push(
-          this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
-            '\t' +
-            (j || '-') +
-            '\n'
-        );
+            this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') + '\t' +
+            (j || '-') + '\n');
       }
     } else {
       if (max > entry.data.length) max = entry.data.length;

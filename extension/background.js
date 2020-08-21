@@ -1,6 +1,6 @@
 chrome.browserAction.onClicked.addListener(rcxMain.inlineToggle);
 chrome.tabs.onSelectionChanged.addListener(rcxMain.onTabSelect);
-chrome.runtime.onMessage.addListener(function (request, sender, response) {
+chrome.runtime.onMessage.addListener(function(request, sender, response) {
   switch (request.type) {
     case 'enable?':
       console.log('enable?');
@@ -11,10 +11,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, response) {
       const e = rcxMain.search(request.text, request.dictOption);
       response(e);
       break;
-    /**  case 'nextDict':
-			 console.log('nextDict');
-			 rcxMain.nextDict();
-			 break;*/
+    /**
+       case 'nextDict':
+       console.log('nextDict');
+       rcxMain.nextDict();
+       break;
+     */
     case 'resetDict':
       console.log('resetDict');
       rcxMain.resetDict();
@@ -70,7 +72,7 @@ const optionsList = [
 ];
 
 /** Get option data from cloud and initialize into memory. */
-chrome.storage.sync.get(optionsList, function (items) {
+chrome.storage.sync.get(optionsList, function(items) {
   initializeConfigFromCloudOrLocalStorageOrDefaults(items);
 
   // Save right away incase we initialized from localStorage or defaults.
@@ -94,7 +96,7 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
    */
   function initConfig(key, defaultValue) {
     let currentValue =
-      cloudStorage[key] || normalizeStringValue(localStorage[key]);
+        cloudStorage[key] || normalizeStringValue(localStorage[key]);
     if (currentValue === undefined) {
       currentValue = defaultValue;
     }
@@ -128,11 +130,10 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
     const kanjiInfoKey = kanjiInfoLabelList[i];
     if (cloudStorage.kanjiInfo && cloudStorage.kanjiInfo[kanjiInfoKey]) {
       rcxMain.config.kanjiInfo[kanjiInfoKey] =
-        cloudStorage.kanjiInfo[kanjiInfoKey];
+          cloudStorage.kanjiInfo[kanjiInfoKey];
     } else if (localStorage[kanjiInfoKey]) {
-      rcxMain.config.kanjiInfo[kanjiInfoKey] = normalizeStringValue(
-        localStorage[kanjiInfoKey]
-      );
+      rcxMain.config.kanjiInfo[kanjiInfoKey] =
+          normalizeStringValue(localStorage[kanjiInfoKey]);
     } else {
       rcxMain.config.kanjiInfo[kanjiInfoKey] = true;
     }

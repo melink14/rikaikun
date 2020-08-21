@@ -9,29 +9,28 @@ const zlib = require('zlib');
 const path = require('path');
 const iconv = require('iconv-lite');
 const LineStream = require('byline').LineStream;
-const { Transform, Writable } = require('stream');
+const {Transform, Writable} = require('stream');
 
 // prettier-ignore
 const HANKAKU_KATAKANA_TO_HIRAGANA = [
-  0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085, 0x3087,
-  0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a, 0x304b, 0x304d,
-  0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059, 0x305b, 0x305d, 0x305f,
-  0x3061, 0x3064, 0x3066, 0x3068, 0x306a, 0x306b, 0x306c, 0x306d, 0x306e,
-  0x306f, 0x3072, 0x3075, 0x3078, 0x307b, 0x307e, 0x307f, 0x3080, 0x3081,
-  0x3082, 0x3084, 0x3086, 0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d,
-  0x308f, 0x3093,
+  0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085,
+  0x3087, 0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a,
+  0x304b, 0x304d, 0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059,
+  0x305b, 0x305d, 0x305f, 0x3061, 0x3064, 0x3066, 0x3068, 0x306a,
+  0x306b, 0x306c, 0x306d, 0x306e, 0x306f, 0x3072, 0x3075, 0x3078,
+  0x307b, 0x307e, 0x307f, 0x3080, 0x3081, 0x3082, 0x3084, 0x3086,
+  0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d, 0x308f, 0x3093,
 ];
 // prettier-ignore
 const VOICED_KATAKANA_TO_HIRAGANA = [
-  0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052, 0x3054, 0x3056,
-  0x3058, 0x305a, 0x305c, 0x305e, 0x3060, 0x3062, 0x3065, 0x3067, 0x3069,
-  0xff85, 0xff86, 0xff87, 0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079,
-  0x307c,
+  0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052,
+  0x3054, 0x3056, 0x3058, 0x305a, 0x305c, 0x305e, 0x3060,
+  0x3062, 0x3065, 0x3067, 0x3069, 0xff85, 0xff86, 0xff87,
+  0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079, 0x307c,
 ];
 // prettier-ignore
-const SEMIVOICED_KATAKANA_TO_HIRAGANA = [
-  0x3071, 0x3074, 0x3077, 0x307a, 0x307d
-];
+const SEMIVOICED_KATAKANA_TO_HIRAGANA =
+    [0x3071, 0x3074, 0x3077, 0x307a, 0x307d];
 
 // List of reference types that we copy to the kanji DB file.
 // See http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Content_.26_Format
@@ -127,8 +126,7 @@ class DictParser extends Transform {
         return;
       }
       console.log(
-        'Failed to parse header. Maybe the header is in the wrong place?'
-      );
+          'Failed to parse header. Maybe the header is in the wrong place?');
     }
 
     // Try to parse first part of entry
@@ -179,35 +177,29 @@ class DictParser extends Transform {
 const parseEdict = (url, dataFile, indexFile) => {
   const parser = new DictParser();
   return new Promise((resolve, reject) => {
-    http
-      .get(url, (res) => {
-        res
-          .pipe(zlib.createGunzip())
-          .pipe(iconv.decodeStream('euc-jp'))
-          .pipe(iconv.encodeStream('utf-8'))
-          .pipe(new LineStream())
-          .pipe(parser)
-          .pipe(
-            fs.createWriteStream(
-              path.join(__dirname, '..', 'extension', 'data', dataFile)
-            )
-          )
-          .on('error', (err) => {
-            reject(err);
-          })
-          .on('close', () => {
-            console.log('Writing index...');
-            const indexStream = fs.createWriteStream(
-              path.join(__dirname, '..', 'extension', 'data', indexFile)
-            );
-            parser.printIndex(indexStream);
-            indexStream.end();
-            resolve();
-          });
-      })
-      .on('error', (err) => {
-        reject(new Error(`Connection error: ${err}`));
-      });
+    http.get(url, (res) => {
+          res.pipe(zlib.createGunzip())
+              .pipe(iconv.decodeStream('euc-jp'))
+              .pipe(iconv.encodeStream('utf-8'))
+              .pipe(new LineStream())
+              .pipe(parser)
+              .pipe(fs.createWriteStream(
+                  path.join(__dirname, '..', 'extension', 'data', dataFile)))
+              .on('error',
+                  (err) => {
+                    reject(err);
+                  })
+              .on('close', () => {
+                console.log('Writing index...');
+                const indexStream = fs.createWriteStream(
+                    path.join(__dirname, '..', 'extension', 'data', indexFile));
+                parser.printIndex(indexStream);
+                indexStream.end();
+                resolve();
+              });
+        }).on('error', (err) => {
+      reject(new Error(`Connection error: ${err}`));
+    });
   });
 };
 
@@ -246,9 +238,11 @@ class KanjiDictParser extends Writable {
 
     // Data file format
     //
-    // See http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Content_.26_Format
+    // See
+    // http://www.edrdg.org/wiki/index.php/KANJIDIC_Project#Content_.26_Format
     //
-    // <kanji> <reference codes> <readings> [T1 <name readings>] [T2 <bushumei>] <meanings>
+    // <kanji> <reference codes> <readings> [T1 <name readings>] [T2 <bushumei>]
+    // <meanings>
     //
     // <kanji> - Single char (but could be non-BMP so need to be careful what JS
     //           methods we use to test for a char)
@@ -265,7 +259,11 @@ class KanjiDictParser extends Writable {
     //              (Also a comma could confuse it too. Would mean we should
     //              switch to ; as a separator in that case.)
     //
-    // e.g. 士|3B4E U58eb B33 G4 S3 F526 J1 N1160 V1117 H3405 DP4213 DK2129 DL2877 L319 DN341 K301 O41 DO59 MN5638 MP3.0279 E494 IN572 DA581 DS410 DF1173 DH521 DT441 DC386 DJ755 DG393 DM325 P4-3-2 I3p0.1 Q4010.0 DR1472 Yshi4 Wsa シ さむらい T1 お ま T2 さむらい {gentleman} {scholar} {samurai} {samurai radical (no. 33)}
+    // e.g. 士|3B4E U58eb B33 G4 S3 F526 J1 N1160 V1117 H3405 DP4213 DK2129
+    // DL2877 L319 DN341 K301 O41 DO59 MN5638 MP3.0279 E494 IN572 DA581 DS410
+    // DF1173 DH521 DT441 DC386 DJ755 DG393 DM325 P4-3-2 I3p0.1 Q4010.0 DR1472
+    // Yshi4 Wsa シ さむらい T1 お ま T2
+    // さむらい {gentleman} {scholar} {samurai} {samurai radical (no. 33)}
     //
     // So basically, the only way to know if we've gone from <reference codes>
     // to <readings> is to check the actual codepoints being used. Ugh.
@@ -295,8 +293,7 @@ class KanjiDictParser extends Writable {
     //  - Meanings, command separated
     // (All | delimited)
     const matches = line.match(
-      /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.\-]+ )+)?(?:T1 ((?:[\x80-\uffff.\-]+ )+))?(?:T2 ((?:[\x80-\uffff.\-]+ )+))?((?:\{.+\} ?)*)?$/
-    );
+        /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.\-]+ )+)?(?:T1 ((?:[\x80-\uffff.\-]+ )+))?(?:T2 ((?:[\x80-\uffff.\-]+ )+))?((?:\{.+\} ?)*)?$/);
     if (matches === null) {
       console.log(`Failed to parse line: ${line}`);
       callback(null);
@@ -308,10 +305,9 @@ class KanjiDictParser extends Writable {
     const refsToKeep = [];
     let hasB = false;
     for (const ref of refs) {
-      if (
-        ref.length &&
-        SUPPORTED_REF_TYPES.some((supportedRef) => ref.startsWith(supportedRef))
-      ) {
+      if (ref.length &&
+          SUPPORTED_REF_TYPES.some(
+              (supportedRef) => ref.startsWith(supportedRef))) {
         if (ref[0] === 'B') {
           hasB = true;
         }
@@ -338,16 +334,13 @@ class KanjiDictParser extends Writable {
         throw new Error(`Got meaning with embedded "|": ${line}`);
       }
       // Join with ; if some of the entries have commas
-      const hasEmbeddedCommas = meanings.some((meaning) =>
-        meaning.includes(',')
-      );
+      const hasEmbeddedCommas =
+          meanings.some((meaning) => meaning.includes(','));
       matches[6] = meanings.join(hasEmbeddedCommas ? '; ' : ', ');
     }
 
-    this._index[matches[1]] = matches
-      .slice(2)
-      .map((part) => (part ? part.trim() : ''))
-      .join('|');
+    this._index[matches[1]] =
+        matches.slice(2).map((part) => (part ? part.trim() : '')).join('|');
 
     callback();
   }
@@ -366,22 +359,18 @@ class KanjiDictParser extends Writable {
 const parseKanjiDic = async (sources, dataFile) => {
   const parser = new KanjiDictParser();
 
-  const readFile = (url, encoding) =>
-    new Promise((resolve, reject) => {
-      http
-        .get(url, (res) => {
-          res
-            .pipe(zlib.createGunzip())
-            .pipe(iconv.decodeStream(encoding))
-            .pipe(iconv.encodeStream('utf-8'))
-            .pipe(new LineStream())
-            .on('end', resolve)
-            .pipe(parser, { end: false });
-        })
-        .on('error', (err) => {
-          throw Error(`Connection error: ${err}`);
-        });
+  const readFile = (url, encoding) => new Promise((resolve, reject) => {
+    http.get(url, (res) => {
+          res.pipe(zlib.createGunzip())
+              .pipe(iconv.decodeStream(encoding))
+              .pipe(iconv.encodeStream('utf-8'))
+              .pipe(new LineStream())
+              .on('end', resolve)
+              .pipe(parser, {end: false});
+        }).on('error', (err) => {
+      throw Error(`Connection error: ${err}`);
     });
+  });
 
   for (const source of sources) {
     await readFile(source.url, source.encoding);
@@ -390,45 +379,41 @@ const parseKanjiDic = async (sources, dataFile) => {
   parser.end();
 
   const output = fs.createWriteStream(
-    path.join(__dirname, '..', 'extension', 'data', dataFile)
-  );
+      path.join(__dirname, '..', 'extension', 'data', dataFile));
   parser.printDict(output);
 };
 
 console.log('Fetching word dictionary...');
 
 parseEdict('http://ftp.monash.edu/pub/nihongo/edict.gz', 'dict.dat', 'dict.idx')
-  .then(() => {
-    console.log('Fetching names dictionary...');
-    return parseEdict(
-      'http://ftp.monash.edu/pub/nihongo/enamdict.gz',
-      'names.dat',
-      'names.idx'
-    );
-  })
-  .then(() => {
-    console.log('Fetching kanji dictionaries...');
-    return parseKanjiDic(
-      [
-        {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz',
-          encoding: 'euc-jp',
-        },
-        {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd212.gz',
-          encoding: 'euc-jp',
-        },
-        {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd213u.gz',
-          encoding: 'utf-8',
-        },
-      ],
-      'kanji.dat'
-    );
-  })
-  .then(() => {
-    console.log('Done.');
-  })
-  .catch((err) => {
-    console.log(`Error: '${err}'`);
-  });
+    .then(() => {
+      console.log('Fetching names dictionary...');
+      return parseEdict(
+          'http://ftp.monash.edu/pub/nihongo/enamdict.gz', 'names.dat',
+          'names.idx');
+    })
+    .then(() => {
+      console.log('Fetching kanji dictionaries...');
+      return parseKanjiDic(
+          [
+            {
+              url: 'http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz',
+              encoding: 'euc-jp',
+            },
+            {
+              url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd212.gz',
+              encoding: 'euc-jp',
+            },
+            {
+              url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd213u.gz',
+              encoding: 'utf-8',
+            },
+          ],
+          'kanji.dat');
+    })
+    .then(() => {
+      console.log('Done.');
+    })
+    .catch((err) => {
+      console.log(`Error: '${err}'`);
+    });
