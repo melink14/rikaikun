@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Brian Birtles <https://github.com/birtles>
+ * SPDX-FileCopyrightText: 2020 Erek Speed <https://erekspeed.com>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -10,9 +11,10 @@ import {
   Writable,
   WritableOptions,
 } from 'stream';
-import fs, { WriteStream } from 'fs';
+import fs, { WriteStream, promises as promiseFs } from 'fs';
 import http from 'http';
 import iconv from 'iconv-lite';
+import parse from 'csv-parse/lib/sync';
 import path from 'path';
 import zlib from 'zlib';
 
@@ -205,10 +207,14 @@ const parseEdict = (url: string, dataFile: string, indexFile: string) => {
 
 /** Handles parsing of KanjiDict format. */
 class KanjiDictParser extends Writable {
+  readonly #heisigData: Map<string, HeisigData>;
   #index: Record<string, string> = {};
   /** Construct as per Writable. */
-  constructor(options?: WritableOptions) {
+  constructor(
+    options: { heisigData: Map<string, HeisigData> } & WritableOptions
+  ) {
     super(options);
+    this.#heisigData = options.heisigData;
   }
 
   /**
@@ -298,6 +304,7 @@ class KanjiDictParser extends Writable {
     const refsToKeep = [];
     let hasB = false;
     for (const ref of refs) {
+      let finalRef = ref;
       if (
         ref.length &&
         SUPPORTED_REF_TYPES.some((supportedRef) => ref.startsWith(supportedRef))
@@ -305,7 +312,22 @@ class KanjiDictParser extends Writable {
         if (ref[0] === 'B') {
           hasB = true;
         }
-        refsToKeep.push(ref);
+
+        // Augment Heisig 5th and 6th edition indices with keyword information.
+        if (ref.startsWith('L')) {
+          const keyword5th = this.#heisigData.get(matches[1])?.keyword_5th_ed;
+          if (keyword5th != null) {
+            finalRef += `:${keyword5th.replace(/ /g, ':')}`;
+          }
+        }
+        if (ref.startsWith('DN')) {
+          const keyword6th = this.#heisigData.get(matches[1])?.keyword_6th_ed;
+          if (keyword6th != null) {
+            finalRef += `:${keyword6th.replace(/ /g, ':')}`;
+          }
+        }
+
+        refsToKeep.push(finalRef);
       }
     }
     if (!hasB) {
@@ -350,11 +372,36 @@ class KanjiDictParser extends Writable {
   }
 }
 
+interface HeisigData {
+  kanji: string;
+  id_5th_ed: string;
+  id_6th_ed: string;
+  keyword_5th_ed: string;
+  keyword_6th_ed: string;
+  components: string;
+  on_reading: string;
+  kun_reading: string;
+}
+
+const loadHesigData = async (): Promise<Map<string, HeisigData>> => {
+  const data = await promiseFs.readFile(
+    path.join(__dirname, '..', 'extension', 'data', 'heisig-kanjis.csv')
+  );
+  const records: Map<string, HeisigData> = new Map();
+  (parse(data, { columns: true, comment: '#' }) as HeisigData[]).forEach(
+    (record) => {
+      records.set(record.kanji, record);
+    }
+  );
+  return records;
+};
+
 const parseKanjiDic = async (
   sources: { url: string; encoding: string }[],
   dataFile: string
 ) => {
-  const parser = new KanjiDictParser();
+  const heisigData = await loadHesigData();
+  const parser = new KanjiDictParser({ heisigData: heisigData });
 
   const readFile = (url: string, encoding: string) =>
     new Promise((resolve, reject) => {
