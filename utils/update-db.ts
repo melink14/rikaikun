@@ -12,7 +12,9 @@ import {
 } from 'stream';
 import fs, { WriteStream } from 'fs';
 import http from 'http';
+import https from 'https';
 import iconv from 'iconv-lite';
+import parse from 'csv-parse';
 import path from 'path';
 import zlib from 'zlib';
 
@@ -205,10 +207,14 @@ const parseEdict = (url: string, dataFile: string, indexFile: string) => {
 
 /** Handles parsing of KanjiDict format. */
 class KanjiDictParser extends Writable {
+  readonly #heisigData: Map<string, HeisigData>;
   #index: Record<string, string> = {};
   /** Construct as per Writable. */
-  constructor(options?: WritableOptions) {
+  constructor(
+    options: { heisigData: Map<string, HeisigData> } & WritableOptions
+  ) {
     super(options);
+    this.#heisigData = options.heisigData;
   }
 
   /**
@@ -298,6 +304,7 @@ class KanjiDictParser extends Writable {
     const refsToKeep = [];
     let hasB = false;
     for (const ref of refs) {
+      let finalRef = ref;
       if (
         ref.length &&
         SUPPORTED_REF_TYPES.some((supportedRef) => ref.startsWith(supportedRef))
@@ -305,7 +312,15 @@ class KanjiDictParser extends Writable {
         if (ref[0] === 'B') {
           hasB = true;
         }
-        refsToKeep.push(ref);
+        const keyword5th = this.#heisigData.get(matches[1])?.keyword_5th_ed;
+        const keyword6th = this.#heisigData.get(matches[1])?.keyword_6th_ed;
+        if (ref.startsWith('L') && keyword5th != null) {
+          finalRef += `:${keyword5th.replace(/ /g, ':')}`;
+        }
+        if (ref.startsWith('DN') && keyword6th != null) {
+          finalRef += `:${keyword6th.replace(/ /g, ':')}`;
+        }
+        refsToKeep.push(finalRef);
       }
     }
     if (!hasB) {
@@ -350,11 +365,47 @@ class KanjiDictParser extends Writable {
   }
 }
 
+interface HeisigData {
+  kanji: string;
+  id_5th_ed: string;
+  id_6th_ed: string;
+  keyword_5th_ed: string;
+  keyword_6th_ed: string;
+  components: string;
+  on_reading: string;
+  kun_reading: string;
+}
+
+const loadHesigData = (): Promise<Map<string, HeisigData>> => {
+  const url =
+    'https://raw.githubusercontent.com/sdcr/heisig-kanjis/master/heisig-kanjis.csv';
+  return new Promise((resolve, reject) => {
+    const records: Map<string, HeisigData> = new Map();
+    const parser = parse({ columns: true });
+    https
+      .get(url, (res) => {
+        res
+          .pipe(parser)
+          .on('readable', () => {
+            let record;
+            while ((record = parser.read())) {
+              records.set(record.kanji, record);
+            }
+          })
+          .on('end', () => resolve(records));
+      })
+      .on('error', (err) => {
+        reject(Error(`Connection error: ${err}`));
+      });
+  });
+};
+
 const parseKanjiDic = async (
   sources: { url: string; encoding: string }[],
   dataFile: string
 ) => {
-  const parser = new KanjiDictParser();
+  const heisigData = await loadHesigData();
+  const parser = new KanjiDictParser({ heisigData: heisigData });
 
   const readFile = (url: string, encoding: string) =>
     new Promise((resolve, reject) => {
