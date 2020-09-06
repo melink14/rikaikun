@@ -63,9 +63,9 @@ Activate the extension by clicking on the 理 in the top right. When the introdu
 
 > Note: There is a bug where sometimes the 'On' badge appears active when Chrome first loads. In those cases, click the icon again and rikaikun will activate. ([Issue #82](https://github.com/melink14/rikaikun/issues/82))
 
-When it's activated, when you hover over Japanese words they'll be translated in a pop up.
+When rikaikun is active, hovering over Japanese words will trigger a translation pop-up.
 
-See it all in action in this [Youtube demo](https://www.youtube.com/watch?v=DFRTt6d0s3c) by [Tariq Sheikh](https://www.youtube.com/channel/UCRAL2bcBZ1Cw-xyPwelpi8A).
+See it in action in this [Youtube demo](https://www.youtube.com/watch?v=DFRTt6d0s3c) by [Tariq Sheikh](https://www.youtube.com/channel/UCRAL2bcBZ1Cw-xyPwelpi8A).
 
 ### Features
 
@@ -109,9 +109,9 @@ You can access the options from [the extension page](chrome://extensions/?option
 
 ## Contributing
 
-Contribute by submitting pull requests, filing bug reports, submitting feature requests and more!
+Contribute by submitting pull requests, filing bug reports, requesting features and more!
 
-See [the contributing file](CONTRIBUTING.md) for the full details!
+See the [contributing file](CONTRIBUTING.md) for the full details!
 
 Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
@@ -128,16 +128,16 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://eiennohito.blogspot.com/"><img src="https://avatars1.githubusercontent.com/u/1021694?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arseny Tolmachev</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=eiennohito" title="Code">💻</a></td>
     <td align="center"><a href="https://www.bazz1.com/"><img src="https://avatars0.githubusercontent.com/u/2224787?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bazz</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=bazzinotti" title="Code">💻</a></td>
     <td align="center"><a href="https://birtles.wordpress.com/"><img src="https://avatars1.githubusercontent.com/u/1232595?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brian Birtles</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=birtles" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/ChocoChopin"><img src="https://avatars1.githubusercontent.com/u/53260343?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ChocoChopin</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/issues?q=author:ChocoChopin+label:bug" title="Bug reports">🐛</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:ChocoChopin+label:enhancement" title="Bug reports">🤔</a></td>
+    <td align="center"><a href="https://github.com/ChocoChopin"><img src="https://avatars1.githubusercontent.com/u/53260343?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ChocoChopin</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/issues?q=author:ChocoChopin+label:bug" title="Bug Reports">🐛</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:ChocoChopin+label:enhancement" title="Ideas & Planning">🤔</a></td>
     <td align="center"><a href="https://www.darrenlester.com/"><img src="https://avatars2.githubusercontent.com/u/19534488?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Darren Lester</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=darren-lester" title="Code">💻</a></td>
     <td align="center"><a href="http://daviesodu.com/"><img src="https://avatars0.githubusercontent.com/u/11047321?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Davies Odu</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=Davodu" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://erekspeed.com"><img src="https://avatars3.githubusercontent.com/u/1176550?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Erek Speed</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=melink14" title="Code">💻</a> <a href="https://github.com/melink14/rikaikun/pulls?q=is%3Apr+reviewed-by%3Amelink14" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:melink14+label:bug" title="Bug reports">🐛</a> <a href="#projectManagement-melink14" title="Project Management">📆</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:melink14+label:enhancement" title="Bug reports">🤔</a></td>
+    <td align="center"><a href="https://erekspeed.com"><img src="https://avatars3.githubusercontent.com/u/1176550?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Erek Speed</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=melink14" title="Code">💻</a> <a href="https://github.com/melink14/rikaikun/pulls?q=is%3Apr+reviewed-by%3Amelink14" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:melink14+label:bug" title="Bug Reports">🐛</a> <a href="#projectManagement-melink14" title="Project Management">📆</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:melink14+label:enhancement" title="Ideas & Planning">🤔</a></td>
     <td align="center"><a href="https://github.com/JakeH"><img src="https://avatars1.githubusercontent.com/u/3156017?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jake</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=JakeH" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/MayamaTakeshi"><img src="https://avatars3.githubusercontent.com/u/5127023?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MayamaTakeshi</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=MayamaTakeshi" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Stephie"><img src="https://avatars0.githubusercontent.com/u/325983?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stephie</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/pulls?q=is%3Apr+reviewed-by%3AStephie" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/tobiowo"><img src="https://avatars3.githubusercontent.com/u/1762224?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tobi Owoputi</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=tobiowo" title="Code">💻</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:tobiowo+label:bug" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/tobiowo"><img src="https://avatars3.githubusercontent.com/u/1762224?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tobi Owoputi</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=tobiowo" title="Code">💻</a> <a href="https://github.com/melink14/rikaikun/issues?q=author:tobiowo+label:bug" title="Bug Reports">🐛</a></td>
     <td align="center"><a href="https://github.com/versusvoid"><img src="https://avatars0.githubusercontent.com/u/3686499?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Versus</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=versusvoid" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/vikohone"><img src="https://avatars2.githubusercontent.com/u/963718?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ville Kohonen</b></sub></a><br /><a href="https://github.com/melink14/rikaikun/commits?author=vikohone" title="Code">💻</a></td>
   </tr>

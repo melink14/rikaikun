@@ -13,12 +13,12 @@
   "types": {
     "bug": {
       "symbol": "🐛",
-      "description": "Bug reports",
+      "description": "Bug Reports",
       "link": "https://github.com/<%= options.projectOwner %>/<%= options.projectName %>/issues?q=author:<%= contributor.login %>+label:bug"
     },
     "ideas": {
       "symbol": "🤔",
-      "description": "Bug reports",
+      "description": "Ideas & Planning",
       "link": "https://github.com/<%= options.projectOwner %>/<%= options.projectName %>/issues?q=author:<%= contributor.login %>+label:enhancement"
     }
   },
