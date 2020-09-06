@@ -1,4 +1,4 @@
-# rikaikun
+# rikaikun <!-- omit in toc -->
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -13,21 +13,20 @@ rikaikun helps you to read Japanese web pages by showing the reading and English
 
 ## Table of Contents <!-- omit in toc -->
 
-- [rikaikun](#rikaikun)
-  - [Background](#background)
-    - [Current Goals](#current-goals)
-  - [Install](#install)
-    - [Via The Chrome Web Store](#via-the-chrome-web-store)
-    - [As an Unpacked Extension](#as-an-unpacked-extension)
-  - [Usage](#usage)
-    - [Features](#features)
-    - [Options](#options)
-      - [Keyboard Shortcuts](#keyboard-shortcuts)
-  - [Maintainers](#maintainers)
-  - [Credits](#credits)
-  - [Contributing](#contributing)
-    - [Contributors ✨](#contributors-)
-  - [License](#license)
+- [Background](#background)
+  - [Current Goals](#current-goals)
+- [Install](#install)
+  - [Via the Chrome Web Store](#via-the-chrome-web-store)
+  - [As an Unpacked Extension](#as-an-unpacked-extension)
+- [Usage](#usage)
+  - [Features](#features)
+  - [Options](#options)
+    - [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Maintainers](#maintainers)
+- [Credits](#credits)
+- [Contributing](#contributing)
+  - [Contributors ✨](#contributors-)
+- [License](#license)
 
 ## Background
 
@@ -47,7 +46,7 @@ In 2018, Firefox killed the extension model that Rikaichan was based on, but oth
 
 ## Install
 
-### Via The Chrome Web Store
+### Via the Chrome Web Store
 
 Visit rikaikun on the [Chrome Web Store](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp) and click 'Add to Chrome'.
 
