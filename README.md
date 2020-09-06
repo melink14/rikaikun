@@ -9,16 +9,15 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
 
-rikaikun allows you to read Japanese web pages by hovering over words you don't know and getting their translations.
+rikaikun helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
 - [rikaikun](#rikaikun)
-  - [Table of Contents](#table-of-contents)
   - [Background](#background)
     - [Current Goals](#current-goals)
   - [Install](#install)
-    - [Via The Store](#via-the-store)
+    - [Via The Chrome Web Store](#via-the-chrome-web-store)
     - [As an Unpacked Extension](#as-an-unpacked-extension)
   - [Usage](#usage)
     - [Features](#features)
@@ -34,11 +33,11 @@ rikaikun allows you to read Japanese web pages by hovering over words you don't 
 
 rikaikun is a port of [Rikaichan](https://www.polarcloud.com/getrcx/) I started in 2010 when Chrome released its extension API. It was originally hosted on Google Code until Google Code was canceled and everything was migrated to Github.
 
-For those of you that don't know, Rikaichan was a Firefox extension that emulates the popup translations of rikaixul. It's perhaps the best inline translation of Japanese.
+Rikaichan was a Firefox extension that emulated the popup translations of RikaiXUL. It was the best Japanese-to-English inline translation tool in the browser.
 
-I started with the idea that I would make a the chrome equivalent of Rikaichan from scratch using my own ideas. However, after I tried Rikaichan, I realized that it's already quite good and starting from 0 when he already has numerous iterations would be wasting the excellent work done by those developers.
+I started with the idea that I would create the Chrome equivalent of Rikaichan from scratch using my own ideas. However, after I tried Rikaichan, I realized that it was already quite good, and starting from scratch would be wasting the excellent work of its developers. Instead, I forked Rikaichan and updated the APIs to work with the Chrome extension model.
 
-Since then Firefox killed the extension model Rikaichan was based on and many other variants have been created and ported to various browsers. Many of these were created due to a long period where I left rikaikun stagnant. I apologize to the contributors and users who were left stranded. Thanks for everybody who stayed.
+In 2018, Firefox killed the extension model that Rikaichan was based on, but other similar extensions have since been created and ported to various browsers. Not much was happening with rikaikun during that time but we've started to work on it again!
 
 ### Current Goals
 
@@ -48,22 +47,22 @@ Since then Firefox killed the extension model Rikaichan was based on and many ot
 
 ## Install
 
-### Via The Store
+### Via The Chrome Web Store
 
-Visit rikaikun on the Chrome Web Store and click 'Add to chrome'.
+Visit rikaikun on the [Chrome Web Store](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp) and click 'Add to Chrome'.
 
 ### As an Unpacked Extension
 
-If you can't install it via the Chrome Web Store then you can install the source as an unpacked extension:
+You can also install rikaikun from the source as an unpacked extension:
 
-- Get the [latest release](https://github.com/melink14/rikaikun/releases) from Github:
+- Get the [latest release](https://github.com/melink14/rikaikun/releases/latest) from Github:
 - Follow [these instructions](https://github.com/web-scrobbler/web-scrobbler/wiki/Install-an-unpacked-extension) from the web-scrobbler Chrome extension. (substituting rikaikun where appropriate)
 
 ## Usage
 
 Activate the extension by clicking on the 理 in the top right. When the introductory pop up appears, rikaikun is ready for action.
 
-> Note: There is a bug where sometimes the 'On' badge appears active when Chrome first loads. In those cases, click the icon again and rikaikun will activate. (Issue #82)
+> Note: There is a bug where sometimes the 'On' badge appears active when Chrome first loads. In those cases, click the icon again and rikaikun will activate. ([Issue #82](https://github.com/melink14/rikaikun/issues/82))
 
 When it's activated, when you hover over Japanese words they'll be translated in a pop up.
 
@@ -71,7 +70,7 @@ See it all in action in this [Youtube demo](https://www.youtube.com/watch?v=DFRT
 
 ### Features
 
-- Read out the Japanese words using Chrome Text To Speech capababilities. (Off by default)
+- Read out the Japanese words using Chrome Text To Speech capabilities. (Off by default)
 - Change where the popup appears on your screen. (Where your mouse cursor is by default)
 - Copy current definitions to they keyboard.
 - Add a delay before popup is shown to avoid constant distractions.
