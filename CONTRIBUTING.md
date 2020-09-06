@@ -13,8 +13,7 @@
 
 # Introduction
 
-First, thank you for considering contributing! It's people like you that make
-the open source community such a great community! 😊
+Thank you for considering contributing! It's people like you that make the open source community so great! 😊
 
 The tips and guidelines below are intended to help both contributors and maintainers respect each other's time and effect change as quickly as possible.
 
@@ -66,6 +65,8 @@ rikaikun follows the [Conventional Commits](https://www.conventionalcommits.org/
 
 In brief, commit messages should look like:
 
+> feat(dict): Update word and name dictionaries to 2020-08-31 snapshots.
+
 ```
 <type>[optional scope]: <description>
 
@@ -74,18 +75,18 @@ In brief, commit messages should look like:
 [optional footer(s)]
 ```
 
-If your change requires a newer version of chrome than was required previously, include `BREAKING CHANGE` with an explanation in the footer.
+If your change requires a newer version of Chrome than was required previously, include `BREAKING CHANGE` with an explanation in the footer.
 
 Here are examples of the types currently in use ([source](http://karma-runner.github.io/1.0/dev/git-commit-msg.html)):
 
 ```
-chore: add Oyster build script
-docs: explain hat wobble
-feat: add beta sequence
-fix: remove broken confirmation message
-refactor: share logic between 4d3d3d3 and flarhgunnstow
-style: convert tabs to spaces
-test: ensure Tayne retains clothing
+feat (new feature for the user, not a new feature for build script)
+fix (bug fix for the user, not a fix to a build script)
+docs (changes to the documentation)
+style (formatting, missing semi colons, etc; no production code change)
+refactor (refactoring production code, eg. renaming a variable)
+test (adding missing tests, refactoring tests; no production code change)
+chore (updating grunt tasks etc; no production code change)
 ```
 
 These are the common scopes used, though feel free to suggest a new one if it makes sense:
@@ -99,8 +100,8 @@ See the (recent) [commit history](https://github.com/melink14/rikaikun/commits/m
 
 ## Coding style
 
-For now as long as `npm run lint` passes, your code is correctly styled. You may get some more specific advice if a maintainer thinks something is more readable but in general there's no use arguing about that which a robot can handle.
+As long as `npm run lint` passes, your code is correctly styled. You may get some more specific advice if a maintainer thinks something is more readable, but it saves a lot of time when we don't have to worry about auto-fixable style issues!
 
 ### Style preferences not handled by the linter
 
-- When overriding parent class methods always include `@override` in your TSDoc string. This gives a strong readability signal without having to read the parent class's code.
+- When overriding parent class methods, always include `@override` in your TSDoc string. This gives a strong readability signal without having to read the parent class's code.
