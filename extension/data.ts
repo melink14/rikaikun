@@ -143,7 +143,7 @@ RcxDict.prototype = {
     );
   },
 
-  //  Note: These are mostly flat text files; loaded as one continuos string to
+  //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
   loadDictionary: function (includeNames) {
     const promises = [

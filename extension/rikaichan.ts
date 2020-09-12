@@ -171,7 +171,7 @@ window.rcxMain = {
     }
   },
 
-  // This function disables
+  // This function disables rikaikun in all tabs.
   inlineDisable: function () {
     delete this.dict;
 

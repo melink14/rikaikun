@@ -405,7 +405,7 @@ const rcxContent = {
           ev.currentTarget.rikaichan.uofs = --ofs;
           if (this.show(ev.currentTarget.rikaichan, this.defaultDict) >= 0) {
             // TODO: Figure out if this should be changed as per ancient comment.
-            if (ofs >= ev.currentTarget.rikaichan.uofs) break;
+            if (ofs >= ev.currentTarget.rikaichan.uofs) break; // ! change later
           }
         }
         break;
