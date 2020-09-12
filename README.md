@@ -1,5 +1,6 @@
 # rikaikun <!-- omit in toc -->
 
+[![Mergify Status](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/melink14/rikaikun&style=flat)](https://mergify.io)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
