@@ -17,10 +17,10 @@ Thank you for considering contributing! It's people like you that make the open 
 
 The tips and guidelines below are intended to help both contributors and maintainers respect each other's time and effect change as quickly as possible.
 
-- **Bugs and Feature Requests**: Follow the templates [here](https://github.com/melink14/rikaikun/issues/new/choose) to report problems or ideas. Don't be surprised if you're asked for clarification or opinions on solutions.
-- **Code**: take a look at the open issues. Even if you can't write code, commenting on them, showing that you care about a given issue matters. It helps us triage them.
-- **Documentation**: Update or add a page to the [wiki](https://github.com/melink14/rikaikun/wiki) or improve some already existing documentation to help other users.
-- **Something Else?**: This list isn't conclusive so if you have another idea for contribution, please reach out.
+- **Bugs and Feature Requests**: Follow the templates [here](https://github.com/melink14/rikaikun/issues/new/choose) to report problems or ideas. You may be asked for clarification or opinions on solutions.
+- **Fixes**: Take a look at the open issues. Even if you are unable to implement a solution, commenting on issues with your opinions and experiences is greatly appreciated and helpful for triage.
+- **Documentation**: Update or add a page to the [wiki](https://github.com/melink14/rikaikun/wiki) or improve preexisting documentation to help other users.
+- **Something Else?**: This list isn't comprehensive so if you have another idea for contribution, please reach out.
 
 # Ground Rules
 
@@ -38,14 +38,14 @@ Working on your first pull request? You can learn how from this _free_ series,
 
 [Here are some good first issues.](https://github.com/melink14/rikaikun/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22)
 
-If you get stuck push your code early and ask for feedback on the issue.
+If you get stuck, push your code early and ask for feedback on the issue.
 
 ## Getting started
 
 1. After you check out the code, run `npm install` to get the rikaikun dev tools ready.
 2. Make your changes and commit them locally. Run `npm run fix` often to ensure your code follows style guidelines.
 3. Run `npm run build` to create an unpackaged instance of rikaikun in the `dist` directory. Load this into Chrome to test your changes.
-4. When you're satisfied, commit you're code (make sure to follow the commit message guidelines) and start a pull request.
+4. When you're satisfied with your changes, commit your code, check that your commit message follows [these guidelines](#git-commit-messages), and start a pull request.
 
 ## Pull Requests
 
