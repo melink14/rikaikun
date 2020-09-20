@@ -58,15 +58,34 @@ interface DictEntryData {
   matchLen: number;
 }
 
+interface DeinflectionRule {
+  /** The conjugated ending which we are deinflecting from. */
+  from: string;
+  /** The original form we are deinflecting to. */
+  to: string;
+  /** An int mask representing the types of words this rule applies to. */
+  typeMask: number;
+  /** An index into the difReason array that describes this inflection. */
+  reasonIndex: number;
+}
+
+/**
+ * Deinflection rules grouped by their from length. This allows trying all rules
+ * of a given length before trying shorter lengths.
+ */
+interface DeinflectionRuleGroup {
+  fromLength: number;
+  rules: DeinflectionRule[];
+}
+
 class RcxDict {
   private static instance: RcxDict;
 
   config: {} = {};
   nameDict?: string;
   nameIndex?: string;
-  difReasons: never[];
-  difRules: never[];
-  difExact: never[];
+  difReasons: string[] = [];
+  difRules: DeinflectionRuleGroup[] = [];
   radData: string;
 
   private constructor() {}
@@ -95,7 +114,10 @@ class RcxDict {
   init(loadNames: boolean) {
     const started = +new Date();
 
-    const promises = [this.loadDictionary(loadNames), this.loadDIF()];
+    const promises = [
+      this.loadDictionary(loadNames),
+      this.loadDeinflectionData(),
+    ];
 
     return Promise.all(promises).then(function () {
       const ended = +new Date();
@@ -205,44 +227,38 @@ class RcxDict {
     return Promise.all(promises);
   }
 
-  loadDIF() {
-    this.difReasons = [];
-    this.difRules = [];
-    this.difExact = [];
-
-    return this.fileReadAsync(
+  async loadDeinflectionData() {
+    const buffer = await this.fileReadAsync(
       chrome.extension.getURL('data/deinflect.dat'),
       /* asArray= */ true
-    ).then(
-      function (buffer: string[]) {
-        let prevLen = -1;
-        let g: never[];
-        let o;
-
-        // i = 1: skip header
-        for (let i = 1; i < buffer.length; ++i) {
-          const f = buffer[i].split('\t');
-
-          if (f.length === 1) {
-            this.difReasons.push(f[0]);
-          } else if (f.length === 4) {
-            o = {};
-            o.from = f[0];
-            o.to = f[1];
-            o.type = f[2];
-            o.reason = f[3];
-
-            if (prevLen !== o.from.length) {
-              prevLen = o.from.length;
-              g = [];
-              g.flen = prevLen;
-              this.difRules.push(g);
-            }
-            g.push(o);
-          }
-        }
-      }.bind(this)
     );
+    let currentLength = -1;
+    let group: DeinflectionRuleGroup = {
+      fromLength: currentLength,
+      rules: [],
+    };
+    // i = 1: skip header
+    for (let i = 1; i < buffer.length; ++i) {
+      const ruleOrReason = buffer[i].split('\t');
+
+      if (ruleOrReason.length === 1) {
+        this.difReasons.push(ruleOrReason[0]);
+      } else if (ruleOrReason.length === 4) {
+        const o: DeinflectionRule = {
+          from: ruleOrReason[0],
+          to: ruleOrReason[1],
+          typeMask: parseInt(ruleOrReason[2]),
+          reasonIndex: parseInt(ruleOrReason[3]),
+        };
+
+        if (currentLength !== o.from.length) {
+          currentLength = o.from.length;
+          group = { fromLength: currentLength, rules: [] };
+          this.difRules.push(group);
+        }
+        group.rules.push(o);
+      }
+    }
   }
 
   deinflect(word: string) {
@@ -270,27 +286,27 @@ class RcxDict {
 
       for (j = 0; j < this.difRules.length; ++j) {
         const g = this.difRules[j];
-        if (g.flen <= wordLen) {
-          const end = word.substr(-g.flen);
-          for (k = 0; k < g.length; ++k) {
-            const rule = g[k];
-            if (type & rule.type && end === rule.from) {
+        if (g.fromLength <= wordLen) {
+          const end = word.substr(-g.fromLength);
+          for (k = 0; k < g.rules.length; ++k) {
+            const rule = g.rules[k];
+            if (type & rule.typeMask && end === rule.from) {
               const newWord =
                 word.substr(0, word.length - rule.from.length) + rule.to;
               if (newWord.length <= 1) continue;
               o = {};
               if (have[newWord] !== undefined) {
                 o = r[have[newWord]];
-                o.type |= rule.type >> 8;
+                o.type |= rule.typeMask >> 8;
 
                 continue;
               }
               have[newWord] = r.length;
               if (r[i].reason.length)
                 o.reason =
-                  this.difReasons[rule.reason] + ' &lt; ' + r[i].reason;
-              else o.reason = this.difReasons[rule.reason];
-              o.type = rule.type >> 8;
+                  this.difReasons[rule.reasonIndex] + ' &lt; ' + r[i].reason;
+              else o.reason = this.difReasons[rule.reasonIndex];
+              o.type = rule.typeMask >> 8;
               o.word = newWord;
               r.push(o);
             }
