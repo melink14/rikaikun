@@ -43,6 +43,21 @@
 
 import { rcxMain } from './rikaichan';
 
+interface DictEntryData {
+  kanji?: string;
+  onkun: string;
+  nanori: string;
+  bushumei: string;
+  misc: Record<string, string>;
+  eigo: string;
+  hasNames: boolean;
+  data: { entry: string; reason?: string }[];
+  hasMore: boolean;
+  title?: string;
+  index?: number;
+  matchLen: number;
+}
+
 class RcxDict {
   private static instance: RcxDict;
 
@@ -63,7 +78,21 @@ class RcxDict {
     return RcxDict.instance;
   }
 
-  init(loadNames) {
+  static createDefaultDictEntry(): DictEntryData {
+    return {
+      onkun: '',
+      nanori: '',
+      bushumei: '',
+      misc: {},
+      eigo: '',
+      hasNames: false,
+      data: [],
+      hasMore: false,
+      matchLen: 0,
+    };
+  }
+
+  init(loadNames: boolean) {
     const started = +new Date();
 
     const promises = [this.loadDictionary(loadNames), this.loadDIF()];
@@ -74,13 +103,14 @@ class RcxDict {
     });
   }
 
-  setConfig(c) {
+  setConfig(c: {}) {
     this.config = c;
   }
 
-  //
-
-  fileReadAsync(url, asArray) {
+  fileReadAsync(url: string, asArray: false): Promise<string>;
+  fileReadAsync(url: string, asArray: true): Promise<string[]>;
+  fileReadAsync(url: string, asArray: boolean): Promise<string[] | string>;
+  fileReadAsync(url: string, asArray: boolean): Promise<string[] | string> {
     return new Promise(function prom(resolve) {
       const req = new XMLHttpRequest();
 
@@ -105,15 +135,15 @@ class RcxDict {
     });
   }
 
-  fileRead(url) {
+  fileRead(url: string) {
     const req = new XMLHttpRequest();
     req.open('GET', url, false);
     req.send(null);
     return req.responseText;
   }
 
-  fileReadArray(name, charset) {
-    const a = this.fileRead(name, charset).split('\n');
+  fileReadArray(name: string) {
+    const a = this.fileRead(name).split('\n');
     // Is this just in case there is blank shit in the file.  It was written
     // by Jon though.
     // I suppose this is more robust
@@ -121,7 +151,7 @@ class RcxDict {
     return a;
   }
 
-  find(data, text) {
+  find(data: string, text: string) {
     const tlen = text.length;
     let beg = 0;
     let end = data.length - 1;
@@ -141,8 +171,6 @@ class RcxDict {
     return null;
   }
 
-  //
-
   loadNames() {
     if (this.nameDict && this.nameIndex) return;
 
@@ -150,20 +178,18 @@ class RcxDict {
     this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
   }
 
-  loadFileToTarget(file, isArray, target) {
+  loadFileToTarget(file: string, isArray: boolean, target: string) {
     const url = chrome.extension.getURL('data/' + file);
 
-    return this.fileReadAsync(url, isArray).then(
-      function (data) {
-        this[target] = data;
-        console.log('async read complete for ' + target);
-      }.bind(this)
-    );
+    return this.fileReadAsync(url, isArray).then((data: string | string[]) => {
+      this[target] = data;
+      console.log('async read complete for ' + target);
+    });
   }
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
-  loadDictionary(includeNames) {
+  loadDictionary(includeNames: boolean): Promise<void[]> {
     const promises = [
       this.loadFileToTarget('dict.dat', false, 'wordDict'),
       this.loadFileToTarget('dict.idx', false, 'wordIndex'),
@@ -184,14 +210,13 @@ class RcxDict {
     this.difRules = [];
     this.difExact = [];
 
-    /* asArray */
     return this.fileReadAsync(
       chrome.extension.getURL('data/deinflect.dat'),
-      true
+      /* asArray= */ true
     ).then(
-      function (buffer) {
+      function (buffer: string[]) {
         let prevLen = -1;
-        let g;
+        let g: never[];
         let o;
 
         // i = 1: skip header
@@ -220,7 +245,7 @@ class RcxDict {
     );
   }
 
-  deinflect(word) {
+  deinflect(word: string) {
     const r = [];
     const have = [];
     let o;
@@ -296,20 +321,24 @@ class RcxDict {
   ];
   cs: number[] = [0x3071, 0x3074, 0x3077, 0x307a, 0x307d];
 
-  wordSearch(word, doNames, max) {
+  wordSearch(
+    word: string,
+    doNames: boolean,
+    max?: number
+  ): DictEntryData | null {
     let i;
     let u;
     let v;
-    let r;
+    let reason: string;
     let p;
     const trueLen = [0];
-    const entry = {};
+    const entry = RcxDict.createDefaultDictEntry();
 
     // half & full-width katakana to hiragana conversion
     // note: katakana vu is never converted to hiragana
 
     p = 0;
-    r = '';
+    reason = '';
     for (i = 0; i < word.length; ++i) {
       u = v = word.charCodeAt(i);
 
@@ -331,13 +360,13 @@ class RcxDict {
       } else if (u === 0xff9e) {
         // voiced (used in half-width katakana) to hiragana
         if (p >= 0xff73 && p <= 0xff8e) {
-          r = r.substr(0, r.length - 1);
+          reason = reason.substr(0, reason.length - 1);
           u = this.cv[p - 0xff73];
         }
       } else if (u === 0xff9f) {
         // semi-voiced (used in half-width katakana) to hiragana
         if (p >= 0xff8a && p <= 0xff8e) {
-          r = r.substr(0, r.length - 1);
+          reason = reason.substr(0, reason.length - 1);
           u = this.cs[p - 0xff8a];
         }
       } else if (u === 0xff5e) {
@@ -346,15 +375,15 @@ class RcxDict {
         continue;
       }
 
-      r += String.fromCharCode(u);
+      reason += String.fromCharCode(u);
       // need to keep real length because of the half-width semi/voiced
       // conversion
-      trueLen[r.length] = i + 1;
+      trueLen[reason.length] = i + 1;
       p = v;
     }
-    word = r;
+    word = reason;
 
-    let dict;
+    let dict: string;
     let index;
     let maxTrim;
     const cache = [];
@@ -369,7 +398,7 @@ class RcxDict {
       dict = this.nameDict;
       index = this.nameIndex;
       maxTrim = 20; // this.config.namax;
-      entry.names = 1;
+      entry.hasNames = true;
       console.log('doNames');
     } else {
       dict = this.wordDict;
@@ -377,7 +406,7 @@ class RcxDict {
       maxTrim = rcxMain.config.maxDictEntries;
     }
 
-    if (max != null) maxTrim = max;
+    if (max) maxTrim = max;
 
     entry.data = [];
 
@@ -436,21 +465,20 @@ class RcxDict {
           }
           if (ok) {
             if (count >= maxTrim) {
-              entry.more = 1;
+              entry.hasMore = true;
             }
 
             have[ofs] = 1;
             ++count;
             if (maxLen === 0) maxLen = trueLen[word.length];
 
+            let reason: string | undefined;
             if (trys[i].reason) {
-              if (showInf) r = '&lt; ' + trys[i].reason + ' &lt; ' + word;
-              else r = '&lt; ' + trys[i].reason;
-            } else {
-              r = null;
+              if (showInf) reason = '&lt; ' + trys[i].reason + ' &lt; ' + word;
+              else reason = '&lt; ' + trys[i].reason;
             }
 
-            entry.data.push([dentry, r]);
+            entry.data.push({ entry: dentry, reason });
           }
         } // for j < ix.length
         if (count >= maxTrim) break;
@@ -465,19 +493,18 @@ class RcxDict {
     return entry;
   }
 
-  translate(text) {
-    let e;
-    const o = {};
+  translate(text: string): (DictEntryData & { textLen: number }) | null {
+    let e: DictEntryData | null;
+    const o: DictEntryData & {
+      textLen: number;
+    } = { textLen: text.length, ...RcxDict.createDefaultDictEntry() };
     let skip;
-
-    o.data = [];
-    o.textLen = text.length;
 
     while (text.length > 0) {
       e = this.wordSearch(text, false, 1);
       if (e != null) {
         if (o.data.length >= rcxMain.config.maxDictEntries) {
-          o.more = 1;
+          o.hasMore = true;
           break;
         }
         o.data.push(e.data[0]);
@@ -496,7 +523,8 @@ class RcxDict {
     return o;
   }
 
-  bruteSearch(text, doNames) {
+  // TODO: Remove unused method.
+  bruteSearch(text: string, doNames: boolean): DictEntryData | null {
     let r;
     let d;
     let j;
@@ -526,21 +554,21 @@ class RcxDict {
       }
       text =
         wb +
-        text.replace(/[[\\^$.|?*+()]/g, function (c) {
+        text.replace(/[[\\^$.|?*+()]/g, function (c: string) {
           return '\\' + c;
         }) +
         we;
     }
 
-    const e = { data: [], reason: [], kanji: 0, more: 0 };
+    const e = RcxDict.createDefaultDictEntry();
 
     if (doNames) {
-      e.names = 1;
+      e.hasNames = true;
       max = 20; // this.config.namax;
       this.loadNames();
       d = this.nameDict;
     } else {
-      e.names = 0;
+      e.hasNames = false;
       max = rcxMain.config.maxDictEntries;
       d = this.wordDict;
     }
@@ -548,21 +576,20 @@ class RcxDict {
     r = new RegExp(text, 'igm');
     while (r.test(d)) {
       if (e.data.length >= max) {
-        e.more = 1;
+        e.hasMore = true;
         break;
       }
       j = d.indexOf('\n', r.lastIndex);
-      e.data.push([
-        d.substring(d.lastIndexOf('\n', r.lastIndex - 1) + 1, j),
-        null,
-      ]);
+      e.data.push({
+        entry: d.substring(d.lastIndexOf('\n', r.lastIndex - 1) + 1, j),
+      });
       r.lastIndex = j + 1;
     }
 
     return e.data.length ? e : null;
   }
 
-  kanjiSearch(kanji) {
+  kanjiSearch(kanji: string): DictEntryData | null {
     const hex = '0123456789ABCDEF';
     let i;
 
@@ -575,7 +602,7 @@ class RcxDict {
     const a = kde.split('|');
     if (a.length !== 6) return null;
 
-    const entry = {};
+    const entry = RcxDict.createDefaultDictEntry();
     entry.kanji = a[0];
 
     entry.misc = {};
@@ -646,7 +673,8 @@ class RcxDict {
     'Unicode',
   ];
 
-  makeHtml(entry) {
+  // TODO: Entry should be extracted as separate type.
+  makeHtml(entry: DictEntryData | null) {
     let e;
     let c;
     let s;
@@ -680,8 +708,8 @@ class RcxDict {
           entry.bushumei;
       }
 
-      const bn = entry.misc.B - 1;
-      k = entry.misc.G;
+      const bn = parseInt(entry.misc.B, 10) - 1;
+      k = parseInt(entry.misc.G);
       switch (k) {
         case 8:
           k = 'general<br/>use';
@@ -784,7 +812,7 @@ class RcxDict {
 
     s = t = '';
 
-    if (entry.names) {
+    if (entry.hasNames) {
       c = [];
 
       b.push(
@@ -840,7 +868,7 @@ class RcxDict {
       } else {
         b.push(c.join(''));
       }
-      if (entry.more) b.push('...<br/>');
+      if (entry.hasMore) b.push('...<br/>');
       b.push('</td></tr></table>');
     } else {
       if (entry.title) {
@@ -913,7 +941,7 @@ class RcxDict {
       }
       b.push(t);
       if (
-        entry.more &&
+        entry.hasMore &&
         entry.index < entry.data.length - rcxMain.config.maxDictEntries
       )
         b.push('<span class="small-info">... (\'k\' for more)</span><br/>');
@@ -922,7 +950,7 @@ class RcxDict {
     return b.join('');
   }
 
-  makeHtmlForRuby(entry) {
+  makeHtmlForRuby(entry: DictEntryData | null) {
     let e;
     let s;
     let t;
@@ -951,7 +979,7 @@ class RcxDict {
     return b.join('');
   }
 
-  makeText(entry, max) {
+  makeText(entry: DictEntryData | null, max: number): string {
     let e;
     let i;
     let j;
