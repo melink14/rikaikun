@@ -835,7 +835,7 @@ class RcxDict {
         '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>'
       );
       for (i = 0; i < entry.data.length; ++i) {
-        e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
 
         // the next two lines re-process the entries that contain separate
@@ -910,7 +910,7 @@ class RcxDict {
         );
         ++i
       ) {
-        e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
 
         /*
@@ -943,8 +943,8 @@ class RcxDict {
         }
         b.push(k);
 
-        if (entry.data[i][1])
-          b.push(' <span class="w-conj">(' + entry.data[i][1] + ')</span>');
+        if (entry.data[i].reason)
+          b.push(' <span class="w-conj">(' + entry.data[i].reason + ')</span>');
 
         s = e[3];
         t = s.replace(/\//g, '; ');
@@ -983,7 +983,7 @@ class RcxDict {
     }
 
     for (i = 0; i < entry.data.length; ++i) {
-      e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+      e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
       if (!e) continue;
 
       s = e[3];
@@ -1030,7 +1030,7 @@ class RcxDict {
     } else {
       if (max > entry.data.length) max = entry.data.length;
       for (i = 0; i < max; ++i) {
-        e = entry.data[i][0].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
         if (!e) continue;
 
         if (e[2]) {
