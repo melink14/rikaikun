@@ -90,12 +90,21 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
    * @param {boolean | number | string} defaultValue
    */
   function initConfig(key, defaultValue) {
+<<<<<<< HEAD
     const cloudValue = cloudStorage[key];
     const localValue = normalizeStringValue(localStorage[key]);
     let currentValue = localValue;
     if (localValue === undefined) {
       currentValue = cloudValue;
     }
+=======
+    let cloudValue = cloudStorage[key];
+	  let localValue = normalizeStringValue(localStorage[key]);
+	  let currentValue = localValue;
+	  if(localValue === undefined){
+		  currentValue = cloudValue;
+	  }
+>>>>>>> 76f2ca9cade0ec31152633e7bd8a085498b11431
     if (currentValue === undefined) {
       currentValue = defaultValue;
     }
@@ -141,7 +150,11 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
   }
 }
 
+<<<<<<< HEAD
 /* Saves options to Google Chrome Cloud storage https://developer.chrome.com/storage */
+=======
+/** Saves options to Google Chrome Cloud storage https://developer.chrome.com/storage */
+>>>>>>> 76f2ca9cade0ec31152633e7bd8a085498b11431
 function saveOptionsToCloudStorage() {
   chrome.storage.sync.set({
     // Saving General options
