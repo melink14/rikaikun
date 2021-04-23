@@ -90,12 +90,8 @@ function initializeConfigFromCloudOrLocalStorageOrDefaults(cloudStorage) {
    * @param {boolean | number | string} defaultValue
    */
   function initConfig(key, defaultValue) {
-    const cloudValue = cloudStorage[key];
-    const localValue = normalizeStringValue(localStorage[key]);
-    let currentValue = localValue;
-    if (localValue === undefined) {
-      currentValue = cloudValue;
-    }
+    let currentValue =
+      cloudStorage[key] ?? normalizeStringValue(localStorage[key]);
     if (currentValue === undefined) {
       currentValue = defaultValue;
     }
