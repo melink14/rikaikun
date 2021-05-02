@@ -32,3 +32,12 @@ jobs:
           jq '.repository.pullRequest.reviewThreads.nodes | map(select(.isResolved | not)) | length' | \
           checkLength"
         name: 'Unresolved Comments Check'
+      - name: The job failed
+        if: ${{ failure() }}
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: Unresolved Comments
+          description: 'There are unresolved comments.'
+          state: 'failure'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
