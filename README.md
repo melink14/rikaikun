@@ -30,7 +30,6 @@ rikaikun helps you to read Japanese web pages by showing the reading and English
 - [License](#license)
 
 ## Background
-
 rikaikun is a port of [Rikaichan](https://www.polarcloud.com/getrcx/) I started in 2010 when Chrome released its extension API. It was originally hosted on Google Code until Google Code was canceled and everything was migrated to GitHub.
 
 Rikaichan was a Firefox extension that emulated the popup translations of RikaiXUL. It was the best Japanese-to-English inline translation tool in the browser.
