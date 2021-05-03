@@ -42,7 +42,7 @@ If you get stuck, push your code early and ask for feedback on the issue.
 
 ## Getting started
 
-1. After you check out the code, run `npm install` to get the rikaikun dev tools ready.
+1. After you check out the code, run `npm install` ([npm installation guide](https://www.npmjs.com/get-npm)) to get the rikaikun dev tools ready.
 2. Make your changes and commit them locally. Run `npm run fix` often to ensure your code follows style guidelines.
 3. Run `npm run build` to create an unpackaged instance of rikaikun in the `dist` directory. Load this into Chrome to test your changes.
 4. When you're satisfied with your changes, commit your code, check that your commit message follows [these guidelines](#git-commit-messages), and start a pull request.
