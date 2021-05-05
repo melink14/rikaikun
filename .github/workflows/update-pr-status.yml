@@ -3,6 +3,9 @@ on:
   workflow_run:
     workflows: ['No unresolved comments']
 
+permissions:
+  statuses: write
+
 jobs:
   updatePRStatus:
     runs-on: ubuntu-latest
