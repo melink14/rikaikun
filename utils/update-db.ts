@@ -176,7 +176,7 @@ class DictParser extends Transform {
 
 const parseEdict = (url: string, dataFile: string, indexFile: string) => {
   const parser = new DictParser();
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     http
       .get(url, (res) => {
         res
@@ -279,13 +279,6 @@ class KanjiDictParser extends Writable {
     //
     // (Yes, including the trailing spaces too.)
     //
-    // Kokuji (Japan created kanji) are usually denoted with parentheses in the
-    // meaning section ( '{(kokuji)}' ) but in three entries nested curly braces
-    // are used instead:
-    //
-    //   𪃹 .=.=== U2A0F9 B196 S20 じない {thrush} {{kokuji}}
-    //
-    //
     // Output pieces:
     //  - Kanji
     //  - Reference codes
@@ -295,7 +288,7 @@ class KanjiDictParser extends Writable {
     //  - Meanings, command separated
     // (All | delimited)
     const matches = line.match(
-      /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.\-]+ )+)?(?:T1 ((?:[\x80-\uffff.\-]+ )+))?(?:T2 ((?:[\x80-\uffff.\-]+ )+))?((?:\{.+\} ?)*)?$/
+      /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.\-]+ )+)?(?:T1 ((?:[\x80-\uffff.\-]+ )+))?(?:T2 ((?:[\x80-\uffff.\-]+ )+))?((?:\{[^\}]+\} ?)*)?$/
     );
     if (matches === null) {
       console.log(`Failed to parse line: ${line}`);
@@ -438,11 +431,11 @@ const parseKanjiDic = async (
 
 console.log('Fetching word dictionary...');
 
-parseEdict('http://ftp.monash.edu/pub/nihongo/edict.gz', 'dict.dat', 'dict.idx')
+parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
   .then(() => {
     console.log('Fetching names dictionary...');
     return parseEdict(
-      'http://ftp.monash.edu/pub/nihongo/enamdict.gz',
+      'http://ftp.edrdg.org/pub/Nihongo/enamdict.gz',
       'names.dat',
       'names.idx'
     );
@@ -452,16 +445,12 @@ parseEdict('http://ftp.monash.edu/pub/nihongo/edict.gz', 'dict.dat', 'dict.idx')
     return parseKanjiDic(
       [
         {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz',
+          url: 'http://www.edrdg.org/kanjidic/kanjidic.gz',
           encoding: 'euc-jp',
         },
         {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd212.gz',
+          url: 'http://www.edrdg.org/kanjidic/kanjd212.gz',
           encoding: 'euc-jp',
-        },
-        {
-          url: 'http://ftp.monash.edu.au/pub/nihongo/kanjd213u.gz',
-          encoding: 'utf-8',
         },
       ],
       'kanji.dat'
