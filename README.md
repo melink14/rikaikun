@@ -5,8 +5,8 @@
 [![Mergify Status](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/melink14/rikaikun&style=flat)](https://mergify.io)
 [![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg?style=flat)](https://github.com/google/gts)
-[![GitHub](https://img.shields.io/github/license/melink14/rikaikun?style=flat)](https://github.com/melink14/rikaikun/blob/main/LICENSE)
-[![standard-readme Compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
+[![License GPL-3.0](https://img.shields.io/github/license/melink14/rikaikun?style=flat)](https://github.com/melink14/rikaikun/blob/main/LICENSE)
+[![Standard Readme Compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat)](https://conventionalcommits.org)
 [![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat)](#contributors-)
 
