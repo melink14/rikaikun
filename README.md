@@ -1,14 +1,14 @@
 # rikaikun <!-- omit in toc -->
 
 [![Mergify Status](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/melink14/rikaikun&style=flat)](https://mergify.io)
-[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/users/jipdnfibhldikgcjhfnomkfpcebammhp)
-![GitHub](https://img.shields.io/github/license/melink14/rikaikun)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jipdnfibhldikgcjhfnomkfpcebammhp)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg?style=flat)](https://github.com/google/gts)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
+[![GitHub](https://img.shields.io/github/license/melink14/rikaikun?style=flat)](https://github.com/melink14/rikaikun/blob/main/LICENSE)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat)](https://conventionalcommits.org)
+[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat)](#contributors-)
 
 rikaikun helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.
 
