@@ -352,16 +352,16 @@ export class OptionsForm extends LitElement {
       throw new TypeError('options object should not be null.');
     }
     // Save these values for convenience since we need to type them as their
-    // actual values.
+    // actual types.
     const target = event.target as HTMLInputElement;
     const key = target.name as keyof Config;
-    // kanjiInfo is special since it's value is another object.
+    // kanjiInfo is special since its value is another object.
     if (key === 'kanjiInfo') {
       this.options.kanjiInfo.find(
         (info) => info.code === target.value
       )!.shouldDisplay = target.checked;
     }
-    // popupLocation is special since it's a drop down whose values are
+    // popupLocation is special since its a drop down whose values are
     // numbers instead of text.
     else if (key === 'popupLocation') {
       this.options.popupLocation = parseInt(target.value);
@@ -388,10 +388,7 @@ export class OptionsForm extends LitElement {
   }
 
   private showToast() {
-    (this.shadowRoot!.querySelector('lit-toast') as LitToast)!.show(
-      'Saved',
-      2500
-    );
+    this.shadowRoot!.querySelector('lit-toast')!.show('Saved', 2500);
   }
 }
 
