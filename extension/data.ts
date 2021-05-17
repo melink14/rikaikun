@@ -200,7 +200,7 @@ class RcxDict {
           this.wordIndex = data;
         }
       ),
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'kanjiData')).then(
+      this.fileReadAsync(chrome.extension.getURL('data/' + 'kanji.dat')).then(
         (data) => {
           this.kanjiData = data;
         }
