@@ -108,6 +108,7 @@ class RcxDict {
   }
 
   static createDefaultDictEntry(): DictEntryData {
+    // Use JSON parse round trip for deep copy of default data.
     return JSON.parse(JSON.stringify(defaultDictEntryData));
   }
 
@@ -409,6 +410,8 @@ class RcxDict {
       // check: split this
 
       this.loadNames();
+      // After loadNames these are guaranteed to not be null so
+      // cast them as strings manually.
       dict = this.nameDict as string;
       index = this.nameIndex as string;
       maxTrim = 20; // this.config.namax;
@@ -668,7 +671,7 @@ class RcxDict {
           entry.bushumei;
       }
 
-      const bn = parseInt(entry.misc.B, 10) - 1;
+      const bn = parseInt(entry.misc.B) - 1;
       k = parseInt(entry.misc.G);
       switch (k) {
         case 8:
