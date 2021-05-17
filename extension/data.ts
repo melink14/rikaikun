@@ -43,20 +43,22 @@
 
 import { rcxMain } from './rikaichan';
 
-interface DictEntryData {
-  kanji?: string;
-  onkun: string;
-  nanori: string;
-  bushumei: string;
-  misc: Record<string, string>;
-  eigo: string;
-  hasNames: boolean;
-  data: { entry: string; reason?: string }[];
-  hasMore: boolean;
-  title?: string;
-  index?: number;
-  matchLen: number;
-}
+// Be careful of using directly due to object keys.
+const defaultDictEntryData = {
+  kanji: '',
+  onkun: '',
+  nanori: '',
+  bushumei: '',
+  misc: {} as Record<string, string>,
+  eigo: '',
+  hasNames: false,
+  data: [] as { entry: string; reason?: string }[],
+  hasMore: false,
+  title: '',
+  index: 0,
+  matchLen: 0,
+};
+type DictEntryData = typeof defaultDictEntryData;
 
 interface Deinflection {
   word: string;
@@ -89,12 +91,12 @@ class RcxDict {
 
   nameDict?: string;
   nameIndex?: string;
-  difReasons: string[] = [];
-  difRules: DeinflectionRuleGroup[] = [];
-  radData: string[] = [];
   wordDict = '';
   wordIndex = '';
   kanjiData = '';
+  radData: string[] = [];
+  difReasons: string[] = [];
+  difRules: DeinflectionRuleGroup[] = [];
 
   private constructor() {}
 
@@ -106,17 +108,7 @@ class RcxDict {
   }
 
   static createDefaultDictEntry(): DictEntryData {
-    return {
-      onkun: '',
-      nanori: '',
-      bushumei: '',
-      misc: {},
-      eigo: '',
-      hasNames: false,
-      data: [],
-      hasMore: false,
-      matchLen: 0,
-    };
+    return JSON.parse(JSON.stringify(defaultDictEntryData));
   }
 
   async init(loadNames: boolean) {
