@@ -449,11 +449,16 @@ class RcxDict {
             cache[u.word] = [];
             continue;
           }
-          ix = result.split(',').map(parseInt);
+          // The first value in result is the word itself so skip it
+          // and parse the remaining values at integers.
+          ix = result
+            .split(',')
+            .slice(1)
+            .map((offset) => parseInt(offset));
           cache[u.word] = ix;
         }
 
-        for (let j = 1; j < ix.length; ++j) {
+        for (let j = 0; j < ix.length; ++j) {
           const ofs = ix[j];
           if (have[ofs]) continue;
 
@@ -997,4 +1002,4 @@ class RcxDict {
 const rcxDict = RcxDict.create();
 
 export { rcxDict };
-export type { RcxDict };
+export type { RcxDict, DictEntryData };
