@@ -87,7 +87,6 @@ interface DeinflectionRuleGroup {
 class RcxDict {
   private static instance: RcxDict;
 
-  config: {} = {};
   nameDict?: string;
   nameIndex?: string;
   difReasons: string[] = [];
@@ -140,10 +139,6 @@ class RcxDict {
 
     const ended = +new Date();
     console.log('rcxDict main then in ' + (ended - started));
-  }
-
-  setConfig(c: {}) {
-    this.config = c;
   }
 
   fileReadAsync(url: string): Promise<string> {
@@ -253,7 +248,7 @@ class RcxDict {
     }
   }
 
-  find(data: string, text: string) {
+  find(data: string, text: string): string | null {
     const tlen = text.length;
     let beg = 0;
     let end = data.length - 1;
@@ -288,7 +283,7 @@ class RcxDict {
 
     i = 0;
     do {
-      word = r[i]!.word;
+      word = r[i].word;
       const wordLen = word.length;
       const type = r[i].type;
 
@@ -350,6 +345,9 @@ class RcxDict {
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
+    if (rcxMain.config == null) {
+      throw new TypeError('rcxMain.config must not be null after init.');
+    }
     let i;
     let u;
     let v;
@@ -410,7 +408,7 @@ class RcxDict {
     let dict: string;
     let index;
     let maxTrim;
-    const cache: { [key: string]: string } = {};
+    const cache: { [key: string]: number[] } = {};
     const have = [];
     let count = 0;
     let maxLen = 0;
@@ -427,7 +425,7 @@ class RcxDict {
     } else {
       dict = this.wordDict;
       index = this.wordIndex;
-      maxTrim = rcxMain.config!.maxDictEntries;
+      maxTrim = rcxMain.config.maxDictEntries;
     }
 
     if (max) maxTrim = max;
@@ -446,12 +444,12 @@ class RcxDict {
 
         let ix = cache[u.word];
         if (!ix) {
-          ix = this.find(index, u.word + ',');
-          if (!ix) {
+          const result = this.find(index, u.word + ',');
+          if (!result) {
             cache[u.word] = [];
             continue;
           }
-          ix = ix.split(',');
+          ix = result.split(',').map(parseInt);
           cache[u.word] = ix;
         }
 
@@ -518,6 +516,9 @@ class RcxDict {
   }
 
   translate(text: string): (DictEntryData & { textLen: number }) | null {
+    if (rcxMain.config == null) {
+      throw TypeError('rcxMain.config must not be null after init.');
+    }
     let e: DictEntryData | null;
     const o: DictEntryData & {
       textLen: number;
@@ -633,6 +634,10 @@ class RcxDict {
 
   // TODO: Entry should be extracted as separate type.
   makeHtml(entry: DictEntryData | null) {
+    if (rcxMain.config == null) {
+      throw new TypeError('rcxMain.config must not be null after init.');
+    }
+
     let e;
     let c;
     let s;
@@ -990,7 +995,6 @@ class RcxDict {
 }
 
 const rcxDict = RcxDict.create();
-window['rcxDict'] = rcxDict;
 
 export { rcxDict };
 export type { RcxDict };
