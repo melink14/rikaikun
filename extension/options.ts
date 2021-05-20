@@ -370,15 +370,18 @@ export class OptionsForm extends LitElement {
       // value with te proper type.
       switch (target.type) {
         case 'number':
-          const prevValue = this.options[key] as number;
-          (this.options[key] as number) = safeParseInt(target.value, prevValue);
+          assertObjOfKeyIsType(this.options, key, 'number');
+          const prevValue = this.options[key];
+          this.options[key] = safeParseInt(target.value, prevValue);
           break;
         case 'checkbox':
-          (this.options[key] as boolean) = target.checked;
+          assertObjOfKeyIsType(this.options, key, 'boolean');
+          this.options[key] = target.checked;
           break;
         case 'select-one':
         case 'radio':
-          (this.options[key] as string) = target.value;
+          assertObjOfKeyIsType(this.options, key, 'string');
+          this.options[key] = target.value;
           break;
         default:
           console.error(`Unexpected input type in options: ${target.type}`);
@@ -403,6 +406,32 @@ function safeParseInt(val: string, fallback: number) {
   return intVal;
 }
 customElements.define('options-form', OptionsForm);
+
+type GenericConfigValueTypes = {
+  number: number;
+  string: string;
+  boolean: boolean;
+};
+
+// Good explanation of how this works at:
+// https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
+type KeyAssignableTo<T, V> = {
+  [K in keyof T]: T[K] extends V ? K : never;
+}[keyof T];
+
+function assertObjOfKeyIsType<T, P extends keyof GenericConfigValueTypes>(
+  obj: T,
+  key: keyof T,
+  type: P
+): asserts key is KeyAssignableTo<T, GenericConfigValueTypes[P]> {
+  if (typeof obj[key] !== type) {
+    throw TypeError(
+      `Expected obj key ${
+        obj[key]
+      } to have type: ${type} but it actually was ${typeof obj[key]}`
+    );
+  }
+}
 
 // TODO(https://github.com/Victor-Bernabe/lit-toast/issues/2):
 // Remove this if the component supports types directly.
