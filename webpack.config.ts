@@ -12,7 +12,7 @@ const config: webpack.Configuration = {
 
   entry: {
     // Included in options.html.
-    options: path.join(__dirname, srcDir + 'options.ts'),
+    'options/component': path.join(__dirname, srcDir + 'options/component.ts'),
     // Injected into web pages.
     rikaicontent: path.join(__dirname, srcDir + 'rikaicontent.ts'),
     // These are all loaded in the background.html.

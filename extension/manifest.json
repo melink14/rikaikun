@@ -16,7 +16,7 @@
     "default_icon": "images/ba.png"
   },
   "options_ui": {
-    "page": "options.html",
+    "page": "options/entrypoint.html",
     "open_in_tab": false
   },
   "content_scripts": [
