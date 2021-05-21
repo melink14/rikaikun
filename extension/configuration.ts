@@ -31,21 +31,22 @@ const DefaultConfig = {
 };
 type Config = typeof DefaultConfig;
 
+let currentConfig: Config | undefined;
 const initOptions = (async function migrateOptions() {
-  const config = await getStorageSync();
+  currentConfig = await getStorageSync();
   // Old version had a flat object here instead of an
   // array of objects.
-  if (!(config.kanjiInfo instanceof Array)) {
+  if (!(currentConfig.kanjiInfo instanceof Array)) {
     const newKanjiInfo = [];
     for (const info of DefaultConfig.kanjiInfo) {
       newKanjiInfo.push({
         ...info,
-        shouldDisplay: config.kanjiInfo[info.code],
+        shouldDisplay: currentConfig.kanjiInfo[info.code],
       });
     }
-    config.kanjiInfo = newKanjiInfo;
+    currentConfig.kanjiInfo = newKanjiInfo;
     return new Promise<void>((resolve) => {
-      chrome.storage.sync.set(config, resolve);
+      chrome.storage.sync.set(currentConfig!, resolve);
     });
   }
 })();
@@ -66,5 +67,20 @@ function getStorageSync(): Promise<Config> {
   });
 }
 
-export { getCurrentConfiguration };
+const updateConfigCallbacks: ((config: Config) => void)[] = [];
+function registerUpdateConfigCallback(callback: (config: Config) => void) {
+  updateConfigCallbacks.push(callback);
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  if (currentConfig == undefined) return;
+
+  Object.entries(changes).map((change) => {
+    (currentConfig![change[0] as keyof Config] as unknown) = change[1].newValue;
+  });
+  updateConfigCallbacks.map((callback) => callback(currentConfig!));
+});
+
+export { getCurrentConfiguration, registerUpdateConfigCallback };
 export type { Config };
