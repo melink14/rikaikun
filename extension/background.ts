@@ -14,6 +14,10 @@ const createRcxMainPromise = async function (): Promise<RcxMain> {
 };
 const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
+chrome.browserAction.onClicked.addListener(async (tab) => {
+  const rcxMain = await rcxMainPromise;
+  rcxMain.inlineToggle(tab);
+});
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const rcxMain = await rcxMainPromise;
   rcxMain.onTabSelect(activeInfo.tabId);
