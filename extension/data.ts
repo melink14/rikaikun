@@ -122,20 +122,29 @@ class RcxDict {
   async init(loadNames: boolean) {
     const started = +new Date();
 
-    await this.loadDictionaries();
-    await this.loadDeinflectionData();
+    const loadDictionaries = this.loadDictionaries();
+    const loadDeinflectionData = this.loadDeinflectionData();
+    let loadNameData = Promise.resolve('');
+    let loadNameIndex = Promise.resolve('');
     if (loadNames) {
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'names.dat')).then(
-        (data) => {
-          this.nameDict = data;
-        }
+      loadNameData = this.fileReadAsync(
+        chrome.extension.getURL('data/' + 'names.dat')
       );
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'names.idx')).then(
-        (data) => {
-          this.nameIndex = data;
-        }
+      loadNameIndex = this.fileReadAsync(
+        chrome.extension.getURL('data/' + 'names.idx')
       );
     }
+
+    // await all loading promises in parallel, while also saving the values of
+    // the name dictionaries into their proper place.
+    // TODO(melink14): This waits on name data eagerly which slows down init, consider
+    // making it lazy since people often don't use the name dictionary.
+    [, , this.nameDict, this.nameIndex] = await Promise.all([
+      loadDictionaries,
+      loadDeinflectionData,
+      loadNameData,
+      loadNameIndex,
+    ]);
 
     const ended = +new Date();
     console.log('rcxDict main then in ' + (ended - started));
@@ -188,31 +197,16 @@ class RcxDict {
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
-  loadDictionaries(): Promise<void[]> {
-    const promises = [
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.dat')).then(
-        (data) => {
-          this.wordDict = data;
-        }
-      ),
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.idx')).then(
-        (data) => {
-          this.wordIndex = data;
-        }
-      ),
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'kanji.dat')).then(
-        (data) => {
-          this.kanjiData = data;
-        }
-      ),
-      this.fileReadAsyncAsArray(
-        chrome.extension.getURL('data/' + 'radicals.dat')
-      ).then((data) => {
-        this.radData = data;
-      }),
-    ];
-
-    return Promise.all(promises);
+  async loadDictionaries(): Promise<void> {
+    [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
+      await Promise.all([
+        this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.dat')),
+        this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.idx')),
+        this.fileReadAsync(chrome.extension.getURL('data/' + 'kanji.dat')),
+        this.fileReadAsyncAsArray(
+          chrome.extension.getURL('data/' + 'radicals.dat')
+        ),
+      ]);
   }
 
   async loadDeinflectionData() {
