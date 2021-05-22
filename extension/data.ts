@@ -109,7 +109,7 @@ class RcxDict {
   static async create(initialConfig: Config) {
     if (!RcxDict.instance) {
       RcxDict.instance = new RcxDict(initialConfig);
-      await RcxDict.instance.init(true);
+      await RcxDict.instance.init();
     }
     return RcxDict.instance;
   }
@@ -119,31 +119,18 @@ class RcxDict {
     return JSON.parse(JSON.stringify(defaultDictEntryData));
   }
 
-  async init(loadNames: boolean) {
+  async init() {
     const started = +new Date();
-
-    const loadDictionaries = this.loadDictionaries();
-    const loadDeinflectionData = this.loadDeinflectionData();
-    let loadNameData = Promise.resolve('');
-    let loadNameIndex = Promise.resolve('');
-    if (loadNames) {
-      loadNameData = this.fileReadAsync(
-        chrome.extension.getURL('data/' + 'names.dat')
-      );
-      loadNameIndex = this.fileReadAsync(
-        chrome.extension.getURL('data/' + 'names.idx')
-      );
-    }
 
     // await all loading promises in parallel, while also saving the values of
     // the name dictionaries into their proper place.
     // TODO(melink14): This waits on name data eagerly which slows down init, consider
     // making it lazy since people often don't use the name dictionary.
     [, , this.nameDict, this.nameIndex] = await Promise.all([
-      loadDictionaries,
-      loadDeinflectionData,
-      loadNameData,
-      loadNameIndex,
+      this.loadDictionaries(),
+      this.loadDeinflectionData(),
+      this.fileReadAsync(chrome.extension.getURL('data/names.dat')),
+      this.fileReadAsync(chrome.extension.getURL('data/names.idx')),
     ]);
 
     const ended = +new Date();
@@ -200,12 +187,10 @@ class RcxDict {
   async loadDictionaries(): Promise<void> {
     [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
       await Promise.all([
-        this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.dat')),
-        this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.idx')),
-        this.fileReadAsync(chrome.extension.getURL('data/' + 'kanji.dat')),
-        this.fileReadAsyncAsArray(
-          chrome.extension.getURL('data/' + 'radicals.dat')
-        ),
+        this.fileReadAsync(chrome.extension.getURL('data/dict.dat')),
+        this.fileReadAsync(chrome.extension.getURL('data/dict.idx')),
+        this.fileReadAsync(chrome.extension.getURL('data/kanji.dat')),
+        this.fileReadAsyncAsArray(chrome.extension.getURL('data/radicals.dat')),
       ]);
   }
 
