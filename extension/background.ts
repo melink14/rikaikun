@@ -3,18 +3,20 @@ import { RcxMain } from './rikaichan';
 import { getCurrentConfiguration } from './configuration';
 import { tts } from './texttospeech';
 
-const rcxMainPromise: Promise<RcxMain> = getCurrentConfiguration().then(
-  async (config) => {
-    const dict = await RcxDict.create(config);
-    return RcxMain.create(dict, config);
-  }
-);
+/**
+ * Returns a promise for fully initialized RcxMain. Async due to config and
+ * RcxDict initialization.
+ */
+const createRcxMainPromise = async function (): Promise<RcxMain> {
+  const config = await getCurrentConfiguration();
+  const dict = await RcxDict.create(config);
+  return RcxMain.create(dict, config);
+};
+const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
-chrome.browserAction.onClicked.addListener(async (tab) =>
-  (await rcxMainPromise).inlineToggle(tab)
-);
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  (await rcxMainPromise).onTabSelect(activeInfo.tabId);
+  const rcxMain = await rcxMainPromise;
+  rcxMain.onTabSelect(activeInfo.tabId);
 });
 chrome.runtime.onMessage.addListener(async function (
   request,
@@ -46,7 +48,7 @@ chrome.runtime.onMessage.addListener(async function (
       break;
     case 'makehtml':
       console.log('makehtml');
-      const html = rcxMain.dict!.makeHtml(request.entry);
+      const html = rcxMain.dict.makeHtml(request.entry);
       response(html);
       break;
     case 'switchOnlyReading':
