@@ -39,7 +39,7 @@
 
 */
 
-import { Config, registerUpdateConfigCallback } from './configuration';
+import { Config } from './configuration';
 import { DictEntryData, RcxDict } from './data';
 
 class RcxMain {
@@ -50,14 +50,11 @@ class RcxMain {
   altView = 0;
   enabled = 0;
   dict: RcxDict;
-  config: Readonly<Config>;
+  config: Config;
 
   private constructor(dict: RcxDict, initialConfig: Config) {
     this.dict = dict;
     this.config = initialConfig;
-    registerUpdateConfigCallback((config) => {
-      this.config = config;
-    });
   }
   static create(dict: RcxDict, initialConfig: Config) {
     if (!RcxMain.instance) {

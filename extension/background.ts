@@ -1,6 +1,6 @@
 import { RcxDict } from './data';
 import { RcxMain } from './rikaichan';
-import { getCurrentConfiguration } from './configuration';
+import { configPromise } from './configuration';
 import { tts } from './texttospeech';
 
 /**
@@ -8,7 +8,7 @@ import { tts } from './texttospeech';
  * RcxDict initialization.
  */
 const createRcxMainPromise = async function (): Promise<RcxMain> {
-  const config = await getCurrentConfiguration();
+  const config = await configPromise;
   const dict = await RcxDict.create(config);
   return RcxMain.create(dict, config);
 };
