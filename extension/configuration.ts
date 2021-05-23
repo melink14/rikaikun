@@ -1,4 +1,4 @@
-const DefaultConfig = {
+const defaultConfig = {
   copySeparator: 'tab',
   disablekeys: false,
   highlight: true,
@@ -29,58 +29,49 @@ const DefaultConfig = {
     { code: 'U', name: 'Unicode', shouldDisplay: true },
   ],
 };
-type Config = typeof DefaultConfig;
+type InternalConfig = typeof defaultConfig;
+type Config = Readonly<InternalConfig>;
 
-let currentConfig: Config | undefined;
-const initOptions = (async function migrateOptions() {
-  currentConfig = await getStorageSync();
-  // Old version had a flat object here instead of an
-  // array of objects.
-  if (!(currentConfig.kanjiInfo instanceof Array)) {
-    const newKanjiInfo = [];
-    for (const info of DefaultConfig.kanjiInfo) {
-      newKanjiInfo.push({
-        ...info,
-        shouldDisplay: currentConfig.kanjiInfo[info.code],
+const createNormalizedConfiguration =
+  async function (): Promise<InternalConfig> {
+    const storageConfig = await getStorageSync();
+    // Old version had a flat object here instead of an
+    // array of objects.
+    if (!(storageConfig.kanjiInfo instanceof Array)) {
+      const newKanjiInfo = [];
+      for (const info of defaultConfig.kanjiInfo) {
+        newKanjiInfo.push({
+          ...info,
+          shouldDisplay: storageConfig.kanjiInfo[info.code],
+        });
+      }
+      storageConfig.kanjiInfo = newKanjiInfo;
+      await new Promise<void>((resolve) => {
+        chrome.storage.sync.set(storageConfig, resolve);
       });
     }
-    currentConfig.kanjiInfo = newKanjiInfo;
-    return new Promise<void>((resolve) => {
-      chrome.storage.sync.set(currentConfig!, resolve);
-    });
-  }
-})();
-
-async function getCurrentConfiguration(): Promise<Config> {
-  // Probably not required but insures any migrations have
-  // happened before we access them normally.
-  await initOptions;
-  return getStorageSync();
-}
+    return storageConfig;
+  };
+const configPromise: Promise<Config> = createNormalizedConfiguration();
 
 // Simply wrapper which makes `sync.get` `Promise` based.
-function getStorageSync(): Promise<Config> {
-  return new Promise((resolve, reject) => {
-    chrome.storage.sync.get(DefaultConfig, function (cloudStorage) {
-      resolve(cloudStorage as Config);
+function getStorageSync(): Promise<InternalConfig> {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(defaultConfig, function (cloudStorage) {
+      resolve(cloudStorage as InternalConfig);
     });
   });
 }
 
-const updateConfigCallbacks: ((config: Config) => void)[] = [];
-function registerUpdateConfigCallback(callback: (config: Config) => void) {
-  updateConfigCallbacks.push(callback);
-}
-
-chrome.storage.onChanged.addListener((changes, area) => {
+chrome.storage.onChanged.addListener(async (changes, area) => {
   if (area !== 'sync') return;
-  if (currentConfig == undefined) return;
+  const config = await configPromise;
 
   Object.entries(changes).map((change) => {
-    (currentConfig![change[0] as keyof Config] as unknown) = change[1].newValue;
+    (config![change[0] as keyof InternalConfig] as unknown) =
+      change[1].newValue;
   });
-  updateConfigCallbacks.map((callback) => callback(currentConfig!));
 });
 
-export { getCurrentConfiguration, registerUpdateConfigCallback };
+export { configPromise };
 export type { Config };

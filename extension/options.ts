@@ -1,12 +1,16 @@
 import 'lit-toast/lit-toast.js';
-import { Config, getCurrentConfiguration } from './configuration';
+import { Config, configPromise } from './configuration';
 import { LitElement, TemplateResult, css, html } from 'lit';
 import { until } from 'lit/directives/until.js';
+
+type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
 
 export class OptionsForm extends LitElement {
   private content: Promise<TemplateResult> = this.fetchAndRender();
 
-  private options?: Config;
+  private options?: Mutable<Config>;
 
   render() {
     return html`${until(this.content)}<lit-toast></lit-toast>`;
@@ -19,7 +23,8 @@ export class OptionsForm extends LitElement {
   }
 
   private async fetchAndRender() {
-    this.options = await getCurrentConfiguration();
+    this.options = await configPromise;
+
     return html`
       <div id="rikaikun_options">
         <form

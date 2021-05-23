@@ -41,7 +41,7 @@
 
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
-import { Config, registerUpdateConfigCallback } from './configuration';
+import { Config } from './configuration';
 
 // Be careful of using directly due to object keys.
 const defaultDictEntryData = {
@@ -97,13 +97,10 @@ class RcxDict {
   radData: string[] = [];
   difReasons: string[] = [];
   difRules: DeinflectionRuleGroup[] = [];
-  config: Readonly<Config>;
+  config: Config;
 
   private constructor(initialConfig: Config) {
     this.config = initialConfig;
-    registerUpdateConfigCallback((config) => {
-      this.config = config;
-    });
   }
 
   static async create(initialConfig: Config) {
