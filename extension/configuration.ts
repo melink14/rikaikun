@@ -33,7 +33,7 @@ type MutableConfig = typeof defaultConfig;
 type Config = Readonly<MutableConfig>;
 
 // Simply wrapper which makes `sync.get` `Promise` based.
-function getStorageSync(): Promise<MutableConfig> {
+function getStorage(): Promise<MutableConfig> {
   return new Promise((resolve) => {
     chrome.storage.sync.get(defaultConfig, function (cloudStorage) {
       resolve(cloudStorage as MutableConfig);
@@ -41,10 +41,14 @@ function getStorageSync(): Promise<MutableConfig> {
   });
 }
 
-async function applyMigrations(storageConfig: MutableConfig) {
-  // Old version had a flat object here instead of an
-  // array of objects.
-  if (!(storageConfig.kanjiInfo instanceof Array)) {
+function isLegacyKanjiInfo(
+  kanjiInfo: [] | {}
+): kanjiInfo is { [code: string]: boolean } {
+  return !(kanjiInfo instanceof Array);
+}
+
+async function applyMigrations(storageConfig: MutableConfig): Promise<void> {
+  if (isLegacyKanjiInfo(storageConfig.kanjiInfo)) {
     const newKanjiInfo = [];
     for (const info of defaultConfig.kanjiInfo) {
       newKanjiInfo.push({
@@ -60,7 +64,7 @@ async function applyMigrations(storageConfig: MutableConfig) {
 }
 
 async function createNormalizedConfiguration(): Promise<MutableConfig> {
-  const storageConfig = await getStorageSync();
+  const storageConfig = await getStorage();
   await applyMigrations(storageConfig);
   return storageConfig;
 }
