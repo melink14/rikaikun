@@ -33,12 +33,13 @@ type MutableConfig = typeof defaultConfig;
 type Config = Readonly<MutableConfig>;
 
 // Simply wrapper which makes `sync.get` `Promise` based.
-function getStorage(): Promise<MutableConfig> {
-  return new Promise((resolve) => {
+async function getStorage(): Promise<MutableConfig> {
+  const config = await new Promise<MutableConfig>((resolve) => {
     chrome.storage.sync.get(defaultConfig, function (cloudStorage) {
       resolve(cloudStorage as MutableConfig);
     });
   });
+  return config;
 }
 
 function isLegacyKanjiInfo(
