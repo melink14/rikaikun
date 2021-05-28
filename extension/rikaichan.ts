@@ -56,9 +56,9 @@ class RcxMain {
     this.dict = dict;
     this.config = initialConfig;
   }
-  static create(dict: RcxDict, initialConfig: Config) {
+  static create(dict: RcxDict, config: Config) {
     if (!RcxMain.instance) {
-      RcxMain.instance = new RcxMain(dict, initialConfig);
+      RcxMain.instance = new RcxMain(dict, config);
     }
     return RcxMain.instance;
   }
