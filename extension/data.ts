@@ -99,8 +99,8 @@ class RcxDict {
   difRules: DeinflectionRuleGroup[] = [];
   config: Config;
 
-  private constructor(initialConfig: Config) {
-    this.config = initialConfig;
+  private constructor(config: Config) {
+    this.config = config;
   }
 
   static async create(initialConfig: Config) {
