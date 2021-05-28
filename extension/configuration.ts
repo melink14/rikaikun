@@ -43,7 +43,7 @@ function getStorage(): Promise<MutableConfig> {
 
 function isLegacyKanjiInfo(
   kanjiInfo: [] | {}
-): kanjiInfo is { [code: string]: boolean } {
+): kanjiInfo is { [kanjiInfoCode: string]: boolean } {
   return !(kanjiInfo instanceof Array);
 }
 
