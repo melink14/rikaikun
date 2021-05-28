@@ -119,8 +119,6 @@ class RcxDict {
   async init() {
     const started = +new Date();
 
-    // await all loading promises in parallel, while also saving the values of
-    // the name dictionaries into their proper place.
     // TODO(melink14): This waits on name data eagerly which slows down init, consider
     // making it lazy since people often don't use the name dictionary.
     [, , this.nameDict, this.nameIndex] = await Promise.all([
