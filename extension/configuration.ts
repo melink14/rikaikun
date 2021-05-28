@@ -81,5 +81,5 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
 });
 
 const immutableConfigPromise = configPromise as Promise<Config>;
-export { immutableConfigPromise };
+export { immutableConfigPromise as configPromise };
 export type { Config };
