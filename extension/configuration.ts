@@ -29,49 +29,53 @@ const defaultConfig = {
     { code: 'U', name: 'Unicode', shouldDisplay: true },
   ],
 };
-type InternalConfig = typeof defaultConfig;
-type Config = Readonly<InternalConfig>;
-
-const createNormalizedConfiguration =
-  async function (): Promise<InternalConfig> {
-    const storageConfig = await getStorageSync();
-    // Old version had a flat object here instead of an
-    // array of objects.
-    if (!(storageConfig.kanjiInfo instanceof Array)) {
-      const newKanjiInfo = [];
-      for (const info of defaultConfig.kanjiInfo) {
-        newKanjiInfo.push({
-          ...info,
-          shouldDisplay: storageConfig.kanjiInfo[info.code],
-        });
-      }
-      storageConfig.kanjiInfo = newKanjiInfo;
-      await new Promise<void>((resolve) => {
-        chrome.storage.sync.set(storageConfig, resolve);
-      });
-    }
-    return storageConfig;
-  };
-const configPromise: Promise<Config> = createNormalizedConfiguration();
+type MutableConfig = typeof defaultConfig;
+type Config = Readonly<MutableConfig>;
 
 // Simply wrapper which makes `sync.get` `Promise` based.
-function getStorageSync(): Promise<InternalConfig> {
+function getStorageSync(): Promise<MutableConfig> {
   return new Promise((resolve) => {
     chrome.storage.sync.get(defaultConfig, function (cloudStorage) {
-      resolve(cloudStorage as InternalConfig);
+      resolve(cloudStorage as MutableConfig);
     });
   });
 }
+
+async function applyMigrations(storageConfig: MutableConfig) {
+  // Old version had a flat object here instead of an
+  // array of objects.
+  if (!(storageConfig.kanjiInfo instanceof Array)) {
+    const newKanjiInfo = [];
+    for (const info of defaultConfig.kanjiInfo) {
+      newKanjiInfo.push({
+        ...info,
+        shouldDisplay: storageConfig.kanjiInfo[info.code],
+      });
+    }
+    storageConfig.kanjiInfo = newKanjiInfo;
+    await new Promise<void>((resolve) => {
+      chrome.storage.sync.set(storageConfig, resolve);
+    });
+  }
+}
+
+async function createNormalizedConfiguration(): Promise<MutableConfig> {
+  const storageConfig = await getStorageSync();
+  await applyMigrations(storageConfig);
+  return storageConfig;
+}
+
+const configPromise: Promise<MutableConfig> = createNormalizedConfiguration();
 
 chrome.storage.onChanged.addListener(async (changes, area) => {
   if (area !== 'sync') return;
   const config = await configPromise;
 
   Object.entries(changes).map((change) => {
-    (config![change[0] as keyof InternalConfig] as unknown) =
-      change[1].newValue;
+    (config[change[0] as keyof MutableConfig] as unknown) = change[1].newValue;
   });
 });
 
-export { configPromise };
+const immutableConfigPromise = configPromise as Promise<Config>;
+export { immutableConfigPromise };
 export type { Config };
