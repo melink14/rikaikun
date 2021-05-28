@@ -7,11 +7,11 @@ import { tts } from './texttospeech';
  * Returns a promise for fully initialized RcxMain. Async due to config and
  * RcxDict initialization.
  */
-const createRcxMainPromise = async function (): Promise<RcxMain> {
+async function createRcxMainPromise(): Promise<RcxMain> {
   const config = await configPromise;
   const dict = await RcxDict.create(config);
   return RcxMain.create(dict, config);
-};
+}
 const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
 chrome.browserAction.onClicked.addListener(async (tab) => {
