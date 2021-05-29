@@ -39,8 +39,8 @@
 
 */
 
-import { Config, getCurrentConfiguration } from './configuration';
-import { DictEntryData, RcxDict, rcxDict } from './data';
+import { Config } from './configuration';
+import { DictEntryData, RcxDict } from './data';
 
 class RcxMain {
   private static instance: RcxMain;
@@ -49,29 +49,28 @@ class RcxMain {
   dictCount = 3;
   altView = 0;
   enabled = 0;
-  dict?: RcxDict;
-  config?: Config;
+  dict: RcxDict;
+  config: Config;
 
-  private constructor() {}
-  static create() {
+  private constructor(dict: RcxDict, initialConfig: Config) {
+    this.dict = dict;
+    this.config = initialConfig;
+  }
+  static create(dict: RcxDict, config: Config) {
     if (!RcxMain.instance) {
-      RcxMain.instance = new RcxMain();
+      RcxMain.instance = new RcxMain(dict, config);
     }
     return RcxMain.instance;
-  }
-
-  loadDictionary() {
-    this.dict = rcxDict;
-    return this.dict.init(this.haveNames);
   }
 
   // The callback for `onActivated`
   // Just sends a message to the tab to enable itself if it hasn't
   // already
-  onTabSelect(tabId) {
-    rcxMain._onTabSelect(tabId);
+  onTabSelect(tabId: number | undefined) {
+    if (tabId == undefined) return;
+    this._onTabSelect(tabId);
   }
-  _onTabSelect(tabId) {
+  _onTabSelect(tabId: number) {
     if (this.enabled == 1)
       chrome.tabs.sendMessage(tabId, {
         type: 'enable',
@@ -79,18 +78,19 @@ class RcxMain {
       });
   }
 
-  savePrep(clip, entry) {
-    let me;
+  // TODO(melink14): This is only called by `copyToClip`; investigate.
+  savePrep(forClipping: boolean, entries: DictEntryData[]) {
+    let maxEntries = this.config.maxDictEntries;
     let text;
     let i;
     let e;
 
-    const f = entry;
+    const f = entries;
     if (!f || f.length == 0) return null;
 
-    if (clip) {
+    if (forClipping) {
       // save to clipboard
-      me = rcxMain.config.maxClipCopyEntries;
+      maxEntries = this.config.maxClipCopyEntries;
     }
 
     text = '';
@@ -99,39 +99,40 @@ class RcxMain {
       if (e.kanji) {
         text += this.dict.makeText(e, 1);
       } else {
-        if (me <= 0) continue;
-        text += this.dict.makeText(e, me);
-        me -= e.data.length;
+        if (maxEntries <= 0) continue;
+        text += this.dict.makeText(e, maxEntries);
+        maxEntries -= e.data.length;
       }
     }
 
-    if (rcxMain.config.lineEnding == 'rn') text = text.replace(/\n/g, '\r\n');
-    else if (rcxMain.config.lineEnding == 'r') text = text.replace(/\n/g, '\r');
-    if (rcxMain.config.copySeparator != 'tab') {
-      if (rcxMain.config.copySeparator == 'comma')
-        return text.replace(/\t/g, ',');
-      if (rcxMain.config.copySeparator == 'space')
-        return text.replace(/\t/g, ' ');
+    if (this.config.lineEnding == 'rn') text = text.replace(/\n/g, '\r\n');
+    else if (this.config.lineEnding == 'r') text = text.replace(/\n/g, '\r');
+    if (this.config.copySeparator != 'tab') {
+      if (this.config.copySeparator == 'comma') return text.replace(/\t/g, ',');
+      if (this.config.copySeparator == 'space') return text.replace(/\t/g, ' ');
     }
 
     return text;
   }
 
-  copyToClip(tab, entry) {
-    let text;
+  copyToClip(tab: chrome.tabs.Tab | undefined, entries: DictEntryData[]) {
+    if (tab?.id == undefined) return;
+    const text = this.savePrep(true, entries);
+    if (text == null) return;
 
-    if ((text = this.savePrep(1, entry)) != null) {
-      document.oncopy = function (event) {
-        event.clipboardData.setData('Text', text);
-        event.preventDefault();
-      };
-      document.execCommand('Copy');
-      document.oncopy = undefined;
-      chrome.tabs.sendMessage(tab.id, {
-        type: 'showPopup',
-        text: 'Copied to clipboard.',
-      });
-    }
+    const copyFunction = function (event: ClipboardEvent) {
+      // TODO(https://github.com/w3c/clipboard-apis/issues/64): Remove `!` when spec is fixed
+      // and typescript types are updated.
+      event.clipboardData!.setData('Text', text);
+      event.preventDefault();
+    };
+    document.addEventListener('copy', copyFunction);
+    document.execCommand('Copy');
+    document.removeEventListener('copy', copyFunction);
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'showPopup',
+      text: 'Copied to clipboard.',
+    });
   }
 
   miniHelp =
@@ -151,46 +152,34 @@ class RcxMain {
 
   // Function which enables the inline mode of rikaikun
   // Unlike rikaichan there is no lookup bar so this is the only enable.
-  inlineEnable(tab, mode) {
-    if (!this.dict) {
-      this.loadDictionary()
-        .then(
-          function () {
-            // Send message to current tab to add listeners and create stuff
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'enable',
-              config: rcxMain.config,
-            });
-            this.enabled = 1;
+  inlineEnable(tabId: number, mode: number) {
+    // Send message to current tab to add listeners and create stuff
+    chrome.tabs.sendMessage(tabId, {
+      type: 'enable',
+      config: this.config,
+    });
+    this.enabled = 1;
 
-            if (mode == 1) {
-              if (rcxMain.config.minihelp)
-                chrome.tabs.sendMessage(tab.id, {
-                  type: 'showPopup',
-                  text: rcxMain.miniHelp,
-                });
-              else
-                chrome.tabs.sendMessage(tab.id, {
-                  type: 'showPopup',
-                  text: 'Rikaikun enabled!',
-                });
-            }
-            chrome.browserAction.setBadgeBackgroundColor({
-              color: [255, 0, 0, 255],
-            });
-            chrome.browserAction.setBadgeText({ text: 'On' });
-          }.bind(this)
-        )
-        .catch(function (err) {
-          alert('Error loading dictionary: ' + err);
+    if (mode == 1) {
+      if (this.config.minihelp)
+        chrome.tabs.sendMessage(tabId, {
+          type: 'showPopup',
+          text: this.miniHelp,
+        });
+      else
+        chrome.tabs.sendMessage(tabId, {
+          type: 'showPopup',
+          text: 'Rikaikun enabled!',
         });
     }
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: [255, 0, 0, 255],
+    });
+    chrome.browserAction.setBadgeText({ text: 'On' });
   }
 
   // This function disables rikaikun in all tabs.
   inlineDisable() {
-    delete this.dict;
-
     this.enabled = 0;
     chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 0, 0] });
     chrome.browserAction.setBadgeText({ text: '' });
@@ -199,26 +188,25 @@ class RcxMain {
     chrome.windows.getAll({ populate: true }, function (windows) {
       for (let i = 0; i < windows.length; ++i) {
         const tabs = windows[i].tabs;
+        if (tabs == undefined) continue;
         for (let j = 0; j < tabs.length; ++j) {
-          chrome.tabs.sendMessage(tabs[j].id, { type: 'disable' });
+          if (tabs[j].id == undefined) continue;
+          chrome.tabs.sendMessage(tabs[j].id!, { type: 'disable' });
         }
       }
     });
   }
 
-  inlineToggle(tab) {
-    if (rcxMain.enabled) rcxMain.inlineDisable(tab, 1);
-    else rcxMain.inlineEnable(tab, 1);
+  inlineToggle(tab: chrome.tabs.Tab) {
+    if (tab?.id == undefined) return;
+    if (this.enabled) this.inlineDisable();
+    else this.inlineEnable(tab.id, 1);
   }
 
   kanjiN = 1;
   namesN = 2;
 
   showMode = 0;
-
-  nextDict() {
-    this.showMode = (this.showMode + 1) % this.dictCount;
-  }
 
   resetDict() {
     this.showMode = 0;
@@ -229,7 +217,7 @@ class RcxMain {
   defaultDict = '2';
   nextDict = '3';
 
-  search(text, dictOption) {
+  search(text: string, dictOption: string) {
     switch (dictOption) {
       case this.forceKanji:
         const e = this.dict.kanjiSearch(text.charAt(0));
@@ -265,30 +253,7 @@ class RcxMain {
   }
 }
 
-const rcxMain = RcxMain.create();
-
-// TODO(melink14): Change to top level await when ts-node process is
-// easier.
-(async () => {
-  const config = await getCurrentConfiguration();
-  rcxMain.config = config;
-})();
-
-// Update config whenever user changes options.
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area !== 'sync') return;
-  // This can happen during migrations where we save the new format
-  // before the config initialization has happened.
-  if (rcxMain.config === undefined) return;
-
-  Object.entries(changes).map((change) => {
-    (rcxMain.config[change[0] as keyof Config] as unknown) =
-      change[1]!.newValue;
-  });
-});
-
-window['rcxMain'] = rcxMain;
-export { rcxMain };
+export { RcxMain };
 
 /*
   Useful Japanese unicode ranges but melink14 doesn't know

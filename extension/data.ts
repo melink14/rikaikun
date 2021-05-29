@@ -41,7 +41,7 @@
 
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
-import { rcxMain } from './rikaichan';
+import { Config } from './configuration';
 
 // Be careful of using directly due to object keys.
 const defaultDictEntryData = {
@@ -97,12 +97,16 @@ class RcxDict {
   radData: string[] = [];
   difReasons: string[] = [];
   difRules: DeinflectionRuleGroup[] = [];
+  config: Config;
 
-  private constructor() {}
+  private constructor(config: Config) {
+    this.config = config;
+  }
 
-  static create() {
+  static async create(initialConfig: Config) {
     if (!RcxDict.instance) {
-      RcxDict.instance = new RcxDict();
+      RcxDict.instance = new RcxDict(initialConfig);
+      await RcxDict.instance.init();
     }
     return RcxDict.instance;
   }
@@ -112,23 +116,17 @@ class RcxDict {
     return JSON.parse(JSON.stringify(defaultDictEntryData));
   }
 
-  async init(loadNames: boolean) {
+  async init() {
     const started = +new Date();
 
-    await this.loadDictionaries();
-    await this.loadDeinflectionData();
-    if (loadNames) {
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'names.dat')).then(
-        (data) => {
-          this.nameDict = data;
-        }
-      );
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'names.idx')).then(
-        (data) => {
-          this.nameIndex = data;
-        }
-      );
-    }
+    // TODO(melink14): This waits on name data eagerly which slows down init, consider
+    // making it lazy since people often don't use the name dictionary.
+    [, , this.nameDict, this.nameIndex] = await Promise.all([
+      this.loadDictionaries(),
+      this.loadDeinflectionData(),
+      this.fileReadAsync(chrome.extension.getURL('data/names.dat')),
+      this.fileReadAsync(chrome.extension.getURL('data/names.idx')),
+    ]);
 
     const ended = +new Date();
     console.log('rcxDict main then in ' + (ended - started));
@@ -181,31 +179,14 @@ class RcxDict {
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
-  loadDictionaries(): Promise<void[]> {
-    const promises = [
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.dat')).then(
-        (data) => {
-          this.wordDict = data;
-        }
-      ),
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'dict.idx')).then(
-        (data) => {
-          this.wordIndex = data;
-        }
-      ),
-      this.fileReadAsync(chrome.extension.getURL('data/' + 'kanji.dat')).then(
-        (data) => {
-          this.kanjiData = data;
-        }
-      ),
-      this.fileReadAsyncAsArray(
-        chrome.extension.getURL('data/' + 'radicals.dat')
-      ).then((data) => {
-        this.radData = data;
-      }),
-    ];
-
-    return Promise.all(promises);
+  async loadDictionaries(): Promise<void> {
+    [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
+      await Promise.all([
+        this.fileReadAsync(chrome.extension.getURL('data/dict.dat')),
+        this.fileReadAsync(chrome.extension.getURL('data/dict.idx')),
+        this.fileReadAsync(chrome.extension.getURL('data/kanji.dat')),
+        this.fileReadAsyncAsArray(chrome.extension.getURL('data/radicals.dat')),
+      ]);
   }
 
   async loadDeinflectionData() {
@@ -338,9 +319,6 @@ class RcxDict {
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
-    if (rcxMain.config == null) {
-      throw new TypeError('rcxMain.config must not be null after init.');
-    }
     let i;
     let u;
     let v;
@@ -420,7 +398,7 @@ class RcxDict {
     } else {
       dict = this.wordDict;
       index = this.wordIndex;
-      maxTrim = rcxMain.config.maxDictEntries;
+      maxTrim = this.config.maxDictEntries;
     }
 
     if (max) maxTrim = max;
@@ -516,9 +494,6 @@ class RcxDict {
   }
 
   translate(text: string): (DictEntryData & { textLen: number }) | null {
-    if (rcxMain.config == null) {
-      throw TypeError('rcxMain.config must not be null after init.');
-    }
     let e: DictEntryData | null;
     const o: DictEntryData & {
       textLen: number;
@@ -528,7 +503,7 @@ class RcxDict {
     while (text.length > 0) {
       e = this.wordSearch(text, false, 1);
       if (e != null) {
-        if (o.data.length >= rcxMain.config.maxDictEntries) {
+        if (o.data.length >= this.config.maxDictEntries) {
           o.hasMore = true;
           break;
         }
@@ -634,10 +609,6 @@ class RcxDict {
 
   // TODO: Entry should be extracted as separate type.
   makeHtml(entry: DictEntryData | null) {
-    if (rcxMain.config == null) {
-      throw new TypeError('rcxMain.config must not be null after init.');
-    }
-
     let e;
     let c;
     let s;
@@ -702,7 +673,7 @@ class RcxDict {
         entry.misc.S +
         '</td>' +
         '</tr></table>';
-      if (rcxMain.config.kanjicomponents) {
+      if (this.config.kanjicomponents) {
         k = this.radData[bn].split('\t');
         box +=
           '<table class="k-bbox-tb">' +
@@ -745,7 +716,7 @@ class RcxDict {
       nums = '';
       j = 0;
 
-      const kanjiInfo = rcxMain.config.kanjiInfo;
+      const kanjiInfo = this.config.kanjiInfo;
       for (const info of kanjiInfo) {
         if (!info.shouldDisplay) continue;
         c = info.code;
@@ -851,10 +822,7 @@ class RcxDict {
       for (
         i = entry.index;
         i <
-        Math.min(
-          rcxMain.config.maxDictEntries + entry.index,
-          entry.data.length
-        );
+        Math.min(this.config.maxDictEntries + entry.index, entry.data.length);
         ++i
       ) {
         e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
@@ -896,7 +864,7 @@ class RcxDict {
         s = e[3];
         t = s.replace(/\//g, '; ');
 
-        if (!rcxMain.config.onlyreading) {
+        if (!this.config.onlyreading) {
           t = '<br/><span class="w-def">' + t + '</span><br/>';
         } else {
           t = '<br/>';
@@ -905,7 +873,7 @@ class RcxDict {
       b.push(t);
       if (
         entry.hasMore &&
-        entry.index < entry.data.length - rcxMain.config.maxDictEntries
+        entry.index < entry.data.length - this.config.maxDictEntries
       )
         b.push('<span class="small-info">... (\'k\' for more)</span><br/>');
     }
@@ -994,7 +962,5 @@ class RcxDict {
   }
 }
 
-const rcxDict = RcxDict.create();
-
-export { rcxDict };
-export type { RcxDict, DictEntryData };
+export { RcxDict };
+export type { DictEntryData };
