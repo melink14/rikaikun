@@ -35,7 +35,7 @@ type Config = Readonly<MutableConfig>;
 // Simply wrapper which makes `sync.get` `Promise` based.
 async function getStorage(): Promise<MutableConfig> {
   const config = await new Promise<MutableConfig>((resolve) => {
-    chrome.storage.sync.get(defaultConfig, function (cloudStorage) {
+    chrome.storage.sync.get(defaultConfig, (cloudStorage) => {
       resolve(cloudStorage as MutableConfig);
     });
   });
@@ -73,7 +73,9 @@ async function createNormalizedConfiguration(): Promise<MutableConfig> {
 const configPromise: Promise<MutableConfig> = createNormalizedConfiguration();
 
 chrome.storage.onChanged.addListener(async (changes, area) => {
-  if (area !== 'sync') return;
+  if (area !== 'sync') {
+    return;
+  }
   const config = await configPromise;
 
   Object.entries(changes).map((change) => {

@@ -18,7 +18,7 @@
     "stylelint:check": "stylelint '**/*.css' '**/*.ts'",
     "stylelint:fix": "npm run stylelint:check --silent -- --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "update-db": "ts-node --log-error utils/update-db"
+    "update-db": "ts-node utils/update-db"
   },
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
     "@types/byline": "^4.2.32",
-    "@types/chrome": "0.0.142",
+    "@types/chrome": "0.0.143",
     "@types/copy-webpack-plugin": "^8.0.0",
     "@types/node": "^15.6.1",
     "byline": "^5.0.0",
@@ -71,7 +71,7 @@
     "ts-loader": "^9.2.2",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2",
-    "webpack": "^5.37.1",
+    "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
   },
   "release": {

@@ -75,7 +75,7 @@ class RcxContent {
 
   // Adds the listeners and stuff.
   enableTab(config: Config) {
-    if (window.rikaichan == null) {
+    if (window.rikaichan === undefined) {
       window.rikaichan = {};
       window.addEventListener('mousemove', this.onMouseMove, false);
       window.addEventListener('keydown', this.onKeyDown, true);
@@ -89,7 +89,7 @@ class RcxContent {
 
   // Removes the listeners and stuff
   disableTab() {
-    if (window.rikaichan != null) {
+    if (window.rikaichan !== undefined) {
       let e;
       window.removeEventListener('mousemove', this.onMouseMove, false);
       window.removeEventListener('keydown', this.onKeyDown, true);
@@ -98,9 +98,13 @@ class RcxContent {
       window.removeEventListener('mouseup', this.onMouseUp, false);
 
       e = document.getElementById('rikaichan-css');
-      if (e?.parentNode) e.parentNode.removeChild(e);
+      if (e?.parentNode) {
+        e.parentNode.removeChild(e);
+      }
       e = document.getElementById('rikaichan-window');
-      if (e?.parentNode) e.parentNode.removeChild(e);
+      if (e?.parentNode) {
+        e.parentNode.removeChild(e);
+      }
 
       this.clearHi();
       delete window.rikaichan;
@@ -110,7 +114,7 @@ class RcxContent {
   getContentType(tDoc: Document) {
     const m = tDoc.getElementsByTagName('meta');
     for (const i in m) {
-      if (m[i].httpEquiv == 'Content-Type') {
+      if (m[i].httpEquiv === 'Content-Type') {
         const con = m[i].content.split(';');
         return con[0];
       }
@@ -127,7 +131,9 @@ class RcxContent {
   ) {
     const topdoc = window.document;
 
-    if (isNaN(x) || isNaN(y)) x = y = 0;
+    if (isNaN(x) || isNaN(y)) {
+      x = y = 0;
+    }
 
     let popup = topdoc.getElementById('rikaichan-window');
     if (!popup) {
@@ -164,7 +170,7 @@ class RcxContent {
     popup.style.height = 'auto';
     popup.style.maxWidth = looseWidth ? '' : '600px';
 
-    if (this.getContentType(topdoc) == 'text/plain') {
+    if (this.getContentType(topdoc) === 'text/plain') {
       const docFragment = document.createDocumentFragment();
       docFragment.appendChild(
         document.createElementNS('http://www.w3.org/1999/xhtml', 'span')
@@ -184,26 +190,27 @@ class RcxContent {
       popup.style.left = '0px';
       popup.style.display = '';
 
-      const bbo = window;
       let pW = popup.offsetWidth;
       let pH = popup.offsetHeight;
 
       // guess!
-      if (pW <= 0) pW = 200;
+      if (pW <= 0) {
+        pW = 200;
+      }
       if (pH <= 0) {
         pH = 0;
         let j = 0;
-        while ((j = text.indexOf('<br/>', j)) != -1) {
+        while ((j = text.indexOf('<br/>', j)) !== -1) {
           j += 5;
           pH += 22;
         }
         pH += 25;
       }
 
-      if (this.altView == 1) {
+      if (this.altView === 1) {
         x = window.scrollX;
         y = window.scrollY;
-      } else if (this.altView == 2) {
+      } else if (this.altView === 2) {
         x = window.innerWidth - (pW + 20) + window.scrollX;
         y = window.innerHeight - (pH + 20) + window.scrollY;
       }
@@ -220,13 +227,16 @@ class RcxContent {
           y += p.offsetTop;
           p = p.offsetParent! as HTMLElement;
         }
-        if (elem.offsetTop > (elem.parentNode! as HTMLElement).clientHeight)
+        if (elem.offsetTop > (elem.parentNode! as HTMLElement).clientHeight) {
           y -= elem.offsetTop;
+        }
 
         if (x + popup.offsetWidth > window.innerWidth) {
           // too much to the right, go left
           x -= popup.offsetWidth + 5;
-          if (x < 0) x = 0;
+          if (x < 0) {
+            x = 0;
+          }
         } else {
           // use SELECT's width
           x += (elem.parentNode! as HTMLElement).offsetWidth + 5;
@@ -235,14 +245,18 @@ class RcxContent {
         // go left if necessary
         if (x + pW > window.innerWidth - 20) {
           x = window.innerWidth - pW - 20;
-          if (x < 0) x = 0;
+          if (x < 0) {
+            x = 0;
+          }
         }
 
         // below the mouse
         let v = 25;
 
         // under the popup title
-        if (elem.title && elem.title != '') v += 20;
+        if (elem.title && elem.title !== '') {
+          v += 20;
+        }
 
         // go up if necessary
         if (y + v + pH > window.innerHeight) {
@@ -253,7 +267,9 @@ class RcxContent {
             // if can't go up, still go down to prevent blocking cursor
             y += v;
           }
-        } else y += v;
+        } else {
+          y += v;
+        }
 
         x += window.scrollX;
         y += window.scrollY;
@@ -278,12 +294,14 @@ class RcxContent {
 
   isVisible() {
     const popup = document.getElementById('rikaichan-window');
-    return popup && popup.style.display != 'none';
+    return popup && popup.style.display !== 'none';
   }
 
   clearHi() {
     const tdata = window.rikaichan;
-    if (!tdata || !tdata.prevSelView) return;
+    if (!tdata || !tdata.prevSelView) {
+      return;
+    }
     if (tdata.prevSelView.closed) {
       tdata.prevSelView = undefined;
       return;
@@ -292,12 +310,14 @@ class RcxContent {
     const sel = tdata.prevSelView.getSelection()!;
     // If there is an empty selection or the selection was done by
     // rikaikun then we'll clear it
-    if (!sel.toString() || tdata.selText == sel.toString()) {
+    if (!sel.toString() || tdata.selText === sel.toString()) {
       // In the case of no selection we clear the oldTA
       // The reason for this is becasue if there's no selection
       // we probably clicked somewhere else and we don't want to
       // bounce back.
-      if (!sel.toString()) tdata.oldTA = undefined;
+      if (!sel.toString()) {
+        tdata.oldTA = undefined;
+      }
 
       // clear all selections
       sel.removeAllRanges();
@@ -329,14 +349,14 @@ class RcxContent {
   _onKeyDown(ev: KeyboardEvent) {
     if (
       window.rikaichan!.config!.showOnKey !== '' &&
-      (ev.altKey || ev.ctrlKey || ev.key == 'AltGraph')
+      (ev.altKey || ev.ctrlKey || ev.key === 'AltGraph')
     ) {
       if (this.lastTarget !== null) {
         const myEv = {
           clientX: this.lastPos.x,
           clientY: this.lastPos.y,
           target: this.lastTarget,
-          altKey: ev.altKey || ev.key == 'AltGraph',
+          altKey: ev.altKey || ev.key === 'AltGraph',
           ctrlKey: ev.ctrlKey,
           shiftKey: ev.shiftKey,
           // TODO(melink14): noDelay is not event related; try to pass it in a way
@@ -349,10 +369,18 @@ class RcxContent {
       }
       return;
     }
-    if (ev.shiftKey && ev.keyCode != 16) return;
-    if (this.keysDown[ev.keyCode]) return;
-    if (!this.isVisible()) return;
-    if (window.rikaichan!.config!.disablekeys && ev.keyCode != 16) return;
+    if (ev.shiftKey && ev.keyCode !== 16) {
+      return;
+    }
+    if (this.keysDown[ev.keyCode]) {
+      return;
+    }
+    if (!this.isVisible()) {
+      return;
+    }
+    if (window.rikaichan!.config!.disablekeys && ev.keyCode !== 16) {
+      return;
+    }
 
     let i;
     let shouldPreventDefault = true;
@@ -367,7 +395,9 @@ class RcxContent {
       case 74: // j
         // reverse cycle through definitions if > max (maxDictEntries)
         e = this.lastFound[0];
-        if (e.data.length < maxDictEntries) break;
+        if (e.data.length < maxDictEntries) {
+          break;
+        }
         if (!e.index) {
           e.index = 0;
         }
@@ -434,7 +464,9 @@ class RcxContent {
           rikaichan.uofs = --ofs!;
           if (this.show(rikaichan, this.defaultDict) >= 0) {
             // TODO: Figure out if this should be changed as per ancient comment.
-            if (ofs! >= rikaichan.uofs) break; // ! change later
+            if (ofs! >= rikaichan.uofs) {
+              break;
+            } // ! change later
           }
         }
         break;
@@ -450,7 +482,9 @@ class RcxContent {
         const rikaiData = (ev.currentTarget! as Window).rikaichan!;
         for (i = 50; i > 0; --i) {
           rikaiData.uofs! += rikaiData.uofsNext!;
-          if (this.show(rikaiData, this.defaultDict) >= 0) break;
+          if (this.show(rikaiData, this.defaultDict) >= 0) {
+            break;
+          }
         }
         break;
       case 89: // y
@@ -476,28 +510,39 @@ class RcxContent {
     this._onMouseDown(ev);
   };
   _onMouseDown(ev: MouseEvent) {
-    if (ev.button != 0) return;
-    if (this.isVisible()) this.clearHi();
+    if (ev.button !== 0) {
+      return;
+    }
+    if (this.isVisible()) {
+      this.clearHi();
+    }
     this.mDown = true;
 
     // If we click outside of a text box then we set
     // oldCaret to -1 as an indicator not to restore position
     // Otherwise, we switch our saved textarea to whereever
     // we just clicked
-    if (!('form' in ev.target!)) window.rikaichan!.oldCaret = -1;
-    else window.rikaichan!.oldTA = ev.target;
+    if (!('form' in ev.target!)) {
+      window.rikaichan!.oldCaret = -1;
+    } else {
+      window.rikaichan!.oldTA = ev.target;
+    }
   }
 
   onMouseUp = (ev: MouseEvent) => {
     this._onMouseUp(ev);
   };
   _onMouseUp(ev: MouseEvent) {
-    if (ev.button != 0) return;
+    if (ev.button !== 0) {
+      return;
+    }
     this.mDown = false;
   }
 
   onKeyUp = (ev: KeyboardEvent) => {
-    if (this.keysDown[ev.keyCode]) this.keysDown[ev.keyCode] = 0;
+    if (this.keysDown[ev.keyCode]) {
+      this.keysDown[ev.keyCode] = 0;
+    }
   };
 
   unicodeInfo(c: string) {
@@ -565,13 +610,13 @@ class RcxContent {
       this.inlineNames.hasOwnProperty(node.nodeName) ||
       // only check styles for elements
       // comments do not have getComputedStyle method
-      (document.nodeType == Node.ELEMENT_NODE &&
+      (document.nodeType === Node.ELEMENT_NODE &&
         (document
           .defaultView!.getComputedStyle(node as Element, null)
-          .getPropertyValue('display') == 'inline' ||
+          .getPropertyValue('display') === 'inline' ||
           document
             .defaultView!.getComputedStyle(node as Element, null)
-            .getPropertyValue('display') == 'inline-block'))
+            .getPropertyValue('display') === 'inline-block'))
     );
   }
 
@@ -602,7 +647,7 @@ class RcxContent {
     let text = '';
     let endIndex;
 
-    if (node.nodeName == '#text') {
+    if (node.nodeName === '#text') {
       const textNode = node as Text;
       endIndex = Math.min(maxLength, textNode.data.length);
       selEndList.push({ node: textNode, offset: endIndex });
@@ -636,9 +681,12 @@ class RcxContent {
   getNext(node: Node): Node | null {
     let nextNode;
 
-    if ((nextNode = node.nextSibling) != null) return nextNode;
-    if ((nextNode = node.parentNode) != null && this.isInline(nextNode))
+    if ((nextNode = node.nextSibling) !== null) {
+      return nextNode;
+    }
+    if ((nextNode = node.parentNode) !== null && this.isInline(nextNode)) {
       return this.getNext(nextNode);
+    }
 
     return null;
   }
@@ -649,14 +697,19 @@ class RcxContent {
     selEndList: { node: CharacterData; offset: number }[],
     maxLength: number
   ) {
-    if (rangeParent.nodeName == 'TEXTAREA' || rangeParent.nodeName == 'INPUT') {
+    if (
+      rangeParent.nodeName === 'TEXTAREA' ||
+      rangeParent.nodeName === 'INPUT'
+    ) {
       const pseudoTextNode = rangeParent as CharacterData &
         (HTMLTextAreaElement | HTMLInputElement);
       const endIndex = Math.min(pseudoTextNode.data.length, offset + maxLength);
       return pseudoTextNode.value.substring(offset, endIndex);
     }
 
-    if (rangeParent.nodeType != Node.TEXT_NODE) return '';
+    if (rangeParent.nodeType !== Node.TEXT_NODE) {
+      return '';
+    }
 
     const textRange = rangeParent as Text;
 
@@ -675,8 +728,9 @@ class RcxContent {
         XPathResult.BOOLEAN_TYPE,
         null
       ).booleanValue
-    )
+    ) {
       return '';
+    }
 
     const endIndex = Math.min(textRange.data.length, offset + maxLength);
     text += textRange.data.substring(offset, endIndex);
@@ -684,17 +738,18 @@ class RcxContent {
 
     let nextNode = textRange as Node | null;
     while (
-      nextNode != null &&
-      (nextNode = this.getNext(nextNode)) != null &&
+      nextNode !== null &&
+      (nextNode = this.getNext(nextNode)) !== null &&
       this.isInline(nextNode) &&
       text.length < maxLength
-    )
+    ) {
       text += this.getInlineText(
         nextNode,
         selEndList,
         maxLength - text.length,
         xpathExpr
       );
+    }
 
     return text;
   }
@@ -724,7 +779,7 @@ class RcxContent {
     }
 
     // if we have '   XYZ', where whitespace is compressed, X never seems to get selected
-    while ((u = rp.data.charCodeAt(ro)) == 32 || u == 9 || u == 10) {
+    while ((u = rp.data.charCodeAt(ro)) === 32 || u === 9 || u === 10) {
       ++ro;
       if (ro >= rp.data.length) {
         this.clearHi();
@@ -736,7 +791,7 @@ class RcxContent {
     //
     if (
       isNaN(u) ||
-      (u != 0x25cb &&
+      (u !== 0x25cb &&
         (u < 0x3001 || u > 0x30ff) &&
         (u < 0x3400 || u > 0x9fff) &&
         (u < 0xf900 || u > 0xfaff) &&
@@ -773,7 +828,9 @@ class RcxContent {
     }
     this.lastFound = [e];
 
-    if (!e.matchLen) e.matchLen = 1;
+    if (!e.matchLen) {
+      e.matchLen = 1;
+    }
     tdata.uofsNext = e.matchLen;
     tdata.uofs = ro - tdata.prevRangeOfs!;
 
@@ -821,18 +878,20 @@ class RcxContent {
     // If selEndList is empty then we're dealing with a textarea/input situation
     if (selEndList.length === 0) {
       try {
-        if (rp.nodeName == 'TEXTAREA' || rp.nodeName == 'INPUT') {
+        if (rp.nodeName === 'TEXTAREA' || rp.nodeName === 'INPUT') {
           const textNode = rp as HTMLTextAreaElement | HTMLInputElement;
           // If there is already a selected region not caused by
           // rikaikun, leave it alone
-          if (sel.toString() && tdata.selText != sel.toString()) return;
+          if (sel.toString() && tdata.selText !== sel.toString()) {
+            return;
+          }
 
           // If there is no selected region and the saved
           // textbox is the same as teh current one
           // then save the current cursor position
           // The second half of the condition let's us place the
           // cursor in another text box without having it jump back
-          if (!sel.toString() && tdata.oldTA! == textNode) {
+          if (!sel.toString() && tdata.oldTA! === textNode) {
             tdata.oldCaret = textNode.selectionStart!;
             tdata.oldTA = textNode;
           }
@@ -858,15 +917,18 @@ class RcxContent {
     // Special case for leaving a text box to an outside japanese
     // Even if we're not currently in a text area we should save
     // the last one we were in.
-    if (tdata.oldTA && !sel.toString() && tdata.oldCaret! >= 0)
+    if (tdata.oldTA && !sel.toString() && tdata.oldCaret! >= 0) {
       tdata.oldCaret = tdata.oldTA.selectionStart!;
+    }
 
     let selEnd: { node: CharacterData; offset: number };
     let offset = matchLen + ro;
 
     for (let i = 0, len = selEndList.length; i < len; i++) {
       selEnd = selEndList[i];
-      if (offset <= selEnd.offset) break;
+      if (offset <= selEnd.offset) {
+        break;
+      }
       offset -= selEnd.offset;
     }
 
@@ -874,7 +936,9 @@ class RcxContent {
     range.setStart(rp, ro);
     range.setEnd(selEnd!.node, offset);
 
-    if (sel.toString() && tdata.selText != sel.toString()) return;
+    if (sel.toString() && tdata.selText !== sel.toString()) {
+      return;
+    }
     sel.removeAllRanges();
     sel.addRange(range);
     tdata.selText = sel.toString();
@@ -902,10 +966,13 @@ class RcxContent {
       return;
     }
 
+    // TODO(melink14): Why does this replace all characters with HTML escape codes
     e.title = tdata.title!.substr(0, e.textLen).replace(/[\x00-\xff]/g, (c) => {
       return '&#' + c.charCodeAt(0) + ';';
     });
-    if (tdata.title!.length > e.textLen) e.title += '...';
+    if (tdata.title!.length > e.textLen) {
+      e.title += '...';
+    }
 
     this.lastFound = [e];
 
@@ -949,17 +1016,19 @@ class RcxContent {
   getTotalOffset(parent: Node, tNode: Node, offset: number) {
     let fChild = parent.firstChild!;
     let realO = offset;
-    if (fChild == tNode) return offset;
+    if (fChild === tNode) {
+      return offset;
+    }
     do {
       let val = 0;
-      if (fChild.nodeName == 'BR') {
+      if (fChild.nodeName === 'BR') {
         val = 1;
       } else {
         const maybeText = fChild as CharacterData;
         val = maybeText.data ? maybeText.data.length : 0;
       }
       realO += val;
-    } while ((fChild = fChild.nextSibling!) != tNode);
+    } while ((fChild = fChild.nextSibling!) !== tNode);
 
     return realO;
   }
@@ -998,8 +1067,8 @@ class RcxContent {
     // Put this in a try catch so that an exception here doesn't prevent editing due to div.
     try {
       if (
-        eventTarget.nodeName == 'TEXTAREA' ||
-        eventTarget.nodeName == 'INPUT'
+        eventTarget.nodeName === 'TEXTAREA' ||
+        eventTarget.nodeName === 'INPUT'
       ) {
         fake = this.makeFake(
           eventTarget as HTMLTextAreaElement | HTMLInputElement
@@ -1017,7 +1086,7 @@ class RcxContent {
 
       if (fake) {
         // At the end of a line, don't do anything or you just get beginning of next line
-        if (rp.data && rp.data.length == ro) {
+        if (rp.data && rp.data.length === ro) {
           document.body.removeChild(fake);
           return;
         }
@@ -1031,19 +1100,19 @@ class RcxContent {
 
       // If the range offset is equal to the node data length
       // Then we have the second case and need to correct.
-      if (rp.data && ro == rp.data.length) {
+      if (rp.data && ro === rp.data.length) {
         // A special exception is the WBR tag which is inline but doesn't
         // contain text.
-        if (rp.nextSibling && rp.nextSibling.nodeName == 'WBR') {
+        if (rp.nextSibling && rp.nextSibling.nodeName === 'WBR') {
           rp = rp.nextSibling.nextSibling;
           ro = 0;
         }
         // If we're to the right of an inline character we can use the target.
         // However, if we're just in a blank spot don't do anything.
         else if (this.isInline(eventTarget)) {
-          if (rp.parentNode == eventTarget) {
+          if (rp.parentNode === eventTarget) {
             // TODO(melink14): Figure out why this is empty
-          } else if (fake && rp.parentNode.innerText == eventTarget.value) {
+          } else if (fake && rp.parentNode.innerText === eventTarget.value) {
             // TODO(melink14): Figure out why this is empty
           } else {
             rp = eventTarget.firstChild;
@@ -1066,8 +1135,8 @@ class RcxContent {
         !fake &&
         !('form' in eventTarget) &&
         rp &&
-        rp.parentNode != eventTarget &&
-        ro == 1
+        rp.parentNode !== eventTarget &&
+        ro === 1
       ) {
         rp = this.getFirstTextChild(eventTarget);
         ro = 0;
@@ -1075,7 +1144,7 @@ class RcxContent {
 
       // Otherwise, we're off in nowhere land and we should go home.
       // offset should be 0 or max in this case.
-      else if (!fake && (!rp || rp.parentNode != eventTarget)) {
+      else if (!fake && (!rp || rp.parentNode !== eventTarget)) {
         rp = null;
         ro = -1;
       }
@@ -1088,22 +1157,30 @@ class RcxContent {
         rp.data = rp.value;
       }
 
-      if (eventTarget == tdata.prevTarget && this.isVisible()) {
+      if (eventTarget === tdata.prevTarget && this.isVisible()) {
         // console.log("exit due to same target");
         if (tdata.title) {
-          if (fake) document.body.removeChild(fake);
+          if (fake) {
+            document.body.removeChild(fake);
+          }
           return;
         }
-        if (rp == tdata.prevRangeNode && ro == tdata.prevRangeOfs) {
-          if (fake) document.body.removeChild(fake);
+        if (rp === tdata.prevRangeNode && ro === tdata.prevRangeOfs) {
+          if (fake) {
+            document.body.removeChild(fake);
+          }
           return;
         }
       }
 
-      if (fake) document.body.removeChild(fake);
+      if (fake) {
+        document.body.removeChild(fake);
+      }
     } catch (err) {
       console.log(err.message);
-      if (fake) document.body.removeChild(fake);
+      if (fake) {
+        document.body.removeChild(fake);
+      }
       return;
     }
 
@@ -1114,7 +1191,7 @@ class RcxContent {
     tdata.uofs = 0;
     tdata.uofsNext = 1;
 
-    const delay = !!ev.noDelay ? 1 : window.rikaichan!.config!.popupDelay;
+    const delay = ev.noDelay ? 1 : window.rikaichan!.config!.popupDelay;
 
     if (rp && rp.data && ro < rp.data.length) {
       this.forceKanji = ev.shiftKey ? 1 : 0;
@@ -1122,12 +1199,12 @@ class RcxContent {
       tdata.popY = ev.clientY;
       tdata.timer = window.setTimeout(
         (rangeNode: CharacterData | undefined, rangeOffset: number) => {
-          // TODO(melink14): This is using `ro` directly instead of `rangeOffset`
+          // TODO(melink14): This was using `ro` directly instead of `rangeOffset`
           // do we even need to pass arguments if we can use the closure?
           if (
             !window.rikaichan ||
-            rangeNode != window.rikaichan.prevRangeNode ||
-            ro != window.rikaichan.prevRangeOfs
+            rangeNode !== window.rikaichan.prevRangeNode ||
+            rangeOffset !== window.rikaichan.prevRangeOfs
           ) {
             return;
           }
@@ -1144,18 +1221,16 @@ class RcxContent {
     }
 
     // TODO: Consider making title translations configurable.
-    if (true) {
-      if (typeof eventTarget.title == 'string' && eventTarget.title.length) {
-        tdata.title = eventTarget.title;
-      } else if (typeof eventTarget.alt == 'string' && eventTarget.alt.length) {
-        tdata.title = eventTarget.alt;
-      }
+    if (typeof eventTarget.title === 'string' && eventTarget.title.length) {
+      tdata.title = eventTarget.title;
+    } else if (typeof eventTarget.alt === 'string' && eventTarget.alt.length) {
+      tdata.title = eventTarget.alt;
     }
 
     // FF3
-    if (eventTarget.nodeName == 'OPTION') {
+    if (eventTarget.nodeName === 'OPTION') {
       tdata.title = eventTarget.text;
-    } else if (eventTarget.nodeName == 'SELECT') {
+    } else if (eventTarget.nodeName === 'SELECT') {
       tdata.title = eventTarget.options[eventTarget.selectedIndex].text;
     }
 
@@ -1189,7 +1264,7 @@ class RcxContent {
 const rcxContent = new RcxContent();
 
 // Event Listeners
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request) => {
   switch (request.type) {
     case 'enable':
       rcxContent.enableTab(request.config);
