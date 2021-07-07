@@ -44,7 +44,7 @@
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
-    "@types/byline": "^4.2.32",
+    "@types/byline": "^4.2.33",
     "@types/chrome": "0.0.145",
     "@types/copy-webpack-plugin": "^8.0.0",
     "@types/node": "^15.14.0",
