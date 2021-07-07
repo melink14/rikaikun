@@ -39,7 +39,7 @@ const config = {
   optimize: {
     // Chrome 80 required for Optional chaining
     // See https://github.com/evanw/esbuild/blob/master/internal/compat/js_table.go
-    target: 'chrome80',
+    target: 'chrome89',
   },
 };
 
