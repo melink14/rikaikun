@@ -12,7 +12,7 @@ async function createRcxMainPromise(): Promise<RcxMain> {
   const dict = await RcxDict.create(config);
   return RcxMain.create(dict, config);
 }
-const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
+const rcxMainPromise: RcxMain = await createRcxMainPromise();
 
 chrome.browserAction.onClicked.addListener(async (tab) => {
   const rcxMain = await rcxMainPromise;
