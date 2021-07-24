@@ -1,5 +1,8 @@
+import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
+import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
+import percySnapshot from '@percy/puppeteer';
 import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
@@ -109,26 +112,69 @@ class SpecReporter {
   }
 }
 
-/** @type {import('@web/test-runner').TestRunnerConfig} */
-export default {
+function percyPlugin() {
+  return {
+    name: 'percy-plugin',
+
+    async executeCommand({ command, session, payload }) {
+      if (command === 'takePercySnapshot') {
+        if (session.browser.type === 'puppeteer') {
+          /** @type {import('@web/test-runner-chrome').ChromeLauncher} */
+          const browser = session.browser;
+          const page = browser.getPage(session.id);
+          await percySnapshot(page, payload.name, { widths: [1280] });
+          return true;
+        }
+      }
+    },
+  };
+}
+
+/** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
+const defaultConfig = {
   coverageConfig: {
     exclude: ['**/snowpack/**/*', '**/*_test.ts*'],
   },
+
   browsers: [
     puppeteerLauncher({
       launchOptions: {
         executablePath: '/usr/bin/google-chrome',
         headless: true,
-        // disable-gpu required for chrome to run for some reason.
+        // disable-gpu required if no X server is available.
+        // Leave it off by default, as it may add variance to visual tests.
         args: ['--disable-gpu', '--remote-debugging-port=9333'],
       },
     }),
   ],
-  plugins: [snowpackWebTestRunner()],
+  plugins: [
+    snowpackWebTestRunner(),
+    percyPlugin(),
+    visualRegressionPlugin({
+      update: process.argv.includes('--update-visual-baseline'),
+      // When not running in Github Actions, save to an unpushed local folder.
+      baseDir: process.env.CI ? 'screenshots' : 'local-screenshots',
+    }),
+    {
+      // Inline plugin to allow passing command line arguments to browser tests.
+      name: 'env-vars',
+      serve(context) {
+        if (context.path === '/test/environment.js') {
+          return `export default { percyEnabled: ${process.argv.includes(
+            '--percy'
+          )} }`;
+        }
+      },
+    },
+  ],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during
   // file initialization in rikaikun.
   testRunnerHtml: (testFramework) =>
     `<html>
+      <head>
+        <!-- Required for Japanese fonts to work in Percy. -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      </head>
       <body>
         <script type="module" src="test/chrome_stubs.js"></script>
         <script type="module" src="${testFramework}"></script>
@@ -141,3 +187,52 @@ export default {
     new SpecReporter().specReporter(),
   ],
 };
+
+/** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
+let config = defaultConfig;
+
+if (process.argv.includes('--browserstack')) {
+  config = {
+    ...config,
+    testFramework: {
+      config: {
+        ui: 'bdd',
+        timeout: '40000',
+      },
+    },
+    browserStartTimeout: 1000 * 60 * 1,
+    testsStartTimeout: 1000 * 60 * 1,
+    testsFinishTimeout: 1000 * 60 * 5,
+    // how many browsers to run concurrently in browserstack. increasing this significantly
+    // reduces testing time, but your subscription might limit concurrent connections
+    concurrentBrowsers: 2,
+    // Set concurrency to 1 so tests don't interfere during screenshots.
+    concurrency: 1,
+    browsers: [
+      browserstackLauncher({
+        capabilities: {
+          browserName: 'Chrome',
+          browserVersion: 'latest',
+          os: 'windows',
+          os_version: '10',
+          // Used when creating the browser directory for screenshots
+          platform: 'windows 10',
+          // your username and key for browserstack, you can get this from your browserstack account
+          // it's recommended to store these as environment variables
+          'browserstack.user': process.env.BROWSER_STACK_USERNAME,
+          'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY,
+
+          project: 'rikaikun',
+          name: 'CI Testing',
+          // if you are running tests in a CI, the build id might be available as an
+          // environment variable. this is useful for identifying test runs
+          // this is for example the name for github actions
+          build: `build ${process.env.GITHUB_RUN_NUMBER || 'local'}`,
+          'browserstack.console': 'verbose',
+        },
+      }),
+    ],
+  };
+}
+
+export default config;
