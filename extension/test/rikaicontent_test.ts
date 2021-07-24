@@ -1,6 +1,7 @@
 import { Config } from '../configuration';
 import { TestOnlyRcxContent } from '../rikaicontent';
 import { expect, use } from '@esm-bundle/chai';
+import { visualDiff } from '@web/test-runner-visual-regression';
 import chrome from 'sinon-chrome';
 import simulant from 'simulant';
 import sinon from 'sinon';
@@ -9,13 +10,38 @@ import sinonChai from 'sinon-chai';
 use(sinonChai);
 
 let rcxContent = new TestOnlyRcxContent();
+let onMessageHandler: (
+  request: {},
+  sender: { tab: { id: number } },
+  response: Function
+) => Promise<void>;
+let config: Config;
 
-describe('RcxContent', function () {
-  beforeEach(function () {
+describe('RcxContent', () => {
+  before(async () => {
+    // When chrome.storage.sync.get is called set config to first arg
+    chrome.storage.sync.get.callsFake((defaultConfig: Config, callback) => {
+      config = defaultConfig;
+      callback(defaultConfig);
+    });
+    // stub sinon chrome getURL method to return the path it's given
+    chrome.extension.getURL.returnsArg(0);
+
+    // Imports only run once so run in `before` to make it deterministic.
+    await (
+      await import('../background')
+    ).TestOnlyRxcMainPromise;
+    // Save a reference to the onMessage addListener callback
+    onMessageHandler = chrome.runtime.onMessage.addListener.secondCall.args[0];
+  });
+  beforeEach(() => {
     chrome.reset();
     rcxContent = new TestOnlyRcxContent();
     // Default enable rcxContent since no tests care about that now.
-    rcxContent.enableTab({ showOnKey: '' } as Config);
+    rcxContent.enableTab(config);
+    chrome.runtime.sendMessage.callsFake(async (request, response) => {
+      await onMessageHandler(request, { tab: { id: 0 } }, response);
+    });
   });
   describe('.show', function () {
     describe('when given Japanese word interrupted with text wrapped by `display: none`', function () {
@@ -86,18 +112,34 @@ describe('RcxContent', function () {
       const span = insertHtmlIntoDomAndReturnFirstTextNode(
         '<span>先生test</span>'
       ) as HTMLSpanElement;
+      chrome.extension.getURL.returnsArg(0);
 
       simulant.fire(span, 'mousemove', {
         clientX: span.offsetLeft,
         clientY: span.offsetTop,
       });
       // Tick the clock forward to account for the popup delay.
-      clock.tick(1);
+      clock.tick(150);
+      const processHtml = rcxContent.processHtml;
+      let promiseResolve: Function;
+      const promise = new Promise((resolve) => {
+        promiseResolve = resolve;
+      });
+      sinon.stub(rcxContent, 'processHtml').callsFake((html: string) => {
+        const ret = processHtml.call(rcxContent, html);
+        promiseResolve();
+        return ret;
+      });
+      await promise;
 
       expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
         type: 'xsearch',
         text: '先生test',
       });
+      await visualDiff(
+        document.querySelector<HTMLDivElement>('#rikaichan-window')!,
+        'rikaichan-window'
+      );
     });
   });
 

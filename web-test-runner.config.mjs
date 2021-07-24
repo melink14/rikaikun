@@ -1,5 +1,6 @@
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
+import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
@@ -124,7 +125,12 @@ export default {
       },
     }),
   ],
-  plugins: [snowpackWebTestRunner()],
+  plugins: [
+    snowpackWebTestRunner(),
+    visualRegressionPlugin({
+      update: process.argv.includes('--update-visual-baseline'),
+    }),
+  ],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during
   // file initialization in rikaikun.
   testRunnerHtml: (testFramework) =>
