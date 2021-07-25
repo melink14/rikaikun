@@ -18,6 +18,8 @@ jobs:
         uses: actions/setup-node@v2.3.0
         with:
           node-version: '14'
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
       - run: npm ci
       - run: npm run presubmit:coverage
       - name: Upload coverage to Codecov
