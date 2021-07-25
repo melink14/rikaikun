@@ -1,5 +1,6 @@
 import { Config } from '../configuration';
 import { TestOnlyRcxContent } from '../rikaicontent';
+import { executeServerCommand } from '@web/test-runner-commands';
 import { expect, use } from '@esm-bundle/chai';
 import { visualDiff } from '@web/test-runner-visual-regression';
 import chrome from 'sinon-chrome';
@@ -144,6 +145,9 @@ describe('RcxContent', () => {
         document.querySelector<HTMLDivElement>('#rikaichan-window')!,
         'rikaichan-window'
       );
+      await executeServerCommand('takePercySnapshot', {
+        id: 'rikaichan-window',
+      });
     });
   });
 
