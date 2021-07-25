@@ -36,6 +36,7 @@ describe('RcxContent', () => {
   });
   beforeEach(() => {
     chrome.reset();
+    chrome.extension.getURL.returnsArg(0);
     rcxContent = new TestOnlyRcxContent();
     // Default enable rcxContent since no tests care about that now.
     rcxContent.enableTab(config);
@@ -43,9 +44,12 @@ describe('RcxContent', () => {
       await onMessageHandler(request, { tab: { id: 0 } }, response);
     });
   });
-  describe('.show', function () {
-    describe('when given Japanese word interrupted with text wrapped by `display: none`', function () {
-      it('sends "xsearch" message with invisible text omitted', function () {
+  afterEach(() => {
+    rcxContent.disableTab();
+  });
+  describe('.show', () => {
+    describe('when given Japanese word interrupted with text wrapped by `display: none`', () => {
+      it('sends "xsearch" message with invisible text omitted', () => {
         const span = insertHtmlIntoDomAndReturnFirstTextNode(
           '<span>試<span style="display:none">test</span>す</span>'
         );
@@ -160,7 +164,8 @@ describe('RcxContent', () => {
       ).to.equal('redtest');
     });
 
-    it('adds link tag pointing to "css/popup.css" to <head>', function () {
+    it('adds link tag pointing to "css/popup.css" to <head>', () => {
+      chrome.extension.getURL.reset();
       chrome.extension.getURL.callsFake((path: string) => {
         return `http://fakebaseurl/${path}`;
       });
