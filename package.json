@@ -18,7 +18,7 @@
     "lint": "gts check '**/*.mjs' '**/*.ts' '**/*.js' && npm run prettier:check --silent && npm run stylelint:check --silent",
     "presubmit:base": "npm run lint && npm run checktypes && npm run build",
     "presubmit": "npm run presubmit:base && npm test",
-    "presubmit:coverage": "npm run presubmit:base && npm test -- --coverage",
+    "presubmit:coverage": "npm run presubmit:base && percy exec -- npm test -- --coverage",
     "prettier:base": "prettier --config .prettierrc.js --ignore-path '.gitignore' .",
     "prettier:check": "npm run prettier:base --silent -- --check",
     "prettier:format": "npm run prettier:base --silent -- --write",
