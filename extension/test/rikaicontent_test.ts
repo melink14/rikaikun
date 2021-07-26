@@ -1,8 +1,7 @@
 import { Config } from '../configuration';
 import { TestOnlyRcxContent } from '../rikaicontent';
-import { executeServerCommand } from '@web/test-runner-commands';
 import { expect, use } from '@esm-bundle/chai';
-//import { visualDiff } from '@web/test-runner-visual-regression';
+import { visualDiff } from '@web/test-runner-visual-regression';
 import chrome from 'sinon-chrome';
 import simulant from 'simulant';
 import sinon from 'sinon';
@@ -18,8 +17,8 @@ let onMessageHandler: (
 ) => Promise<void>;
 let config: Config;
 
-describe('RcxContent', () => {
-  before(async () => {
+describe('RcxContent', function () {
+  before(async function () {
     // When chrome.storage.sync.get is called set config to first arg
     chrome.storage.sync.get.callsFake((defaultConfig: Config, callback) => {
       config = defaultConfig;
@@ -29,13 +28,11 @@ describe('RcxContent', () => {
     chrome.extension.getURL.returnsArg(0);
 
     // Imports only run once so run in `before` to make it deterministic.
-    await (
-      await import('../background')
-    ).TestOnlyRxcMainPromise;
+    await (await import('../background')).TestOnlyRxcMainPromise;
     // Save a reference to the onMessage addListener callback
     onMessageHandler = chrome.runtime.onMessage.addListener.secondCall.args[0];
   });
-  beforeEach(() => {
+  beforeEach(function () {
     chrome.reset();
     chrome.extension.getURL.returnsArg(0);
     rcxContent = new TestOnlyRcxContent();
@@ -45,12 +42,12 @@ describe('RcxContent', () => {
       await onMessageHandler(request, { tab: { id: 0 } }, response);
     });
   });
-  afterEach(() => {
+  afterEach(function () {
     rcxContent.disableTab();
   });
-  describe('.show', () => {
-    describe('when given Japanese word interrupted with text wrapped by `display: none`', () => {
-      it('sends "xsearch" message with invisible text omitted', () => {
+  describe('.show', function () {
+    describe('when given Japanese word interrupted with text wrapped by `display: none`', function () {
+      it('sends "xsearch" message with invisible text omitted', function () {
         const span = insertHtmlIntoDomAndReturnFirstTextNode(
           '<span>試<span style="display:none">test</span>す</span>'
         );
@@ -141,13 +138,49 @@ describe('RcxContent', () => {
         type: 'xsearch',
         text: '先生test',
       });
-      // await visualDiff(
-      //   document.querySelector<HTMLDivElement>('#rikaichan-window')!,
-      //   'rikaichan-window'
-      // );
-      await executeServerCommand('takePercySnapshot', {
-        id: 'rikaichan-window',
+      await visualDiff(
+        document.querySelector<HTMLDivElement>('#rikaichan-window')!,
+        'rikaichan-window'
+      );
+      // await executeServerCommand('takePercySnapshot', {
+      //   id: 'rikaichan-window',
+      // });
+    });
+    it('triggers xsearch dark xsearch message', async function () {
+      rcxContent.disableTab();
+      rcxContent.enableTab({ ...config, ...{ popupcolor: 'black' } });
+      const clock = sinon.useFakeTimers();
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>先生test</span>'
+      ) as HTMLSpanElement;
+      chrome.extension.getURL.returnsArg(0);
+
+      simulant.fire(span, 'mousemove', {
+        clientX: span.offsetLeft,
+        clientY: span.offsetTop,
       });
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(150);
+      const processHtml = rcxContent.processHtml;
+      let promiseResolve: Function;
+      const promise = new Promise((resolve) => {
+        promiseResolve = resolve;
+      });
+      sinon.stub(rcxContent, 'processHtml').callsFake((html: string) => {
+        const ret = processHtml.call(rcxContent, html);
+        promiseResolve();
+        return ret;
+      });
+      await promise;
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: '先生test',
+      });
+      await visualDiff(
+        document.querySelector<HTMLDivElement>('#rikaichan-window')!,
+        'rikaichan-window-dark'
+      );
     });
   });
 
@@ -168,7 +201,7 @@ describe('RcxContent', () => {
       ).to.equal('redtest');
     });
 
-    it('adds link tag pointing to "css/popup.css" to <head>', () => {
+    it('adds link tag pointing to "css/popup.css" to <head>', function () {
       chrome.extension.getURL.reset();
       chrome.extension.getURL.callsFake((path: string) => {
         return `http://fakebaseurl/${path}`;

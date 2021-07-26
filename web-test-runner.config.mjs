@@ -1,7 +1,6 @@
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import percySnapshot from '@percy/puppeteer';
 import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
@@ -111,24 +110,6 @@ class SpecReporter {
   }
 }
 
-function myPlugin() {
-  return {
-    name: 'my-plugin',
-
-    async executeCommand({ command, session, payload }) {
-      if (command === 'takePercySnapshot') {
-        if (session.browser.type === 'puppeteer') {
-          /** @type {import('@web/test-runner-chrome').ChromeLauncher} */
-          const browser = session.browser;
-          const page = browser.getPage(session.id);
-          await percySnapshot(page, payload.id);
-          return true;
-        }
-      }
-    },
-  };
-}
-
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 export default {
   testFramework: {
@@ -152,9 +133,8 @@ export default {
   ],
   plugins: [
     snowpackWebTestRunner(),
-    myPlugin(),
     visualRegressionPlugin({
-      update: process.argv.includes('--update-visual-baseline'),
+      update: true,
     }),
   ],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during

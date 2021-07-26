@@ -24,7 +24,7 @@
     "prettier:format": "npm run prettier:base --silent -- --write",
     "stylelint:check": "stylelint '**/*.css' '**/*.ts' --ignore-path '.gitignore'",
     "stylelint:fix": "npm run stylelint:check --silent -- --fix",
-    "test": "percy exec -- wtr \"extension/test/*test*\"",
+    "test": "wtr \"extension/test/*test*\"",
     "test:percy": "percy exec -- npm run test",
     "test:watch": "npm run test -- --watch",
     "update-db": "ts-node --project tsconfig_node.json utils/update-db"
@@ -54,7 +54,6 @@
     "@commitlint/config-conventional": "^13.1.0",
     "@esm-bundle/chai": "^4.3.4",
     "@percy/cli": "^1.0.0-beta.60",
-    "@percy/puppeteer": "^2.0.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
