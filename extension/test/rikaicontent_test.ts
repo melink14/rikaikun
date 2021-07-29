@@ -19,6 +19,8 @@ let config: Config;
 
 describe('RcxContent', function () {
   before(async function () {
+    // Loading real dictionaries is slow so increase the timeout.
+    this.timeout(5000);
     // When chrome.storage.sync.get is called set config to first arg
     chrome.storage.sync.get.callsFake((defaultConfig: Config, callback) => {
       config = defaultConfig;

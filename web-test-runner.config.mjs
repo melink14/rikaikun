@@ -112,12 +112,6 @@ class SpecReporter {
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 export default {
-  testFramework: {
-    config: {
-      ui: 'bdd',
-      timeout: '20000000',
-    },
-  },
   coverageConfig: {
     exclude: ['**/snowpack/**/*', '**/*.test.ts*'],
   },
