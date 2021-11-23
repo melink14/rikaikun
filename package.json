@@ -45,11 +45,11 @@
   },
   "homepage": "https://github.com/melink14/rikaikun#readme",
   "dependencies": {
-    "lit": "^2.0.0-rc.3",
+    "lit": "^2.0.2",
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
+    "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@esm-bundle/chai": "^4.3.4",
     "@semantic-release/changelog": "^5.0.1",
@@ -57,7 +57,7 @@
     "@semantic-release/git": "^9.0.0",
     "@snowpack/web-test-runner-plugin": "^0.2.2",
     "@types/byline": "^4.2.33",
-    "@types/chai": "^4.2.21",
+    "@types/chai": "^4.2.22",
     "@types/chrome": "0.0.148",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.4.4",
@@ -67,13 +67,13 @@
     "@web/test-runner": "^0.13.22",
     "@web/test-runner-puppeteer": "^0.10.4",
     "byline": "^5.0.0",
-    "conventional-changelog-conventionalcommits": "^4.6.0",
+    "conventional-changelog-conventionalcommits": "^4.6.1",
     "csv-parse": "^5.0.3",
     "esbuild": "^0.13.15",
     "eslint": "^7.32.0",
-    "eslint-plugin-lit": "^1.5.1",
+    "eslint-plugin-lit": "^1.6.1",
     "eslint-plugin-mocha": "^9.0.0",
-    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-tsdoc": "^0.2.14",
     "gts": "^3.1.0",
@@ -95,7 +95,7 @@
     "stylelint-order": "^4.1.0",
     "ts-lit-plugin": "^1.2.1",
     "ts-node": "^10.4.0",
-    "typescript": "^4.4.2"
+    "typescript": "^4.5.2"
   },
   "resolutions": {
     "esbuild": "0.13.15"
