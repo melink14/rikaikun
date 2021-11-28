@@ -1,0 +1,29 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Lint PR Title and Body
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.0
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3.0.0
+        with:
+          node-version: '16'
+      - run: npm ci
+        name: Install needed commitlint config
+      - uses: melink14/action-lint-pull-request-title@master
+        with:
+          include_pr_body: 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
