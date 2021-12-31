@@ -1,9 +1,32 @@
 import { defaultReporter } from '@web/test-runner';
+import { esbuildPlugin } from '@web/dev-server-esbuild';
+import { importMapsPlugin } from '@web/dev-server-import-maps';
+import { install, printStats } from 'esinstall';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
-import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
+import fs from 'fs';
+//import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
 process.env.NODE_ENV = 'test';
+
+if (!fs.existsSync('./test_modules/import-map.json')) {
+  const { stats } = await install(['sinon-chrome', 'sinon-chai', 'simulant'], {
+    dest: './test_modules',
+  });
+
+  console.log(printStats(stats));
+}
+
+const map = JSON.parse(
+  fs.readFileSync('./test_modules/import-map.json', {
+    encoding: 'utf8',
+    flag: 'r',
+  })
+);
+
+for (const i in map.imports) {
+  map.imports[i] = map.imports[i].replace('./', './test_modules/');
+}
 
 /**
  * Test result reporter which supports detailed output of chai/jasmine/etc test
@@ -111,6 +134,7 @@ class SpecReporter {
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 export default {
+  nodeResolve: true,
   coverageConfig: {
     exclude: ['**/snowpack/**/*', '**/*.test.ts*'],
   },
@@ -124,13 +148,16 @@ export default {
       },
     }),
   ],
-  plugins: [snowpackWebTestRunner()],
+  plugins: [
+    importMapsPlugin({ inject: { importMap: map } }),
+    esbuildPlugin({ ts: true, target: 'esnext' }),
+  ],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during
   // file initialization in rikaikun.
   testRunnerHtml: (testFramework) =>
     `<html>
       <body>
-        <script type="module" src="test/chrome_stubs.js"></script>
+        <script type="module" src="extension/test/chrome_stubs.ts"></script>
         <script type="module" src="${testFramework}"></script>
       </body>
     </html>`,

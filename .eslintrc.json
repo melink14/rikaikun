@@ -13,7 +13,7 @@
     "webextensions": true
   },
   "plugins": ["import", "eslint-plugin-tsdoc", "sort-imports-es6-autofix"],
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["dist", "test_modules"],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -46,7 +46,7 @@
       ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": "./tsconfig.json"
+        "project": ["./tsconfig.json", "./tsconfig_node.json"]
       },
       "rules": {
         // TODO(#792): Remove/evaluate following rules once errors are fixed.
@@ -62,6 +62,17 @@
           { "allow": ["private-constructors"] }
         ],
         "tsdoc/syntax": "error"
+      },
+      "settings": {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+          "typescript": {
+            // use an array
+            "project": ["tsconfig.json", "tsconfig_node.json"]
+          }
+        }
       }
     },
     {
@@ -69,13 +80,14 @@
       "files": [
         "web-test-runner.config.js",
         "utils/*",
-        "snowpack.config.cjs",
         "commitlint.config.cjs",
         ".prettierrc.cjs"
       ],
       "env": {
+        "es2021": true,
         "node": true
       },
+      "parserOptions": { "ecmaVersion": "latest" },
       "settings": {
         "import/resolver": {
           "node": {

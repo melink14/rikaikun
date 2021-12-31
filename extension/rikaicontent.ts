@@ -39,8 +39,8 @@
 
 */
 
-import { Config } from './configuration';
-import { DictEntryData } from './data';
+import { Config } from './configuration.js';
+import { DictEntryData } from './data.js';
 
 declare global {
   interface Window {
