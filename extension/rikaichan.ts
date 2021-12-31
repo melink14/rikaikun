@@ -39,8 +39,8 @@
 
 */
 
-import { Config } from './configuration';
-import { DictEntryData, RcxDict } from './data';
+import { Config } from './configuration.js';
+import { DictEntryData, RcxDict } from './data.js';
 
 class RcxMain {
   private static instance: RcxMain;

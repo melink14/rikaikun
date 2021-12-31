@@ -1,5 +1,5 @@
 import 'lit-toast/lit-toast.js';
-import { Config, configPromise } from './configuration';
+import { Config, configPromise } from './configuration.js';
 import { LitElement, TemplateResult, css, html } from 'lit';
 import { until } from 'lit/directives/until.js';
 

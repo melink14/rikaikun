@@ -1,7 +1,7 @@
-import { RcxDict } from './data';
-import { RcxMain } from './rikaichan';
-import { configPromise } from './configuration';
-import { tts } from './texttospeech';
+import { RcxDict } from './data.js';
+import { RcxMain } from './rikaichan.js';
+import { configPromise } from './configuration.js';
+import { tts } from './texttospeech.js';
 
 /**
  * Returns a promise for fully initialized RcxMain. Async due to config and
