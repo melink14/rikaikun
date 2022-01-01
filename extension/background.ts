@@ -12,6 +12,7 @@ async function createRcxMainPromise(): Promise<RcxMain> {
   const dict = await RcxDict.create(config);
   return RcxMain.create(dict, config);
 }
+
 const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
 chrome.browserAction.onClicked.addListener((tab) => {
@@ -28,15 +29,16 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 });
 
 // Passing a promise to `addListener` here allows us to await the promise in tests.
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+
 chrome.runtime.onMessage.addListener(async (request, sender, response) => {
   const rcxMain = await rcxMainPromise;
   switch (request.type) {
     case 'enable?':
       console.log('enable?');
       if (sender.tab === undefined) {
-        throw TypeError('sender.tab is always defined here.');
+        throw new TypeError('sender.tab is always defined here.');
       }
+
       rcxMain.onTabSelect(sender.tab.id);
       break;
     case 'forceDocsHtml?':
@@ -51,6 +53,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, response) => {
           `,
         });
       }
+
       break;
     case 'xsearch':
       console.log('xsearch');

@@ -14,12 +14,12 @@ class SpecReporter {
   constructor() {
     // TODO(https://github.com/eslint/eslint/issues/14343): Change to class field when eslint supports it.
     this.color = {
-      reset: '\x1b[0m',
-      cyan: '\x1b[36m',
-      red: '\x1b[31m',
-      green: '\x1b[32m',
-      dim: '\x1b[2m',
-      yellow: '\x1b[33m',
+      reset: '\u001B[0m',
+      cyan: '\u001B[36m',
+      red: '\u001B[31m',
+      green: '\u001B[32m',
+      dim: '\u001B[2m',
+      yellow: '\u001B[33m',
     };
   }
 
@@ -32,6 +32,7 @@ class SpecReporter {
     if (suite === undefined) {
       return 'Suite is undefined; top level error';
     }
+
     let results = `${indent}${suite.name}\n`;
     results +=
       suite.tests
@@ -47,8 +48,10 @@ class SpecReporter {
               test.error.message = 'Test failed with no error message';
               test.error.stack = '<no stack trace>';
             }
+
             result += `${this.color.red} ${test.name}\n\n${test.error.message}\n${test.error.stack}`;
           }
+
           result +=
             test.duration > 100
               ? ` ${this.color.reset}${this.color.red}(${test.duration}ms)`
@@ -65,6 +68,7 @@ class SpecReporter {
         .map((suite) => this.outputSuite(suite, indent + '  '))
         .join('\n');
     }
+
     return results;
   }
 
@@ -75,14 +79,17 @@ class SpecReporter {
    */
   async generateTestReport(testFile, sessionsForTestFile) {
     let results = '';
-    sessionsForTestFile.forEach((session) => {
+    for (const session of sessionsForTestFile) {
       if (session.testResults === undefined) {
-        return session.status + '\n\n';
+        session.status + '\n\n';
+        continue;
       }
+
       results += session.testResults.suites
         .map((suite) => this.outputSuite(suite, ''))
         .join('\n\n');
-    });
+    }
+
     return results;
   }
 
@@ -97,6 +104,7 @@ class SpecReporter {
         if (!reportResults) {
           return;
         }
+
         const testReport = await this.generateTestReport(
           testFile,
           sessionsForTestFile
@@ -119,7 +127,7 @@ export default {
       launchOptions: {
         executablePath: '/usr/bin/google-chrome',
         headless: true,
-        // disable-gpu required for chrome to run for some reason.
+        // Disable-gpu required for chrome to run for some reason.
         args: ['--disable-gpu', '--remote-debugging-port=9333'],
       },
     }),

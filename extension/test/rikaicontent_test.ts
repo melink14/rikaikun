@@ -1,10 +1,10 @@
-import { Config } from '../configuration';
-import { TestOnlyRcxContent } from '../rikaicontent';
 import { expect, use } from '@esm-bundle/chai';
 import chrome from 'sinon-chrome';
 import simulant from 'simulant';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import { TestOnlyRcxContent } from '../rikaicontent';
+import { Config } from '../configuration';
 
 use(sinonChai);
 
@@ -111,7 +111,7 @@ describe('RcxContent', function () {
 
       rcxContent.showPopup('<span></span>');
 
-      // expect rikaikun window to have data-theme attribute set to config popupcolor value
+      // Expect rikaikun window to have data-theme attribute set to config popupcolor value
       expect(
         document.querySelector<HTMLDivElement>('#rikaichan-window')!.dataset
           .theme
@@ -144,7 +144,7 @@ function executeShowForGivenNode(
 ): void {
   rcxContent.show(
     {
-      // config is a required property but not needed for testing.
+      // Config is a required property but not needed for testing.
       config: {} as Config,
       prevRangeNode: rcxContent.getFirstTextChild(node) as Text,
       prevRangeOfs: 0,

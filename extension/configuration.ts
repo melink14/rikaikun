@@ -44,8 +44,8 @@ async function getStorage(): Promise<MutableConfig> {
 
 function isLegacyKanjiInfo(
   kanjiInfo: unknown[] | Record<string, unknown>
-): kanjiInfo is { [kanjiInfoCode: string]: boolean } {
-  return !(kanjiInfo instanceof Array);
+): kanjiInfo is Record<string, boolean> {
+  return !Array.isArray(kanjiInfo);
 }
 
 async function applyMigrations(storageConfig: MutableConfig): Promise<void> {
@@ -57,6 +57,7 @@ async function applyMigrations(storageConfig: MutableConfig): Promise<void> {
         shouldDisplay: storageConfig.kanjiInfo[info.code],
       });
     }
+
     storageConfig.kanjiInfo = newKanjiInfo;
     await new Promise<void>((resolve) => {
       chrome.storage.sync.set(storageConfig, resolve);
@@ -76,6 +77,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') {
     return;
   }
+
   void (async () => {
     const config = await configPromise;
 

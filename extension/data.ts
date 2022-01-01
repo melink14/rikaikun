@@ -52,7 +52,7 @@ const defaultDictEntryData = {
   misc: {} as Record<string, string>,
   eigo: '',
   hasNames: false,
-  data: [] as { entry: string; reason: string | undefined }[],
+  data: [] as Array<{ entry: string; reason: string | undefined }>,
   hasMore: false,
   title: '',
   index: 0,
@@ -108,6 +108,7 @@ class RcxDict {
       RcxDict.instance = new RcxDict(config);
       await RcxDict.instance.init();
     }
+
     return RcxDict.instance;
   }
 
@@ -117,7 +118,7 @@ class RcxDict {
   }
 
   async init() {
-    const started = +new Date();
+    const started = Date.now();
 
     // TODO(melink14): This waits on name data eagerly which slows down init, consider
     // making it lazy since people often don't use the name dictionary.
@@ -128,22 +129,22 @@ class RcxDict {
       this.fileReadAsync(chrome.extension.getURL('data/names.idx')),
     ]);
 
-    const ended = +new Date();
+    const ended = Date.now();
     console.log('rcxDict main then in ' + (ended - started));
   }
 
-  fileReadAsync(url: string): Promise<string> {
+  async fileReadAsync(url: string): Promise<string> {
     return new Promise((resolve) => {
-      const req = new XMLHttpRequest();
+      const request = new XMLHttpRequest();
 
-      req.onreadystatechange = function () {
-        if (req.readyState === 4) {
-          resolve(req.responseText);
+      request.addEventListener('readystatechange', function () {
+        if (request.readyState === 4) {
+          resolve(request.responseText);
         }
-      };
+      });
 
-      req.open('GET', url, true);
-      req.send(null);
+      request.open('GET', url, true);
+      request.send(null);
     });
   }
 
@@ -155,10 +156,10 @@ class RcxDict {
   }
 
   fileRead(url: string) {
-    const req = new XMLHttpRequest();
-    req.open('GET', url, false);
-    req.send(null);
-    return req.responseText;
+    const request = new XMLHttpRequest();
+    request.open('GET', url, false);
+    request.send(null);
+    return request.responseText;
   }
 
   fileReadArray(name: string) {
@@ -169,6 +170,7 @@ class RcxDict {
     while (a.length > 0 && a[a.length - 1].length === 0) {
       a.pop();
     }
+
     return a;
   }
 
@@ -202,7 +204,7 @@ class RcxDict {
       fromLength: currentLength,
       rules: [],
     };
-    // i = 1: skip header
+    // I = 1: skip header
     for (let i = 1; i < buffer.length; ++i) {
       const ruleOrReason = buffer[i].split('\t');
 
@@ -212,8 +214,8 @@ class RcxDict {
         const o: DeinflectionRule = {
           from: ruleOrReason[0],
           to: ruleOrReason[1],
-          typeMask: parseInt(ruleOrReason[2]),
-          reasonIndex: parseInt(ruleOrReason[3]),
+          typeMask: Number.parseInt(ruleOrReason[2]),
+          reasonIndex: Number.parseInt(ruleOrReason[3]),
         };
 
         if (currentLength !== o.from.length) {
@@ -221,6 +223,7 @@ class RcxDict {
           group = { fromLength: currentLength, rules: [] };
           this.difRules.push(group);
         }
+
         group.rules.push(o);
       }
     }
@@ -247,15 +250,16 @@ class RcxDict {
         return data.substring(i, data.indexOf('\n', mi + 1));
       }
     }
+
     return null;
   }
 
   deinflect(word: string) {
     const r = [];
-    const have: { [key: string]: number } = {};
+    const have: Record<string, number> = {};
     let o;
 
-    o = { word: word, type: 0xff, reason: '' } as Deinflection;
+    o = { word, type: 0xff, reason: '' } as Deinflection;
     r.push(o);
     have[word] = 0;
 
@@ -266,35 +270,39 @@ class RcxDict {
     i = 0;
     do {
       word = r[i].word;
-      const wordLen = word.length;
-      const type = r[i].type;
+      const wordLength = word.length;
+      const { type } = r[i];
 
       for (j = 0; j < this.difRules.length; ++j) {
         const g = this.difRules[j];
-        if (g.fromLength <= wordLen) {
-          const end = word.substr(-g.fromLength);
+        if (g.fromLength <= wordLength) {
+          const end = word.slice(-g.fromLength);
           for (k = 0; k < g.rules.length; ++k) {
             const rule = g.rules[k];
             if (type & rule.typeMask && end === rule.from) {
               const newWord =
-                word.substr(0, word.length - rule.from.length) + rule.to;
+                word.slice(0, Math.max(0, word.length - rule.from.length)) +
+                rule.to;
               if (newWord.length <= 1) {
                 continue;
               }
-              o = { word: word, type: 0xff, reason: '' } as Deinflection;
+
+              o = { word, type: 0xff, reason: '' } as Deinflection;
               if (have[newWord] !== undefined) {
                 o = r[have[newWord]];
                 o.type |= rule.typeMask >> 8;
 
                 continue;
               }
+
               have[newWord] = r.length;
-              if (r[i].reason.length) {
+              if (r[i].reason.length > 0) {
                 o.reason =
                   this.difReasons[rule.reasonIndex] + ' &lt; ' + r[i].reason;
               } else {
                 o.reason = this.difReasons[rule.reasonIndex];
               }
+
               o.type = rule.typeMask >> 8;
               o.word = newWord;
               r.push(o);
@@ -307,24 +315,25 @@ class RcxDict {
     return r;
   }
 
-  // katakana -> hiragana conversion tables
+  // Katakana -> hiragana conversion tables
   ch: number[] = [
-    0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085, 0x3087,
-    0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a, 0x304b, 0x304d,
-    0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059, 0x305b, 0x305d, 0x305f,
-    0x3061, 0x3064, 0x3066, 0x3068, 0x306a, 0x306b, 0x306c, 0x306d, 0x306e,
-    0x306f, 0x3072, 0x3075, 0x3078, 0x307b, 0x307e, 0x307f, 0x3080, 0x3081,
-    0x3082, 0x3084, 0x3086, 0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d,
-    0x308f, 0x3093,
+    0x30_92, 0x30_41, 0x30_43, 0x30_45, 0x30_47, 0x30_49, 0x30_83, 0x30_85,
+    0x30_87, 0x30_63, 0x30_fc, 0x30_42, 0x30_44, 0x30_46, 0x30_48, 0x30_4a,
+    0x30_4b, 0x30_4d, 0x30_4f, 0x30_51, 0x30_53, 0x30_55, 0x30_57, 0x30_59,
+    0x30_5b, 0x30_5d, 0x30_5f, 0x30_61, 0x30_64, 0x30_66, 0x30_68, 0x30_6a,
+    0x30_6b, 0x30_6c, 0x30_6d, 0x30_6e, 0x30_6f, 0x30_72, 0x30_75, 0x30_78,
+    0x30_7b, 0x30_7e, 0x30_7f, 0x30_80, 0x30_81, 0x30_82, 0x30_84, 0x30_86,
+    0x30_88, 0x30_89, 0x30_8a, 0x30_8b, 0x30_8c, 0x30_8d, 0x30_8f, 0x30_93,
   ];
 
   cv: number[] = [
-    0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052, 0x3054, 0x3056,
-    0x3058, 0x305a, 0x305c, 0x305e, 0x3060, 0x3062, 0x3065, 0x3067, 0x3069,
-    0xff85, 0xff86, 0xff87, 0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079,
-    0x307c,
+    0x30_f4, 0xff_74, 0xff_75, 0x30_4c, 0x30_4e, 0x30_50, 0x30_52, 0x30_54,
+    0x30_56, 0x30_58, 0x30_5a, 0x30_5c, 0x30_5e, 0x30_60, 0x30_62, 0x30_65,
+    0x30_67, 0x30_69, 0xff_85, 0xff_86, 0xff_87, 0xff_88, 0xff_89, 0x30_70,
+    0x30_73, 0x30_76, 0x30_79, 0x30_7c,
   ];
-  cs: number[] = [0x3071, 0x3074, 0x3077, 0x307a, 0x307d];
+
+  cs: number[] = [0x30_71, 0x30_74, 0x30_77, 0x30_7a, 0x30_7d];
 
   wordSearch(
     word: string,
@@ -336,10 +345,10 @@ class RcxDict {
     let v;
     let reason: string;
     let p;
-    const trueLen = [0];
+    const trueLength = [0];
     const entry = RcxDict.createDefaultDictEntry();
 
-    // half & full-width katakana to hiragana conversion
+    // Half & full-width katakana to hiragana conversion
     // note: katakana vu is never converted to hiragana
 
     p = 0;
@@ -354,59 +363,74 @@ class RcxDict {
         continue;
       }
 
-      if (u <= 0x3000) {
+      if (u <= 0x30_00) {
         break;
       }
 
-      // full-width katakana to hiragana
-      if (u >= 0x30a1 && u <= 0x30f3) {
+      // Full-width katakana to hiragana
+      if (u >= 0x30_a1 && u <= 0x30_f3) {
         u -= 0x60;
-      } else if (u >= 0xff66 && u <= 0xff9d) {
-        // half-width katakana to hiragana
-        u = this.ch[u - 0xff66];
-      } else if (u === 0xff9e) {
-        // voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff73 && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cv[p - 0xff73];
+      } else if (u >= 0xff_66 && u <= 0xff_9d) {
+        // Half-width katakana to hiragana
+        u = this.ch[u - 0xff_66];
+      } else
+        switch (u) {
+          case 0xff_9e: {
+            // Voiced (used in half-width katakana) to hiragana
+            if (p >= 0xff_73 && p <= 0xff_8e) {
+              reason = reason.slice(0, Math.max(0, reason.length - 1));
+              u = this.cv[p - 0xff_73];
+            }
+
+            break;
+          }
+
+          case 0xff_9f: {
+            // Semi-voiced (used in half-width katakana) to hiragana
+            if (p >= 0xff_8a && p <= 0xff_8e) {
+              reason = reason.slice(0, Math.max(0, reason.length - 1));
+              u = this.cs[p - 0xff_8a];
+            }
+
+            break;
+          }
+
+          case 0xff_5e: {
+            // ignore J~
+            p = 0;
+            continue;
+
+            break;
+          }
+          // No default
         }
-      } else if (u === 0xff9f) {
-        // semi-voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff8a && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cs[p - 0xff8a];
-        }
-      } else if (u === 0xff5e) {
-        // ignore J~
-        p = 0;
-        continue;
-      }
 
       reason += String.fromCharCode(u);
-      // need to keep real length because of the half-width semi/voiced
+      // Need to keep real length because of the half-width semi/voiced
       // conversion
-      trueLen[reason.length] = i + 1;
+      trueLength[reason.length] = i + 1;
       p = v;
     }
+
     word = reason;
 
     let dict: string;
     let index;
     let maxTrim;
-    const cache: { [key: string]: number[] } = {};
+    const cache: Record<string, number[]> = {};
     const have = [];
     let count = 0;
-    let maxLen = 0;
+    let maxLength = 0;
 
     if (doNames) {
-      // check: split this
+      // Check: split this
 
       this.loadNames();
       // After loadNames these are guaranteed to not be null so
       // cast them as strings manually.
-      dict = this.nameDict as string;
-      index = this.nameIndex as string;
-      maxTrim = 20; // this.config.namax;
+      dict = this.nameDict!;
+      index = this.nameIndex!;
+      maxTrim = 20; // This.config.namax;
       entry.hasNames = true;
       console.log('doNames');
     } else {
@@ -425,11 +449,9 @@ class RcxDict {
       const showInf = count !== 0;
       let trys;
 
-      if (doNames) {
-        trys = [{ word: word, type: 0xff, reason: null }];
-      } else {
-        trys = this.deinflect(word);
-      }
+      trys = doNames
+        ? [{ word, type: 0xff, reason: null }]
+        : this.deinflect(word);
 
       for (i = 0; i < trys.length; i++) {
         u = trys[i];
@@ -441,17 +463,17 @@ class RcxDict {
             cache[u.word] = [];
             continue;
           }
+
           // The first value in result is the word itself so skip it
           // and parse the remaining values at integers.
           ix = result
             .split(',')
             .slice(1)
-            .map((offset) => parseInt(offset));
+            .map((offset) => Number.parseInt(offset));
           cache[u.word] = ix;
         }
 
-        for (let j = 0; j < ix.length; ++j) {
-          const ofs = ix[j];
+        for (const ofs of ix) {
           if (have[ofs]) {
             continue;
           }
@@ -476,26 +498,33 @@ class RcxDict {
             if (z > 10) {
               z = 10;
             }
+
             for (; z >= 0; --z) {
               w = x[z];
               if (y & 1 && w === 'v1') {
                 break;
               }
+
               if (y & 4 && w === 'adj-i') {
                 break;
               }
-              if (y & 2 && w.substr(0, 2) === 'v5') {
+
+              if (y & 2 && w.startsWith('v5')) {
                 break;
               }
-              if (y & 16 && w.substr(0, 3) === 'vs-') {
+
+              if (y & 16 && w.startsWith('vs-')) {
                 break;
               }
+
               if (y & 8 && w === 'vk') {
                 break;
               }
             }
+
             ok = z !== -1;
           }
+
           if (ok) {
             if (count >= maxTrim) {
               entry.hasMore = true;
@@ -503,37 +532,38 @@ class RcxDict {
 
             have[ofs] = 1;
             ++count;
-            if (maxLen === 0) {
-              maxLen = trueLen[word.length];
+            if (maxLength === 0) {
+              maxLength = trueLength[word.length];
             }
 
             let reason: string | undefined;
             if (trys[i].reason) {
-              if (showInf) {
-                reason = '&lt; ' + trys[i].reason + ' &lt; ' + word;
-              } else {
-                reason = '&lt; ' + trys[i].reason;
-              }
+              reason = showInf
+                ? '&lt; ' + trys[i].reason + ' &lt; ' + word
+                : '&lt; ' + trys[i].reason;
             }
 
             entry.data.push({ entry: dentry, reason });
           }
-        } // for j < ix.length
+        } // For j < ix.length
+
         if (count >= maxTrim) {
           break;
         }
-      } // for i < trys.length
+      } // For i < trys.length
+
       if (count >= maxTrim) {
         break;
       }
-      word = word.substr(0, word.length - 1);
-    } // while word.length > 0
+
+      word = word.slice(0, Math.max(0, word.length - 1));
+    } // While word.length > 0
 
     if (entry.data.length === 0) {
       return null;
     }
 
-    entry.matchLen = maxLen;
+    entry.matchLen = maxLength;
     return entry;
   }
 
@@ -551,11 +581,13 @@ class RcxDict {
           o.hasMore = true;
           break;
         }
+
         o.data.push(e.data[0]);
         skip = e.matchLen;
       } else {
         skip = 1;
       }
+
       text = text.substr(skip, text.length - skip);
     }
 
@@ -572,7 +604,7 @@ class RcxDict {
     let i;
 
     i = kanji.charCodeAt(0);
-    if (i < 0x3000) {
+    if (i < 0x30_00) {
       return null;
     }
 
@@ -598,15 +630,16 @@ class RcxDict {
 
     const b = a[1].split(' ');
     for (i = 0; i < b.length; ++i) {
-      if (b[i].match(/^([A-Z]+)(.*)/)) {
+      if (/^([A-Z]+)(.*)/.test(b[i])) {
         if (!entry.misc[RegExp.$1]) {
           entry.misc[RegExp.$1] = RegExp.$2;
         } else {
           entry.misc[RegExp.$1] += ' ' + RegExp.$2;
         }
+
         // Replace ':' delimiter with proper spaces for Heisig keywords.
         if (RegExp.$1.startsWith('L') || RegExp.$1.startsWith('DN')) {
-          entry.misc[RegExp.$1] = entry.misc[RegExp.$1].replace(/[:]/g, ' ');
+          entry.misc[RegExp.$1] = entry.misc[RegExp.$1].replace(/:/g, ' ');
         }
       }
     }
@@ -683,19 +716,20 @@ class RcxDict {
         /\.([^\u3001]+)/g,
         '<span class="k-yomi-hi">$1</span>'
       );
-      if (entry.nanori.length) {
+      if (entry.nanori.length > 0) {
         yomi +=
           '<br/><span class="k-yomi-ti">\u540D\u4E57\u308A</span> ' +
           entry.nanori;
       }
-      if (entry.bushumei.length) {
+
+      if (entry.bushumei.length > 0) {
         yomi +=
           '<br/><span class="k-yomi-ti">\u90E8\u9996\u540D</span> ' +
           entry.bushumei;
       }
 
-      const bn = parseInt(entry.misc.B) - 1;
-      k = parseInt(entry.misc.G);
+      const bn = Number.parseInt(entry.misc.B) - 1;
+      k = Number.parseInt(entry.misc.G);
       switch (k) {
         case 8:
           k = 'general<br/>use';
@@ -707,6 +741,7 @@ class RcxDict {
           k = isNaN(k) ? '-' : 'grade<br/>' + k;
           break;
       }
+
       box =
         '<table class="k-abox-tb"><tr>' +
         '<td class="k-abox-r">radical<br/>' +
@@ -741,7 +776,7 @@ class RcxDict {
         j = 1;
         for (i = 0; i < this.radData.length; ++i) {
           s = this.radData[i];
-          if (bn !== i && s.indexOf(entry.kanji) !== -1) {
+          if (bn !== i && s.includes(entry.kanji)) {
             k = s.split('\t');
             c = ' class="k-bbox-' + (j ^= 1);
             box +=
@@ -762,17 +797,19 @@ class RcxDict {
               '</td></tr>';
           }
         }
+
         box += '</table>';
       }
 
       nums = '';
       j = 0;
 
-      const kanjiInfo = this.config.kanjiInfo;
+      const { kanjiInfo } = this.config;
       for (const info of kanjiInfo) {
         if (!info.shouldDisplay) {
           continue;
         }
+
         c = info.code;
         s = entry.misc[c];
         c = ' class="k-mix-td' + (j ^= 1) + '"';
@@ -787,16 +824,19 @@ class RcxDict {
           (s || '-') +
           '</td></tr>';
       }
-      if (nums.length) {
+
+      if (nums.length > 0) {
         nums = '<table class="k-mix-tb">' + nums + '</table>';
       }
 
-      b.push('<table class="k-main-tb"><tr><td valign="top">');
-      b.push(box);
-      b.push('<span class="k-kanji">' + entry.kanji + '</span><br/>');
-      b.push('<div class="k-eigo">' + entry.eigo + '</div>');
-      b.push('<div class="k-yomi">' + yomi + '</div>');
-      b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');
+      b.push(
+        '<table class="k-main-tb"><tr><td valign="top">',
+        box,
+        '<span class="k-kanji">' + entry.kanji + '</span><br/>',
+        '<div class="k-eigo">' + entry.eigo + '</div>',
+        '<div class="k-yomi">' + yomi + '</div>',
+        '</td></tr><tr><td>' + nums + '</td></tr></table>'
+      );
       return b.join('');
     }
 
@@ -809,14 +849,14 @@ class RcxDict {
         '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>'
       );
       for (i = 0; i < entry.data.length; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = /^(.+?)\s+(?:\[(.*?)])?\s*\/(.+)\//.exec(entry.data[i].entry);
         if (!e) {
           continue;
         }
 
-        // the next two lines re-process the entries that contain separate
+        // The next two lines re-process the entries that contain separate
         // search key and spelling due to mixed hiragana/katakana spelling
-        const e3 = e[3].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        const e3 = /^(.+?)\s+(?:\[(.*?)])?\s*\/(.+)\//.exec(e[3]);
         if (e3) {
           e = e3;
         }
@@ -844,6 +884,7 @@ class RcxDict {
         console.log('e[3]: ' + e[3]);
         t = '<span class="w-def">' + s.replace(/\//g, '; ') + '</span><br/>';
       }
+
       c.push(t);
       if (c.length > 4) {
         n = (c.length >> 1) + 1;
@@ -852,13 +893,15 @@ class RcxDict {
         t = c[n];
         c = c.slice(n, c.length);
         for (i = 0; i < c.length; ++i) {
-          if (c[i].indexOf('w-def') !== -1) {
+          if (c[i].includes('w-def')) {
             if (t !== c[i]) {
               b.push(c[i]);
             }
+
             if (i === 0) {
               c.shift();
             }
+
             break;
           }
         }
@@ -868,9 +911,11 @@ class RcxDict {
       } else {
         b.push(c.join(''));
       }
+
       if (entry.hasMore) {
         b.push('...<br/>');
       }
+
       b.push('</td></tr></table>');
     } else {
       if (entry.title) {
@@ -878,7 +923,7 @@ class RcxDict {
       }
 
       let pK = '';
-      let k = undefined;
+      let k;
 
       if (!entry.index) {
         entry.index = 0;
@@ -894,13 +939,13 @@ class RcxDict {
         Math.min(this.config.maxDictEntries + entry.index, entry.data.length);
         ++i
       ) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = /^(.+?)\s+(?:\[(.*?)])?\s*\/(.+)\//.exec(entry.data[i].entry);
         if (!e) {
           continue;
         }
 
         /*
-          e[1] = kanji/kana
+          E[1] = kanji/kana
           e[2] = kana
           e[3] = definition
         */
@@ -909,7 +954,7 @@ class RcxDict {
           b.push(t);
           pK = k = '';
         } else {
-          k = t.length ? '<br/>' : '';
+          k = t.length > 0 ? '<br/>' : '';
         }
 
         if (e[2]) {
@@ -923,11 +968,13 @@ class RcxDict {
               e[2] +
               '</span>';
           }
+
           pK = e[1];
         } else {
           k += '<span class="w-kana">' + e[1] + '</span>';
           pK = '';
         }
+
         b.push(k);
 
         if (entry.data[i].reason) {
@@ -937,12 +984,11 @@ class RcxDict {
         s = e[3];
         t = s.replace(/\//g, '; ');
 
-        if (!this.config.onlyreading) {
-          t = '<br/><span class="w-def">' + t + '</span><br/>';
-        } else {
-          t = '<br/>';
-        }
+        t = !this.config.onlyreading
+          ? '<br/><span class="w-def">' + t + '</span><br/>'
+          : '<br/>';
       }
+
       b.push(t);
       if (
         entry.hasMore &&
@@ -974,7 +1020,7 @@ class RcxDict {
     }
 
     for (i = 0; i < entry.data.length; ++i) {
-      e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+      e = /^(.+?)\s+(?:\[(.*?)])?\s*\/(.+)\//.exec(entry.data[i].entry);
       if (!e) {
         continue;
       }
@@ -983,6 +1029,7 @@ class RcxDict {
       t = s.replace(/\//g, '; ');
       t = '<span class="w-def">' + t + '</span><br/>\n';
     }
+
     b.push(t);
 
     return b.join('');
@@ -1001,14 +1048,17 @@ class RcxDict {
     const b = [];
 
     if (entry.kanji) {
-      b.push(entry.kanji + '\n');
-      b.push((entry.eigo.length ? entry.eigo : '-') + '\n');
+      b.push(
+        entry.kanji + '\n',
+        (entry.eigo.length > 0 ? entry.eigo : '-') + '\n'
+      );
 
       b.push(entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n');
-      if (entry.nanori.length) {
+      if (entry.nanori.length > 0) {
         b.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
       }
-      if (entry.bushumei.length) {
+
+      if (entry.bushumei.length > 0) {
         b.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
@@ -1026,8 +1076,9 @@ class RcxDict {
       if (max > entry.data.length) {
         max = entry.data.length;
       }
+
       for (i = 0; i < max; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = /^(.+?)\s+(?:\[(.*?)])?\s*\/(.+)\//.exec(entry.data[i].entry);
         if (!e) {
           continue;
         }
@@ -1042,6 +1093,7 @@ class RcxDict {
         b.push('\t' + t + '\n');
       }
     }
+
     return b.join('');
   }
 }

@@ -1,7 +1,7 @@
 import 'lit-toast/lit-toast.js';
-import { Config, configPromise } from './configuration';
 import { LitElement, TemplateResult, css, html } from 'lit';
 import { until } from 'lit/directives/until.js';
+import { Config, configPromise } from './configuration';
 
 type OptionEvent = {
   target: HTMLInputElement;
@@ -9,7 +9,7 @@ type OptionEvent = {
 };
 
 class OptionsForm extends LitElement {
-  private content: Promise<TemplateResult> = this.fetchAndRender();
+  private readonly content: Promise<TemplateResult> = this.fetchAndRender();
 
   render() {
     return html`${until(this.content)}<lit-toast></lit-toast>`;
@@ -33,8 +33,11 @@ class OptionsForm extends LitElement {
         <form
           id="optform"
           name="optform"
-          @change=${(event: OptionEvent) =>
-            chrome.storage.sync.set(event.__update, () => this.showToast())}
+          @change=${(event: OptionEvent) => {
+            chrome.storage.sync.set(event.__update, () => {
+              this.showToast();
+            });
+          }}
         >
           <div id="options">
             <div id="gencon" class="tab-content">
@@ -78,7 +81,7 @@ class OptionsForm extends LitElement {
                   .selectedIndex=${options.popupLocation}
                   @change=${(event: OptionEvent) =>
                     (event.__update = {
-                      popupLocation: parseInt(event.target.value),
+                      popupLocation: Number.parseInt(event.target.value),
                     })}
                 >
                   <option value="0">Cursor</option>
@@ -237,8 +240,9 @@ class OptionsForm extends LitElement {
                       type="checkbox"
                       value=${component.code}
                       ?checked=${component.shouldDisplay}
-                      @change=${(event: OptionEvent) =>
-                        this.updateKanjiInfo(options.kanjiInfo, event)}
+                      @change=${(event: OptionEvent) => {
+                        this.updateKanjiInfo(options.kanjiInfo, event);
+                      }}
                     />
                     ${component.name}
                     <br />

@@ -4,43 +4,43 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { LineStream } from 'byline';
 import {
   Transform,
   TransformCallback,
   TransformOptions,
   Writable,
   WritableOptions,
-} from 'stream';
+} from 'node:stream';
 // TODO( mysticatea/eslint-plugin-node#255 ): no-missing-import doesn't support export packages.
-// eslint-disable-next-line node/no-missing-import
-import { parse } from 'csv-parse/sync';
-import fs, { WriteStream, promises as promiseFs } from 'fs';
-import http from 'http';
+
+import fs, { WriteStream, promises as promiseFs } from 'node:fs';
+import http from 'node:http';
+import path from 'node:path';
+import zlib from 'node:zlib';
 import iconv from 'iconv-lite';
-import path from 'path';
-import zlib from 'zlib';
+import { parse } from 'csv-parse/sync';
+import { LineStream } from 'byline';
 
 // prettier-ignore
 const HANKAKU_KATAKANA_TO_HIRAGANA = [
-  0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085, 0x3087,
-  0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a, 0x304b, 0x304d,
-  0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059, 0x305b, 0x305d, 0x305f,
-  0x3061, 0x3064, 0x3066, 0x3068, 0x306a, 0x306b, 0x306c, 0x306d, 0x306e,
-  0x306f, 0x3072, 0x3075, 0x3078, 0x307b, 0x307e, 0x307f, 0x3080, 0x3081,
-  0x3082, 0x3084, 0x3086, 0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d,
-  0x308f, 0x3093,
+  0x30_92, 0x30_41, 0x30_43, 0x30_45, 0x30_47, 0x30_49, 0x30_83, 0x30_85, 0x30_87,
+  0x30_63, 0x30_fc, 0x30_42, 0x30_44, 0x30_46, 0x30_48, 0x30_4a, 0x30_4b, 0x30_4d,
+  0x30_4f, 0x30_51, 0x30_53, 0x30_55, 0x30_57, 0x30_59, 0x30_5b, 0x30_5d, 0x30_5f,
+  0x30_61, 0x30_64, 0x30_66, 0x30_68, 0x30_6a, 0x30_6b, 0x30_6c, 0x30_6d, 0x30_6e,
+  0x30_6f, 0x30_72, 0x30_75, 0x30_78, 0x30_7b, 0x30_7e, 0x30_7f, 0x30_80, 0x30_81,
+  0x30_82, 0x30_84, 0x30_86, 0x30_88, 0x30_89, 0x30_8a, 0x30_8b, 0x30_8c, 0x30_8d,
+  0x30_8f, 0x30_93,
 ];
 // prettier-ignore
 const VOICED_KATAKANA_TO_HIRAGANA = [
-  0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052, 0x3054, 0x3056,
-  0x3058, 0x305a, 0x305c, 0x305e, 0x3060, 0x3062, 0x3065, 0x3067, 0x3069,
-  0xff85, 0xff86, 0xff87, 0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079,
-  0x307c,
+  0x30_f4, 0xff_74, 0xff_75, 0x30_4c, 0x30_4e, 0x30_50, 0x30_52, 0x30_54, 0x30_56,
+  0x30_58, 0x30_5a, 0x30_5c, 0x30_5e, 0x30_60, 0x30_62, 0x30_65, 0x30_67, 0x30_69,
+  0xff_85, 0xff_86, 0xff_87, 0xff_88, 0xff_89, 0x30_70, 0x30_73, 0x30_76, 0x30_79,
+  0x30_7c,
 ];
 // prettier-ignore
 const SEMIVOICED_KATAKANA_TO_HIRAGANA = [
-  0x3071, 0x3074, 0x3077, 0x307a, 0x307d
+  0x30_71, 0x30_74, 0x30_77, 0x30_7a, 0x30_7d
 ];
 
 // List of reference types that we copy to the kanji DB file.
@@ -72,29 +72,43 @@ const normalizeEntry = (entry: string) => {
     const originalChar = entry.charCodeAt(i);
     let c = originalChar;
 
-    // full-width katakana to hiragana
-    if (c >= 0x30a1 && c <= 0x30f3) {
+    // Full-width katakana to hiragana
+    if (c >= 0x30_a1 && c <= 0x30_f3) {
       c -= 0x60;
-    } else if (c >= 0xff66 && c <= 0xff9d) {
-      // half-width katakana to hiragana
-      c = HANKAKU_KATAKANA_TO_HIRAGANA[c - 0xff66];
-    } else if (c === 0xff9e) {
-      // voiced (used in half-width katakana) to hiragana
-      if (previous >= 0xff73 && previous <= 0xff8e) {
-        result = result.slice(0, -1);
-        c = VOICED_KATAKANA_TO_HIRAGANA[previous - 0xff73];
+    } else if (c >= 0xff_66 && c <= 0xff_9d) {
+      // Half-width katakana to hiragana
+      c = HANKAKU_KATAKANA_TO_HIRAGANA[c - 0xff_66];
+    } else
+      switch (c) {
+        case 0xff_9e: {
+          // Voiced (used in half-width katakana) to hiragana
+          if (previous >= 0xff_73 && previous <= 0xff_8e) {
+            result = result.slice(0, -1);
+            c = VOICED_KATAKANA_TO_HIRAGANA[previous - 0xff_73];
+          }
+
+          break;
+        }
+
+        case 0xff_9f: {
+          // Semi-voiced (used in half-width katakana) to hiragana
+          if (previous >= 0xff_8a && previous <= 0xff_8e) {
+            result = result.slice(0, -1);
+            c = SEMIVOICED_KATAKANA_TO_HIRAGANA[previous - 0xff_8a];
+          }
+
+          break;
+        }
+
+        case 0xff_5e: {
+          // ignore ～
+          previous = 0;
+          continue;
+
+          break;
+        }
+        // No default
       }
-    } else if (c === 0xff9f) {
-      // semi-voiced (used in half-width katakana) to hiragana
-      if (previous >= 0xff8a && previous <= 0xff8e) {
-        result = result.slice(0, -1);
-        c = SEMIVOICED_KATAKANA_TO_HIRAGANA[previous - 0xff8a];
-      }
-    } else if (c === 0xff5e) {
-      // ignore ～
-      previous = 0;
-      continue;
-    }
 
     result += String.fromCharCode(c);
     previous = originalChar;
@@ -107,7 +121,7 @@ const normalizeEntry = (entry: string) => {
 class DictParser extends Transform {
   #firstLine = true;
   #length = 0;
-  #index: Record<string, Array<number>> = {};
+  #index: Record<string, number[]> = {};
   /** Pass options as per Transform. */
   constructor(options?: TransformOptions) {
     super(options);
@@ -124,24 +138,27 @@ class DictParser extends Transform {
     // Skip the header
     if (this.#firstLine) {
       this.#firstLine = false;
-      const header = line.match(/\/Created: (.*?)\//);
+      const header = /\/Created: (.*?)\//.exec(line);
       if (header) {
         console.log(`Parsing dictionary created: ${header[1]}`);
         callback(null, null);
         return;
       }
+
       console.log(
         'Failed to parse header. Maybe the header is in the wrong place?'
       );
     }
 
     // Try to parse first part of entry
-    const matches = line.match(/^(.+?)\s+(?:\[(.*?)\])?/);
+    const matches = /^(.+?)\s+(?:\[(.*?)])?/.exec(line);
     if (matches === null) {
       console.log(`Failed to parse line: ${line}`);
       callback(null, null);
       return;
-    } else if (matches[0] === '　？？？ ') {
+    }
+
+    if (matches[0] === '　？？？ ') {
       console.log(`Skipping misplaced header line: ${line}`);
       callback(null, null);
       return;
@@ -172,12 +189,12 @@ class DictParser extends Transform {
   /** Prints the index for given stream. */
   printIndex(stream: WriteStream) {
     for (const entry of Object.keys(this.#index).sort()) {
-      stream.write(`${entry},${this.#index[entry].join()}\n`);
+      stream.write(`${entry},${this.#index[entry].join(',')}\n`);
     }
   }
 }
 
-const parseEdict = (url: string, dataFile: string, indexFile: string) => {
+const parseEdict = async (url: string, dataFile: string, indexFile: string) => {
   const parser = new DictParser();
   return new Promise<void>((resolve, reject) => {
     http
@@ -193,8 +210,8 @@ const parseEdict = (url: string, dataFile: string, indexFile: string) => {
               path.join(__dirname, '..', 'extension', 'data', dataFile)
             )
           )
-          .on('error', (err) => {
-            reject(err);
+          .on('error', (error) => {
+            reject(error);
           })
           .on('close', () => {
             console.log('Writing index...');
@@ -206,8 +223,8 @@ const parseEdict = (url: string, dataFile: string, indexFile: string) => {
             resolve();
           });
       })
-      .on('error', (err) => {
-        reject(new Error(`Connection error: ${err.message}`));
+      .on('error', (error) => {
+        reject(new Error(`Connection error: ${error.message}`));
       });
   });
 };
@@ -238,12 +255,13 @@ class KanjiDictParser extends Writable {
 
     // Skip the header
     if (line.startsWith('# ')) {
-      const header = line.match(/^# (\S*).*?\/(\d{4}-\d{2}-\d{2})\/$/);
+      const header = /^# (\S*).*?\/(\d{4}-\d{2}-\d{2})\/$/.exec(line);
       if (header) {
         console.log(`Parsing ${header[1]} dictionary from ${header[2]}`);
         callback();
         return;
       }
+
       console.log(`Failed to parse header: ${line}`);
     }
 
@@ -290,9 +308,10 @@ class KanjiDictParser extends Writable {
     //  - Bushumei
     //  - Meanings, command separated
     // (All | delimited)
-    const matches = line.match(
-      /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.-]+ )+)?(?:T1 ((?:[\x80-\uffff.-]+ )+))?(?:T2 ((?:[\x80-\uffff.-]+ )+))?((?:\{[^}]+\} ?)*)?$/
-    );
+    const matches =
+      /^(\S+) (?:.=.=== )?((?:[\u0021-\u007A]+ )+)((?:[\u0080-\uFFFF.-]+ )+)?(?:T1 ((?:[\u0080-\uFFFF.-]+ )+))?(?:T2 ((?:[\u0080-\uFFFF.-]+ )+))?((?:{[^}]+} ?)*)?$/.exec(
+        line
+      );
     if (matches === null) {
       console.log(`Failed to parse line: ${line}`);
       callback(null);
@@ -306,10 +325,10 @@ class KanjiDictParser extends Writable {
     for (const ref of refs) {
       let finalRef = ref;
       if (
-        ref.length &&
+        ref.length > 0 &&
         SUPPORTED_REF_TYPES.some((supportedRef) => ref.startsWith(supportedRef))
       ) {
-        if (ref[0] === 'B') {
+        if (ref.startsWith('B')) {
           hasB = true;
         }
 
@@ -320,6 +339,7 @@ class KanjiDictParser extends Writable {
             finalRef += `:${keyword5th.replace(/ /g, ':')}`;
           }
         }
+
         if (ref.startsWith('DN')) {
           const keyword6th = this.#heisigData.get(matches[1])?.keyword_6th_ed;
           if (keyword6th !== undefined) {
@@ -330,25 +350,29 @@ class KanjiDictParser extends Writable {
         refsToKeep.push(finalRef);
       }
     }
+
     if (!hasB) {
       throw new Error(`No radical reference found for ${line}`);
     }
+
     matches[2] = refsToKeep.join(' ');
 
     // Prepare meanings
     if (matches[6]) {
       const meanings = matches[6].trim().split('} {');
-      if (meanings.length) {
+      if (meanings.length > 0) {
         meanings[0] = meanings[0].slice(1);
         const end = meanings.length - 1;
         meanings[end] = meanings[end].slice(0, -1);
       }
+
       // Check for embedded |. That's the separator we use in the output so if
       // it also occurs in the meaning things are not going to end well.
       const hasEmbeddedPipe = meanings.some((meaning) => meaning.includes('|'));
       if (hasEmbeddedPipe) {
         throw new Error(`Got meaning with embedded "|": ${line}`);
       }
+
       // Join with ; if some of the entries have commas
       const hasEmbeddedCommas = meanings.some((meaning) =>
         meaning.includes(',')
@@ -388,22 +412,24 @@ const loadHeisigData = async (): Promise<Map<string, HeisigDatum>> => {
     path.join(__dirname, 'heisig-kanjis.csv')
   );
   const records: Map<string, HeisigDatum> = new Map();
-  (parse(data, { columns: true, comment: '#' }) as HeisigDatum[]).forEach(
-    (record) => {
-      records.set(record.kanji, record);
-    }
-  );
+  for (const record of parse(data, {
+    columns: true,
+    comment: '#',
+  }) as HeisigDatum[]) {
+    records.set(record.kanji, record);
+  }
+
   return records;
 };
 
 const parseKanjiDic = async (
-  sources: { url: string; encoding: string }[],
+  sources: Array<{ url: string; encoding: string }>,
   dataFile: string
 ) => {
   const heisigData = await loadHeisigData();
-  const parser = new KanjiDictParser({ heisigData: heisigData });
+  const parser = new KanjiDictParser({ heisigData });
 
-  const readFile = (url: string, encoding: string) =>
+  const readFile = async (url: string, encoding: string) =>
     new Promise((resolve) => {
       http
         .get(url, (res) => {
@@ -415,8 +441,8 @@ const parseKanjiDic = async (
             .on('end', resolve)
             .pipe(parser, { end: false });
         })
-        .on('error', (err) => {
-          throw Error(`Connection error: ${err.message}`);
+        .on('error', (error) => {
+          throw new Error(`Connection error: ${error.message}`);
         });
     });
 
@@ -435,7 +461,7 @@ const parseKanjiDic = async (
 console.log('Fetching word dictionary...');
 
 parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
-  .then(() => {
+  .then(async () => {
     console.log('Fetching names dictionary...');
     return parseEdict(
       'http://ftp.edrdg.org/pub/Nihongo/enamdict.gz',
@@ -443,7 +469,7 @@ parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
       'names.idx'
     );
   })
-  .then(() => {
+  .then(async () => {
     console.log('Fetching kanji dictionaries...');
     return parseKanjiDic(
       [
@@ -463,8 +489,8 @@ parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
     console.log('Done.');
     return undefined;
   })
-  .catch((err) => {
+  .catch((error) => {
     // Promise rejection is untyped so allow `any` for this template expression.
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    console.log(`Error: '${err}'`);
+    console.log(`Error: '${error}'`);
   });

@@ -2,7 +2,7 @@
 class TTS {
   private static instance: TTS;
 
-  lastTime = new Date().valueOf();
+  lastTime = Date.now();
   previousText: string | null = null;
 
   private constructor() {}
@@ -11,12 +11,13 @@ class TTS {
     if (!TTS.instance) {
       TTS.instance = new TTS();
     }
+
     return TTS.instance;
   }
 
   /** Plays text-to-speech audio for given Japanese text. */
   play(text: string) {
-    const now = new Date().valueOf();
+    const now = Date.now();
     const limit = this.lastTime + 1000;
     if (text !== this.previousText || now > limit) {
       console.log('tts.speak(' + text + ')');

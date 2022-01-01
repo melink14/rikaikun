@@ -2,6 +2,7 @@ function forceHtml(force: boolean) {
   if (!force) {
     return;
   }
+
   console.log(
     'rikaikun is forcing Docs to use HTML instead of canvas for rendering.'
   );
@@ -13,7 +14,7 @@ function forceHtml(force: boolean) {
 
   // Usually, `document.head` isn't guaranteed to be present when content_scripts run but in this case
   // we're running inside a callback so it should be 100% safe.
-  document.head.appendChild(script);
+  document.head.append(script);
 }
 
 // This check allows the user to get newer Docs Canvas without disabling rikaikun.

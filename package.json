@@ -54,9 +54,9 @@
           "commitlint.config.cjs",
           ".prettierrc.cjs"
         ],
-        "env": {
-          "node": true
-        }
+        "envs": [
+          "node"
+        ]
       }
     ]
   },

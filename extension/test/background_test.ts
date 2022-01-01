@@ -1,8 +1,8 @@
-import { RcxMain } from '../rikaichan';
 import { expect, use } from '@esm-bundle/chai';
 import chrome from 'sinon-chrome';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import { RcxMain } from '../rikaichan';
 
 use(sinonChai);
 
@@ -30,7 +30,7 @@ describe('background.ts', function () {
 
       await sendMessageToBackground({
         type: 'forceDocsHtml?',
-        responseCallback: responseCallback,
+        responseCallback,
       });
 
       expect(responseCallback).to.have.not.been.called;
@@ -52,7 +52,7 @@ describe('background.ts', function () {
 
       await sendMessageToBackground({
         type: 'forceDocsHtml?',
-        responseCallback: responseCallback,
+        responseCallback,
       });
 
       expect(responseCallback).to.have.been.calledOnceWith(true);
@@ -66,7 +66,7 @@ describe('background.ts', function () {
       });
 
       expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(
-        /* tabId= */ sinon.match.any,
+        /* TabId= */ sinon.match.any,
         { type: 'showPopup' }
       );
     });
@@ -85,9 +85,8 @@ async function sendMessageToBackground({
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
-    { type: type },
+    { type },
     { tab: { id: 0 } },
     responseCallback
   );
-  return;
 }

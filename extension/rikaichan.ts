@@ -56,10 +56,12 @@ class RcxMain {
     this.dict = dict;
     this.config = config;
   }
+
   static create(dict: RcxDict, config: Config) {
     if (!RcxMain.instance) {
       RcxMain.instance = new RcxMain(dict, config);
     }
+
     return RcxMain.instance;
   }
 
@@ -70,8 +72,10 @@ class RcxMain {
     if (tabId === undefined) {
       return;
     }
+
     this._onTabSelect(tabId);
   }
+
   _onTabSelect(tabId: number) {
     if (this.enabled === 1) {
       chrome.tabs.sendMessage(tabId, {
@@ -94,7 +98,7 @@ class RcxMain {
     }
 
     if (forClipping) {
-      // save to clipboard
+      // Save to clipboard
       maxEntries = this.config.maxClipCopyEntries;
     }
 
@@ -107,6 +111,7 @@ class RcxMain {
         if (maxEntries <= 0) {
           continue;
         }
+
         text += this.dict.makeText(e, maxEntries);
         maxEntries -= e.data.length;
       }
@@ -117,10 +122,12 @@ class RcxMain {
     } else if (this.config.lineEnding === 'r') {
       text = text.replace(/\n/g, '\r');
     }
+
     if (this.config.copySeparator !== 'tab') {
       if (this.config.copySeparator === 'comma') {
         return text.replace(/\t/g, ',');
       }
+
       if (this.config.copySeparator === 'space') {
         return text.replace(/\t/g, ' ');
       }
@@ -133,6 +140,7 @@ class RcxMain {
     if (tab?.id === undefined) {
       return;
     }
+
     const text = this.savePrep(true, entries);
     if (text === null) {
       return;
@@ -144,6 +152,7 @@ class RcxMain {
       event.clipboardData!.setData('Text', text);
       event.preventDefault();
     };
+
     document.addEventListener('copy', copyFunction);
     document.execCommand('Copy');
     document.removeEventListener('copy', copyFunction);
@@ -191,6 +200,7 @@ class RcxMain {
         });
       }
     }
+
     void chrome.browserAction.setBadgeBackgroundColor({
       color: [255, 0, 0, 255],
     });
@@ -205,16 +215,18 @@ class RcxMain {
 
     // Send a disable message to all browsers
     chrome.windows.getAll({ populate: true }, (windows) => {
-      for (let i = 0; i < windows.length; ++i) {
-        const tabs = windows[i].tabs;
+      for (const window of windows) {
+        const { tabs } = window;
         if (tabs === undefined) {
           continue;
         }
-        for (let j = 0; j < tabs.length; ++j) {
-          if (tabs[j].id === undefined) {
+
+        for (const tab of tabs) {
+          if (tab.id === undefined) {
             continue;
           }
-          chrome.tabs.sendMessage(tabs[j].id!, { type: 'disable' });
+
+          chrome.tabs.sendMessage(tab.id, { type: 'disable' });
         }
       }
     });
@@ -224,6 +236,7 @@ class RcxMain {
     if (tab?.id === undefined) {
       return;
     }
+
     if (this.enabled) {
       this.inlineDisable();
     } else {
@@ -272,9 +285,11 @@ class RcxMain {
           e = this.dict.wordSearch(text, true);
           break;
       }
+
       if (e) {
         break;
       }
+
       this.showMode = (this.showMode + 1) % this.dictCount;
     } while (this.showMode !== m);
 

@@ -65,24 +65,36 @@ type Rikaichan = {
 };
 
 class RcxContent {
-  private dictCount = 3;
+  private get dictCount() {
+    return 3;
+  }
+
   private altView = 0;
 
-  private sameDict = 0;
+  private get sameDict() {
+    return 0;
+  }
+
   private forceKanji = 0;
-  private defaultDict = 2;
-  private nextDict = 3;
+  private get defaultDict() {
+    return 2;
+  }
+
+  private get nextDict() {
+    return 3;
+  }
 
   // Adds the listeners and stuff.
   enableTab(config: Config) {
     if (window.rikaichan === undefined) {
-      window.rikaichan = { config: config };
+      window.rikaichan = { config };
       window.addEventListener('mousemove', this.onMouseMove, false);
       window.addEventListener('keydown', this.onKeyDown, true);
       window.addEventListener('keyup', this.onKeyUp, true);
       window.addEventListener('mousedown', this.onMouseDown, false);
       window.addEventListener('mouseup', this.onMouseUp, false);
     }
+
     window.rikaichan.config = config;
     this.altView = config.popupLocation;
   }
@@ -97,13 +109,14 @@ class RcxContent {
       window.removeEventListener('mousedown', this.onMouseDown, false);
       window.removeEventListener('mouseup', this.onMouseUp, false);
 
-      e = document.getElementById('rikaichan-css');
+      e = document.querySelector('#rikaichan-css');
       if (e?.parentNode) {
-        e.parentNode.removeChild(e);
+        e.remove();
       }
-      e = document.getElementById('rikaichan-window');
+
+      e = document.querySelector('#rikaichan-window');
       if (e?.parentNode) {
-        e.parentNode.removeChild(e);
+        e.remove();
       }
 
       this.clearHi();
@@ -112,19 +125,20 @@ class RcxContent {
   }
 
   getContentType(tDoc: Document) {
-    const m = tDoc.getElementsByTagName('meta');
+    const m = tDoc.querySelectorAll('meta');
     for (const i in m) {
       if (m[i].httpEquiv === 'Content-Type') {
         const con = m[i].content.split(';');
         return con[0];
       }
     }
+
     return null;
   }
 
   showPopup(
     text: string,
-    elem?: HTMLElement,
+    element?: HTMLElement,
     x = 0,
     y = 0,
     looseWidth?: boolean
@@ -135,7 +149,7 @@ class RcxContent {
       x = y = 0;
     }
 
-    let popup = topdoc.getElementById('rikaichan-window');
+    let popup = topdoc.querySelector('#rikaichan-window');
     if (!popup) {
       const css = topdoc.createElementNS(
         'http://www.w3.org/1999/xhtml',
@@ -145,12 +159,12 @@ class RcxContent {
       css.setAttribute('type', 'text/css');
       css.setAttribute('href', chrome.extension.getURL('css/popup.css'));
       css.setAttribute('id', 'rikaichan-css');
-      topdoc.getElementsByTagName('head')[0].appendChild(css);
+      topdoc.querySelectorAll('head')[0].append(css);
 
       popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
       popup.setAttribute('id', 'rikaichan-window');
       popup.setAttribute('lang', 'ja');
-      topdoc.documentElement.appendChild(popup);
+      topdoc.documentElement.append(popup);
 
       popup.addEventListener(
         'dblclick',
@@ -161,7 +175,8 @@ class RcxContent {
         true
       );
     }
-    popup.setAttribute('data-theme', window.rikaichan!.config.popupcolor);
+
+    popup.dataset.theme = window.rikaichan!.config.popupcolor;
 
     popup.style.width = 'auto';
     popup.style.height = 'auto';
@@ -169,20 +184,21 @@ class RcxContent {
 
     if (this.getContentType(topdoc) === 'text/plain') {
       const docFragment = document.createDocumentFragment();
-      docFragment.appendChild(
+      docFragment.append(
         document.createElementNS('http://www.w3.org/1999/xhtml', 'span')
       );
       (docFragment.firstChild! as HTMLElement).innerHTML = text;
 
       while (popup.firstChild) {
-        popup.removeChild(popup.firstChild);
+        popup.firstChild.remove();
       }
-      popup.appendChild(docFragment.firstChild!);
+
+      popup.append(docFragment.firstChild!);
     } else {
       popup.innerHTML = text;
     }
 
-    if (elem) {
+    if (element) {
       popup.style.top = '-1000px';
       popup.style.left = '0px';
       popup.style.display = '';
@@ -190,10 +206,11 @@ class RcxContent {
       let pW = popup.offsetWidth;
       let pH = popup.offsetHeight;
 
-      // guess!
+      // Guess!
       if (pW <= 0) {
         pW = 200;
       }
+
       if (pH <= 0) {
         pH = 0;
         let j = 0;
@@ -201,6 +218,7 @@ class RcxContent {
           j += 5;
           pH += 22;
         }
+
         pH += 25;
       }
 
@@ -212,34 +230,37 @@ class RcxContent {
         y = window.innerHeight - (pH + 20) + window.scrollY;
       }
       // FIXME: This probably doesn't actually work
-      else if (elem instanceof window.HTMLOptionElement) {
-        // these things are always on z-top, so go sideways
+      else if (element instanceof window.HTMLOptionElement) {
+        // These things are always on z-top, so go sideways
 
         x = 0;
         y = 0;
 
-        let p = elem as HTMLElement;
+        let p = element as HTMLElement;
         while (p) {
           x += p.offsetLeft;
           y += p.offsetTop;
           p = p.offsetParent! as HTMLElement;
         }
-        if (elem.offsetTop > (elem.parentNode! as HTMLElement).clientHeight) {
-          y -= elem.offsetTop;
+
+        if (
+          element.offsetTop > (element.parentNode! as HTMLElement).clientHeight
+        ) {
+          y -= element.offsetTop;
         }
 
         if (x + popup.offsetWidth > window.innerWidth) {
-          // too much to the right, go left
+          // Too much to the right, go left
           x -= popup.offsetWidth + 5;
           if (x < 0) {
             x = 0;
           }
         } else {
-          // use SELECT's width
-          x += (elem.parentNode! as HTMLElement).offsetWidth + 5;
+          // Use SELECT's width
+          x += (element.parentNode! as HTMLElement).offsetWidth + 5;
         }
       } else {
-        // go left if necessary
+        // Go left if necessary
         if (x + pW > window.innerWidth - 20) {
           x = window.innerWidth - pW - 20;
           if (x < 0) {
@@ -247,21 +268,21 @@ class RcxContent {
           }
         }
 
-        // below the mouse
+        // Below the mouse
         let v = 25;
 
-        // under the popup title
-        if (elem.title && elem.title !== '') {
+        // Under the popup title
+        if (element.title && element.title !== '') {
           v += 20;
         }
 
-        // go up if necessary
+        // Go up if necessary
         if (y + v + pH > window.innerHeight) {
           const t = y - pH - 30;
           if (t >= 0) {
             y = t;
           } else {
-            // if can't go up, still go down to prevent blocking cursor
+            // If can't go up, still go down to prevent blocking cursor
             y += v;
           }
         } else {
@@ -282,7 +303,7 @@ class RcxContent {
   }
 
   hidePopup() {
-    const popup = document.getElementById('rikaichan-window');
+    const popup = document.querySelector('#rikaichan-window');
     if (popup) {
       popup.style.display = 'none';
       popup.innerHTML = '';
@@ -290,7 +311,7 @@ class RcxContent {
   }
 
   isVisible() {
-    const popup = document.getElementById('rikaichan-window');
+    const popup = document.querySelector('#rikaichan-window');
     return popup && popup.style.display !== 'none';
   }
 
@@ -299,6 +320,7 @@ class RcxContent {
     if (!tdata || !tdata.prevSelView) {
       return;
     }
+
     if (tdata.prevSelView.closed) {
       delete tdata.prevSelView;
       return;
@@ -316,7 +338,7 @@ class RcxContent {
         delete tdata.oldTA;
       }
 
-      // clear all selections
+      // Clear all selections
       sel.removeAllRanges();
       // Text area stuff
       // If oldTA is still around that means we had a highlighted region
@@ -328,6 +350,7 @@ class RcxContent {
         tdata.oldTA.selectionStart = tdata.oldTA.selectionEnd = tdata.oldCaret!;
       }
     }
+
     delete tdata.prevSelView;
     delete tdata.selText;
   }
@@ -343,6 +366,7 @@ class RcxContent {
   onKeyDown = (ev: KeyboardEvent) => {
     this._onKeyDown(ev);
   };
+
   _onKeyDown(ev: KeyboardEvent) {
     if (
       window.rikaichan!.config.showOnKey !== '' &&
@@ -364,40 +388,47 @@ class RcxContent {
           myEv as unknown as MouseEvent & { noDelay?: boolean }
         );
       }
+
       return;
     }
+
     if (ev.shiftKey && ev.keyCode !== 16) {
       return;
     }
+
     if (this.keysDown[ev.keyCode]) {
       return;
     }
+
     if (!this.isVisible()) {
       return;
     }
+
     if (window.rikaichan!.config.disablekeys && ev.keyCode !== 16) {
       return;
     }
 
     let i;
     let shouldPreventDefault = true;
-    const maxDictEntries = window.rikaichan!.config.maxDictEntries;
+    const { maxDictEntries } = window.rikaichan!.config;
     let e: DictEntryData | null;
 
     switch (ev.keyCode) {
-      case 16: // shift
-      case 13: // enter
+      case 16: // Shift
+      case 13: // Enter
         this.show((ev.currentTarget! as Window).rikaichan!, this.nextDict);
         break;
-      case 74: // j
+      case 74: // J
         // reverse cycle through definitions if > max (maxDictEntries)
         e = this.lastFound[0];
         if (e.data.length < maxDictEntries) {
           break;
         }
+
         if (!e.index) {
           e.index = 0;
         }
+
         if (e.index > 0) {
           e.index -= 1;
         } else {
@@ -410,35 +441,38 @@ class RcxContent {
         );
         this.lastFound = [e];
         break;
-      case 75: // k
+      case 75: // K
         // forward cycle through definitions if > max (maxDictEntries)
         e = this.lastFound[0];
         if (e.data.length < maxDictEntries) {
           break;
         }
+
         if (!e.index) {
           e.index = 0;
         }
+
         if (e.index >= e.data.length - maxDictEntries) {
           e.index = 0;
         } else {
           e.index += 1;
         }
+
         chrome.runtime.sendMessage(
           { type: 'makehtml', entry: e },
           this.processHtml
         );
         this.lastFound = [e];
         break;
-      case 27: // esc
+      case 27: // Esc
         this.hidePopup();
         this.clearHi();
         break;
-      case 65: // a
+      case 65: // A
         this.altView = (this.altView + 1) % 3;
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
         break;
-      case 67: // c
+      case 67: // C
         // CTRL on Windows and CMD (metaKey) on Mac are used for OS copy and
         // thus should prevent the definition copy.
         // `metaKey` is the '⊞ Windows' key on Windows but that probably won't
@@ -451,34 +485,37 @@ class RcxContent {
             entry: this.lastFound,
           });
         }
+
         break;
       case 66: {
-        // b
+        // B
         const rikaichan = (ev.currentTarget! as Window).rikaichan!;
         // For some reason it claims it can be const even though it's decremented.
         // eslint-disable-next-line prefer-const
         let ofs = rikaichan.uofs;
         for (i = 50; i > 0; --i) {
           rikaichan.uofs = --ofs!;
-          if (this.show(rikaichan, this.defaultDict) >= 0) {
-            // TODO: Figure out if this should be changed as per ancient comment.
-            if (ofs! >= rikaichan.uofs) {
-              break;
-            } // ! change later
-          }
+          if (
+            this.show(rikaichan, this.defaultDict) >= 0 && // TODO: Figure out if this should be changed as per ancient comment.
+            ofs! >= rikaichan.uofs
+          ) {
+            break;
+          } // ! change later
         }
+
         break;
       }
-      case 68: // d
+
+      case 68: // D
         chrome.runtime.sendMessage({ type: 'switchOnlyReading' });
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
         break;
       // @ts-expect-error: Fallthrough here used to share lookup logic with different step length.
-      case 77: // m: move forward one character
+      case 77: // M: move forward one character
         (ev.currentTarget! as Window).rikaichan!.uofsNext = 1;
       // Falls through
       case 78: {
-        // n: move forward one word
+        // N: move forward one word
         const rikaiData = (ev.currentTarget! as Window).rikaichan!;
         for (i = 50; i > 0; --i) {
           rikaiData.uofs! += rikaiData.uofsNext!;
@@ -486,9 +523,11 @@ class RcxContent {
             break;
           }
         }
+
         break;
       }
-      case 89: // y
+
+      case 89: // Y
         this.altView = 0;
         (ev.currentTarget! as Window).rikaichan!.popY! += 20;
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
@@ -499,7 +538,7 @@ class RcxContent {
 
     this.keysDown[ev.keyCode] = 1;
 
-    // don't eat shift if in this mode
+    // Don't eat shift if in this mode
     if (shouldPreventDefault) {
       ev.preventDefault();
     }
@@ -510,13 +549,16 @@ class RcxContent {
   onMouseDown = (ev: MouseEvent) => {
     this._onMouseDown(ev);
   };
+
   _onMouseDown(ev: MouseEvent) {
     if (ev.button !== 0) {
       return;
     }
+
     if (this.isVisible()) {
       this.clearHi();
     }
+
     this.mDown = true;
 
     // If we click outside of a text box then we set
@@ -533,10 +575,12 @@ class RcxContent {
   onMouseUp = (ev: MouseEvent) => {
     this._onMouseUp(ev);
   };
+
   _onMouseUp(ev: MouseEvent) {
     if (ev.button !== 0) {
       return;
     }
+
     this.mDown = false;
   }
 
@@ -562,22 +606,22 @@ class RcxContent {
   namesN = 2;
 
   inlineNames = {
-    // text node
+    // Text node
     '#text': true,
 
-    // font style
+    // Font style
     FONT: true,
     TT: true,
     I: true,
     B: true,
     BIG: true,
     SMALL: true,
-    // deprecated
+    // Deprecated
     STRIKE: true,
     S: true,
     U: true,
 
-    // phrase
+    // Phrase
     EM: true,
     STRONG: true,
     DFN: true,
@@ -589,7 +633,7 @@ class RcxContent {
     ABBR: true,
     ACRONYM: true,
 
-    // special, not included IMG, OBJECT, BR, SCRIPT, MAP, BDO
+    // Special, not included IMG, OBJECT, BR, SCRIPT, MAP, BDO
     A: true,
     Q: true,
     SUB: true,
@@ -597,7 +641,7 @@ class RcxContent {
     SPAN: true,
     WBR: true,
 
-    // ruby
+    // Ruby
     RUBY: true,
     RBC: true,
     RTC: true,
@@ -609,7 +653,7 @@ class RcxContent {
   isInline(node: Node) {
     return (
       Object.prototype.hasOwnProperty.call(this.inlineNames, node.nodeName) ||
-      // only check styles for elements
+      // Only check styles for elements
       // comments do not have getComputedStyle method
       (document.nodeType === Node.ELEMENT_NODE &&
         (document
@@ -641,7 +685,7 @@ class RcxContent {
   // relative to "node" argument
   getInlineText(
     node: Node,
-    selEndList: { node: CharacterData; offset: number }[],
+    selEndList: Array<{ node: CharacterData; offset: number }>,
     maxLength: number,
     xpathExpr: XPathExpression
   ) {
@@ -652,7 +696,7 @@ class RcxContent {
       const textNode = node as Text;
       endIndex = Math.min(maxLength, textNode.data.length);
       selEndList.push({ node: textNode, offset: endIndex });
-      return textNode.data.substring(0, endIndex);
+      return textNode.data.slice(0, Math.max(0, endIndex));
     }
 
     // The given xpath expression returns text nodes so
@@ -674,8 +718,9 @@ class RcxContent {
         // See issue #366 for an example where it breaks look ups.
         continue;
       }
+
       endIndex = Math.min(nextNode.data.length, maxLength - text.length);
-      text += nextNode.data.substring(0, endIndex);
+      text += nextNode.data.slice(0, Math.max(0, endIndex));
       selEndList.push({ node: nextNode, offset: endIndex });
     }
 
@@ -687,7 +732,7 @@ class RcxContent {
     return style.visibility !== 'hidden' && style.display !== 'none';
   }
 
-  // given a node which must not be null,
+  // Given a node which must not be null,
   // returns either the next sibling or next sibling of the father or
   // next sibling of the fathers father and so on or null
   getNext(node: Node): Node | null {
@@ -696,6 +741,7 @@ class RcxContent {
     if ((nextNode = node.nextSibling) !== null) {
       return nextNode;
     }
+
     if ((nextNode = node.parentNode) !== null && this.isInline(nextNode)) {
       return this.getNext(nextNode);
     }
@@ -706,7 +752,7 @@ class RcxContent {
   getTextFromRange(
     rangeParent: Node,
     offset: number,
-    selEndList: { node: CharacterData; offset: number }[],
+    selEndList: Array<{ node: CharacterData; offset: number }>,
     maxLength: number
   ) {
     if (
@@ -767,7 +813,7 @@ class RcxContent {
   }
 
   // Hack because SelEnd can't be sent in messages
-  lastSelEnd: { node: CharacterData; offset: number }[] = [];
+  lastSelEnd: Array<{ node: CharacterData; offset: number }> = [];
   // Hack because ro was coming out always 0 for some reason.
   lastRo = 0;
 
@@ -790,7 +836,7 @@ class RcxContent {
       return 0;
     }
 
-    // if we have '   XYZ', where whitespace is compressed, X never seems to get selected
+    // If we have '   XYZ', where whitespace is compressed, X never seems to get selected
     while ((u = rp.data.charCodeAt(ro)) === 32 || u === 9 || u === 10) {
       ++ro;
       if (ro >= rp.data.length) {
@@ -803,25 +849,25 @@ class RcxContent {
     //
     if (
       isNaN(u) ||
-      (u !== 0x25cb &&
-        (u < 0x3001 || u > 0x30ff) &&
-        (u < 0x3400 || u > 0x9fff) &&
-        (u < 0xf900 || u > 0xfaff) &&
-        (u < 0xff10 || u > 0xff9d))
+      (u !== 0x25_cb &&
+        (u < 0x30_01 || u > 0x30_ff) &&
+        (u < 0x34_00 || u > 0x9f_ff) &&
+        (u < 0xf9_00 || u > 0xfa_ff) &&
+        (u < 0xff_10 || u > 0xff_9d))
     ) {
       this.clearHi();
       this.hidePopup();
       return -2;
     }
 
-    // selection end data
-    const selEndList: { node: CharacterData; offset: number }[] = [];
-    const text = this.getTextFromRange(rp, ro, selEndList, 13 /* maxlength*/);
+    // Selection end data
+    const selEndList: Array<{ node: CharacterData; offset: number }> = [];
+    const text = this.getTextFromRange(rp, ro, selEndList, 13 /* maxlength */);
 
     this.lastSelEnd = selEndList;
     this.lastRo = ro;
     chrome.runtime.sendMessage(
-      { type: 'xsearch', text: text, dictOption: String(dictOption) },
+      { type: 'xsearch', text, dictOption: String(dictOption) },
       this.processEntry
     );
 
@@ -838,16 +884,18 @@ class RcxContent {
       this.clearHi();
       return;
     }
+
     this.lastFound = [e];
 
     if (!e.matchLen) {
       e.matchLen = 1;
     }
+
     tdata.uofsNext = e.matchLen;
     tdata.uofs = ro - tdata.prevRangeOfs!;
 
     const rp = tdata.prevRangeNode;
-    // don't try to highlight form elements
+    // Don't try to highlight form elements
     if (
       rp &&
       ((tdata.config.highlight &&
@@ -861,6 +909,7 @@ class RcxContent {
         this.hidePopup();
         return;
       }
+
       this.highlightMatch(doc, rp, ro, e.matchLen, selEndList, tdata);
       tdata.prevSelView = doc.defaultView!;
     }
@@ -881,8 +930,8 @@ class RcxContent {
     doc: Document,
     rp: Node,
     ro: number,
-    matchLen: number,
-    selEndList: { node: CharacterData; offset: number }[],
+    matchLength: number,
+    selEndList: Array<{ node: CharacterData; offset: number }>,
     tdata: Rikaichan
   ) {
     const sel = doc.defaultView!.getSelection()!;
@@ -907,12 +956,13 @@ class RcxContent {
             tdata.oldCaret = textNode.selectionStart!;
             tdata.oldTA = textNode;
           }
-          textNode.selectionStart = ro;
-          textNode.selectionEnd = matchLen + ro;
 
-          tdata.selText = textNode.value.substring(ro, matchLen + ro);
+          textNode.selectionStart = ro;
+          textNode.selectionEnd = matchLength + ro;
+
+          tdata.selText = textNode.value.substring(ro, matchLength + ro);
         }
-      } catch (err) {
+      } catch (error) {
         // If there is an error it is probably caused by the input type
         // being not text.  This is the most general way to deal with
         // arbitrary types.
@@ -920,11 +970,12 @@ class RcxContent {
         // delete oldTA because we don't want to do weird stuff
         // with buttons
         delete tdata.oldTA;
-        // console.log("invalid input type for selection:" + rp.type);
-        if (err instanceof Error) {
-          console.log(err.message);
+        // Console.log("invalid input type for selection:" + rp.type);
+        if (error instanceof Error) {
+          console.log(error.message);
         }
       }
+
       return;
     }
 
@@ -936,13 +987,14 @@ class RcxContent {
     }
 
     let selEnd: { node: CharacterData; offset: number };
-    let offset = matchLen + ro;
+    let offset = matchLength + ro;
 
-    for (let i = 0, len = selEndList.length; i < len; i++) {
+    for (let i = 0, { length } = selEndList; i < length; i++) {
       selEnd = selEndList[i];
       if (offset <= selEnd.offset) {
         break;
       }
+
       offset -= selEnd.offset;
     }
 
@@ -953,6 +1005,7 @@ class RcxContent {
     if (sel.toString() && tdata.selText !== sel.toString()) {
       return;
     }
+
     sel.removeAllRanges();
     sel.addRange(range);
     tdata.selText = sel.toString();
@@ -960,7 +1013,7 @@ class RcxContent {
     if (window.rikaichan!.config.ttsEnabled) {
       const text = sel.toString();
       if (text.length > 0) {
-        chrome.runtime.sendMessage({ type: 'playTTS', text: text });
+        chrome.runtime.sendMessage({ type: 'playTTS', text });
       }
     }
   }
@@ -981,10 +1034,12 @@ class RcxContent {
     }
 
     // TODO(#529): Why does this replace all characters with HTML escape codes
-    // eslint-disable-next-line no-control-regex
-    e.title = tdata.title!.substr(0, e.textLen).replace(/[\x00-\xff]/g, (c) => {
-      return '&#' + c.charCodeAt(0) + ';';
-    });
+
+    e.title = tdata
+      .title!.slice(0, Math.max(0, e.textLen))
+      .replace(/[\u0000-\u00FF]/g, (c) => {
+        return '&#' + c.charCodeAt(0) + ';';
+      });
     if (tdata.title!.length > e.textLen) {
       e.title += '...';
     }
@@ -1034,15 +1089,17 @@ class RcxContent {
     if (fChild === tNode) {
       return offset;
     }
+
     do {
-      let val = 0;
+      let value = 0;
       if (fChild.nodeName === 'BR') {
-        val = 1;
+        value = 1;
       } else {
         const maybeText = fChild as CharacterData;
-        val = maybeText.data ? maybeText.data.length : 0;
+        value = maybeText.data ? maybeText.data.length : 0;
       }
-      realO += val;
+
+      realO += value;
     } while ((fChild = fChild.nextSibling!) !== tNode);
 
     return realO;
@@ -1054,6 +1111,7 @@ class RcxContent {
     this.lastTarget = ev.target;
     this.tryUpdatePopup(ev);
   };
+
   tryUpdatePopup(ev: MouseEvent & { noDelay?: boolean }) {
     const altGraph = ev.getModifierState && ev.getModifierState('AltGraph');
 
@@ -1069,9 +1127,9 @@ class RcxContent {
     }
 
     let fake;
-    const tdata = window.rikaichan!; // per-tab data
+    const tdata = window.rikaichan!; // Per-tab data
     let range;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let rp: any;
     let ro: number;
     const eventTarget = ev.target as HTMLElement &
@@ -1088,16 +1146,18 @@ class RcxContent {
         fake = this.makeFake(
           eventTarget as HTMLTextAreaElement | HTMLInputElement
         );
-        document.body.appendChild(fake);
+        document.body.append(fake);
         fake.scrollTop = eventTarget.scrollTop;
         fake.scrollLeft = eventTarget.scrollLeft;
       }
+
       // Calculate range and friends here after we've made our fake textarea/input divs.
       range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
       // If we don't have a valid range, don't do any more work
       if (range === null) {
         return;
       }
+
       const startNode = range.startContainer;
       ro = range.startOffset;
 
@@ -1106,9 +1166,10 @@ class RcxContent {
       if (fake) {
         // At the end of a line, don't do anything or you just get beginning of next line
         if (rp.data && rp.data.length === ro) {
-          document.body.removeChild(fake);
+          fake.remove();
           return;
         }
+
         fake.style.display = 'none';
         ro = this.getTotalOffset(rp.parentNode!, rp, ro);
       }
@@ -1145,6 +1206,7 @@ class RcxContent {
           ro = 0;
         }
       }
+
       // The case where the before div is empty so the false spot is in the parent
       // But we should be able to take the target.
       // The 1 seems random but it actually represents the preceding empty tag
@@ -1177,31 +1239,36 @@ class RcxContent {
       }
 
       if (eventTarget === tdata.prevTarget && this.isVisible()) {
-        // console.log("exit due to same target");
+        // Console.log("exit due to same target");
         if (tdata.title) {
           if (fake) {
-            document.body.removeChild(fake);
+            fake.remove();
           }
+
           return;
         }
+
         if (rp === tdata.prevRangeNode && ro === tdata.prevRangeOfs) {
           if (fake) {
-            document.body.removeChild(fake);
+            fake.remove();
           }
+
           return;
         }
       }
 
       if (fake) {
-        document.body.removeChild(fake);
+        fake.remove();
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
       }
+
       if (fake) {
-        document.body.removeChild(fake);
+        fake.remove();
       }
+
       return;
     }
 
@@ -1229,6 +1296,7 @@ class RcxContent {
           ) {
             return;
           }
+
           this.show(
             tdata,
             this.forceKanji ? this.forceKanji : this.defaultDict
@@ -1242,9 +1310,12 @@ class RcxContent {
     }
 
     // TODO: Consider making title translations configurable.
-    if (typeof eventTarget.title === 'string' && eventTarget.title.length) {
+    if (typeof eventTarget.title === 'string' && eventTarget.title.length > 0) {
       tdata.title = eventTarget.title;
-    } else if (typeof eventTarget.alt === 'string' && eventTarget.alt.length) {
+    } else if (
+      typeof eventTarget.alt === 'string' &&
+      eventTarget.alt.length > 0
+    ) {
       tdata.title = eventTarget.alt;
     }
 
@@ -1263,6 +1334,7 @@ class RcxContent {
           if (!window.rikaichan || title !== window.rikaichan.title) {
             return;
           }
+
           this.showTitle(tdata);
         },
         delay,
@@ -1270,7 +1342,7 @@ class RcxContent {
         tdata.title
       );
     } else {
-      // dont close just because we moved from a valid popup slightly over to a place with nothing
+      // Dont close just because we moved from a valid popup slightly over to a place with nothing
       const dx = tdata.popX! - ev.clientX;
       const dy = tdata.popY! - ev.clientY;
       const distance = Math.sqrt(dx * dx + dy * dy);
