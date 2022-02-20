@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
-    "@commitlint/config-conventional": "^16.0.0",
+    "@commitlint/config-conventional": "^16.2.1",
     "@esm-bundle/chai": "^4.3.4",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
@@ -99,7 +99,7 @@
     "snowpack-plugin-replace": "^1.0.4",
     "stylelint": "^14.3.0",
     "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-standard": "^24.0.0",
+    "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
     "ts-lit-plugin": "^1.2.1",
     "ts-node": "^10.5.0",
