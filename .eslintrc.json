@@ -76,7 +76,8 @@
         "utils/*",
         "snowpack.config.cjs",
         "commitlint.config.cjs",
-        ".prettierrc.cjs"
+        ".prettierrc.cjs",
+        "stryker.conf.cjs"
       ],
       "env": {
         "node": true

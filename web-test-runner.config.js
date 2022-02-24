@@ -109,6 +109,10 @@ class SpecReporter {
   }
 }
 
+function getCurrentMutant() {
+  return process.env.__STRYKER_ACTIVE_MUTANT__;
+}
+
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 export default {
   coverageConfig: {
@@ -127,13 +131,21 @@ export default {
   plugins: [snowpackWebTestRunner()],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during
   // file initialization in rikaikun.
-  testRunnerHtml: (testFramework) =>
-    `<html>
-      <body>
-        <script type="module" src="test/chrome_stubs.js"></script>
-        <script type="module" src="${testFramework}"></script>
-      </body>
-    </html>`,
+  testRunnerHtml: (testFramework) => /* HTML */ `<html>
+    <body>
+      <script>
+        window.__stryker__ = window.__stryker__ || {};
+        window.__stryker__.activeMutant = '${getCurrentMutant()}';
+        window.process = {
+          env: {
+            __STRYKER_ACTIVE_MUTANT__: '${getCurrentMutant()}',
+          },
+        };
+      </script>
+      <script type="module" src="test/chrome_stubs.js"></script>
+      <script type="module" src="${testFramework}"></script>
+    </body>
+  </html>`,
   reporters: [
     // Gives overall test progress across all tests.
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),

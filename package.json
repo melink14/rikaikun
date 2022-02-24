@@ -57,6 +57,8 @@
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@snowpack/web-test-runner-plugin": "^0.2.2",
+    "@stryker-mutator/core": "^5.6.1",
+    "@stryker-mutator/typescript-checker": "^5.6.1",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@types/byline": "^4.2.33",
     "@types/chai": "^4.3.0",
