@@ -4,12 +4,5 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'es5',
   arrowParens: 'always',
-  overrides: [
-    {
-      files: ['*.js', '*.mjs', '*.ts'],
-      options: {
-        parser: 'jsdoc-parser',
-      },
-    },
-  ],
+  plugins: ['./node_modules/prettier-plugin-jsdoc'],
 };
