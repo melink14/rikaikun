@@ -151,7 +151,7 @@ describe('RcxContent', function () {
           root
         );
 
-        triggerMousemoveAtElementCenter(root.querySelector('svg')!);
+        triggerMousemoveAtElementStart(root.querySelector('svg')!);
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
