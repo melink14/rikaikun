@@ -715,7 +715,8 @@ class RcxContent {
     // <rect> elements come from annotated google docs
     if (rangeParent.nodeName === 'rect') {
       return this.getTextFromGDoc(
-        rangeParent as SVGRectElement,
+        // We always add a data element to the target rect in this case.
+        rangeParent as SVGRectElement & { data: string },
         offset,
         maxLength
       );
@@ -783,16 +784,13 @@ class RcxContent {
   lastRo = 0;
 
   private getTextFromGDoc(
-    initialRect: SVGRectElement,
+    initialRect: SVGRectElement & { data: string },
     offset: number,
     maxLength: number
   ): string {
-    if (initialRect.ariaLabel === null) {
-      return '';
-    }
     // Get text from initial rect.
-    const endIndex = Math.min(initialRect.ariaLabel.length, offset + maxLength);
-    let text = initialRect.ariaLabel.substring(offset, endIndex);
+    const endIndex = Math.min(initialRect.data.length, offset + maxLength);
+    let text = initialRect.data.substring(offset, endIndex);
 
     // Append text from sibling and cousin rects.
     const rectWalker = this.createGDocTreeWalker(initialRect);
