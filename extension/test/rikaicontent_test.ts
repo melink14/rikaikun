@@ -133,6 +133,31 @@ describe('RcxContent', function () {
         initializeRcxContent();
       });
 
+      it('does not trigger xsearch when rect has no ariaLabel', function () {
+        const clock = sinon.useFakeTimers();
+        render(
+          html`<svg style="position:absolute">
+            <g>
+              <rect
+                x="0"
+                y="-0.32283854166666615"
+                width="29.319976806640625"
+                height="17.599999999999998"
+                fill="none"
+                data-font-css='400 14.6667px "Arial"'
+              ></rect>
+            </g>
+          </svg>`,
+          root
+        );
+
+        triggerMousemoveAtElementStart(root.querySelector('svg')!);
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.not.have.been.called;
+      });
+
       it('does not trigger xsearch when over svg but not rect', function () {
         const clock = sinon.useFakeTimers();
         render(
@@ -622,6 +647,46 @@ describe('RcxContent', function () {
               >
                 備を
               </text>
+            </g>
+          </svg>`,
+          root
+        );
+
+        triggerMousemoveAtElementStart(root.querySelector('rect#startrect')!);
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '準',
+        });
+      });
+
+      it('triggers xsearch message ignoring <rect> tag with no ariaLabel', function () {
+        const clock = sinon.useFakeTimers();
+        render(
+          html`<svg style="position:absolute">
+            <g>
+              <rect
+                id="startrect"
+                x="0"
+                y="-0.32283854166666615"
+                width="14.659988403320312"
+                height="17.599999999999998"
+                fill="none"
+                aria-label="準"
+                data-font-css='400 14.6667px "Arial"'
+              ></rect>
+            </g>
+            <g>
+              <rect
+                x="0"
+                y="-0.32283854166666615"
+                width="29.319976806640625"
+                height="17.599999999999998"
+                fill="none"
+                data-font-css='400 14.6667px "Arial"'
+              ></rect>
             </g>
           </svg>`,
           root
