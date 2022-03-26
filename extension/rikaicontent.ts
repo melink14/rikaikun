@@ -787,6 +787,9 @@ class RcxContent {
     offset: number,
     maxLength: number
   ): string {
+    if (initialRect.ariaLabel === null) {
+      return '';
+    }
     // Get text from initial rect.
     const endIndex = Math.min(initialRect.ariaLabel.length, offset + maxLength);
     let text = initialRect.ariaLabel.substring(offset, endIndex);
@@ -800,6 +803,9 @@ class RcxContent {
       text.length < maxLength
     ) {
       const rect = rectNode as SVGRectElement;
+      if (rect.ariaLabel === null) {
+        continue;
+      }
       const rectEndIndex = Math.min(
         rect.ariaLabel.length,
         maxLength - text.length
@@ -1074,7 +1080,7 @@ class RcxContent {
     const realRect = real.getBoundingClientRect();
     let textValue = '';
     if (real instanceof SVGRectElement) {
-      textValue = real.ariaLabel;
+      textValue = real.ariaLabel ?? '';
     } else {
       textValue = real.value;
     }
