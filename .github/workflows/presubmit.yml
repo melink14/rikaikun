@@ -7,6 +7,11 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+
+# Needed for pushing baselines commit.
+permissions:
+  contents: write
 
 jobs:
   presubmit:
@@ -14,12 +19,46 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        if: github.event_name == 'push'
+      - uses: actions/checkout@v3
+        if: github.event_name == 'pull_request'
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: Install Japanese Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
       - run: npm ci
-      - run: npm run presubmit:coverage
+      - name: Lint, build, and test
+        id: run-tests
+        run: npm run presubmit:percy
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+      - name: Check for screenshot failures
+        id: check-screenshots
+        if: failure()
+        run: echo "::set-output name=screenshot_failure::$(ls -1 screenshots/Chromium/failed | wc -l)"
+      - name: Upload failing screenshots and diffs
+        uses: actions/upload-artifact@v3
+        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0
+        with:
+          name: screenshot_failures
+          path: screenshots/Chromium/failed/
+      - name: Update baseline screenshots
+        run: npm run test:update-baselines
+        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
+      - name: Push new baselines to pull request branch
+        uses: EndBug/add-and-commit@v9.0.0
+        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
+        with:
+          message: 'test(visual): Update baselines with new screenshots'
+          add: 'screenshots/Chromium/baseline/*.png'
+          default_author: github_actions
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:

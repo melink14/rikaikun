@@ -750,7 +750,7 @@ describe('RcxContent', function () {
       rcxContent.showPopup('<span></span>');
 
       expect(
-        document.querySelector<HTMLLinkElement>('head link')!.href
+        document.querySelector<HTMLLinkElement>('head link#rikaichan-css')!.href
       ).to.equal('http://fakebaseurl/css/popup.css');
     });
   });

@@ -14,17 +14,17 @@ async function createRcxMainPromise(): Promise<RcxMain> {
 }
 const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
-chrome.browserAction.onClicked.addListener((tab) => {
-  void (async () => {
-    const rcxMain = await rcxMainPromise;
-    rcxMain.inlineToggle(tab);
-  })();
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+chrome.browserAction.onClicked.addListener(async (tab) => {
+  const rcxMain = await rcxMainPromise;
+  rcxMain.inlineToggle(tab);
 });
-chrome.tabs.onActivated.addListener((activeInfo) => {
-  void (async () => {
-    const rcxMain = await rcxMainPromise;
-    rcxMain.onTabSelect(activeInfo.tabId);
-  })();
+
+// Passing a promise to `addListener` here allows us to await the promise in tests.
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const rcxMain = await rcxMainPromise;
+  rcxMain.onTabSelect(activeInfo.tabId);
 });
 
 // Passing a promise to `addListener` here allows us to await the promise in tests.
