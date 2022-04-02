@@ -144,14 +144,13 @@ describe('Visual Regression Tests', function () {
         await updateConfiguration({ popupcolor: color });
         const clock = sinon.useFakeTimers();
         const span = insertHtmlIntoDomAndReturnFirstTextNode(
-          '<span>人</span>'
+          '<span>立</span>'
         ) as HTMLSpanElement;
 
         await triggerMousemoveAtElementStart(span);
         // Tick the clock forward to account for the popup delay.
         clock.tick(150);
         await waitForVisiblePopup();
-        await sendKeys({ press: 'Shift' });
 
         await takeSnapshot(`kanji-entries-${color}`);
       });
