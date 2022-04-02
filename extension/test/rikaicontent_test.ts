@@ -728,32 +728,6 @@ describe('RcxContent', function () {
       });
     });
   });
-
-  describe('showPopup', function () {
-    it('sets data-theme attribute of rikaikun window to config popupcolor value', function () {
-      rcxContent.enableTab({ popupcolor: 'redtest' } as Config);
-
-      rcxContent.showPopup('<span></span>');
-
-      // expect rikaikun window to have data-theme attribute set to config popupcolor value
-      expect(
-        document.querySelector<HTMLDivElement>('#rikaichan-window')!.dataset
-          .theme
-      ).to.equal('redtest');
-    });
-
-    it('adds link tag pointing to "css/popup.css" to <head>', function () {
-      chrome.extension.getURL.callsFake((path: string) => {
-        return `http://fakebaseurl/${path}`;
-      });
-
-      rcxContent.showPopup('<span></span>');
-
-      expect(
-        document.querySelector<HTMLLinkElement>('head link#rikaichan-css')!.href
-      ).to.equal('http://fakebaseurl/css/popup.css');
-    });
-  });
 });
 
 // Required if testing downstream methods which expect a proper hover event to have

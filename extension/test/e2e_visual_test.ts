@@ -253,7 +253,9 @@ async function takeSnapshot(name: string) {
     });
   }
   await visualDiff(
-    document.querySelector<HTMLDivElement>('#rikaichan-window')!,
+    document
+      .querySelector<HTMLDivElement>('#rikaichan-window')!
+      .shadowRoot!.querySelector('#rikaikun-shadow')!,
     name
   );
 }

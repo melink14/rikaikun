@@ -114,17 +114,6 @@ class RcxContent {
     }
   }
 
-  getContentType(tDoc: Document) {
-    const m = tDoc.getElementsByTagName('meta');
-    for (const i in m) {
-      if (m[i].httpEquiv === 'Content-Type') {
-        const con = m[i].content.split(';');
-        return con[0];
-      }
-    }
-    return null;
-  }
-
   showPopup(
     text: string,
     elem?: HTMLElement,
@@ -140,20 +129,16 @@ class RcxContent {
 
     let popup = topdoc.getElementById('rikaichan-window');
     if (!popup) {
-      const css = topdoc.createElementNS(
-        'http://www.w3.org/1999/xhtml',
-        'link'
-      );
+      const css = topdoc.createElement('link');
       css.setAttribute('rel', 'stylesheet');
-      css.setAttribute('type', 'text/css');
       css.setAttribute('href', chrome.extension.getURL('css/popup.css'));
-      css.setAttribute('id', 'rikaichan-css');
-      topdoc.getElementsByTagName('head')[0].appendChild(css);
 
       popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
       popup.setAttribute('id', 'rikaichan-window');
       popup.setAttribute('lang', 'ja');
-      topdoc.documentElement.appendChild(popup);
+      popup.attachShadow({ mode: 'open' });
+
+      topdoc.body.appendChild(popup);
 
       popup.addEventListener(
         'dblclick',
@@ -163,35 +148,30 @@ class RcxContent {
         },
         true
       );
+
+      const shadowcontainer = topdoc.createElement('div');
+      shadowcontainer.setAttribute('id', 'rikaikun-shadow');
+      popup.shadowRoot!.appendChild(css);
+      popup.shadowRoot!.appendChild(shadowcontainer);
     }
-    popup.setAttribute('data-theme', window.rikaichan!.config.popupcolor);
+    const shadowcontainer = this.getRikaikunPopup(popup);
+    shadowcontainer.setAttribute(
+      'data-theme',
+      window.rikaichan!.config.popupcolor
+    );
 
-    popup.style.width = 'auto';
-    popup.style.height = 'auto';
-    popup.style.maxWidth = looseWidth ? '' : '600px';
-
-    if (this.getContentType(topdoc) === 'text/plain') {
-      const docFragment = document.createDocumentFragment();
-      docFragment.appendChild(
-        document.createElementNS('http://www.w3.org/1999/xhtml', 'span')
-      );
-      (docFragment.firstChild! as HTMLElement).innerHTML = text;
-
-      while (popup.firstChild) {
-        popup.removeChild(popup.firstChild);
-      }
-      popup.appendChild(docFragment.firstChild!);
-    } else {
-      popup.innerHTML = text;
-    }
+    shadowcontainer.style.width = 'auto';
+    shadowcontainer.style.height = 'auto';
+    shadowcontainer.style.maxWidth = looseWidth ? '' : '600px';
+    shadowcontainer.innerHTML = text;
 
     if (elem) {
-      popup.style.top = '-1000px';
-      popup.style.left = '0px';
+      shadowcontainer.style.top = '-1000px';
+      shadowcontainer.style.left = '0px';
       popup.style.display = '';
 
-      let pW = popup.offsetWidth;
-      let pH = popup.offsetHeight;
+      let pW = shadowcontainer.offsetWidth;
+      let pH = shadowcontainer.offsetHeight;
 
       // guess!
       if (pW <= 0) {
@@ -231,9 +211,9 @@ class RcxContent {
           y -= elem.offsetTop;
         }
 
-        if (x + popup.offsetWidth > window.innerWidth) {
+        if (x + shadowcontainer.offsetWidth > window.innerWidth) {
           // too much to the right, go left
-          x -= popup.offsetWidth + 5;
+          x -= shadowcontainer.offsetWidth + 5;
           if (x < 0) {
             x = 0;
           }
@@ -279,8 +259,8 @@ class RcxContent {
       y += window.scrollY;
     }
 
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
+    shadowcontainer.style.left = x + 'px';
+    shadowcontainer.style.top = y + 'px';
     popup.style.display = '';
   }
 
@@ -288,8 +268,12 @@ class RcxContent {
     const popup = document.getElementById('rikaichan-window');
     if (popup) {
       popup.style.display = 'none';
-      popup.innerHTML = '';
+      this.getRikaikunPopup(popup).innerHTML = '';
     }
+  }
+
+  private getRikaikunPopup(popup: HTMLElement): HTMLDivElement {
+    return popup.shadowRoot!.querySelector<HTMLDivElement>('#rikaikun-shadow')!;
   }
 
   isVisible() {
