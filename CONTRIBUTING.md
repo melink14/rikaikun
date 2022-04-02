@@ -9,11 +9,11 @@
     - [Philosophy and Best Practices](#philosophy-and-best-practices)
       - [Reasons for testing](#reasons-for-testing)
       - [Guidelines](#guidelines)
+      - [Coverage](#coverage)
   - [Pull Requests](#pull-requests)
 - [Style Guides](#style-guides)
   - [Git Commit Messages](#git-commit-messages)
   - [Coding style](#coding-style)
-    - [Style preferences not handled by the linter](#style-preferences-not-handled-by-the-linter)
 
 ## Introduction
 
@@ -47,8 +47,10 @@ If you get stuck, push your code early and ask for feedback on the issue.
 ### Getting started
 
 1. After you check out the code, run `npm install` ([npm installation guide](https://www.npmjs.com/get-npm)) to get the rikaikun dev tools ready.
+   1. By default, `npm install` will also run a test suite and install visual test baselines in the local-screenshots directory.
 2. Make your changes and commit them locally. Run `npm run fix` often to ensure your code follows style guidelines.
 3. Add tests for your new code in the `extension/test` directory.
+   1. If you add a new feature to the in page popup, be sure to add a set of visual screenshot tests for it as well. See `e2e_visual_test.js` for examples.
 4. Run `npm run build` to create an unpackaged instance of rikaikun in the `dist` directory. Load this into Chrome to test your changes.
 5. When you're satisfied with your changes, commit your code, check that your commit message follows [these guidelines](#git-commit-messages), and start a pull request.
 
@@ -77,15 +79,21 @@ Testing is an art not a science but what follows is a set of guidelines to help 
 
 For now, follow the [advice at this guide](https://github.com/goldbergyoni/javascript-testing-best-practices). Not every best practice there will apply but it's a great starting point. We can add exceptions and additions here as they come up.
 
+##### Coverage
+
+After your PR passes presubmit, codecov will add a comment analyzing how your change affects code coverage in the repo. You should have test coverage for all new functionality added in your PR (we don't want it to break!). Sometimes it's hard to understand which branches are missing coverage so please ask if you're having trouble.
+
 ### Pull Requests
 
 Pull requests (PR) are where the main discussion around _how_ you implemented your change will happen. The following guidelines will ensure a quick and painless merge.
 
 - Each PR should solve one concern and be of reasonable size. For tips on keeping pull requests small, see the following [blog post](https://unhashable.com/stacked-pull-requests-keeping-github-diffs-small/).
   - Generally, every code change in your PR should be required for your feature or bug fix. If you notice an improvement along the way, please open a new issue for it and submit a new PR. One off improvements are usually OK but mention them explicitly in your commit/PR message.
-- The PR title should be a single descriptive phrase of the one thing the PR accomplishes.
-- The PR body should give extra details and include links to related issues, pull requests and outside references.
-- Usually, your PR should start with one commit which contains your new code. During the course of review, it's better to add commits to your branch instead of amending or rebasing because otherwise Github loses the evolution of the code. When your PR is merged, it will be squashed back into one commit.
+- The PR title should be a single descriptive phrase of the one thing the PR accomplishes. This should be the first line of your PR commit.
+- The PR body should give extra details and include links to related issues, pull requests and outside references. This should be the body and footer of your commit.
+- Your PR should start with one commit which contains your new code. During the course of review, it's better to add commits to your branch instead of amending or rebasing because otherwise Github loses the evolution of the code. When your PR is merged, it will be squashed back into one commit.
+- If your PR introduces visual changes, it's normal for the tests to fail in the first pass. After they fail, Github will add a commit to the PR which updates the baselines for easy comparing.
+  - This may not work for PRs from forks. In that case, reach out to a maintainer for help. Essentially, you can download the new baseline images as a Github Action artifact and commit them yourself.
 
 ## Style Guides
 
@@ -113,7 +121,7 @@ Here are examples of the types currently in use ([partial source](http://karma-r
     style (formatting, missing semi colons, etc; no production code change)
     refactor (refactoring production code, eg. renaming a variable)
     test (adding missing tests, refactoring tests; no production code change)
-    chore (updating grunt tasks etc; no production code change)
+    build (updating build scripts and NPM dependencies; no production code change)
     ci (changing the github checks which continuously run on pushed code)
 
 These are the common scopes used, though feel free to suggest a new one if it makes sense:
@@ -128,7 +136,3 @@ See the (recent) [commit history](https://github.com/melink14/rikaikun/commits/m
 ### Coding style
 
 As long as `npm run lint` passes, your code is correctly styled. You may get some more specific advice if a maintainer thinks something is more readable, but it saves a lot of time when we don't have to worry about auto-fixable style issues!
-
-#### Style preferences not handled by the linter
-
-- When overriding parent class methods, always include `@override` in your TSDoc string. This gives a strong readability signal without having to read the parent class's code.
