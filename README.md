@@ -6,7 +6,6 @@
 [![codecov](https://codecov.io/gh/melink14/rikaikun/branch/main/graph/badge.svg?token=4nZ7madoqJ)](https://codecov.io/gh/melink14/rikaikun)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e342d582357449f38d9255c247e37159)](https://www.codacy.com/gh/melink14/rikaikun/dashboard?utm_source=github.com&utm_medium=referral&utm_content=melink14/rikaikun&utm_campaign=Badge_Grade)
 [![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
-[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg?style=flat)](https://github.com/google/gts)
 [![License GPL-3.0](https://img.shields.io/github/license/melink14/rikaikun?style=flat)](https://github.com/melink14/rikaikun/blob/main/LICENSE)
 [![Standard Readme Compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat)](https://conventionalcommits.org)
@@ -68,8 +67,6 @@ You can also install rikaikun from the source as an unpacked extension:
 ## Usage
 
 Activate the extension by clicking on the 理 in the top right. When the introductory pop up appears, rikaikun is ready for action.
-
-> Note: There is a bug where sometimes the 'On' badge appears active when Chrome first loads. In those cases, click the icon again and rikaikun will activate. ([Issue #82](https://github.com/melink14/rikaikun/issues/82))
 
 When rikaikun is active, hovering over Japanese words will trigger a translation pop-up.
 
