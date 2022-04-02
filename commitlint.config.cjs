@@ -6,6 +6,7 @@ module.exports = {
     // Max line lengths is an antipattern.
     'body-max-line-length': [0],
     'header-max-length': [0],
+    'footer-max-line-length': [0],
     // Consistently require no period at the end of summary.
     'header-full-stop': [2, 'never', '.'],
   },
