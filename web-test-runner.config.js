@@ -2,7 +2,6 @@ import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import percySnapshot from '@percy/puppeteer';
 import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
@@ -112,24 +111,6 @@ class SpecReporter {
   }
 }
 
-function percyPlugin() {
-  return {
-    name: 'percy-plugin',
-
-    async executeCommand({ command, session, payload }) {
-      if (command === 'takePercySnapshot') {
-        if (session.browser.type === 'puppeteer') {
-          /** @type {import('@web/test-runner-chrome').ChromeLauncher} */
-          const browser = session.browser;
-          const page = browser.getPage(session.id);
-          await percySnapshot(page, payload.name, { widths: [1280] });
-          return true;
-        }
-      }
-    },
-  };
-}
-
 /** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
 const defaultConfig = {
   coverageConfig: {
@@ -149,32 +130,16 @@ const defaultConfig = {
   ],
   plugins: [
     snowpackWebTestRunner(),
-    percyPlugin(),
     visualRegressionPlugin({
       update: process.argv.includes('--update-visual-baseline'),
       // When not running in Github Actions, save to an unpushed local folder.
       baseDir: process.env.CI ? 'screenshots' : 'local-screenshots',
     }),
-    {
-      // Inline plugin to allow passing command line arguments to browser tests.
-      name: 'env-vars',
-      serve(context) {
-        if (context.path === '/test/environment.js') {
-          return `export default { percyEnabled: ${process.argv.includes(
-            '--percy'
-          )} }`;
-        }
-      },
-    },
   ],
   // Use custom runner HTML to add chrome stubs early since chrome APIs are used during
   // file initialization in rikaikun.
   testRunnerHtml: (testFramework) =>
     `<html>
-      <head>
-        <!-- Required for Japanese fonts to work in Percy. -->
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      </head>
       <body>
         <script type="module" src="test/chrome_stubs.js"></script>
         <script type="module" src="${testFramework}"></script>

@@ -1,21 +1,13 @@
 import { Config } from '../configuration';
 import { TestOnlyRcxContent } from '../rikaicontent';
-import {
-  executeServerCommand,
-  resetMouse,
-  sendKeys,
-  sendMouse,
-} from '@web/test-runner-commands';
+import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
 import { use } from '@esm-bundle/chai';
 import { visualDiff } from '@web/test-runner-visual-regression';
-import sinonChrome from 'sinon-chrome';
-// eslint-disable-next-line import/no-unresolved
-import env from './environment.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import sinonChrome from 'sinon-chrome';
 
 use(sinonChai);
-console.log('Running tests with percy enabled:', env.percyEnabled);
 
 // Extract callback types from chrome listeners.
 type StorageOnChangedHandler = Parameters<
@@ -247,11 +239,6 @@ function configureMessagePassing() {
 }
 
 async function takeSnapshot(name: string) {
-  if (env.percyEnabled) {
-    await executeServerCommand('takePercySnapshot', {
-      name: name,
-    });
-  }
   await visualDiff(
     document
       .querySelector<HTMLDivElement>('#rikaichan-window')!
