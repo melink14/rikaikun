@@ -114,12 +114,12 @@ class DictParser extends Transform {
     super(options);
   }
 
-  /**
-   * Transforms data
-   *
-   * @override
-   */
-  _transform(data: Buffer, encoding: string, callback: TransformCallback) {
+  /** Transforms data */
+  override _transform(
+    data: Buffer,
+    encoding: string,
+    callback: TransformCallback
+  ) {
     const line = data.toString('utf8');
 
     // Skip the header
@@ -231,12 +231,8 @@ class KanjiDictParser extends Writable {
     this.#heisigData = options.heisigData;
   }
 
-  /**
-   * Write the data.
-   *
-   * @override
-   */
-  _write(
+  /** Write the data. */
+  override _write(
     chunk: Buffer,
     encoding: string,
     callback: (error?: Error | null) => void
