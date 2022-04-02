@@ -36,9 +36,7 @@ jobs:
       - run: npm ci
       - name: Lint, build, and test
         id: run-tests
-        run: npm run presubmit:percy
-        env:
-          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        run: npm run presubmit:coverage
       - name: Check for screenshot failures
         id: check-screenshots
         if: failure()
