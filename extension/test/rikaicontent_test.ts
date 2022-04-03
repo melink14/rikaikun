@@ -108,72 +108,6 @@ describe('RcxContent', function () {
       });
     });
 
-    it('triggers xsearch message when above Japanese text input with custom font styles', function () {
-      const clock = sinon.useFakeTimers();
-      const measuringSpan = insertHtmlIntoDomAndReturnFirstTextNode(
-        '<span style="font-size:32px">位の日本語訳・</span>'
-      ) as HTMLSpanElement;
-      const input = insertHtmlIntoDomAndReturnFirstTextNode(
-        '<input style="font-size:32px" value="位の日本語訳・中国語訳にも" size="34"/>'
-      ) as HTMLInputElement;
-
-      triggerMousemoveAtElementStartWithOffset(input, {
-        x: measuringSpan.getBoundingClientRect().width + 1,
-        y: input.getBoundingClientRect().height / 2,
-      });
-      // Tick the clock forward to account for the popup delay.
-      clock.tick(1);
-
-      // This value is chosen via experimentation since it's hard to know exactly
-      // where a character is in an input element.
-      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
-        type: 'xsearch',
-        text: '中国語訳にも',
-      });
-    });
-
-    it('triggers xsearch message when above Japanese text area with custom width', function () {
-      const clock = sinon.useFakeTimers();
-      const measuringDiv = insertHtmlIntoDomAndReturnFirstTextNode(
-        '<div style="width:40px;height:auto;overflow-y:scroll">位の</div>'
-      ) as HTMLDivElement;
-      const input = insertHtmlIntoDomAndReturnFirstTextNode(
-        '<textarea style="all:initial;width:40px;height:100px">位の日本語訳・中国語訳にも'
-      ) as HTMLTextAreaElement;
-
-      triggerMousemoveAtElementStartWithOffset(input, {
-        x: 0,
-        y: measuringDiv.getBoundingClientRect().height + 1,
-      });
-      // Tick the clock forward to account for the popup delay.
-      clock.tick(1);
-
-      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
-        type: 'xsearch',
-        text: '日本語訳・中国語訳にも',
-      });
-    });
-
-    it('triggers xsearch message when above Japanese text area with custom padding', function () {
-      const clock = sinon.useFakeTimers();
-      const padding = 20;
-      const input = insertHtmlIntoDomAndReturnFirstTextNode(
-        `<textarea style="padding:${padding}px">中国語訳にも`
-      ) as HTMLTextAreaElement;
-
-      triggerMousemoveAtElementStartWithOffset(input, {
-        x: padding + 1,
-        y: padding + 1,
-      });
-      // Tick the clock forward to account for the popup delay.
-      clock.tick(1);
-
-      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
-        type: 'xsearch',
-        text: '中国語訳にも',
-      });
-    });
-
     describe('inside text area', function () {
       it('triggers xsearch message when above Japanese text', function () {
         const clock = sinon.useFakeTimers();
@@ -188,6 +122,179 @@ describe('RcxContent', function () {
         expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
           type: 'xsearch',
           text: '生test',
+        });
+      });
+
+      it('triggers xsearch message when text area has custom font styles', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringSpan = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span style="font-size:32px">位の日本語訳・</span>'
+        ) as HTMLSpanElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<input style="font-size:32px" value="位の日本語訳・中国語訳にも" size="34"/>'
+        ) as HTMLInputElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: measuringSpan.getBoundingClientRect().width + 1,
+          y: input.getBoundingClientRect().height / 2,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        // This value is chosen via experimentation since it's hard to know exactly
+        // where a character is in an input element.
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '中国語訳にも',
+        });
+      });
+
+      it('triggers xsearch message when text area has custom width and scrollbars', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringDiv = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<div style="width:40px;height:auto;overflow-y:scroll">位の</div>'
+        ) as HTMLDivElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<textarea style="all:initial;width:40px;height:100px">位の日本語訳・中国語訳にも'
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: 0,
+          y: measuringDiv.getBoundingClientRect().height + 1,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '日本語訳・中国語訳にも',
+        });
+      });
+
+      it('does not trigger xsearch for text that should be truncated by custom height', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringDiv = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<div style="width:40px;height:auto;overflow-y:scroll">位の日本語訳・中国語訳にも</div>'
+        ) as HTMLDivElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<textarea style="all:initial;width:40px;height:100px">位の日本語訳・中国語訳にも'
+        ) as HTMLTextAreaElement;
+
+        // Trigger at the the bottom of full length text even though the end should
+        // be truncated if height is honored.
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: 5,
+          y: measuringDiv.getBoundingClientRect().height - 1,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.not.been.called;
+      });
+
+      it('triggers xsearch message when text area has custom padding', function () {
+        const clock = sinon.useFakeTimers();
+        const padding = 20;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          `<textarea style="padding:${padding}px">中国語訳にも`
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: padding + 1,
+          y: padding + 1,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '中国語訳にも',
+        });
+      });
+
+      it('triggers xsearch message when text area has custom border', function () {
+        const clock = sinon.useFakeTimers();
+        const border = 20;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          `<textarea style="border:${border}px solid">中国語訳にも`
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: border + 1,
+          y: border + 1,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '中国語訳にも',
+        });
+      });
+
+      it('triggers xsearch message when above Japanese text preceded by consecutive spaces', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringSpan = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span style="white-space:pre-wrap">中国          </span>'
+        ) as HTMLDivElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<textarea style="all:initial;white-space:normal">中国          語訳にも'
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: measuringSpan.getBoundingClientRect().width + 1,
+          y: measuringSpan.getBoundingClientRect().height / 2,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '語訳にも',
+        });
+      });
+
+      it('triggers xsearch message when text area has custom letter-spacing', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringSpan = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span style="letter-spacing:10px">中国</span>'
+        ) as HTMLDivElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<textarea style="all:initial;letter-spacing:10px">中国語訳にも'
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: measuringSpan.getBoundingClientRect().width + 1,
+          y: measuringSpan.getBoundingClientRect().height / 2,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '語訳にも',
+        });
+      });
+
+      it('triggers xsearch message when text area has custom word-spacing', function () {
+        const clock = sinon.useFakeTimers();
+        const measuringSpan = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span style="word-spacing:10px">a a a 中国</span>'
+        ) as HTMLDivElement;
+        const input = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<textarea style="all:initial;word-spacing:10px">a a a 中国語訳にも'
+        ) as HTMLTextAreaElement;
+
+        triggerMousemoveAtElementStartWithOffset(input, {
+          x: measuringSpan.getBoundingClientRect().width + 1,
+          y: measuringSpan.getBoundingClientRect().height / 2,
+        });
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(1);
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '語訳にも',
         });
       });
     });

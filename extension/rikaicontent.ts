@@ -1068,20 +1068,24 @@ class RcxContent {
     }
     const realStyles = window.getComputedStyle(real, '');
     fake.innerText = textValue;
+    // Text areas never visible collapse spaces so always set whiteSpace to pre-wrap
+    fake.style.whiteSpace = 'pre-wrap';
     fake.style.font = realStyles.font;
     fake.style.height = realRect.height + 'px';
     // Without a width, the fake div will expand horizontally
     fake.style.width = realRect.width + 'px';
-    // When pre-wrap is set spaces are collapsed causing differences
-    fake.style.whiteSpace = realStyles.whiteSpace;
     // Padding moves text inwards so needs to be copied
     fake.style.padding = realStyles.padding;
-    // Border also affects total width (but maybe box-sizing needs to be copied too?)
+    // Border also affects total width sometimes
     fake.style.border = realStyles.border;
     // Effects total width when padding and border are set.
     fake.style.boxSizing = realStyles.boxSizing;
-    // Include scrollbars
+    // The overflow property can add scrollbars which affects text placement.
     fake.style.overflow = realStyles.overflow;
+    fake.style.letterSpacing = realStyles.letterSpacing;
+    // Japanese text is often not broken into words but this could be important for
+    // mixed language text.
+    fake.style.wordSpacing = realStyles.wordSpacing;
     fake.scrollTop = real.scrollTop;
     fake.scrollLeft = real.scrollLeft;
     fake.style.position = 'absolute';
