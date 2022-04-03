@@ -179,7 +179,7 @@ class RcxMain {
       if (this.config.minihelp) {
         this.showPopupInTab(tabId, this.miniHelp);
       } else {
-        this.showPopupInTab(tabId, this.miniHelp);
+        this.showPopupInTab(tabId, 'Rikaikun enabled!');
       }
     }
     void chrome.browserAction.setBadgeBackgroundColor({

@@ -211,6 +211,24 @@ describe('Visual Regression Tests', function () {
     });
   });
 
+  describe('enable no help', function () {
+    // Disable ban on logic in describe in order to dynamically generate color tests
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
+      it(`should render correctly with ${color} theme`, async function () {
+        await updateConfiguration({ popupcolor: color, minihelp: false });
+        // Turn rikaikun off.
+        await toggleRikaikun();
+
+        // Turn rikaikun on to see the help popup.
+        await toggleRikaikun();
+        await waitForVisiblePopup();
+
+        await takeSnapshot(`enable-no-help-${color}`);
+      });
+    });
+  });
+
   describe('copy to clipboard', function () {
     // Disable ban on logic in describe in order to dynamically generate color tests
     // eslint-disable-next-line mocha/no-setup-in-describe
