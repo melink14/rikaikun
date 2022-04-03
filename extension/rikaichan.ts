@@ -147,10 +147,7 @@ class RcxMain {
     document.addEventListener('copy', copyFunction);
     document.execCommand('Copy');
     document.removeEventListener('copy', copyFunction);
-    chrome.tabs.sendMessage(tab.id, {
-      type: 'showPopup',
-      text: 'Copied to clipboard.',
-    });
+    this.showPopupInTab(tab.id, 'Copied to clipboard.');
   }
 
   miniHelp =
@@ -180,21 +177,28 @@ class RcxMain {
 
     if (mode === 1) {
       if (this.config.minihelp) {
-        chrome.tabs.sendMessage(tabId, {
-          type: 'showPopup',
-          text: this.miniHelp,
-        });
+        this.showPopupInTab(tabId, this.miniHelp);
       } else {
-        chrome.tabs.sendMessage(tabId, {
-          type: 'showPopup',
-          text: 'Rikaikun enabled!',
-        });
+        this.showPopupInTab(tabId, this.miniHelp);
       }
     }
     void chrome.browserAction.setBadgeBackgroundColor({
       color: [255, 0, 0, 255],
     });
     void chrome.browserAction.setBadgeText({ text: 'On' });
+  }
+
+  private showPopupInTab(tabId: number, text: string) {
+    chrome.tabs.sendMessage(
+      tabId,
+      {
+        type: 'showPopup',
+        text: text,
+      },
+      {
+        frameId: 0,
+      }
+    );
   }
 
   // This function disables rikaikun in all tabs.
