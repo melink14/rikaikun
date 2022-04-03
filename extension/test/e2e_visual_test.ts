@@ -198,7 +198,6 @@ describe('Visual Regression Tests', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
-        //initializeRcxContent({ popupcolor: color });
         await updateConfiguration({ popupcolor: color });
         // Turn rikaikun off.
         await toggleRikaikun();
@@ -208,6 +207,46 @@ describe('Visual Regression Tests', function () {
         await waitForVisiblePopup();
 
         await takeSnapshot(`enable-mini-help-${color}`);
+      });
+    });
+  });
+
+  describe('enable no help', function () {
+    // Disable ban on logic in describe in order to dynamically generate color tests
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
+      it(`should render correctly with ${color} theme`, async function () {
+        await updateConfiguration({ popupcolor: color, minihelp: false });
+        // Turn rikaikun off.
+        await toggleRikaikun();
+
+        // Turn rikaikun on to see the help popup.
+        await toggleRikaikun();
+        await waitForVisiblePopup();
+
+        await takeSnapshot(`enable-no-help-${color}`);
+      });
+    });
+  });
+
+  describe('copy to clipboard', function () {
+    // Disable ban on logic in describe in order to dynamically generate color tests
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
+      it(`should render correctly with ${color} theme`, async function () {
+        await updateConfiguration({ popupcolor: color });
+        const clock = sinon.useFakeTimers();
+        const span = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span>森</span>'
+        ) as HTMLSpanElement;
+
+        await triggerMousemoveAtElementStart(span);
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(150);
+        await waitForVisiblePopup();
+        await sendKeys({ press: 'c' });
+
+        await takeSnapshot(`enable-copy-to-clipboard-${color}`);
       });
     });
   });
