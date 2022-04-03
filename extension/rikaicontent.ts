@@ -1066,11 +1066,22 @@ class RcxContent {
     } else {
       textValue = real.value;
     }
+    const realStyles = window.getComputedStyle(real, '');
     fake.innerText = textValue;
-    fake.style.cssText = document.defaultView!.getComputedStyle(
-      real,
-      ''
-    ).cssText;
+    fake.style.font = realStyles.font;
+    fake.style.height = realRect.height + 'px';
+    // Without a width, the fake div will expand horizontally
+    fake.style.width = realRect.width + 'px';
+    // When pre-wrap is set spaces are collapsed causing differences
+    fake.style.whiteSpace = realStyles.whiteSpace;
+    // Padding moves text inwards so needs to be copied
+    fake.style.padding = realStyles.padding;
+    // Border also affects total width (but maybe box-sizing needs to be copied too?)
+    fake.style.border = realStyles.border;
+    // Effects total width when padding and border are set.
+    fake.style.boxSizing = realStyles.boxSizing;
+    // Include scrollbars
+    fake.style.overflow = realStyles.overflow;
     fake.scrollTop = real.scrollTop;
     fake.scrollLeft = real.scrollLeft;
     fake.style.position = 'absolute';
