@@ -7,6 +7,18 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.3.0](https://github.com/melink14/rikaikun/compare/v2.2.5...v2.3.0) (2022-04-04)
+
+### Features
+
+- **ui:** Isolate rikaikun popup from host page via shadow DOM and `all: revert` ([#933](https://github.com/melink14/rikaikun/issues/933)) ([e6a6e7a](https://github.com/melink14/rikaikun/commit/e6a6e7a1927a7cb607f602e7eed7827fd73bf57a)), closes [#221](https://github.com/melink14/rikaikun/issues/221)
+
+### Bug Fixes
+
+- **detection:** Copy text affecting style properties of input/textarea elements when creating fake ([#886](https://github.com/melink14/rikaikun/issues/886)) ([23fc0df](https://github.com/melink14/rikaikun/commit/23fc0df1f33bd32456a73e09ddc16e19c52a3087)), closes [#672](https://github.com/melink14/rikaikun/issues/672)
+- **dict:** Update dictionaries to latest versions ([#954](https://github.com/melink14/rikaikun/issues/954)) ([deae6f5](https://github.com/melink14/rikaikun/commit/deae6f5e06307830621f2a243638390361a1e7fb))
+- **ui:** Only show info popups in the main frame of a tab ([#948](https://github.com/melink14/rikaikun/issues/948)) ([90c7b21](https://github.com/melink14/rikaikun/commit/90c7b210ef24ae310556030ad28dab2aab8b1731))
+
 ### [2.2.5](https://github.com/melink14/rikaikun/compare/v2.2.4...v2.2.5) (2022-03-31)
 
 ### Bug Fixes
