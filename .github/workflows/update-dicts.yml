@@ -14,7 +14,7 @@ jobs:
           node-version: '16'
       - name: Update dictionaries
         run: |
-          npm ci
+          npm ci --ignore-scripts
           echo 'update_output<<EOF' >> $GITHUB_ENV
           npm run update-db >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
