@@ -250,6 +250,26 @@ describe('Visual Regression Tests', function () {
       });
     });
   });
+
+  it('should render correctly,ignoring external styles', async function () {
+    const clock = sinon.useFakeTimers();
+    const span = insertHtmlIntoDomAndReturnFirstTextNode(
+      '<span>あいたくない</span>'
+    ) as HTMLSpanElement;
+    const style = document.createElement('style');
+    style.id = 'test-id';
+    style.textContent =
+      'body { text-align: center; } div { text-decoration: underline; !important}';
+    document.head.appendChild(style);
+
+    await triggerMousemoveAtElementStart(span);
+    // Tick the clock forward to account for the popup delay.
+    clock.tick(150);
+    await waitForVisiblePopup();
+
+    await takeSnapshot('ignoring-external-styles');
+    style.remove();
+  });
 });
 
 async function toggleRikaikun() {

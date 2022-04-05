@@ -63,20 +63,10 @@ table {
   color: inherit;
 }
 
-#rikaikun-shadow {
-  all: initial;
-}
-
-/* Supported starting in Chrome 84 */
-@supports (all: revert) {
-  #rikaikun-shadow {
-    all: revert;
-  }
-}
-
 /* Need duplicate selector for gracefully handling reset. */
 /* stylelint-disable-next-line no-duplicate-selectors */
 #rikaikun-shadow {
+  all: initial;
   background: var(--primary-background-color);
   border: 1px solid #d0d0d0;
   border-radius: 5px;
