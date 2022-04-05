@@ -7,6 +7,12 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+### [2.3.1](https://github.com/melink14/rikaikun/compare/v2.3.0...v2.3.1) (2022-04-05)
+
+### Bug Fixes
+
+- **ui:** Prevent inheritable styles from affecting rikaikun ([#958](https://github.com/melink14/rikaikun/issues/958)) ([6b05b00](https://github.com/melink14/rikaikun/commit/6b05b00b34d49884ad15abf616597169ef6f61bd)), closes [#956](https://github.com/melink14/rikaikun/issues/956)
+
 ## [2.3.0](https://github.com/melink14/rikaikun/compare/v2.2.5...v2.3.0) (2022-04-04)
 
 ### Features
