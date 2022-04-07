@@ -11,7 +11,7 @@ type OptionEvent = {
 class OptionsForm extends LitElement {
   private content: Promise<TemplateResult> = this.fetchAndRender();
 
-  render() {
+  override render() {
     return html`${until(this.content)}<lit-toast></lit-toast>`;
   }
 
@@ -333,7 +333,7 @@ class OptionsForm extends LitElement {
     `;
   }
 
-  static styles = css`
+  static override styles = css`
     #rikaikun-options,
     #rikaikun-options td {
       font-family: sans-serif;
