@@ -63,22 +63,12 @@ table {
   color: inherit;
 }
 
-#rikaikun-shadow {
-  all: initial;
-}
-
-/* Supported starting in Chrome 84 */
-@supports (all: revert) {
-  #rikaikun-shadow {
-    all: revert;
-  }
-}
-
 /* Need duplicate selector for gracefully handling reset. */
 /* stylelint-disable-next-line no-duplicate-selectors */
 #rikaikun-shadow {
+  all: initial;
   background: var(--primary-background-color);
-  border: 1px solid #d0d0d0 !important;
+  border: 1px solid #d0d0d0;
   border-radius: 5px;
   color: var(--primary-color);
   font: normal 14px sans-serif;
@@ -230,19 +220,6 @@ table {
   background: var(--data-background-alternate-color);
   color: var(--data-alternate-color);
   font-size: 12px;
-}
-
-.q-w {
-  /* unused */
-  border-right: 1px dotted #b0b0b0 !important;
-  min-width: 300px;
-  padding: 0 2px;
-  vertical-align: top;
-}
-
-.q-k {
-  padding: 0 2px;
-  vertical-align: top;
 }
 
 .small-info {

@@ -215,6 +215,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "ollkorrekt",
+      "name": "ollkorrekt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40447847?v=4",
+      "profile": "https://github.com/ollkorrekt",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

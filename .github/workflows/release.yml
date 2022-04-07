@@ -24,9 +24,13 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.1.0
         with:
           node-version: 16
+      - name: Install Japanese Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
       - name: Install dependencies and build
         run: npm ci
       - name: Release

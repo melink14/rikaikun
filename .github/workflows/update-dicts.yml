@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3.1.0
         with:
           node-version: '16'
       - name: Update dictionaries
         run: |
-          npm ci
+          npm ci --ignore-scripts
           echo 'update_output<<EOF' >> $GITHUB_ENV
           npm run update-db >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
