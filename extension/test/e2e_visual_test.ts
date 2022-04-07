@@ -47,7 +47,7 @@ describe('Visual Regression Tests', function () {
     // When chrome.storage.sync.get is called save the full config for later use.
     sinonChrome.storage.sync.get.callsFake(
       (initialConfig: Config, callback: (config: Config) => void) => {
-        defaultConfig = initialConfig;
+        defaultConfig = { ...initialConfig };
         callback(initialConfig);
       }
     );
@@ -250,25 +250,34 @@ describe('Visual Regression Tests', function () {
       });
     });
   });
+  describe('with agressive host page styles', function () {
+    afterEach(function () {
+      document.querySelector('#test-id')?.remove();
+    });
 
-  it('should render correctly,ignoring external styles', async function () {
-    const clock = sinon.useFakeTimers();
-    const span = insertHtmlIntoDomAndReturnFirstTextNode(
-      '<span>あいたくない</span>'
-    ) as HTMLSpanElement;
-    const style = document.createElement('style');
-    style.id = 'test-id';
-    style.textContent =
-      'body { text-align: center; } div { text-decoration: underline; !important}';
-    document.head.appendChild(style);
+    it('should render correctly,ignoring external styles', async function () {
+      const clock = sinon.useFakeTimers();
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>森</span>'
+      ) as HTMLSpanElement;
+      // Insert a tall div to make it obvious when popup is misplaced.
+      insertHtmlIntoDomAndReturnFirstTextNode(
+        '<div style="height:1000px"></div>'
+      );
+      const style = document.createElement('style');
+      style.id = 'test-id';
+      style.textContent =
+        'body { text-align: center; } div { text-decoration: underline !important; position: relative;}';
+      document.head.appendChild(style);
 
-    await triggerMousemoveAtElementStart(span);
-    // Tick the clock forward to account for the popup delay.
-    clock.tick(150);
-    await waitForVisiblePopup();
+      await triggerMousemoveAtElementStart(span);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(150);
+      await waitForVisiblePopup();
 
-    await takeSnapshot('ignoring-external-styles');
-    style.remove();
+      // Take a screenshot of whole page to detect placement bugs.
+      await visualDiff(document.body, 'ignoring-external-styles');
+    });
   });
 });
 
@@ -357,6 +366,6 @@ function createAndAppendRoot(): HTMLDivElement {
   const root = document.createElement('div');
   root.setAttribute('id', 'root');
   root.style.position = 'relative';
-  document.body.appendChild(root);
+  document.body.prepend(root);
   return root;
 }

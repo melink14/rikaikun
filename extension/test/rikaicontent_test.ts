@@ -76,6 +76,17 @@ describe('RcxContent', function () {
     });
   });
 
+  describe('keydown', function () {
+    it('returns with out calling makeHtml if popup is not visible', function () {
+      rcxContent.showPopup('test text');
+      rcxContent.hidePopup();
+
+      simulant.fire(document, 'keydown', { keyCode: 74 });
+
+      expect(chrome.runtime.sendMessage).to.not.have.been.called;
+    });
+  });
+
   describe('mousemove', function () {
     afterEach(function () {
       sinon.restore();
