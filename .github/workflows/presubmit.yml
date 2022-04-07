@@ -29,6 +29,8 @@ jobs:
         uses: actions/setup-node@v3.1.0
         with:
           node-version: '16'
+          # 8.6 has the lastest overrides support
+          check-latest: true
       - name: Install Japanese Fonts
         run: |
           sudo apt-get update
