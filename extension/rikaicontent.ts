@@ -136,6 +136,8 @@ class RcxContent {
       popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
       popup.setAttribute('id', 'rikaichan-window');
       popup.setAttribute('lang', 'ja');
+      // Attempt to prevent host modifications to rikaichan div.
+      popup.style.setProperty('all', 'revert', 'important');
       popup.attachShadow({ mode: 'open' });
 
       topdoc.body.appendChild(popup);
@@ -168,7 +170,9 @@ class RcxContent {
     if (elem) {
       shadowcontainer.style.top = '-1000px';
       shadowcontainer.style.left = '0px';
-      popup.style.display = '';
+      // After moving popup offscreen, reset display of light/shadow containers
+      // so that we can calculate size of popup.
+      shadowcontainer.style.display = '';
 
       let pW = shadowcontainer.offsetWidth;
       let pH = shadowcontainer.offsetHeight;
@@ -261,13 +265,13 @@ class RcxContent {
 
     shadowcontainer.style.left = x + 'px';
     shadowcontainer.style.top = y + 'px';
-    popup.style.display = '';
+    shadowcontainer.style.display = '';
   }
 
   hidePopup() {
     const popup = document.getElementById('rikaichan-window');
     if (popup) {
-      popup.style.display = 'none';
+      this.getRikaikunPopup(popup).style.display = 'none';
       this.getRikaikunPopup(popup).innerHTML = '';
     }
   }
@@ -278,7 +282,7 @@ class RcxContent {
 
   isVisible() {
     const popup = document.getElementById('rikaichan-window');
-    return popup && popup.style.display !== 'none';
+    return popup && this.getRikaikunPopup(popup).style.display !== 'none';
   }
 
   clearHi() {
