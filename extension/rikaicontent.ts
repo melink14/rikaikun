@@ -73,9 +73,6 @@ class RcxContent {
   private defaultDict = 2;
   private nextDict = 3;
 
-  private isGoogleDocPage =
-    document.querySelector('.kix-canvas-tile-content') !== null;
-
   // Adds the listeners and stuff.
   enableTab(config: Config) {
     if (window.rikaichan === undefined) {
@@ -900,7 +897,7 @@ class RcxContent {
     // don't try to highlight google docs
     if (
       rp &&
-      !this.isGoogleDoc(rp) &&
+      !this.isGoogleDoc() &&
       ((tdata.config.highlight &&
         !this.mDown &&
         !('form' in tdata.prevTarget!)) ||
@@ -1154,7 +1151,7 @@ class RcxContent {
       HTMLSelectElement;
     // Put this in a try catch so that an exception here doesn't prevent editing due to div.
     try {
-      if (this.isGoogleDoc(eventTarget)) {
+      if (this.isGoogleDoc()) {
         gdocRect = this.getRectUnderMouse(ev);
         if (gdocRect) {
           fake = this.makeFake(gdocRect);
@@ -1395,11 +1392,8 @@ class RcxContent {
     );
   }
 
-  private isGoogleDoc(eventTarget: Element | CharacterData): boolean {
-    return (
-      this.isGoogleDocPage &&
-      (eventTarget.nodeName === 'svg' || eventTarget.nodeName === 'rect')
-    );
+  private isGoogleDoc(): boolean {
+    return document.querySelector('.kix-canvas-tile-content') !== null;
   }
 }
 

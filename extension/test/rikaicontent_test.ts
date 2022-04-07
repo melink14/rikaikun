@@ -311,8 +311,12 @@ describe('RcxContent', function () {
     });
 
     describe('with Google Docs annotated canvas', function () {
+      let docCanvas: HTMLDivElement;
       beforeEach(function () {
         markDocumentWithGoogleDocsClass();
+        docCanvas = document.querySelector<HTMLDivElement>(
+          '.kix-canvas-tile-content'
+        )!;
         // Reinitialize rcxContent now that special class is rendered.
         initializeRcxContent();
       });
@@ -332,10 +336,10 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('svg')!);
+        triggerMousemoveAtElementStart(docCanvas.querySelector('svg')!);
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -358,10 +362,10 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementCenter(root.querySelector('svg')!);
+        triggerMousemoveAtElementCenter(docCanvas.querySelector('svg')!);
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -384,9 +388,9 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
-        const rect = root.querySelector('rect')!;
+        const rect = docCanvas.querySelector('rect')!;
 
         simulant.fire(rect, 'mousemove', {
           clientX: Math.ceil(rect.getBoundingClientRect().left - 1),
@@ -414,9 +418,9 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
-        const rect = root.querySelector('rect')!;
+        const rect = docCanvas.querySelector('rect')!;
 
         simulant.fire(rect, 'mousemove', {
           clientX: Math.ceil(rect.getBoundingClientRect().left + 30),
@@ -444,9 +448,9 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
-        const rect = root.querySelector('rect')!;
+        const rect = docCanvas.querySelector('rect')!;
 
         simulant.fire(rect, 'mousemove', {
           clientX: Math.ceil(rect.getBoundingClientRect().left),
@@ -474,9 +478,9 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
-        const rect = root.querySelector('rect')!;
+        const rect = docCanvas.querySelector('rect')!;
 
         simulant.fire(rect, 'mousemove', {
           clientX: Math.ceil(rect.getBoundingClientRect().left),
@@ -518,9 +522,9 @@ describe('RcxContent', function () {
                 ></rect>
               </g>
             </svg>`,
-            root
+            docCanvas
           );
-          const rect = root.querySelector('rect#startrect')!;
+          const rect = docCanvas.querySelector('rect#startrect')!;
 
           simulant.fire(rect, 'mousemove', {
             clientX: Math.ceil(rect.getBoundingClientRect().left - 1),
@@ -558,9 +562,9 @@ describe('RcxContent', function () {
                 ></rect>
               </g>
             </svg>`,
-            root
+            docCanvas
           );
-          const rect = root.querySelector('rect#startrect')!;
+          const rect = docCanvas.querySelector('rect#startrect')!;
 
           simulant.fire(rect, 'mousemove', {
             clientX: Math.ceil(rect.getBoundingClientRect().left + 18),
@@ -598,9 +602,9 @@ describe('RcxContent', function () {
                 ></rect>
               </g>
             </svg>`,
-            root
+            docCanvas
           );
-          const rect = root.querySelector('rect#startrect')!;
+          const rect = docCanvas.querySelector('rect#startrect')!;
 
           simulant.fire(rect, 'mousemove', {
             clientX: Math.ceil(rect.getBoundingClientRect().left),
@@ -638,9 +642,9 @@ describe('RcxContent', function () {
                 ></rect>
               </g>
             </svg>`,
-            root
+            docCanvas
           );
-          const rect = root.querySelector('rect#startrect')!;
+          const rect = docCanvas.querySelector('rect#startrect')!;
 
           simulant.fire(rect, 'mousemove', {
             clientX: Math.ceil(rect.getBoundingClientRect().left),
@@ -669,10 +673,10 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('svg')!);
+        triggerMousemoveAtElementStart(docCanvas.querySelector('svg')!);
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -710,10 +714,10 @@ describe('RcxContent', function () {
                 fill="rgba(0,0,0,0.15)"
               ></rect>
             </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('rect#hlrect')!);
+        triggerMousemoveAtElementStart(docCanvas.querySelector('rect#hlrect')!);
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -749,10 +753,12 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('rect#startrect')!);
+        triggerMousemoveAtElementStart(
+          docCanvas.querySelector('rect#startrect')!
+        );
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -790,10 +796,12 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('rect#startrect')!);
+        triggerMousemoveAtElementStart(
+          docCanvas.querySelector('rect#startrect')!
+        );
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -833,10 +841,12 @@ describe('RcxContent', function () {
               </text>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('rect#startrect')!);
+        triggerMousemoveAtElementStart(
+          docCanvas.querySelector('rect#startrect')!
+        );
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
@@ -873,10 +883,12 @@ describe('RcxContent', function () {
               ></rect>
             </g>
           </svg>`,
-          root
+          docCanvas
         );
 
-        triggerMousemoveAtElementStart(root.querySelector('rect#startrect')!);
+        triggerMousemoveAtElementStart(
+          docCanvas.querySelector('rect#startrect')!
+        );
         // Tick the clock forward to account for the popup delay.
         clock.tick(1);
 
