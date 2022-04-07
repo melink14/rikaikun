@@ -7,6 +7,13 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+### [2.3.2](https://github.com/melink14/rikaikun/compare/v2.3.1...v2.3.2) (2022-04-07)
+
+### Bug Fixes
+
+- **ui:** Make Google Doc Canvas checks more lenient ([#962](https://github.com/melink14/rikaikun/issues/962)) ([6809154](https://github.com/melink14/rikaikun/commit/6809154f4fdcd060c0702101052210413cc61d4f)), closes [#897](https://github.com/melink14/rikaikun/issues/897) [#881](https://github.com/melink14/rikaikun/issues/881)
+- **ui:** Reset styles on the light dom container ([#960](https://github.com/melink14/rikaikun/issues/960)) ([e734a35](https://github.com/melink14/rikaikun/commit/e734a353d3bd00ca747d1056af19af79da5c073f)), closes [#959](https://github.com/melink14/rikaikun/issues/959)
+
 ### [2.3.1](https://github.com/melink14/rikaikun/compare/v2.3.0...v2.3.1) (2022-04-05)
 
 ### Bug Fixes
