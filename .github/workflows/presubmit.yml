@@ -60,7 +60,7 @@ jobs:
           add: 'screenshots/Chromium/baseline/*.png'
           default_author: github_actions
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
