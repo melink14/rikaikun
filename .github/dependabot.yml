@@ -9,6 +9,9 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'weekly'
+      day: 'saturday'
+      time: '05:00'
+      timzezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'build(deps)'
   - package-ecosystem: 'github-actions'
