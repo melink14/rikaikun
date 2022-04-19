@@ -7,19 +7,19 @@ version: 2
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/' # Location of package manifests
-    rebase-strategy: disabled
+    open-pull-requests-limit: 1
     schedule:
       interval: 'daily'
-      time: '05:00'
+      time: '03:00'
       timzezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'build(deps)'
   - package-ecosystem: 'github-actions'
     directory: '/'
-    rebase-strategy: disabled
+    open-pull-requests-limit: 1
     schedule:
       interval: 'daily'
-      time: '05:00'
+      time: '03:00'
       timzezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'ci(deps)'
