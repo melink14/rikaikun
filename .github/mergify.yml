@@ -12,8 +12,8 @@ pull_request_rules:
       # Don't auto-merge PRs where non dep change had to be committed as well
       - '#commits=1'
     actions:
-      squash:
-      commit_message: first-commit
+      merge:
+        method: squash
 
   - name: Automatic merge when Github conditions pass
     conditions:
