@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: 'daily'
       time: '03:00'
-      timzezone: 'Asia/Tokyo'
+      timezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'build(deps)'
   - package-ecosystem: 'github-actions'
@@ -20,6 +20,6 @@ updates:
     schedule:
       interval: 'daily'
       time: '03:00'
-      timzezone: 'Asia/Tokyo'
+      timezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'ci(deps)'
