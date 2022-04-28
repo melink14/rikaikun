@@ -493,7 +493,7 @@ class RcxDict {
               if (y & 8 && w === 'vk') {
                 break;
               }
-              if (y & 2 && w === 'cop') {
+              if (y & 32 && w === 'cop') {
                 break;
               }
             }
