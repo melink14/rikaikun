@@ -1,4 +1,4 @@
-﻿Deinflect Rules 20081220-0509 | by Jonathan Zarate | http://www.polarcloud.com
+Deinflect Rules 20081220-0509 | by Jonathan Zarate | http://www.polarcloud.com
 polite past negative
 polite negative
 polite volitional
@@ -123,6 +123,8 @@ imperative negative
 かせる	く	513	9
 がせる	ぐ	513	9
 かった	い	1152	14
+ありません	ない	1152	13
+ありませんでした	ない	1152	6
 かない	く	516	15
 がない	ぐ	516	15
 かれる	く	513	16
@@ -334,3 +336,4 @@ imperative negative
 れ	る	640	23
 れ	れる	384	24
 ろ	る	384	23
+した	す	8320	14
