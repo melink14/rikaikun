@@ -278,7 +278,7 @@ class RcxDict {
             if (type & rule.typeMask && end === rule.from) {
               const newWord =
                 word.substr(0, word.length - rule.from.length) + rule.to;
-              if (newWord.length <= 1) {
+              if (newWord.length <= 0) {
                 continue;
               }
               o = { word: word, type: 0xff, reason: '' } as Deinflection;
