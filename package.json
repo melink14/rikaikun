@@ -106,7 +106,7 @@
     "sinon-chrome": "^3.0.1",
     "snowpack": "^3.8.8",
     "snowpack-plugin-replace": "^1.0.4",
-    "stylelint": "^14.8.0",
+    "stylelint": "^14.8.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
