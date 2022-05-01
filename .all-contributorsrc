@@ -224,6 +224,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "maawisul",
+      "name": "Muhammad Afham Awisul Islah",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83802443?v=4",
+      "profile": "https://github.com/maawisul",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
