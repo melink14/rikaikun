@@ -22,6 +22,10 @@ use(chaiThings);
 let rcxDict: RcxDict;
 
 describe('data.ts', function () {
+  // Increase timeout from 2000ms since data tests can take longer.
+  // Make it relative to current timeout so config level changes are taken
+  // into account. (ie browserstack)
+  this.timeout(this.timeout() * 2);
   before(async function () {
     // stub sinon chrome getURL method to return the path it's given
     // Required to load dictionary files.
