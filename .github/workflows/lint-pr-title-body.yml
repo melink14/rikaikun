@@ -28,3 +28,13 @@ jobs:
           include_pr_body: 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Skip commitlint for dependabot since PR body is not used for final commit
+  # An explicitly passing no-op job, like this these PRs to still pass branch protection
+  # for this check.
+  commitlint_skip:
+    name: commitlint
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Skipping commitlint"
