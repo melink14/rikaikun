@@ -1,6 +1,6 @@
 {
   "name": "rikaikun",
-  "version": "2.3.5",
+  "version": "2.4.0",
   "description": "Chrome extension that provides Japanese to English translations when hovering over words.",
   "private": true,
   "engines": {

@@ -7,6 +7,16 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.4.0](https://github.com/melink14/rikaikun/compare/v2.3.5...v2.4.0) (2022-05-02)
+
+### Features
+
+- **deinflect:** Add logic to handle all inflections of the copula だ ([#988](https://github.com/melink14/rikaikun/issues/988)) ([52d30c5](https://github.com/melink14/rikaikun/commit/52d30c56089b09772bc1598799129986b7079fcd)), closes [#89](https://github.com/melink14/rikaikun/issues/89)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1004](https://github.com/melink14/rikaikun/issues/1004)) ([0c31844](https://github.com/melink14/rikaikun/commit/0c318449d40916c60bdf11db6b3b524b947d01c6))
+
 ### [2.3.5](https://github.com/melink14/rikaikun/compare/v2.3.4...v2.3.5) (2022-04-25)
 
 ### Bug Fixes
