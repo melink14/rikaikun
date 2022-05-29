@@ -81,7 +81,7 @@
     "byline": "^5.0.0",
     "chai-like": "^1.1.1",
     "chai-things": "^0.2.0",
-    "conventional-changelog-conventionalcommits": "^4.6.3",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "csv-parse": "^5.1.0",
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
