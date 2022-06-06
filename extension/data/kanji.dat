@@ -329,7 +329,7 @@
 俰|B9 S9 P1-2-7 Yhe2|カ ワ やわ.らぐ|||
 俲|B9 S9 N459 V225 P1-2-7 Yxiao4|コウ なら.う|||
 俳|B9 G6 S10 F1137 N485 V254 H112 DK82 L1633:haiku DN1761:haiku E959 IN1035 P1-2-8 I2a8.8 Ypai2|ハイ|||haiku, actor
-俵|B9 G5 S10 F1481 N467 V243 H115 DK85 L1547:bag DN1667:bag E775 IN1890 P1-2-8 I2a8.21 Ybiao3|ヒョウ たわら|||bag, bale, sack, counter for bags
+俵|B9 G6 S10 F1481 N467 V243 H115 DK85 L1547:bag DN1667:bag E775 IN1890 P1-2-8 I2a8.21 Ybiao3|ヒョウ たわら|||bag, bale, sack, counter for bags
 俶|B9 S10 V236 P1-2-8 I2a8.6 Ychu4|シュク テキ はじめ よい|||beginning, good, excel
 俸|B9 G8 S10 F1834 N480 V249 H114 DK84 L1574:stipend DN1696:stipend E1797 IN1542 P1-2-8 I2a8.18 Yfeng4|ホウ|||stipend, salary
 俺|B9 G8 S10 F1946 N472 V240 H110 L2058:myself DN1091:myself P1-2-8 I2a8.25 Yan3|エン おれ われ|||I, myself
@@ -408,7 +408,7 @@
 偗|B9 S11 P1-2-9 Ysheng3|セイ ショウ まっすぐ|||
 偙|B9 S11 P1-2-9 Ydi4|テイ タイ すぐ.れる くる.しむ|||
 做|B9 S11 N495 V264 L2132:make:do DN2260:make:do P1-2-9 I2a9.5 Yzuo4|サ サク ソ な.す つく.る|||make
-停|B9 G4 S11 F733 N507 V273 H139 DK107 L977:halt DN1051:halt E550 IN1185 P1-2-9 I2a9.14 Yting2|テイ と.める と.まる|||halt, stopping
+停|B9 G5 S11 F733 N507 V273 H139 DK107 L977:halt DN1051:halt E550 IN1185 P1-2-9 I2a9.14 Yting2|テイ と.める と.まる|||halt, stopping
 偟|B9 S11 P1-2-9 I2a9.9 Yhuang2|コウ オウ たたず.む さまよ.う たちもとお.る いとま|||agitated, alarmed
 偠|B9 S11 P1-2-9 Yyao3|ヨウ しなや.か たおや.か|||
 偢|B9 S11 P1-2-9 Yqiu1|ショウ いつく.しまない うれ.える|||to stare at
@@ -730,7 +730,7 @@
 刵|B18 S8 P1-6-2 Yer4|ジ ニ ゲイ みみきり|||punishment by cutting off ears
 制|B18 G5 S8 F108 N683 V481 H1274 DK854 L418:system DN447:system E722 IN427 P1-6-2 I2f6.1 Yzhi4|セイ|||system, law, rule
 刷|B4 G4 S8 F1352 N210 V479 H1273 DK853 L1069:printing DN1150:printing E487 IN1044 P1-6-2 I2f6.9 Yshua1 Yshua4|サツ す.る -ず.り -ずり は.く|||printing, print, brush
-券|B18 G5 S8 F583 N678 V473 H2630 DK1681 L1206:ticket DN1291:ticket E661 IN506 P2-6-2 I2f6.10 Yquan4 Yxuan4|ケン|||ticket
+券|B18 G6 S8 F583 N678 V473 H2630 DK1681 L1206:ticket DN1291:ticket E661 IN506 P2-6-2 I2f6.10 Yquan4 Yxuan4|ケン|||ticket
 刹|B18 G8 S8 N679 V474 L2144:moment DN1601:moment P1-6-2 I2f6.8 Ycha4 Ysha1|セチ セツ サツ|||temple
 刺|B18 G8 S8 F1031 N682 V480 H1275 DK855 L417:thorn DN446:thorn E1314 IN881 P1-6-2 I2f6.2 Yci4|シ さ.す さ.さる さ.し さし とげ|||thorn, pierce, stab, prick, sting, calling card
 刻|B18 G6 S8 F866 N681 V478 H1267 DK851 L1521:engrave DN1639:engrave E865 IN1211 P1-6-2 I2f6.7 Yke4 Yke1|コク きざ.む きざ.み|||engrave, cut fine, chop, hash, mince, time, carving
@@ -759,7 +759,7 @@
 剡|B18 S10 P1-8-2 Yyan3 Yshan4|エン セン するど.い するどく.する けず.る|||sharp, sharp-pointed, sharpen
 剣|B18 G8 S10 F1305 N696 V498 H1672 DK1096 L1671:saber DN1801:saber E1214 IN879 P1-8-2 I2f8.5 Yjian4|ケン つるぎ|||sabre, sword, blade, clock hand
 剤|B210 G8 S10 F1151 N5424 V493 H1669 DK1094 L1730:dose DN1867:dose E1296 IN550 P1-8-2 I2f8.6 Yji4|ザイ スイ セイ かる けず.る|||dose, medicine, drug
-剥|B18 G8 S10 F2383 N695 V496 L2145:peel:off DN1227:peel:off P1-8-2 I2f8.4 Ybo1 Ybao1|ハク ホク へ.ぐ へず.る む.く む.ける は.がれる は.ぐ は.げる は.がす|||come off, peel, fade, discolor
+剥|B18 S10 F2383 N695 V496 L2145:peel:off DN1227:peel:off P1-8-2 I2f8.4 Ybo1 Ybao1|ハク ホク へ.ぐ へず.る む.く む.ける は.がれる は.ぐ は.げる は.がす|||come off, peel, fade, discolor
 剦|B18 S10 P1-8-2 Yyan1|エン アン おお.う|||to castrate
 剩|B18 G10 S12 N700 V504 H1819 P1-10-2 I2f9.1 Ysheng4|ジョウ あまつさえ あま.り あま.る|||leftovers, residue, remains
 剪|B12 S11 N599 V502 H2306 L2941:pruning DN2948:pruning P2-3-8 I2o9.1 Yjian3|セン き.る つ.む|||clip, snip, cut
@@ -1048,8 +1048,8 @@
 叮|B30 S5 N872 V690 H183 P1-3-2 I3d2.7 Yding1|テイ|||courtesy
 可|B1 G5 S5 F314 N24 V701 H2969 DK1882 L93:can DN97:can E816 IN388 P3-2-3 I3d2.12 Yke3 Yke4|カ コク -べ.き -べ.し|よし||can, passable, mustn't, should not, do not
 台|B28 G2 S5 F262 N848 V699 H2005 DK1265 L744:pedestal DN805:pedestal E166 IN492 P2-2-3 I3d2.11 Ytai2 Ytai1|ダイ タイ うてな われ つかさ|||pedestal, a stand, counter for machines and vehicles
-叱|B30 G8 S5 F2255 N873 V691 H182 L2179:scold DN477:scold P1-3-2 I3d2.2 Ychi4|シツ シチ しか.る|||scold, reprove
-史|B2 G4 S5 F511 N91 V697 H3510 DK2188 L692:history DN747:history E496 IN332 P4-5-4 I0a5.38 Yshi3|シ|あきら あや お こ ちか とし なか のぶ ひさ ひと ふみ||history, chronicle
+叱|B30 S5 F2255 N873 V691 H182 L2179:scold DN477:scold P1-3-2 I3d2.2 Ychi4|シツ シチ カ しか.る|||scold, reprove
+史|B2 G5 S5 F511 N91 V697 H3510 DK2188 L692:history DN747:history E496 IN332 P4-5-4 I0a5.38 Yshi3|シ|あきら あや お こ ちか とし なか のぶ ひさ ひと ふみ||history, chronicle
 右|B30 G1 S5 F602 N878 V700 H2975 DK1888 L78:right DN82:right E2 IN76 P3-2-3 I3d2.15 Yyou4|ウ ユウ みぎ|あき すけ||right
 叵|B30 S5 P3-2-3 Ypo3|ハ でき.ない すこぶる ついに|||cannot, be unable do, improbable, thereupon
 叶|B30 G9 S5 F2312 N871 V689 DK134 L2173:within:my:ability DN2291:within:my:ability IN2033 P1-3-2 I3d2.1 Yye4 Yxie2|キョウ かな.える かな.う|かの かのう||grant, answer
@@ -1105,7 +1105,7 @@
 呇|B30 S7 P2-4-3 Yqi3|ケイ|||star
 呈|B30 G8 S7 F1571 N895 V734 H2189 DK1387 L262:display DN280:display E1611 IN1590 P2-3-4 I3d4.14 Ycheng2|テイ|||display, offer, present, send, exhibit
 呉|B12 G8 S7 F1729 N583 V741 H2549 DK1620 L1897:give DN2046:give E1237 IN1436 P2-5-2 I2o5.7 Ywu2|ゴ く.れる くれ|ぐ||give, do something for, kingdom of Wu
-告|B30 G4 S7 F188 N900 V744 H2409 DK1560 L247:revelation DN262:revelation E481 IN690 P2-4-3 I3d4.18 Ygao4 Ygu4|コク つ.げる|い||revelation, tell, inform, announce
+告|B30 G5 S7 F188 N900 V744 H2409 DK1560 L247:revelation DN262:revelation E481 IN690 P2-4-3 I3d4.18 Ygao4 Ygu4|コク つ.げる|い||revelation, tell, inform, announce
 呍|B30 S7 P1-3-4 Yhong1|コウ ウン イン オン グ ほえ.る|||moo of a cow, scream, to yell, dogs barking at each other
 呎|B30 S7 N890 V722 L2953:feet DN2960:foot P1-3-4 I3d4.12 Ychi3|シャク ふいいと|||foot
 呏|B30 S7 P1-3-4 Ysheng1|ショウ がろん くおおと|||gallon, quart
@@ -1293,7 +1293,7 @@
 喘|B30 S12 F2449 N954 V848 P1-3-9 I3d9.11 Ychuan3|ゼン セン あえ.ぐ せき|||pant, gasp, breathe hard
 喙|B30 S12 N946 V838 P1-3-9 I3d9.14 Yhui4|カイ がい くちばし|||beak
 喚|B30 G8 S12 F1120 N958 V852 H550 DK404 L1042:yell DN1121:yell E1103 IN1587 P1-3-9 I3d9.19 Yhuan4|カン わめ.く|||yell, cry, call, scream, summon
-喜|B32 G4 S12 F769 N1115 V858 H2308 DK1488 L1445:rejoice DN1553:rejoice E450 IN1143 P2-3-9 I3p9.1 Yxi3|キ よろこ.ぶ よろこ.ばす|あき きゅ のぶ ゆき よし||rejoice, take pleasure in
+喜|B32 G5 S12 F769 N1115 V858 H2308 DK1488 L1445:rejoice DN1553:rejoice E450 IN1143 P2-3-9 I3p9.1 Yxi3|キ よろこ.ぶ よろこ.ばす|あき きゅ のぶ ゆき よし||rejoice, take pleasure in
 喝|B30 G8 S11 F1858 N953 V824 H461 DK337 L454:hoarse DN491:hoarse E1086 IN1919 P1-3-8 I3d8.8 Yhe1 Yhe4|カツ|||hoarse, scold
 喞|B30 S12 N950 V845 P1-3-9 I3d9.4 Yji1|ショク ソク かこ.つ|||speak resentfully
 喟|B30 S12 N948 V842 P1-3-9 I3d9.9 Ykui4|キ カイ なげ.く|||moan
@@ -1484,7 +1484,7 @@
 囮|B31 S7 N1031 V944 P3-3-4 I3s4.4 Ye2|カ ユウ おとり|||decoy, lure, stool pigeon
 困|B31 G6 S7 F843 N1033 V946 H3070 DK1950 L579:quandary DN621:quandary E868 IN558 P3-3-4 I3s4.1 Ykun4|コン こま.る|||quandary, become distressed, annoyed
 囱|B31 S7 P3-3-4 Ycong1|ソウ ス まど てんまど けむだし|||chimney
-囲|B31 G4 S7 F771 N1032 V945 H3069 DK1949 L1807:surround DN1948:surround E422 IN1194 P3-3-4 I3s4.2 Ywei2|イ かこ.む かこ.う かこ.い|||surround, besiege, store, paling, enclosure, encircle, preserve, keep
+囲|B31 G5 S7 F771 N1032 V945 H3069 DK1949 L1807:surround DN1948:surround E422 IN1194 P3-3-4 I3s4.2 Ywei2|イ かこ.む かこ.う かこ.い|||surround, besiege, store, paling, enclosure, encircle, preserve, keep
 図|B31 G2 S7 F539 N1034 V947 H3071 DK1951 L1180:map DN1264:map E150 IN339 P3-3-4 I3s4.3 Ytu2|ズ ト え はか.る|づ||map, drawing, plan, extraordinary, audacious
 囶|B31 S8 P3-3-5 Yguo2|コク くに|||country
 囷|B31 S8 P3-3-5 Yjun1|キン コン くら|||round-shaped storage bin for grain
@@ -1582,7 +1582,7 @@
 垃|B32 S8 P1-3-5 Yla1 Yle4|ラツ|||garbage, refuse, waste
 垈|B32 S8 V991 P2-5-3 I3b5.10|タイ ダイ ぬた|||swamp, wetlands, muddy fields, (kokuji)
 垉|B32 S8 V992 P1-3-5 I3b5.5 Ypao2|ホウ|||collapse, break
-型|B32 G4 S9 F482 N1077 V1010 H2638 DK1685 L680:mold DN735:mould E468 IN888 P2-6-3 I3b6.11 Yxing2|ケイ かた -がた|||mould, type, model
+型|B32 G5 S9 F482 N1077 V1010 H2638 DK1685 L680:mold DN735:mould E468 IN888 P2-6-3 I3b6.11 Yxing2|ケイ かた -がた|||mould, type, model
 垌|B32 S9 P1-3-6 Ytong2 Ytong3|トウ ツ つぼ|||
 垓|B32 S9 V1002 P1-3-6 I3b6.8 Ygai1|ガイ カイ はて|||border, boundary, staircase, hundred quintillion
 垔|B32 S9 P2-6-3 Yyin1|シュ ショウ トウ ズ ふさ.ぐ|||to restrain, to dam a stream and change its direction, mound
@@ -1615,7 +1615,7 @@
 埈|B32 S10 P1-3-7 Yjun4|シュン カイ そばだ.つ|||high, steep, towering, stern
 埋|B32 G8 S10 F1110 N1084 V1020 H403 DK300 L179:bury DN191:bury E1833 IN1826 P1-3-7 I3b7.2 Ymai2 Yman2|マイ う.める う.まる う.もれる うず.める うず.まる い.ける|||bury, be filled up, embedded
 埌|B32 S10 P1-3-7 Ylang4|ロウ つか|||waste
-城|B32 G6 S9 F795 N1078 V1011 H352 DK261 L362:castle DN387:castle E903 IN720 P1-3-6 I3b6.1 Ycheng2|ジョウ セイ しろ|いく がき き くに ぐしく ぐすく しき すく ぜい たち なり||castle
+城|B32 G4 S9 F795 N1078 V1011 H352 DK261 L362:castle DN387:castle E903 IN720 P1-3-6 I3b6.1 Ycheng2|ジョウ セイ しろ|いく がき き くに ぐしく ぐすく しき すく ぜい たち なり||castle
 埏|B32 S10 P1-3-7 Yyan2 Yshan1|セン エン はかみち のぼ.る やわら.げる こ.ねる|||boundary, limit
 埒|B32 S10 N1083 V1018 P1-3-7 I3b7.4 Yle4 Ylie4|レツ ラツ ラチ らち.があく かこ.い|||picket, limits, be settled
 埓|B32 S10 V1019 P1-3-7 I3b7.4 Ylie4|レツ ラツ ラチ らち.があく かこ.い|||pale, picket fence, limits, come to an end
@@ -1647,7 +1647,7 @@
 埾|B32 S11 P2-8-3 Yju4|キョ シュ|||
 埿|B32 S11 P2-8-3 Yni2 Yni4|デイ ナイ ハン ぬ.る こて ぬ.かるみ|||
 堀|B32 G8 S11 F1285 N1095 V1036 H467 DK342 L1062:ditch DN1142:ditch E1824 IN1804 P1-3-8 I3b8.11 Yku1 Yjue2|クツ ほり|ほっ||ditch, moat, canal
-堂|B42 G4 S11 F1010 N1365 V1037 H2589 DK1656 L798:public:chamber DN861:hall E557 IN496 P2-5-6 I3n8.4 Ytang2|ドウ|||public chamber, hall
+堂|B42 G5 S11 F1010 N1365 V1037 H2589 DK1656 L798:public:chamber DN861:hall E557 IN496 P2-5-6 I3n8.4 Ytang2|ドウ|||public chamber, hall
 堃|B32 S11 P2-8-3 Ykun1|コン つち ひつじさる|||compliance, obedience, female
 堄|B32 S11 P1-3-8 Yni4|ゲイ ゲン ひめがき|||parapet
 堅|B32 G8 S12 F1049 N1096 V1038 H2823 DK1805 L853:strict DN917:strict E1217 IN1289 P2-9-3 I3b9.13 Yjian1|ケン かた.い -がた.い|きん||strict, hard, solid, tough, tight, reliable
@@ -1781,7 +1781,7 @@
 壤|B32 S20 N1157 V1116 H810 P1-3-17 I3b13.4 Yrang3|ジョウ つち|||soil, loam, earth, rich
 壥|B32 S20 V1115 P1-3-17 I3q12.5 Ychan2|テン|||fine residence, shop, store, (phantom kanji)
 壩|B32 S24 P1-3-21 Yba4|ハ ヘ せき|||embankment, dam
-士|B33 G4 S3 F526 N1160 V1117 H3405 DK2129 L319:gentleman DN341:gentleman E494 IN572 P4-3-2 I3p0.1 Yshi4|シ さむらい|お ま|さむらい|gentleman, scholar, samurai, samurai radical (no. 33)
+士|B33 G5 S3 F526 N1160 V1117 H3405 DK2129 L319:gentleman DN341:gentleman E494 IN572 P4-3-2 I3p0.1 Yshi4|シ さむらい|お ま|さむらい|gentleman, scholar, samurai, samurai radical (no. 33)
 壬|B96 G9 S4 F2499 N2921 V968 P4-4-2 I3p1.1 Yren2|ニン ジン イ みずのえ|||9th calendar sign
 壮|B90 G8 S6 F1657 N2837 V974 H224 DK165 L321:robust DN343:robust E1514 IN1326 P1-3-3 I2b4.2 Yzhuang4|ソウ さかん|つよし||robust, manhood, prosperity
 壯|B33 G10 S7 V977 H837 P1-4-3 I2b4.2 Yzhuang4|ソウ さかん|たけし||big, large, robust, name of tribe
@@ -2191,7 +2191,7 @@
 密|B40 G6 S11 F815 N1316 V1343 H2292 DK1474 L775:secrecy DN837:secrecy E978 IN806 P2-3-8 I3m8.5 Ymi4|ミツ ひそ.か|||secrecy, density (pop), minuteness, carefulness
 寇|B40 S11 N1313 V1339 P2-3-8 I3m8.10 Ykou4|コウ あだ.する|||bandits, thieves, enemy, invade
 寉|B40 S11 V6495 P2-3-8 I3m8.1 Yhe4|つる|||crane (bird)
-富|B40 G5 S12 F644 N1321 V1349 H2310 DK1489 L193:wealth DN205:wealth E780 IN713 P2-3-9 I3m9.5 Yfu4|フ フウ と.む とみ|と とん ふっ||wealth, enrich, abundant
+富|B40 G4 S12 F644 N1321 V1349 H2310 DK1489 L193:wealth DN205:wealth E780 IN713 P2-3-9 I3m9.5 Yfu4|フ フウ と.む とみ|と とん ふっ||wealth, enrich, abundant
 寍|B40 S12 P2-3-9 Yning2|ネイ むし.ろ|||used as a term of comparison
 寏|B40 S12 P2-3-9 Yhuan2|カン ぐるりとめぐらしたかき|||
 寐|B40 S12 N1319 V1347 P2-3-9 I3m9.2 Ymei4|ビ ね.る|||sleep
@@ -2782,7 +2782,7 @@
 徒|B60 G4 S10 F817 N1614 V1746 H416 DK310 L878:junior DN943:junior E554 IN430 P1-3-7 I3i7.1 Ytu2|ト いたずら あだ|かち||on foot, junior, emptiness, vanity, futility, uselessness, ephemeral thing, gang, set, party, people
 従|B60 G6 S10 F601 N1613 V1745 H415 DK309 L877:accompany DN942:accompany E891 IN1482 P1-3-7 I3i7.3 Ycong2|ジュウ ショウ ジュ したが.う したが.える より|||accompany, obey, submit to, comply, follow, secondary, incidental, subordinate
 徖|B60 S11 P1-3-8 Ycong2|ソウ ス やす.らか|||
-得|B60 G4 S11 F175 N1622 V1755 H477 DK351 L876:gain DN941:gain E761 IN374 P1-3-8 I3i8.4 Yde2 Yde5 Ydei3|トク え.る う.る|あつ てろ||gain, get, find, earn, acquire, can, may, able to, profit, advantage, benefit
+得|B60 G5 S11 F175 N1622 V1755 H477 DK351 L876:gain DN941:gain E761 IN374 P1-3-8 I3i8.4 Yde2 Yde5 Ydei3|トク え.る う.る|あつ てろ||gain, get, find, earn, acquire, can, may, able to, profit, advantage, benefit
 徘|B60 S11 F2414 N1619 V1752 P1-3-8 I3i8.3 Ypai2|ハイ さまよ.う|||wander
 徙|B60 S11 V1749 P1-3-8 I3i8.5 Yxi3|シ うつ.る うつ.す|||move
 徜|B60 S11 N1618 V1751 P1-3-8 Ychang2|ショウ さまよ.う|||walking and fro, lingering, wander
@@ -2803,7 +2803,7 @@
 徯|B60 S13 P1-3-10 Yxi1|ケイ こみち も.つ|||wait for, await, expect, hope
 徰|B60 S13 P1-3-10 Yzheng1|セイ|いく||
 徱|B60 S14 P1-3-11 Ypiao4|ヒョウ かる.い かろ.んずる すばや.い|||
-徳|B60 G5 S14 F1091 N1633 V1767 H684 DK486 L885:benevolence DN950:benevolence E762 IN1038 P1-3-11 I3i11.3 Yde2|トク|あつ なる のり ゆき よし||benevolence, virtue, goodness, commanding respect
+徳|B60 G4 S14 F1091 N1633 V1767 H684 DK486 L885:benevolence DN950:benevolence E762 IN1038 P1-3-11 I3i11.3 Yde2|トク|あつ なる のり ゆき よし||benevolence, virtue, goodness, commanding respect
 徴|B60 G8 S14 F850 N1634 V1768 H683 DK485 L887:indications DN952:indications E1596 IN1420 P1-3-11 I3i11.2 Yzheng1|チョウ チ しるし|||indications, sign, omen, symptom, collect, seek, refer to, question
 徸|B60 S15 P1-3-12 Ychong1|ショウ シュ い.く|||
 徹|B60 G8 S15 F968 N1637 V1771 H726 DK510 L886:penetrate DN951:penetrate E1629 IN1422 P1-3-12 I3i12.2 Yche4|テツ|あき つ てっ とおる||penetrate, clear, pierce, strike home, sit up (all night)
@@ -2920,7 +2920,7 @@
 恥|B128 G8 S10 F1575 N3704 V1846 H1313 DK882 L823:shame DN886:shame E1572 IN1690 P1-6-4 I6e4.2 Ychi3|チ は.じる はじ は.じらう は.ずかしい|||shame, dishonor
 恧|B61 S10 P2-7-3 Ynu:4|ジク ニク ジョク ニョク はじ.る|||ashamed, embarrassed
 恨|B61 G8 S9 F1877 N1677 V1842 H369 DK272 L1460:resentment DN1570:resentment E1277 IN1755 P1-3-6 I4k6.2 Yhen4|コン うら.む うら.めしい|||regret, bear a grudge, resentment, malice, hatred
-恩|B61 G5 S10 F1418 N1684 V1851 H2655 DK1700 L606:grace DN652:grace E624 IN555 P2-6-4 I4k6.23 Yen1|オン|めぐみ||grace, kindness, goodness, favor, mercy, blessing, benefit
+恩|B61 G6 S10 F1418 N1684 V1851 H2655 DK1700 L606:grace DN652:grace E624 IN555 P2-6-4 I4k6.23 Yen1|オン|めぐみ||grace, kindness, goodness, favor, mercy, blessing, benefit
 恪|B61 S9 N1672 V1836 P1-3-6 I4k6.8 Yke4 Yque4|カク つつし.む|||carefulness
 恫|B61 S9 N1673 V1837 P1-3-6 I4k6.15 Ytong1 Ydong4|ドウ トウ いた.む|||painful, fearful
 恬|B61 S9 N1679 V1844 P1-3-6 I4k6.9 Ytian2|テン やすら.く やす.い|||composure
@@ -3278,7 +3278,7 @@
 扼|B64 S7 N1842 V2079 P1-3-4 I3c4.20 Ye4|ヤク アク おさ.える|||command, dominate, prevent, obstruct
 扽|B64 S7 P1-3-4 Ydun4|トン ひ.く|||to move, to shake
 找|B64 S7 V2073 P1-3-4 I3c4.2 Yzhao3|ソウ|||look for, seek, make change
-承|B4 G5 S8 F775 N197 V2088 H16 DK7 L1901:acquiesce DN2050:acquiesce E713 IN942 P1-1-7 I0a7.7 Ycheng2|ショウ ジョウ うけたまわ.る う.ける|つぐ こと すけ つぎ よし うけ||acquiesce, hear, listen to, be informed, receive
+承|B4 G6 S8 F775 N197 V2088 H16 DK7 L1901:acquiesce DN2050:acquiesce E713 IN942 P1-1-7 I0a7.7 Ycheng2|ショウ ジョウ うけたまわ.る う.ける|つぐ こと すけ つぎ よし うけ||acquiesce, hear, listen to, be informed, receive
 技|B64 G5 S7 F434 N1853 V2092 H248 DK185 L712:skill DN769:skill E644 IN871 P1-3-4 I3c4.16 Yji4|ギ わざ|||skill, art, craft, ability, feat, performance, vocation, arts
 抂|B64 S7 V2074 P1-3-4 I3c4.1 Ykuang2|キョウ ゴウ|||disorder
 抃|B64 S7 N1839 V2077 P1-3-4 I3c4.14 Ybian4|ベン う.つ|||strike with hand
@@ -3706,7 +3706,7 @@
 敍|B66 G10 S11 N2050 V2340 H1487 P1-7-4 I2h7.1 Yxu4|ジョ つい.ず ついで|||express, state, relate, narrate
 敏|B66 G8 S10 F1042 N2047 V2337 H1322 DK887 L459:cleverness DN498:cleverness E1746 IN1735 P1-6-4 I4i6.3 Ymin3|ビン さとい|さとし ちょう とし び||cleverness, agile, alert
 敐|B66 S10 P1-6-4 Ychen2|シン ジン よろこんでうご.く|||
-救|B66 G4 S11 F799 N2051 V2344 H1497 DK1003 L936:salvation DN1006:salvation E456 IN725 P1-7-4 I4i7.1 Yjiu4|キュウ すく.う|||salvation, save, help, rescue, reclaim
+救|B66 G5 S11 F799 N2051 V2344 H1497 DK1003 L936:salvation DN1006:salvation E456 IN725 P1-7-4 I4i7.1 Yjiu4|キュウ すく.う|||salvation, save, help, rescue, reclaim
 敒|B66 S11 P1-7-4 Yshen1|チン シン ショウ おさ.める の.べる|||
 敔|B66 S11 P1-7-4 Yyu3|ギョ ゴ さしと.める|||gavel
 敕|B66 S11 N2048 V2338 H1496 P1-7-4 I2g7.1 Ychi4|チョク いまし.める みことのり|||an imperial order or decree
@@ -3727,7 +3727,7 @@
 数|B66 G2 S13 F148 N2057 V2353 H1790 DK1170 L929:number DN998:number E151 IN225 P1-9-4 I4i9.1 Yshu4 Yshu3 Yshuo4|スウ ス サク ソク シュ かず かぞ.える しばしば せ.める わずらわ.しい|じゅ||number, strength, fate, law, figures
 敲|B189 S14 N5249 V2354 P1-10-4 I3d11.11 Yqiao1|コウ たた.く|のぼる||strike, beat, hit
 整|B77 G3 S16 F478 N2436 V2360 H2871 DK1839 L1670:organize DN1800:organize E328 IN503 P2-11-5 I4i12.3 Yzheng3|セイ ととの.える ととの.う|ひとし||organize, arranging, tune, tone, meter, key (music)
-敵|B66 G5 S15 F1205 N2060 V2359 H1864 DK1204 L443:enemy DN475:enemy E756 IN416 P1-11-4 I4i11.2 Ydi2|テキ かたき あだ かな.う|||enemy, foe, opponent
+敵|B66 G6 S15 F1205 N2060 V2359 H1864 DK1204 L443:enemy DN475:enemy E756 IN416 P1-11-4 I4i11.2 Ydi2|テキ かたき あだ かな.う|||enemy, foe, opponent
 敷|B66 G8 S15 F1212 N2059 V2357 H1870 DK1207 L1883:spread DN2028:spread E1756 IN1451 P1-11-4 I4i11.1 Yfu1|フ し.く -し.き|しき にゅう||spread, pave, sit, promulgate
 數|B66 S15 N2058 V2356 H1872 P1-11-4 I4i9.1 Yshu4 Yshu3 Yshuo4|スウ ス サク ソク シュ かず かぞ.える しばしば せ.める わずらわ.しい|||number, strength, fate, law, figures
 敺|B66 S15 P1-11-4 Yqu1|ク か.ける か.る|||expel, drive away, beat, assault
@@ -4693,7 +4693,7 @@
 歯|B211 G3 S12 F1106 N5428 V2961 H2476 DK1603 L1171:tooth DN1255:tooth E290 IN478 P2-4-8 I6b6.11 Ychi3|シ よわい は よわ.い よわい.する|||tooth, cog
 歰|B77 S14 P2-6-8 Yse4|シュウ ソウ しぶ.る しぶ.い|||
 歳|B77 G8 S13 F269 N2434 V2962 H2490 DK1605 L512:year-end DN551:year-end E1294 IN479 P2-4-9 I4n9.5 Ysui4|サイ セイ とし とせ よわい|||year-end, age, occasion, opportunity
-歴|B27 G4 S14 F632 N835 V2964 H3019 DK1913 L376:curriculum DN402:curriculum E606 IN480 P3-2-12 I2p12.4 Yli4|レキ レッキ|||curriculum, continuation, passage of time
+歴|B27 G5 S14 F632 N835 V2964 H3019 DK1913 L376:curriculum DN402:curriculum E606 IN480 P3-2-12 I2p12.4 Yli4|レキ レッキ|||curriculum, continuation, passage of time
 歵|B77 S15 P1-4-11 Ycuo4|サク ジャク ととの.う よい ただ.しい|||
 歸|B2 S18 N123 V2966 H1840 P1-10-8 I2f8.8 Ygui1|キ かえ.る かえ.す おく.る とつ.ぐ|||homecoming, arrive at, lead to, result in
 歹|B78 S4 V2967 H3445 P4-4-1 I0a4.14 Ydai3|ガツ ガチ タイ||がつへん いちたへん しにがまえ|bare bone, bad, wrong, death radical (n. 78)
@@ -4739,7 +4739,7 @@
 殷|B4 S10 N227 V2993 P1-6-4 I2s8.1 Yyin1 Yyan1 Yyin3|イン アン さかん|||flourishing
 殸|B79 S11 P1-7-4 Yqing4|ケイ キョウ コウ セイ ショウ てき こえ|||
 殹|B79 S11 P1-7-4 Yyi1|エイ うちあたるこえ みにくいすがた|||
-殺|B79 G4 S10 F581 N2454 V2994 H1324 DK889 L1493:kill DN1607:kill E488 IN576 P1-6-4 I4a6.35 Ysha1 Yshai4|サツ サイ セツ ころ.す -ごろ.し そ.ぐ|||kill, murder, butcher, slice off, split, diminish, reduce, spoil
+殺|B79 G5 S10 F581 N2454 V2994 H1324 DK889 L1493:kill DN1607:kill E488 IN576 P1-6-4 I4a6.35 Ysha1 Yshai4|サツ サイ セツ ころ.す -ごろ.し そ.ぐ|||kill, murder, butcher, slice off, split, diminish, reduce, spoil
 殻|B79 G8 S11 F1892 N2456 V2996 H1490 DK1000 L710:husk DN767:husk E1075 IN1728 P1-7-4 I3p8.1 Yke2 Yqiao4|カク コク バイ から がら|||husk, nut shell
 殼|B79 S12 N2457 V2997 H1699 P1-8-4 I3p8.1 Yke2 Yqiao4 Yque4|カク コク バイ から|||husk, nut shell
 殽|B79 S12 N2458 V2998 P1-8-4 Yyao2|コウ ギョウ ま.じる|||mixed up, confused, cooked
@@ -4755,7 +4755,7 @@
 毌|B80 S4 H3447 P4-4-1 I0a4.45 Yguan4|カン つらぬ.く||はは なかれ|pierce, penetrate, brace
 母|B80 G2 S5 F570 N2466 V3005 H3475 DK2165 L101:mama DN105:mama E203 IN112 P4-5-1 I0a5.36 Ymu3|ボ はは も|||mother
 毎|B80 G2 S6 F436 N2467 V3006 H2034 DK1283 L458:every DN497:every E206 IN116 P2-2-4 I0a6.25 Ymei3|マイ ごと -ごと.に|つね||every
-毒|B80 G4 S8 F1419 N2468 V3007 H2428 DK1571 L1531:poison DN1651:poison E559 IN522 P2-4-4 I0a8.14 Ydu2|ドク|||poison, virus, venom, germ, harm, injury, spite
+毒|B80 G5 S8 F1419 N2468 V3007 H2428 DK1571 L1531:poison DN1651:poison E559 IN522 P2-4-4 I0a8.14 Ydu2|ドク|||poison, virus, venom, germ, harm, injury, spite
 毓|B80 S14 V3009 P1-7-7 I2j6.4 Yyu4|イク そだ.つ そだ.てる はぐく.む|りゅう||bring up, grow up, raise, rear
 比|B81 G5 S4 F329 N2470 V3010 H26 DK14 L447:compare DN482:compare E771 IN798 P1-2-2 I2m3.5 Ybi3 Ybi4|ヒ くら.べる|い ぴっ||compare, race, ratio, Philippines
 毖|B81 S9 P2-4-5 Ybi4|ヒ つつし.む|||guard against, take care, caution
@@ -7192,7 +7192,7 @@
 粃|B119 S10 N3466 V4388 P1-6-4 I6b4.3 Ybi3|ヒ しな しいな|||empty grain husk
 粆|B119 S10 P1-6-4 Ysha1|サ シャ ショウ|||
 粇|B119 S10 P1-6-4 Ykang1|コウ ぬか むな.しい|||
-粉|B119 G4 S10 F1484 N3469 V4390 H1291 DK869 L920:flour DN988:flour E577 IN1701 P1-6-4 I6b4.6 Yfen3|フン デシメートル こ こな|||flour, powder, dust
+粉|B119 G5 S10 F1484 N3469 V4390 H1291 DK869 L920:flour DN988:flour E577 IN1701 P1-6-4 I6b4.6 Yfen3|フン デシメートル こ こな|||flour, powder, dust
 粋|B119 G8 S10 F1768 N3467 V4389 H1293 DK871 L925:chic DN993:chic E1455 IN1708 P1-6-4 I6b4.5 Ycui4 Ysui4|スイ いき|||chic, style, purity, essence, pith, cream, elite, choice
 粍|B119 S10 N3465 V4387 L2948:millimeter DN2955:millimeter P1-6-4 I6b4.2 Yli2|ミリ ミリメートル|||millimeter, (kokuji)
 粏|B119 S10 P1-6-4 Ytai4|タ ぬかみそ|||
@@ -7268,7 +7268,7 @@
 糺|B120 S7 N3493 V4432 H1259 P1-6-1 I6a3.4 Yjiu1|キュウ ただ.す あざな.う|||ask, investigate, verify, twist (rope)
 系|B4 G6 S7 F567 N195 V4433 H1944 DK1236 L1391:lineage DN1492:lineage E844 IN908 P2-1-6 I6a1.1 Yxi4 Yji4|ケイ|||lineage, system
 糾|B120 G8 S9 F1820 N3498 V4438 H1278 DK858 L1509:twist DN1627:twist E1151 IN1703 P1-6-3 I6a3.4 Yjiu1 Yjiu3|キュウ ただ.す|||twist, ask, investigate, verify
-紀|B120 G4 S9 F780 N3497 V4439 H1276 DK856 L1354:chronicle DN1454:chronicle E449 IN372 P1-6-3 I6a3.5 Yji4|キ|おさむ ただす とし とも のり もと||chronicle, account, narrative, history, annals, geologic period
+紀|B120 G5 S9 F780 N3497 V4439 H1276 DK856 L1354:chronicle DN1454:chronicle E449 IN372 P1-6-3 I6a3.5 Yji4|キ|おさむ ただす とし とも のり もと||chronicle, account, narrative, history, annals, geologic period
 紂|B120 S9 V4435 P1-6-3 I6a3.3 Yzhou4|チュウ しりがい|||harness strap, window
 紃|B120 S9 P1-6-3 Yxun2|シュン セン ひも|||cord
 約|B120 G4 S9 F94 N3499 V4440 H1280 DK860 L1362:promise DN1462:promise E591 IN211 P1-6-3 I6a3.7 Yyue1 Yyao1|ヤク つづ.まる つづ.める つづま.やか|||promise, approximately, shrink
@@ -7637,7 +7637,7 @@
 羡|B123 S12 P2-6-6 Yxian4 Yyi2|イ セン エン うらや.む あまり|||envy, admire, praise, covet
 羢|B123 S12 P1-6-6 Yrong2|ジョウ ニュ|||fine woolen fabrics
 羣|B123 S13 V4667 H2752 P2-7-6 I3d10.14 Yqun2|グン む.れる むれ むら むら.がる|||group, crowd, multitude, mob
-群|B123 G5 S13 F1012 N3667 V4666 H1540 DK1037 L1163:flock DN1247:flock E657 IN794 P1-7-6 I3d10.14 Yqun2|グン む.れる む.れ むら むら.がる|ぐり ぐ こお こおり ごうり||flock, group, crowd, herd, swarm, cluster
+群|B123 G4 S13 F1012 N3667 V4666 H1540 DK1037 L1163:flock DN1247:flock E657 IN794 P1-7-6 I3d10.14 Yqun2|グン む.れる む.れ むら むら.がる|ぐり ぐ こお こおり ごうり||flock, group, crowd, herd, swarm, cluster
 羦|B123 S13 P1-6-7 Yhuan2|カン|||
 羨|B123 G8 S13 N3666 V4665 L553:envious DN592:envious P2-3-10 I2o11.4 Yxian4|セン エン うらや.む あまり|||envious, be jealous, covet
 義|B123 G5 S13 F415 N3668 V4668 H2338 DK1514 L641:righteousness DN691:righteousness E645 IN291 P2-3-10 I2o11.3 Yyi4|ギ|ただし ちか のり よし||righteousness, justice, morality, honor, loyalty, meaning
@@ -7802,7 +7802,7 @@
 肸|B130 S8 P1-4-4 Yxi4|キツ キチ コチ ケツ ケチ ひろ.がる|||spread out, smiling, laughing
 肹|B130 S8 P1-4-4 Yxi4|ヒ キツ|||
 肺|B130 G6 S9 F1387 N3752 V4791 H916 DK619 L414:lungs DN443:lungs E958 IN1277 P1-4-5 I4b5.9 Yfei4|ハイ|||lungs
-胃|B102 G4 S9 F1647 N3000 V4793 H2561 DK1631 L29:stomach DN29:stomach E424 IN1268 P2-5-4 I5f4.3 Ywei4|イ|||stomach, paunch, crop, craw
+胃|B102 G6 S9 F1647 N3000 V4793 H2561 DK1631 L29:stomach DN29:stomach E424 IN1268 P2-5-4 I5f4.3 Ywei4|イ|||stomach, paunch, crop, craw
 胄|B130 S9 N3747 V4785 P2-5-4 I4b5.13 Yzhou4|チュウ かぶと ちすじ よつぎ|||lineage, bloodline
 胆|B130 G8 S9 F1449 N3751 V4790 H919 DK622 L31:gall:bladder DN31:gall:bladder E1564 IN1273 P1-4-5 I4b5.6 Ydan3|タン きも|い まこと||gall bladder, courage, pluck, nerve
 胈|B130 S9 P1-4-5 Yba2|ハツ バチ ハイ|||
@@ -7845,7 +7845,7 @@
 脅|B19 G8 S10 F1183 N727 V4803 H2109 DK1336 L871:threaten DN936:threaten E1169 IN1263 P2-2-8 I2g8.2 Yxie2|キョウ おびや.かす おど.す おど.かす|||threaten, coerce
 脆|B130 S10 N3760 V4800 L2462:fragile DN2533:fragile P1-4-6 I4b6.4 Ycui4|ゼイ セイ セツ もろ.い よわい|||brittle, fragile, easy to beat, sentimental, susceptible
 脇|B130 G8 S10 F1806 N3765 V4807 H952 L870:armpit DN935:armpit P1-4-6 I4b6.3 Yxie2|キョウ わき わけ|||armpit, the other way, another place, flank, supporting role
-脈|B130 G4 S10 F1477 N3764 V4805 H953 DK648 L1856:vein DN2000:vein E589 IN913 P1-4-6 I4b6.8 Ymo4 Ymai4|ミャク すじ|||vein, pulse, hope
+脈|B130 G5 S10 F1477 N3764 V4805 H953 DK648 L1856:vein DN2000:vein E589 IN913 P1-4-6 I4b6.8 Ymo4 Ymai4|ミャク すじ|||vein, pulse, hope
 脉|B130 S9 N3743 V4778 H921 P1-4-5 I4b6.8 Ymai4 Ymo4|ミャク すじ|||vein (blood, ore); pulse; hope
 脊|B130 G8 S10 F2299 N3763 V4804 L2071:spinal:column DN268:spinal:column P2-6-4 I4b6.13 Yji2 Yji3|セキ せ せい|||stature, height
 脋|B130 S10 P2-2-8 Yxie2|キョウ おびや.かす おど.す おど.かす|||
@@ -7901,7 +7901,7 @@
 腱|B130 S13 N3792 V4843 P1-4-9 I4b8.10 Yjian4|ケン キン|||tendon
 腴|B130 S13 V4841 P1-4-9 I4b9.2 Yyu2|ユ あぶら こえ.る|||fat, grease, growing fat
 腷|B130 S13 P1-4-9 Ybi4|ヒョク ビキ こもる|||
-腸|B130 G4 S13 F1807 N3798 V4849 H1033 DK709 L544:intestines DN583:intestines E547 IN1270 P1-4-9 I4b9.8 Ychang2|チョウ はらわた わた|||intestines, guts, bowels, viscera
+腸|B130 G6 S13 F1807 N3798 V4849 H1033 DK709 L544:intestines DN583:intestines E547 IN1270 P1-4-9 I4b9.8 Ychang2|チョウ はらわた わた|||intestines, guts, bowels, viscera
 腹|B130 G6 S13 F1286 N3800 V4851 H1034 DK710 L464:abdomen DN503:abdomen E965 IN1271 P1-4-9 I4b9.4 Yfu4|フク はら|||abdomen, belly, stomach
 腺|B130 G8 S13 N3796 V4847 H1035 L2466:gland DN141:gland P1-4-9 I4b9.6 Yxian4|セン|||gland, (kokuji)
 腿|B130 S13 S14 N3795 V4846 P1-4-9 I4b9.10 Ytui3|タイ もも|||thigh, femur
@@ -8003,7 +8003,7 @@
 興|B12 G5 S16 F734 N615 V4913 H2909 DK1852 L1426:entertain DN1533:entertain E652 IN368 P2-14-2 I2o14.2 Yxing1 Yxing4|コウ キョウ おこ.る おこ.す|おき おこっ とも||entertain, revive, retrieve, interest, pleasure
 舉|B134 S16 S17 V4914 P2-11-5 I3n7.1 Yju3|キョ あ.げる あ.がる こぞ.る|||raise, plan, project, behavior, actions
 舊|B140 S17 N4076 V4916 H2531 P2-3-14 I4c1.1 Yjiu4|キュウ ふる.い もと|||old things, old friend, old times, former, ex-
-舌|B135 G5 S6 F1830 N3855 V4917 H2186 DK1384 L41:tongue DN41:tongue E732 IN1259 P2-3-3 I3d3.9 Yshe2|ゼツ した|||tongue, reed, clapper
+舌|B135 G6 S6 F1830 N3855 V4917 H2186 DK1384 L41:tongue DN41:tongue E732 IN1259 P2-3-3 I3d3.9 Yshe2|ゼツ した|||tongue, reed, clapper
 舍|B135 S8 V4918 H2062 P2-2-6 I2a6.23 Yshe4 Yshe3|セキ シャ やど.る|とね||inn, hut, house, mansion
 舎|B9 G5 S8 F1170 N423 V189 H2060 DK1305 L316:cottage DN338:cottage E700 IN791 P2-2-6 I2a6.23 Yshe3 Yshe4|シャ セキ やど.る|さ とり||cottage, inn, hut, house, mansion
 舏|B135 S8 P1-6-2 Yjiu3|キュウ ク なめとる|||
@@ -8025,7 +8025,7 @@
 舢|B137 S9 P1-6-3 Yshan1|サン|||sampan
 舨|B137 S10 P1-6-4 Yban3|ハン|||sampan
 舩|B137 S10 F2420 V4930 P1-6-4 I6c5.4 Ychuan2|セン ふね ふな-|||boat, ship, vessel
-航|B137 G4 S10 F665 N3867 V4933 H1318 DK885 L1870:navigate DN2014:navigate E479 IN823 P1-6-4 I6c4.2 Yhang2|コウ|わたる||navigate, sail, cruise, fly
+航|B137 G5 S10 F665 N3867 V4933 H1318 DK885 L1870:navigate DN2014:navigate E479 IN823 P1-6-4 I6c4.2 Yhang2|コウ|わたる||navigate, sail, cruise, fly
 舫|B137 S10 N3866 V4932 P1-6-4 I6c4.1 Yfang3|ホウ もや.う もやいぶね|||moor, berth
 般|B137 G8 S10 F649 N3865 V4931 H1317 DK884 L1871:carrier DN2016:carrier E1714 IN1096 P1-6-4 I6c4.3 Yban1 Ybo1 Ypan2|ハン|||carrier, carry, all, general, sort, kind
 舮|B137 S10 V4929 P1-6-4 I6c16.1 Ylu2|ロ とも へさき|||bow or prow of boat
@@ -9517,7 +9517,7 @@
 豚|B130 G8 S11 F1864 N3772 V5743 H976 DK666 L538:pork DN577:pork E1670 IN796 P1-4-7 I4b7.2 Ytun2|トン ぶた|||pork, pig
 豛|B152 S11 P1-7-4 Yyi4|エキ ヤク いのこ|||
 豝|B152 S11 P1-7-4 Yba1|ハ ヘ|||sow (female pig)
-象|B152 G4 S12 F394 N4472 V5744 H2134 DK1350 L1976:elephant DN2130:elephant E533 IN739 P2-2-10 I2n10.1 Yxiang4|ショウ ゾウ かたど.る|きさ||elephant, pattern after, imitate, image, shape, sign (of the times)
+象|B152 G5 S12 F394 N4472 V5744 H2134 DK1350 L1976:elephant DN2130:elephant E533 IN739 P2-2-10 I2n10.1 Yxiang4|ショウ ゾウ かたど.る|きさ||elephant, pattern after, imitate, image, shape, sign (of the times)
 豢|B152 S13 V5746 P2-6-7 I0a13.4 Yhuan4|ケン カン やしな.う|||raising domestic animals
 豣|B152 S13 P1-7-6 Yjian1|ケン いのこ|||pig of 3 years
 豤|B152 S13 P1-7-6 Yken3|コン ケン か.む|||
@@ -9569,7 +9569,7 @@
 責|B154 G5 S11 F598 N4492 V5780 H2467 DK1595 L1541:blame DN1661:blame E728 IN655 P2-4-7 I7b4.4 Yze2 Yzhai4|セキ せ.める|||blame, condemn, censure
 貭|B154 S11 V5775 H3012 P3-2-9 I7b8.7 Yzhi4|シツ シチ チ たち ただ.す もと わりふ|||matter, material, substance
 貮|B154 S11 V5774 H3144 P3-3-8 I4n3.3 Yer4|ニ ジ ふた.つ そえ|||number two
-貯|B154 G4 S12 F1100 N4502 V5791 H1509 DK1012 L194:savings DN206:savings E546 IN762 P1-7-5 I7b5.1 Yzhu3 Yzhu4|チョ た.める たくわ.える|||savings, store, lay in, keep, wear mustache
+貯|B154 G5 S12 F1100 N4502 V5791 H1509 DK1012 L194:savings DN206:savings E546 IN762 P1-7-5 I7b5.1 Yzhu3 Yzhu4|チョ た.める たくわ.える|||savings, store, lay in, keep, wear mustache
 貰|B154 G9 S12 F2441 N4500 V5789 L2737:get DN2766:get P2-5-7 I7b5.5 Yshi4|セイ シャ もら.う|||get, have, obtain
 貲|B154 S13 V5797 P2-6-7 I7b6.5 Yzi1|シ たから|||treasure, assets, pay a fine
 貳|B56 S12 N1557 V5783 P3-3-9 I4n3.3 Yer4|ニ ジ ふた.つ そえ|||two
@@ -9579,11 +9579,11 @@
 貸|B154 G5 S12 F995 N4503 V5792 H2600 DK1664 L1007:lend DN1082:lend E747 IN748 P2-5-7 I7b5.9 Ydai4|タイ か.す か.し- かし-|||lend
 貹|B154 S12 P1-7-5 Ysheng4|セイ ショウ たから|||
 貺|B154 S12 P1-7-5 Ykuang4|キョウ コウ たま.う|||give, grant, bestow, surname
-費|B154 G4 S12 F321 N4497 V5786 H2607 DK1670 L1238:expense DN1326:expense E567 IN749 P2-5-7 I7b5.4 Yfei4|ヒ つい.やす つい.える|||expense, cost, spend, consume, waste
+費|B154 G5 S12 F321 N4497 V5786 H2607 DK1670 L1238:expense DN1326:expense E567 IN749 P2-5-7 I7b5.4 Yfei4|ヒ つい.やす つい.える|||expense, cost, spend, consume, waste
 貼|B154 G8 S12 F2444 N4498 V5787 H1510 L2736:affix DN60:post:a:bill P1-7-5 I7b5.2 Ytie1|テン チョウ は.る つ.く|||stick, paste, apply
 貽|B154 S12 N4496 V5785 P1-7-5 I7b5.3 Yyi2|イ おく.る|||leave behind, gift
 貿|B154 G5 S12 F652 N4499 V5788 H2601 DK1665 L1424:trade DN1529:trade E792 IN760 P2-5-7 I7b5.8 Ymao4|ボウ|||trade, exchange
-賀|B154 G5 S12 F1056 N4501 V5790 H2599 DK1663 L868:congratulations DN933:congratulations E630 IN756 P2-5-7 I7b5.10 Yhe4|ガ|か のり よし より||congratulations, joy
+賀|B154 G4 S12 F1056 N4501 V5790 H2599 DK1663 L868:congratulations DN933:congratulations E630 IN756 P2-5-7 I7b5.10 Yhe4|ガ|か のり よし より||congratulations, joy
 賁|B154 S12 N4495 V5784 P2-2-10 I7b5.6 Ybi4 Yben1|フン ヒ ホン|||decorate
 賂|B154 G8 S13 N4506 V5799 L2738:graft DN313:graft P1-7-6 I7b6.2 Ylu4|ロ まいな.い まいな.う|||bribe
 賃|B154 G6 S13 F961 N4509 V5802 H2694 DK1730 L1004:fare DN1079:fare E942 IN751 P2-6-7 I7b6.6 Ylin4 Yren4|チン|すけ||fare, fee, hire, rent, wages, charge
@@ -9607,7 +9607,7 @@
 賛|B154 G5 S15 F868 N4516 V5814 H2809 DK1797 L843:approve DN906:approve E690 IN745 P2-8-7 I7b8.6 Yzan4|サン たす.ける たた.える|||approve, praise, title or inscription on picture, assist, agree with
 賜|B154 G8 S15 F2190 N4514 V5812 H1585 DK1065 L1052:grant DN1131:grant E1324 IN1831 P1-7-8 I7b8.2 Ysi4 Yci4|シ たまわ.る たま.う たも.う|||grant, gift, boon, results
 賝|B154 S15 P1-7-8 Ychen1|チン たから|||previous
-賞|B42 G4 S15 F426 N1372 V5815 H2618 DK1677 L796:prize DN859:prize E511 IN500 P2-5-10 I3n12.1 Yshang3|ショウ ほ.める|||prize, reward, praise
+賞|B42 G5 S15 F426 N1372 V5815 H2618 DK1677 L796:prize DN859:prize E511 IN500 P2-5-10 I3n12.1 Yshang3|ショウ ほ.める|||prize, reward, praise
 賠|B154 G8 S15 F1243 N4512 V5810 H1582 DK1063 L476:compensation DN515:compensation E1693 IN1829 P1-7-8 I7b8.1 Ypei2|バイ|||compensation, indemnify
 賡|B154 S15 P3-2-13 Ygeng1|ゾク ショク コウ キョウ つづ.く つづ.ける つぐな.う|||continue
 賢|B154 G8 S16 F1159 N4517 V5816 H2839 DK1817 L852:intelligent DN915:intelligent E1221 IN1288 P2-9-7 I7b9.2 Yxian2|ケン かしこ.い|かた さか さと さとし たか たて のり まこと まさ まさる||intelligent, wise, wisdom, cleverness
@@ -10025,7 +10025,7 @@
 迻|B162 S9 P3-3-6 Yyi2|イ うつ.る|||to shift, to transfer, to translate
 追|B162 G3 S9 S8 F411 N4686 V6042 H3096 DK1971 L1268:chase DN1359:chase E350 IN1174 P3-3-6 I2q6.4 Yzhui1|ツイ お.う|おい||chase, drive away, follow, pursue, meanwhile
 迾|B162 S9 P3-3-6 Ylie4|レツ レチ レイ さえぎ.る|||
-退|B162 G5 S9 S8 F424 N4684 V6040 H3094 DK1969 L1465:retreat DN1575:retreat E746 IN846 P3-3-6 I2q6.3 Ytui4|タイ しりぞ.く しりぞ.ける ひ.く の.く の.ける ど.く|||retreat, withdraw, retire, resign, repel, expel, reject
+退|B162 G6 S9 S8 F424 N4684 V6040 H3094 DK1969 L1465:retreat DN1575:retreat E746 IN846 P3-3-6 I2q6.3 Ytui4|タイ しりぞ.く しりぞ.ける ひ.く の.く の.ける ど.く|||retreat, withdraw, retire, resign, repel, expel, reject
 送|B162 G3 S9 S8 F311 N4683 V6039 H3093 DK1968 L2016:send:off DN2172:send:off E331 IN441 P3-3-6 I2q6.9 Ysong4|ソウ おく.る|||escort, send
 适|B162 S9 P3-3-6 Ygua1 Ykuo4 Yshi4|カツ ガチ はや.い|||go, reach, appropriate, suitable
 逃|B162 G8 S9 S8 F931 N4682 V6038 H3095 DK1970 L283:escape DN301:escape E1642 IN1566 P3-3-6 I2q6.5 Ytao2|トウ に.げる に.がす のが.す のが.れる|||escape, flee, shirk, evade, set free
@@ -10486,7 +10486,7 @@
 銧|B167 S14 P1-8-6 Yguang1|コウ ラジウム|||point of a sword, Radium (element)
 銨|B167 S14 P1-8-6 Yan1 Yan3|アン|||ammonium
 銫|B167 S14 P1-8-6 Yse4|ショク セシウム|||Cesium (element)
-銭|B167 G5 S14 F1008 N4851 V6264 H1725 DK1136 L368:coin DN394:coin E734 IN648 P1-8-6 I8a6.1 Yqian2|セン ゼン ぜに すき|||coin, .01 yen, money
+銭|B167 G6 S14 F1008 N4851 V6264 H1725 DK1136 L368:coin DN394:coin E734 IN648 P1-8-6 I8a6.1 Yqian2|セン ゼン ぜに すき|||coin, .01 yen, money
 銯|B167 S14 P1-8-6|かすがい|||
 銲|B167 S15 P1-8-7 Yhan4|カン ガン こて|||solder, weld, leg armor, greaves
 銶|B167 S15 P1-8-7 Yqiu2|キュウ グ のみ|||chisel
@@ -11172,7 +11172,7 @@
 頍|B181 S13 P1-4-9 Ykui3|キ ケン あたまをあ.げる|||to raise one's head
 頎|B181 S13 P1-4-9 Yqi2|キ ゲ キン コン かたちがよい|||tall and slim
 頏|B181 S13 V6620 P1-4-9 I9a4.2 Yhang2|コウ のど|||alight, land, throat, neck
-預|B181 G5 S13 F981 N5123 V6625 H1042 DK713 L1595:deposit DN1721:deposit E801 IN394 P1-4-9 I9a4.5 Yyu4|ヨ あず.ける あず.かる|||deposit, custody, leave with, entrust to
+預|B181 G6 S13 F981 N5123 V6625 H1042 DK713 L1595:deposit DN1721:deposit E801 IN394 P1-4-9 I9a4.5 Yyu4|ヨ あず.ける あず.かる|||deposit, custody, leave with, entrust to
 頑|B181 G8 S13 F1247 N5122 V6624 H1040 DK712 L61:stubborn DN65:stubborn E1119 IN1848 P1-4-9 I9a4.6 Ywan2|ガン かたく.な|||stubborn, foolish, firmly
 頒|B181 G8 S13 F2287 N5119 V6621 H1043 DK714 L783:partition DN846:partition E1718 IN1850 P1-4-9 I9a4.3 Yban1|ハン わ.かつ わ.ける|||distribute, disseminate, partition, understand
 頓|B181 G8 S13 N5121 V6623 L2788:immediate DN1610:immediate P1-4-9 I9a4.1 Ydun4 Ydu2|トン トツ にわか.に とん.と つまず.く とみ.に ぬかずく|||suddenly, immediately, in a hurry, arrange, stay in place, bow, kowtow
