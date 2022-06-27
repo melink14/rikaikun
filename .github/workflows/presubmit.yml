@@ -53,7 +53,7 @@ jobs:
         run: npm run test:update-baselines
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
       - name: Push new baselines to pull request branch
-        uses: EndBug/add-and-commit@v9.0.0
+        uses: EndBug/add-and-commit@v9.0.1
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
         with:
           message: 'test(visual): Update baselines with new screenshots'
