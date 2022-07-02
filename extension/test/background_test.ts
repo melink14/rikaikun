@@ -10,6 +10,10 @@ use(sinonChai);
 let rcxMain: RcxMain;
 
 describe('background.ts', function () {
+  // Increase timeout from 2000ms since data tests can take longer.
+  // Make it relative to current timeout so config level changes are taken
+  // into account. (ie browserstack)
+  this.timeout(this.timeout() * 2);
   before(async function () {
     // Resolve config fetch with minimal config object.
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
