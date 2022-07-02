@@ -1,0 +1,32 @@
+{
+  "stylelint.enable": true,
+  "css.validate": false,
+  "scss.validate": false,
+  "prettier.documentSelectors": ["*.md"],
+  "files.associations": {
+    ".all-contributorsrc": "json"
+  },
+  "stylelint.snippet": ["css", "less", "postcss", "ts"],
+  "stylelint.validate": ["css", "less", "postcss", "ts"],
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "vue",
+    "markdown",
+    "json",
+    "yaml"
+  ],
+  "yaml.format.singleQuote": true,
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["/manifest.json"],
+      "url": "http://json.schemastore.org/chrome-manifest"
+    }
+  ]
+}
