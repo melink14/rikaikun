@@ -132,19 +132,13 @@ class RcxDict {
     console.log('rcxDict main then in ' + (ended - started));
   }
 
-  fileReadAsync(url: string): Promise<string> {
-    return new Promise((resolve) => {
-      const req = new XMLHttpRequest();
-
-      req.onreadystatechange = function () {
-        if (req.readyState === 4) {
-          resolve(req.responseText);
-        }
-      };
-
-      req.open('GET', url, true);
-      req.send(null);
-    });
+  async fileReadAsync(url: string): Promise<string> {
+    const response = await fetch(url);
+    if (response.ok) {
+      return response.text();
+    }
+    console.error(`Failed to load ${url} due to status ${response.statusText}`);
+    return '';
   }
 
   async fileReadAsyncAsArray(url: string): Promise<string[]> {
