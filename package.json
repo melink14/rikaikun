@@ -116,7 +116,9 @@
     "typescript": "^4.7.4"
   },
   "overrides": {
-    "esbuild": "0.14.0"
+    "esbuild": "0.14.0",
+    "chrome-webstore-upload": ">=1.0.0",
+    "glob-parent": ">=5.1.2"
   },
   "release": {
     "plugins": [
