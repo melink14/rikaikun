@@ -28,7 +28,7 @@ pull_request_rules:
     actions:
       comment:
         message: '@dependabot rebase'
-        
+
   - name: Approve PRs by melink14 after they are marked ready
     conditions:
       - author=melink14
