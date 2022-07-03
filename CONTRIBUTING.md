@@ -38,7 +38,7 @@ The tips and guidelines below are intended to help both contributors and maintai
 ### Your First Code Contribution
 
 Working on your first pull request? You can learn how from this _free_ series,
-[How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+[How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
 
 [Here are some good first issues.](https://github.com/melink14/rikaikun/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22)
 
