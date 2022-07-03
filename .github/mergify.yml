@@ -28,6 +28,17 @@ pull_request_rules:
     actions:
       comment:
         message: '@dependabot rebase'
+        
+  - name: Approve PRs by melink14 after they are marked ready
+    # Sometimes Dependabot creates a PR on an old branch and never updates.
+    # See dependabot/dependabot-core#4031
+    conditions:
+      - author=melink14
+      - label=self-approved
+    actions:
+      review:
+        type: APPROVE
+        message: "melink14 says it's fine so it must be fine!"
 
   - name: Automatic merge when Github conditions pass
     conditions:
