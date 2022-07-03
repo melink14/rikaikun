@@ -29,6 +29,15 @@ pull_request_rules:
       comment:
         message: '@dependabot rebase'
 
+  - name: Approve PRs by melink14 after they are marked ready
+    conditions:
+      - author=melink14
+      - label=self-approved
+    actions:
+      review:
+        type: APPROVE
+        message: "melink14 says it's fine so it must be fine!"
+
   - name: Automatic merge when Github conditions pass
     conditions:
       # Also covered by Github protections but this reduces noise from mergify.
