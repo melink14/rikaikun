@@ -2,6 +2,7 @@ import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
+import isDocker from 'is-docker';
 import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
@@ -111,6 +112,14 @@ class SpecReporter {
   }
 }
 
+// disable-gpu required if no X server is available.
+// Leave it off by default, as it may add variance to visual tests.
+const chromeArgs = ['--disable-gpu', '--remote-debugging-port=9333'];
+if (isDocker) {
+  // Inside of docker, Chrome's sandbox causes an error.
+  chromeArgs.push('--no-sandbox');
+}
+
 /** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
 const defaultConfig = {
   coverageConfig: {
@@ -122,9 +131,7 @@ const defaultConfig = {
       launchOptions: {
         executablePath: '/usr/bin/google-chrome',
         headless: true,
-        // disable-gpu required if no X server is available.
-        // Leave it off by default, as it may add variance to visual tests.
-        args: ['--disable-gpu', '--remote-debugging-port=9333'],
+        args: chromeArgs,
       },
     }),
   ],
