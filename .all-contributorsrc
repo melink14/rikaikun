@@ -242,6 +242,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "a",
+      "name": "Shuvalov Anton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1410106?v=4",
+      "profile": "http://anto.sh",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
