@@ -242,6 +242,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "greggman",
+      "name": "Greggman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/234804?v=4",
+      "profile": "http://games.greggman.com",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
