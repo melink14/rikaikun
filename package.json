@@ -85,7 +85,7 @@
     "csv-parse": "^5.2.2",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^3.2.1",
+    "eslint-import-resolver-typescript": "^3.2.4",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-lit": "^1.6.1",
