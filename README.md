@@ -9,7 +9,13 @@
 [![License GPL-3.0](https://img.shields.io/github/license/melink14/rikaikun?style=flat)](https://github.com/melink14/rikaikun/blob/main/LICENSE)
 [![Standard Readme Compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat)](https://conventionalcommits.org)
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat)](#contributors-)
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat)](#contributors)
+
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](code_of_conduct.md)
 
 rikaikun is a Chrome extension that helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.
