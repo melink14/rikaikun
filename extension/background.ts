@@ -1,7 +1,13 @@
+import * as Sentry from '@sentry/browser';
 import { RcxDict } from './data';
 import { RcxMain } from './rikaichan';
 import { configPromise } from './configuration';
 import { tts } from './texttospeech';
+
+Sentry.init({
+  dsn: 'https://cf82b27787c04a1cbdadc1fb17e7ebc6@o1309722.ingest.sentry.io/6556159',
+  tracesSampleRate: 1.0,
+});
 
 /**
  * Returns a promise for fully initialized RcxMain. Async due to config and

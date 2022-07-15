@@ -1,4 +1,5 @@
 import 'lit-toast/lit-toast.js';
+import * as Sentry from '@sentry/browser';
 import { Config, configPromise } from './configuration';
 import { LitElement, TemplateResult, css, html } from 'lit';
 import { until } from 'lit/directives/until.js';
@@ -7,6 +8,11 @@ type OptionEvent = {
   target: HTMLInputElement;
   __update: Partial<Config>;
 };
+
+Sentry.init({
+  dsn: 'https://cf82b27787c04a1cbdadc1fb17e7ebc6@o1309722.ingest.sentry.io/6556159',
+  tracesSampleRate: 1.0,
+});
 
 class OptionsForm extends LitElement {
   private content: Promise<TemplateResult> = this.fetchAndRender();
