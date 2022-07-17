@@ -1174,6 +1174,9 @@ class RcxContent {
       range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
       // If we don't have a valid range, don't do any more work
       if (range === null) {
+        if (fake) {
+          document.body.removeChild(fake);
+        }
         return;
       }
       const startNode = range.startContainer;

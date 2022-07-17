@@ -103,6 +103,20 @@ describe('RcxContent', function () {
       expect(console.log).to.not.have.been.called;
     });
 
+    it('removes the fake div of an input element when `caretRangeFromPoint` returns null', function () {
+      sinon
+        .stub(document, 'caretRangeFromPoint')
+        .returns(null as unknown as Range);
+      const inputValue = '66';
+      const input = insertHtmlIntoDomAndReturnFirstTextNode(
+        `<input type="range" value="${inputValue}">`
+      ) as HTMLInputElement;
+
+      triggerMousemoveAtElementStart(input);
+
+      expect(doesDocumentContainDivWithText(inputValue)).to.be.false;
+    });
+
     it('triggers xsearch message when above Japanese text', function () {
       const clock = sinon.useFakeTimers();
       const span = insertHtmlIntoDomAndReturnFirstTextNode(
@@ -925,6 +939,15 @@ describe('RcxContent', function () {
     });
   });
 });
+
+function doesDocumentContainDivWithText(text: string): boolean {
+  return document.evaluate(
+    `//div[text()="${text}"]`,
+    document,
+    null,
+    XPathResult.BOOLEAN_TYPE
+  ).booleanValue;
+}
 
 // Required if testing downstream methods which expect a proper hover event to have
 // already been processed.
