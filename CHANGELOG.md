@@ -7,6 +7,13 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.4.11](https://github.com/melink14/rikaikun/compare/v2.4.10...v2.4.11) (2022-07-18)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1140](https://github.com/melink14/rikaikun/issues/1140)) ([70de0be](https://github.com/melink14/rikaikun/commit/70de0be11eda66803a00527e2fb6d8aba4fdeb0a))
+- Remove fake div if returning early because `caretRangeFromPoint` is null ([#1134](https://github.com/melink14/rikaikun/issues/1134)) ([e7d40b8](https://github.com/melink14/rikaikun/commit/e7d40b8eb3b73a909288c39712fdecad29c82e0a)), closes [#1114](https://github.com/melink14/rikaikun/issues/1114)
+
 ## [2.4.10](https://github.com/melink14/rikaikun/compare/v2.4.9...v2.4.10) (2022-07-11)
 
 ### Bug Fixes
