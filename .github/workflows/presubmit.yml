@@ -53,7 +53,7 @@ jobs:
         run: npm run test:update-baselines
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
       - name: Push new baselines to pull request branch
-        uses: EndBug/add-and-commit@v9.0.1
+        uses: EndBug/add-and-commit@v9.1.0
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
         with:
           message: 'test(visual): Update baselines with new screenshots'
@@ -63,7 +63,7 @@ jobs:
         run: npm run fix
         if: failure() && github.event_name == 'pull_request'
       - name: Push lint fixes to pull request branch
-        uses: EndBug/add-and-commit@v9.0.1
+        uses: EndBug/add-and-commit@v9.1.0
         if: failure() && github.event_name == 'pull_request'
         with:
           message: 'style: Fix lint/formatting errors'
