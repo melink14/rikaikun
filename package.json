@@ -70,7 +70,7 @@
     "@types/simulant": "^0.2.0",
     "@types/sinon-chai": "^3.2.8",
     "@types/sinon-chrome": "^2.2.11",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.1",
     "@web/test-runner": "^0.14.0",
     "@web/test-runner-browserstack": "^0.5.1",
