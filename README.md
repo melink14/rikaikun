@@ -22,6 +22,7 @@ rikaikun is a Chrome extension that helps you to read Japanese web pages by show
 - [Install](#install)
   - [Via the Chrome Web Store](#via-the-chrome-web-store)
   - [Via Microsoft Edge Add-ons](#via-microsoft-edge-add-ons)
+  - [Following thie video walkthrough](#video-installation-walkthrough)
   - [As an Unpacked Extension](#as-an-unpacked-extension)
 - [Usage](#usage)
   - [Features](#features)
@@ -58,6 +59,10 @@ Visit rikaikun on the [Chrome Web Store](https://chrome.google.com/webstore/deta
 ### Via Microsoft Edge Add-ons
 
 Visit rikaikun on [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/rikaikun/ebdggalafggfhdllgohjbpgnmfppdfih) and click 'Get'.
+
+### Video Installation Walkthrough
+
+Follow along [with this video](https://youtu.be/MIwmDIbo2ng) to install on Chrome or Edge.
 
 ### As an Unpacked Extension
 
