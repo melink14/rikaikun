@@ -511,10 +511,13 @@ class RcxContent {
     // oldCaret to -1 as an indicator not to restore position
     // Otherwise, we switch our saved textarea to whereever
     // we just clicked
-    if (!('form' in ev.target!)) {
-      window.rikaichan!.oldCaret = -1;
-    } else {
+    if (
+      ev.target instanceof HTMLTextAreaElement ||
+      ev.target instanceof HTMLInputElement
+    ) {
       window.rikaichan!.oldTA = ev.target;
+    } else {
+      window.rikaichan!.oldCaret = -1;
     }
   }
 
