@@ -12,7 +12,8 @@ on:
 
 jobs:
   commitlint:
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    # This is probably spoofable so only use in lowrisk actions.
+    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +35,8 @@ jobs:
   # for this check.
   commitlint_skip:
     name: commitlint
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    # This is probably spoofable so only use in lowrisk actions.
+    if: ${{ github.pull_request.user.login == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Skipping commitlint"
