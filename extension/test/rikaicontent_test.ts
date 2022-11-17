@@ -924,6 +924,7 @@ describe('RcxContent', function () {
 
       expect(window.rikaichan?.oldCaret).to.equal(-1);
     });
+
     it('saves text box element in `oldTA` when clicking inside a text area', function () {
       const textarea = insertHtmlIntoDomAndReturnFirstTextNode(
         '<textarea>testtest</textarea>'
@@ -933,6 +934,7 @@ describe('RcxContent', function () {
 
       expect(window.rikaichan?.oldTA).to.equal(textarea);
     });
+
     it('saves text box element in `oldTA` when clicking inside an input box', function () {
       const input = insertHtmlIntoDomAndReturnFirstTextNode(
         '<input>testtest</input>'
