@@ -8,23 +8,21 @@ pull_request_rules:
       # Also covered by Github protections but this reduces noise from mergify.
       - '#approved-reviews-by>=1'
       - author=dependabot[bot]
-      - '#commits-behind=0'
-      # Don't auto-merge PRs where non dep change had to be committed as well
-      - '#commits=1'
     actions:
-      merge:
+      queue:
+        name: default
+        # Each PR is one commit, but mergify may add merge commits when updating.
         method: squash
 
-  - name: Have Dependabot rebase when out of date
-    # Sometimes Dependabot creates a PR on an old branch and never updates.
-    # See dependabot/dependabot-core#4031
+  - name: Have Dependabot rebase when conflict at head of queue
+    # It's not unusual for there to be a conflict between subsequent dependabot
+    # requests, dependabot knows best how to solve these.
     conditions:
       # Also covered by Github protections but this reduces noise from mergify.
       - '#approved-reviews-by>=1'
       - author=dependabot[bot]
-      - '#commits-behind>0'
-      # Don't auto-merge PRs where non dep change had to be committed as well
-      - '#commits=1'
+      - queue-position=0
+      - conflict
     actions:
       comment:
         message: '@dependabot rebase'
