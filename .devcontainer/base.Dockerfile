@@ -46,7 +46,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt-get -y install --no-install-recommends ./google-chrome-stable_current_amd64.deb fonts-noto-cjk \
+    && apt-get -y install --no-install-recommends ./google-chrome-stable_current_amd64.deb fonts-noto-cjk tmux\
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment if you want to install an additional version of node using nvm
