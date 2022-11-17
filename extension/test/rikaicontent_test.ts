@@ -914,6 +914,38 @@ describe('RcxContent', function () {
     });
   });
 
+  describe('mouseDown', function () {
+    it('clears oldCaret value when clicking outside text box', function () {
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>testtest</span>'
+      ) as HTMLSpanElement;
+
+      triggerLeftMouseDownAtElementStart(span);
+
+      expect(window.rikaichan?.oldCaret).to.equal(-1);
+    });
+
+    it('saves text box element in `oldTA` when clicking inside a text area', function () {
+      const textarea = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<textarea>testtest</textarea>'
+      ) as HTMLTextAreaElement;
+
+      triggerLeftMouseDownAtElementStart(textarea);
+
+      expect(window.rikaichan?.oldTA).to.equal(textarea);
+    });
+
+    it('saves text box element in `oldTA` when clicking inside an input box', function () {
+      const input = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<input>testtest</input>'
+      ) as HTMLInputElement;
+
+      triggerLeftMouseDownAtElementStart(input);
+
+      expect(window.rikaichan?.oldTA).to.equal(input);
+    });
+  });
+
   describe('processEntry', function () {
     describe('when highlight config option enabled', function () {
       it('does not try to highlight text in Google Docs', function () {
@@ -1022,6 +1054,14 @@ function triggerMousemoveAtElementStartWithOffset(
   simulant.fire(element, 'mousemove', {
     clientX: Math.ceil(element.getBoundingClientRect().left + offset.x),
     clientY: Math.ceil(element.getBoundingClientRect().top + offset.y),
+  });
+}
+
+function triggerLeftMouseDownAtElementStart(element: Element) {
+  simulant.fire(element, 'mousedown', {
+    button: 0,
+    clientX: Math.ceil(element.getBoundingClientRect().left),
+    clientY: Math.ceil(element.getBoundingClientRect().top),
   });
 }
 
