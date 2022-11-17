@@ -7,7 +7,10 @@ version: 2
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/' # Location of package manifests
-    open-pull-requests-limit: 1
+    # Allow many simultaneious pull requests since new ones are only opened on schedule.
+    open-pull-requests-limit: 10
+    # Disable auto rebasing to allow Mergify to do it efficiently.
+    rebase-strategy: 'disabled'
     schedule:
       interval: 'daily'
       time: '03:00'
@@ -16,7 +19,8 @@ updates:
       prefix: 'build(deps)'
   - package-ecosystem: 'github-actions'
     directory: '/'
-    open-pull-requests-limit: 1
+    open-pull-requests-limit: 10
+    rebase-strategy: 'disabled'
     schedule:
       interval: 'daily'
       time: '03:00'
