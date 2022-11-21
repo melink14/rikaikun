@@ -7,6 +7,13 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.4.28](https://github.com/melink14/rikaikun/compare/v2.4.27...v2.4.28) (2022-11-21)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1286](https://github.com/melink14/rikaikun/issues/1286)) ([0a8c9c8](https://github.com/melink14/rikaikun/commit/0a8c9c8df136851866044478bdc6133afebdbd45))
+- **rikaicontent:** Properly check for text areas and input elements when deciding to save cursor information on mousedown ([#1282](https://github.com/melink14/rikaikun/issues/1282)) ([51d5ecc](https://github.com/melink14/rikaikun/commit/51d5eccf15755a8b77d10423390860334efe17cd))
+
 ## [2.4.27](https://github.com/melink14/rikaikun/compare/v2.4.26...v2.4.27) (2022-11-15)
 
 ### Bug Fixes
