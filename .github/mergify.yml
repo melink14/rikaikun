@@ -25,7 +25,7 @@ pull_request_rules:
       - conflict
     actions:
       comment:
-        message: '@dependabot recreate'
+        message: '@dependabot rebase'
 
   - name: Approve PRs by melink14 after they are marked ready
     conditions:
