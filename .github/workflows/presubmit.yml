@@ -42,7 +42,7 @@ jobs:
       - name: Check for screenshot failures
         id: check-screenshots
         if: failure()
-        run: echo "::set-output name=screenshot_failure::$(ls -1 screenshots/Chromium/failed | wc -l)"
+        run: echo "screenshot_failure=$(ls -1 screenshots/Chromium/failed | wc -l)" >> $$GITHUB_OUTPUT
       - name: Upload failing screenshots and diffs
         uses: actions/upload-artifact@v3
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0
@@ -57,6 +57,7 @@ jobs:
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
         with:
           message: 'test(visual): Update baselines with new screenshots'
+          fetch: false
           add: 'screenshots/Chromium/baseline/*.png'
           default_author: github_actions
       - name: Try to fix lint errors
@@ -67,7 +68,8 @@ jobs:
         if: failure() && github.event_name == 'pull_request'
         with:
           message: 'style: Fix lint/formatting errors'
-          add: '.'
+          fetch: false
+          add: . -- ':!screenshots'
           default_author: github_actions
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
