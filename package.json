@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/melink14/rikaikun#readme",
   "dependencies": {
-    "lit": "^2.6.0",
+    "lit": "^2.6.1",
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
@@ -88,7 +88,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-json": "^3.1.0",
-    "eslint-plugin-lit": "^1.8.0",
+    "eslint-plugin-lit": "^1.8.2",
     "eslint-plugin-mocha": "^10.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
