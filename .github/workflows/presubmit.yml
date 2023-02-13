@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3.3.0
         if: github.event_name == 'push'
       - uses: actions/checkout@v3.3.0
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
@@ -51,10 +51,10 @@ jobs:
           path: screenshots/Chromium/failed/
       - name: Update baseline screenshots
         run: npm run test:update-baselines
-        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
+        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request_target'
       - name: Push new baselines to pull request branch
         uses: EndBug/add-and-commit@v9.1.1
-        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request'
+        if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && github.event_name == 'pull_request_target'
         with:
           message: 'test(visual): Update baselines with new screenshots'
           fetch: false
@@ -62,10 +62,10 @@ jobs:
           default_author: github_actions
       - name: Try to fix lint errors
         run: npm run fix
-        if: failure() && github.event_name == 'pull_request'
+        if: failure() && github.event_name == 'pull_request_target'
       - name: Push lint fixes to pull request branch
         uses: EndBug/add-and-commit@v9.1.1
-        if: failure() && github.event_name == 'pull_request'
+        if: failure() && github.event_name == 'pull_request_target'
         with:
           message: 'style: Fix lint/formatting errors'
           fetch: false
