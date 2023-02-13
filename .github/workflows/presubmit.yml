@@ -4,7 +4,7 @@
 name: Presubmit
 
 on:
-  pull_request:
+  pull_request_target:
   push:
     branches: [main]
   workflow_dispatch:
