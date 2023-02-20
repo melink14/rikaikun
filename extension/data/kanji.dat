@@ -937,7 +937,7 @@
 卋|B2 S6 N98 V609 P2-2-4 Yshi4|セイ セ ソウ よ よよ う.む う.まれる|つぎ つぐ とき||generation, world, society, public
 卌|B2 S5 N87 V607 P4-5-3 I0a5.41 Yxi4|シュウ よんじゅう しじゅう|||40
 卍|B2 S6 N79 V611 P4-6-1 I2k4.7 Ywan4|バン マン まんじ|||swastika, gammadion, fylfot
-卑|B4 G8 S9 F2003 N221 V618 H2642 DK1688 L1511:lowly DN1629:lowly E1727 IN1521 P2-6-3 I5f4.8 Ybei1|ヒ いや.しい いや.しむ いや.しめる|||lowly, base, vile, vulgar
+卑|B4 G8 S9 F2003 N221 V618 H2642 DK1688 L1511:lowly DN1629:lowly E1727 IN1521 P2-6-3 I5f4.8 Ybei1|ヒ いや.しい いや.しむ いや.しめる|||lowly, base, vile, vulgar, despise
 卒|B8 G4 S8 F772 N294 V615 H2055 DK1300 L1025:graduate DN1102:graduate E537 IN787 P2-2-6 I2j6.2 Yzu2 Ycu4|ソツ シュツ そっ.する お.える お.わる ついに にわか|||graduate, soldier, private, die
 卓|B25 G8 S8 F1348 N802 V616 H2064 DK1307 L51:eminent DN52:eminent E1553 IN1679 P2-2-6 I2m6.2 Yzhuo1 Yzhuo2|タク|すぐる たか たかし||eminent, table, desk, high
 協|B24 G4 S8 F121 N774 V617 H93 DK70 L872:co- DN937:co- E461 IN234 P1-2-6 I2k6.1 Yxie2|キョウ|||co-, cooperation
@@ -3619,7 +3619,7 @@
 擅|B64 S16 N2012 V2293 H768 P1-3-13 I3c13.6 Yshan4|セン ほしいまま|||self-indulgent
 擇|B64 S16 N2004 V2285 H772 P1-3-13 I3c4.21 Yze2 Yzhai2|タク えら.ぶ|||select, choose, pick out
 擉|B64 S16 P1-3-13 Ychuo4|サク タク ショク ゾク さ.す|||to pierce, to break through
-擊|B64 G10 S17 V2287 H2900 P2-13-4 Yji2 Yji1|ゲキ う.つ|||strike, hit, beat, attack, fight
+擊|B64 G10 S17 V2287 H2900 P2-13-4 I3c11.7 Yji2 Yji1|ゲキ う.つ|||strike, hit, beat, attack, fight
 擋|B64 S16 P1-3-13 Ydang3 Ydang4|トウ さ.ける|||obstruct, impede, stop, resist
 擌|B64 S16 P1-3-13 Yse4|サク チャク もちざお|||
 操|B64 G6 S16 F1016 N2015 V2296 H769 DK531 L671:maneuver DN724:maneuver E922 IN1655 P1-3-13 I3c13.3 Ycao1 Ycao4|ソウ サン みさお あやつ.る|さお みさ||maneuver, manipulate, operate, steer, chastity, virginity, fidelity
@@ -3868,7 +3868,7 @@
 晁|B72 S10 V2457 P2-4-6 I4c6.3 Ychao2 Yzhao1 Yzhao4|チョウ あさ|||proper name
 時|B72 G2 S10 F16 N2126 V2462 H924 DK625 L159:time DN171:time E135 IN42 P1-4-6 I4c6.2 Yshi2|ジ とき -どき|と とぎ||time, hour
 晃|B72 G9 S10 F1666 N2123 V2458 H2450 DK1584 L2446:limpid DN2522:limpid IN2092 P2-4-6 I4c6.5 Yhuang3 Yhuang4|コウ あきらか|あき あきら てる ひかる みつ||clear
-晄|B72 G9 S10 V2459 P1-4-6 Yhuang3 Yhuang4|コウ あきらか|||clear
+晄|B72 G9 S10 V2459 P1-4-6 I4c6.5 Yhuang3 Yhuang4|コウ あきらか|||clear
 晅|B72 S10 P1-4-6 Yxuan1|ケン カン あき.らか|||light of the sun, to dry in the sun
 晆|B72 S10 P1-4-6 Ykui2|カイ わか.れる|||
 晉|B72 S10 V2456 H1952 P2-1-9 I4c6.8 Yjin4|シン すす.む|||advance
@@ -8468,7 +8468,7 @@
 蔟|B140 S14 S15 N4033 V5175 P2-3-11 I3k11.3 Ycu4|ゾク ソウ まぶし|||gather together
 蔡|B140 S14 S15 F2319 V5170 P2-3-11 I3k11.9 Ycai4|サイ|||type of tortoise used for divination
 蔢|B140 S14 P2-3-11 Ypo2|ハ|||
-蔣|B140 G9 S14 V5177 P2-3-11 Yjiang3|ショウ ソウ まこも はげ.ます|||surname, hydropyrum latifalium
+蔣|B140 G9 S14 V5177 P2-3-11 I3k11.5 Yjiang3|ショウ ソウ まこも はげ.ます|||surname, hydropyrum latifalium
 蔤|B140 S14 P2-3-11 Ymi4|ビツ ミチ ミツ|||
 蔥|B140 S14 P2-3-11 Ycong1|ソウ ねぎ|||scallions, onions, leeks
 蔦|B140 G9 S14 F2215 N4037 V5178 H2355 DK1523 L1945:vine DN2095:vine IN2228 P2-3-11 I3k11.1 Yniao3|チョウ つた|たつ||vine, ivy
@@ -8543,7 +8543,7 @@
 薑|B140 S16 S17 N4060 V5212 P2-3-13 I3k13.19 Yjiang1|キョウ コウ はじかみ|||ginger
 薓|B140 S16 P2-3-13 Yshen1 Ycan1 Ycen1|シン セン にんじん ちょうせんにんじん|||ginseng
 薔|B140 S16 S17 F2356 N4071 V5220 P2-3-13 I3k13.20 Yqiang2|バ ショウ ショク ソウ みずたで|||water pepper
-薗|B140 G10 S16 V5200 L2974:park:(alternate) DN2980:park:(alternate) P2-3-13 I3s10.1 Yyuan2|エン オン|ぞの||garden, yard, farm
+薗|B140 G10 S16 V5200 L2974:park:(alternate) DN2980:park:(alternate) P2-3-13 I3s10.1 Yyuan2|エン オン その|ぞの||garden, yard, farm
 薘|B140 S16 P2-3-13 Yda2|タツ ダチ おおばこ|||plantago major
 薙|B140 G9 S16 N4072 V5221 L2353:trim DN2441:trim P2-3-13 I3k13.8 Yti4|テイ チ な.ぐ なぎ か.る|||mow down (the enemy)
 薛|B140 S16 S17 V5207 P2-3-13 I3k13.7 Yxue1|セツ|||type of mugwort
