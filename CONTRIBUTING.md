@@ -48,7 +48,7 @@ If you get stuck, push your code early and ask for feedback on the issue.
 
 1. After you check out the code, run `npm install` ([npm installation guide](https://www.npmjs.com/get-npm)) to get the rikaikun dev tools ready.
    1. By default, `npm install` will also run a test suite and install visual test baselines in the local-screenshots directory.
-2. Make your changes and commit them locally. Run `npm run fix` often to ensure your code follows style guidelines.
+2. Make your changes and commit them locally. Run `npm run fix` often to ensure your code follows style guidelines. This runs before you push by default as well.
 3. Add tests for your new code in the `extension/test` directory.
    1. If you add a new feature to the in page popup, be sure to add a set of visual screenshot tests for it as well. See `e2e_visual_test.js` for examples.
 4. Run `npm run build` to create an unpackaged instance of rikaikun in the `dist` directory. Load this into Chrome to test your changes.
@@ -56,12 +56,12 @@ If you get stuck, push your code early and ask for feedback on the issue.
 
 ### Testing
 
-rikaikun originally didn't have any tests but we're slowly building up test coverage as new functionality gets added. Right now, testing is focused around unit testing but ideally some screenshot and e2e testing will be added soon.
+rikaikun originally didn't have any tests but we're slowly building up test coverage as new functionality gets added. Right now, testing is focused around unit testing (including screenshot tests) but hopefully e2e testing will be added soon.
 Testing stack:
 
 - [@web/test-runner](https://modern-web.dev/docs/test-runner/overview/) is a modern test runner which works with snowpack. It is configured as follows:
   - **Framework:** The default is [Mocha](https://mochajs.org/) and rikaikun keeps it for its behavior driven testing style.
-  - **Assertion Library:** [Chai](https://www.chaijs.com/) works well with Mocha; rikaikun use `expect` style assertions.
+  - **Assertion Library:** [Chai](https://www.chaijs.com/) works well with Mocha; rikaikun uses `expect` style assertions.
   - **Test Doubles:** For spies and stubs, rikaikun uses [Sinon.JS](https://sinonjs.org/) combined with the [sinon-chrome](https://github.com/acvetkov/sinon-chrome) package which provides a complete fake Chrome extensions API.
   - **Browser:** Test run using headless chrome via [Puppeteer](https://github.com/puppeteer/puppeteer).
 
