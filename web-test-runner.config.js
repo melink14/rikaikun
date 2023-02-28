@@ -129,8 +129,7 @@ const defaultConfig = {
   browsers: [
     puppeteerLauncher({
       launchOptions: {
-        executablePath:
-          '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        executablePath: '/usr/bin/google-chrome',
         headless: true,
         args: chromeArgs,
       },
