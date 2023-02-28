@@ -63,7 +63,7 @@ type DictEntryData = typeof defaultDictEntryData;
 interface Deinflection {
   word: string;
   type: number;
-  reason: string;
+  reason: string | null;
 }
 
 interface DeinflectionRule {
@@ -227,7 +227,6 @@ class RcxDict {
     let i;
     let mi;
     let mis;
-
     while (beg < end) {
       mi = (beg + end) >> 1;
       i = data.lastIndexOf('\n', mi) + 1;
@@ -244,46 +243,38 @@ class RcxDict {
     return null;
   }
 
-  deinflect(word: string) {
+  deinflect(word: string): Deinflection[] {
     const r = [];
     const have: { [key: string]: number } = {};
-    let o;
 
-    o = { word: word, type: 0xff, reason: '' } as Deinflection;
-    r.push(o);
+    r.push({ word: word, type: 0xff, reason: '' });
     have[word] = 0;
 
-    let i;
-    let j;
-    let k;
-
-    i = 0;
-    do {
-      word = r[i].word;
+    for (let i = 0; i < r.length; i++) {
+      const word = r[i].word;
       const wordLen = word.length;
       const type = r[i].type;
-
-      for (j = 0; j < this.difRules.length; ++j) {
-        const g = this.difRules[j];
-        if (g.fromLength <= wordLen) {
-          const end = word.substr(-g.fromLength);
-          for (k = 0; k < g.rules.length; ++k) {
-            const rule = g.rules[k];
+      for (let j = 0; j < this.difRules.length; j++) {
+        const currentDifRule = this.difRules[j];
+        // do steps if word is not larger than the rule
+        if (currentDifRule.fromLength <= wordLen) {
+          const end = word.substr(-currentDifRule.fromLength);
+          for (let k = 0; k < currentDifRule.rules.length; k++) {
+            const rule = currentDifRule.rules[k];
             if (type & rule.typeMask && end === rule.from) {
               const newWord =
                 word.substr(0, word.length - rule.from.length) + rule.to;
               if (newWord.length <= 0) {
                 continue;
               }
-              o = { word: word, type: 0xff, reason: '' } as Deinflection;
+              let o: Deinflection = { word: word, type: 0xff, reason: '' };
               if (have[newWord] !== undefined) {
                 o = r[have[newWord]];
                 o.type |= rule.typeMask >> 8;
-
                 continue;
               }
               have[newWord] = r.length;
-              if (r[i].reason.length) {
+              if (r[i].reason?.length) {
                 o.reason =
                   this.difReasons[rule.reasonIndex] + ' &lt; ' + r[i].reason;
               } else {
@@ -296,29 +287,293 @@ class RcxDict {
           }
         }
       }
-    } while (++i < r.length);
-
+    }
     return r;
   }
 
-  // katakana -> hiragana conversion tables
-  ch: number[] = [
-    0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085, 0x3087,
-    0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a, 0x304b, 0x304d,
-    0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059, 0x305b, 0x305d, 0x305f,
-    0x3061, 0x3064, 0x3066, 0x3068, 0x306a, 0x306b, 0x306c, 0x306d, 0x306e,
-    0x306f, 0x3072, 0x3075, 0x3078, 0x307b, 0x307e, 0x307f, 0x3080, 0x3081,
-    0x3082, 0x3084, 0x3086, 0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d,
-    0x308f, 0x3093,
-  ];
+  hiraganaLookup: Record<string, string> = {
+    ぁ: 'ぁ',
+    あ: 'あ',
+    ぃ: 'ぃ',
+    い: 'い',
+    ぅ: 'ぅ',
+    う: 'う',
+    ぇ: 'ぇ',
+    え: 'え',
+    ぉ: 'ぉ',
+    お: 'お',
+    か: 'か',
+    が: 'が',
+    き: 'き',
+    ぎ: 'ぎ',
+    く: 'く',
+    ぐ: 'ぐ',
+    け: 'け',
+    げ: 'げ',
+    こ: 'こ',
+    ご: 'ご',
+    さ: 'さ',
+    ざ: 'ざ',
+    し: 'し',
+    じ: 'じ',
+    す: 'す',
+    ず: 'ず',
+    せ: 'せ',
+    ぜ: 'ぜ',
+    そ: 'そ',
+    ぞ: 'ぞ',
+    た: 'た',
+    だ: 'だ',
+    ち: 'ち',
+    ぢ: 'ぢ',
+    っ: 'っ',
+    つ: 'つ',
+    づ: 'づ',
+    て: 'て',
+    で: 'で',
+    と: 'と',
+    ど: 'ど',
+    な: 'な',
+    に: 'に',
+    ぬ: 'ぬ',
+    ね: 'ね',
+    の: 'の',
+    は: 'は',
+    ば: 'ば',
+    ぱ: 'ぱ',
+    ひ: 'ひ',
+    び: 'び',
+    ぴ: 'ぴ',
+    ふ: 'ふ',
+    ぶ: 'ぶ',
+    ぷ: 'ぷ',
+    へ: 'へ',
+    べ: 'べ',
+    ぺ: 'ぺ',
+    ほ: 'ほ',
+    ぼ: 'ぼ',
+    ぽ: 'ぽ',
+    ま: 'ま',
+    み: 'み',
+    む: 'む',
+    め: 'め',
+    も: 'も',
+    ゃ: 'ゃ',
+    や: 'や',
+    ゅ: 'ゅ',
+    ゆ: 'ゆ',
+    ょ: 'ょ',
+    よ: 'よ',
+    ら: 'ら',
+    り: 'り',
+    る: 'る',
+    れ: 'れ',
+    ろ: 'ろ',
+    ゎ: 'ゎ',
+    わ: 'わ',
+    を: 'を',
+    ん: 'ん',
+    ゔ: 'ゔ',
+    ァ: 'ぁ',
+    ア: 'あ',
+    ィ: 'ぃ',
+    イ: 'い',
+    ゥ: 'ぅ',
+    ウ: 'う',
+    ェ: 'ぇ',
+    エ: 'え',
+    ォ: 'ぉ',
+    オ: 'お',
+    カ: 'か',
+    ガ: 'が',
+    キ: 'き',
+    ギ: 'ぎ',
+    ク: 'く',
+    グ: 'ぐ',
+    ケ: 'け',
+    ゲ: 'げ',
+    コ: 'こ',
+    ゴ: 'ご',
+    サ: 'さ',
+    ザ: 'ざ',
+    シ: 'し',
+    ジ: 'じ',
+    ス: 'す',
+    ズ: 'ず',
+    セ: 'せ',
+    ゼ: 'ぜ',
+    ソ: 'そ',
+    ゾ: 'ぞ',
+    タ: 'た',
+    ダ: 'だ',
+    チ: 'ち',
+    ヂ: 'ぢ',
+    ッ: 'っ',
+    ツ: 'つ',
+    ヅ: 'づ',
+    テ: 'て',
+    デ: 'で',
+    ト: 'と',
+    ド: 'ど',
+    ナ: 'な',
+    ニ: 'に',
+    ヌ: 'ぬ',
+    ネ: 'ね',
+    ノ: 'の',
+    ハ: 'は',
+    バ: 'ば',
+    パ: 'ぱ',
+    ヒ: 'ひ',
+    ビ: 'び',
+    ピ: 'ぴ',
+    フ: 'ふ',
+    ブ: 'ぶ',
+    プ: 'ぷ',
+    ヘ: 'へ',
+    ベ: 'べ',
+    ペ: 'ぺ',
+    ホ: 'ほ',
+    ボ: 'ぼ',
+    ポ: 'ぽ',
+    マ: 'ま',
+    ミ: 'み',
+    ム: 'む',
+    メ: 'め',
+    モ: 'も',
+    ャ: 'ゃ',
+    ヤ: 'や',
+    ュ: 'ゅ',
+    ユ: 'ゆ',
+    ョ: 'ょ',
+    ヨ: 'よ',
+    ラ: 'ら',
+    リ: 'り',
+    ル: 'る',
+    レ: 'れ',
+    ロ: 'ろ',
+    ヮ: 'ゎ',
+    ワ: 'わ',
+    ヲ: 'を',
+    ン: 'ん',
+    ヴ: 'ゔ',
+    ｧ: 'ぁ',
+    ｱ: 'あ',
+    ｨ: 'ぃ',
+    ｲ: 'い',
+    ｩ: 'ぅ',
+    ｳ: 'う',
+    ｪ: 'ぇ',
+    ｴ: 'え',
+    ｫ: 'ぉ',
+    ｵ: 'お',
+    ｶ: 'か',
+    ｶﾞ: 'が',
+    ｷ: 'き',
+    ｷﾞ: 'ぎ',
+    ｸ: 'く',
+    ｸﾞ: 'ぐ',
+    ｹ: 'け',
+    ｹﾞ: 'げ',
+    ｺ: 'こ',
+    ｺﾞ: 'ご',
+    ｻ: 'さ',
+    ｻﾞ: 'ざ',
+    ｼ: 'し',
+    ｼﾞ: 'じ',
+    ｽ: 'す',
+    ｽﾞ: 'ず',
+    ｾ: 'せ',
+    ｾﾞ: 'ぜ',
+    ｿ: 'そ',
+    ｿﾞ: 'ぞ',
+    ﾀ: 'た',
+    ﾀﾞ: 'だ',
+    ﾁ: 'ち',
+    ﾁﾞ: 'ぢ',
+    ｯ: 'っ',
+    ﾂ: 'つ',
+    ﾂﾞ: 'づ',
+    ﾃ: 'て',
+    ﾃﾞ: 'で',
+    ﾄ: 'と',
+    ﾄﾞ: 'ど',
+    ﾅ: 'な',
+    ﾆ: 'に',
+    ﾇ: 'ぬ',
+    ﾈ: 'ね',
+    ﾉ: 'の',
+    ﾊ: 'は',
+    ﾊﾞ: 'ば',
+    ﾊﾟ: 'ぱ',
+    ﾋ: 'ひ',
+    ﾋﾞ: 'び',
+    ﾋﾟ: 'ぴ',
+    ﾌ: 'ふ',
+    ﾌﾞ: 'ぶ',
+    ﾌﾟ: 'ぷ',
+    ﾍ: 'へ',
+    ﾍﾞ: 'べ',
+    ﾍﾟ: 'ぺ',
+    ﾎ: 'ほ',
+    ﾎﾞ: 'ぼ',
+    ﾎﾟ: 'ぽ',
+    ﾏ: 'ま',
+    ﾐ: 'み',
+    ﾑ: 'む',
+    ﾒ: 'め',
+    ﾓ: 'も',
+    ｬ: 'ゃ',
+    ﾔ: 'や',
+    ｭ: 'ゅ',
+    ﾕ: 'ゆ',
+    ｮ: 'ょ',
+    ﾖ: 'よ',
+    ﾗ: 'ら',
+    ﾘ: 'り',
+    ﾙ: 'る',
+    ﾚ: 'れ',
+    ﾛ: 'ろ',
+    ﾜ: 'わ',
+    ｦ: 'を',
+    ﾝ: 'ん',
+    ｳﾞ: 'ゔ',
+    '‌': '‌', // the non-joiner used in google docs
+    voicedSoundMark: 'ﾟ',
+    semiVoicedSoundMark: 'ﾞ',
+  };
 
-  cv: number[] = [
-    0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052, 0x3054, 0x3056,
-    0x3058, 0x305a, 0x305c, 0x305e, 0x3060, 0x3062, 0x3065, 0x3067, 0x3069,
-    0xff85, 0xff86, 0xff87, 0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079,
-    0x307c,
-  ];
-  cs: number[] = [0x3071, 0x3074, 0x3077, 0x307a, 0x307d];
+  isKana(charCode: number): boolean {
+    return (
+      (charCode >= 12352 && charCode <= 12447) ||
+      (charCode >= 12448 && charCode <= 12543) ||
+      (charCode >= 65382 && charCode <= 65437)
+    );
+  }
+
+  convertToHiragana(str: string): string {
+    let result = '';
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charAt(i);
+      const nextChar = i + 1 <= str.length - 1 ? str.charAt(i + 1) : null;
+      const semiVoiced =
+        nextChar === this.hiraganaLookup['semiVoicedSoundMark'];
+      const voiced = nextChar === this.hiraganaLookup['voicedSoundMark'];
+      console.log(semiVoiced, voiced);
+      const key = semiVoiced
+        ? char + nextChar
+        : voiced
+        ? char + nextChar
+        : char;
+      const hiragana = this.hiraganaLookup[key];
+      console.log(hiragana, key);
+      result += hiragana !== undefined ? hiragana : char;
+
+      if (semiVoiced || voiced) {
+        i++;
+      }
+    }
+    return result;
+  }
 
   wordSearch(
     word: string,
@@ -326,63 +581,18 @@ class RcxDict {
     max?: number
   ): DictEntryData | null {
     let i;
-    let u;
-    let v;
-    let reason: string;
-    let p;
     const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
-
-    // half & full-width katakana to hiragana conversion
-    // note: katakana vu is never converted to hiragana
-
-    p = 0;
-    reason = '';
-    for (i = 0; i < word.length; ++i) {
-      u = v = word.charCodeAt(i);
-
-      // Skip Zero-width non-joiner used in Google Docs between every
-      // character.
-      if (u === 8204) {
-        p = 0;
-        continue;
-      }
-
-      if (u <= 0x3000) {
-        break;
-      }
-
-      // full-width katakana to hiragana
-      if (u >= 0x30a1 && u <= 0x30f3) {
-        u -= 0x60;
-      } else if (u >= 0xff66 && u <= 0xff9d) {
-        // half-width katakana to hiragana
-        u = this.ch[u - 0xff66];
-      } else if (u === 0xff9e) {
-        // voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff73 && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cv[p - 0xff73];
-        }
-      } else if (u === 0xff9f) {
-        // semi-voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff8a && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cs[p - 0xff8a];
-        }
-      } else if (u === 0xff5e) {
-        // ignore J~
-        p = 0;
-        continue;
-      }
-
-      reason += String.fromCharCode(u);
-      // need to keep real length because of the half-width semi/voiced
-      // conversion
-      trueLen[reason.length] = i + 1;
-      p = v;
+    let isKana = false;
+    for (let i = 0; i < word.length; i++) {
+      isKana = this.isKana(word[i].charCodeAt(0));
     }
-    word = reason;
+    if (!isKana) {
+      return null;
+    }
+    const newConvertedWord = this.convertToHiragana(word);
+
+    word = newConvertedWord;
 
     let dict: string;
     let index;
@@ -417,7 +627,7 @@ class RcxDict {
 
     while (word.length > 0) {
       const showInf = count !== 0;
-      let trys;
+      let trys: Deinflection[];
 
       if (doNames) {
         trys = [{ word: word, type: 0xff, reason: null }];
@@ -426,13 +636,13 @@ class RcxDict {
       }
 
       for (i = 0; i < trys.length; i++) {
-        u = trys[i];
+        const currentTry = trys[i];
 
-        let ix = cache[u.word];
+        let ix = cache[currentTry.word];
         if (!ix) {
-          const result = this.find(index, u.word + ',');
+          const result = this.find(index, currentTry.word + ',');
           if (!result) {
-            cache[u.word] = [];
+            cache[currentTry.word] = [];
             continue;
           }
           // The first value in result is the word itself so skip it
@@ -441,7 +651,7 @@ class RcxDict {
             .split(',')
             .slice(1)
             .map((offset) => parseInt(offset));
-          cache[u.word] = ix;
+          cache[currentTry.word] = ix;
         }
 
         for (let j = 0; j < ix.length; ++j) {
@@ -465,7 +675,7 @@ class RcxDict {
 
             let w;
             const x = dentry.split(/[,()]/);
-            const y = u.type;
+            const y = currentTry.type;
             let z = x.length - 1;
             if (z > 10) {
               z = 10;
