@@ -28,5 +28,6 @@
       "fileMatch": ["/manifest.json"],
       "url": "http://json.schemastore.org/chrome-manifest"
     }
-  ]
+  ],
+  "cSpell.words": ["trys"]
 }

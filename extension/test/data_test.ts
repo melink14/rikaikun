@@ -63,18 +63,6 @@ describe('data.ts', function () {
         rcxDict.wordSearch('ぼんです', /* doNames= */ false)?.data
       ).to.not.include.something.like({ entry: /^凡打 .*/ });
     });
-    // it('should return break out of loop if charCode is <= 0x3000', function () {
-    //   const nonAsianCharacter = '➾';
-    //   const result = rcxDict.wordSearch(nonAsianCharacter, false);
-    //   expect(result).to.be.null;
-    // });
-    // it('should skip conversion of zero-width non-joiner character', function () {
-    //   const wordWithNonJoiner = 'テ‌ス‌ト';
-    //   const result = rcxDict.wordSearch(wordWithNonJoiner, false);
-    //   // expect(result?.data[0].entry).does.not.contain('‌');
-    //   expect(result?.data[0].entry).does.not.contain(String.fromCharCode(8204));
-    //   console.log(result?.data[0].entry);
-    // });
   });
   describe('kanjiSearch', function () {
     it('should return null for kanji with char code < 0x3000', function () {
