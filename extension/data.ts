@@ -167,12 +167,10 @@ class RcxDict {
   }
 
   loadNames() {
-    if (this.nameDict && this.nameIndex) {
-      return;
+    if (!this.nameDict && this.nameIndex) {
+      this.nameDict = this.fileRead(chrome.extension.getURL('data/names.dat'));
+      this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
     }
-
-    this.nameDict = this.fileRead(chrome.extension.getURL('data/names.dat'));
-    this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
   }
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
