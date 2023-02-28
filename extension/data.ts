@@ -558,14 +558,12 @@ class RcxDict {
       const semiVoiced =
         nextChar === this.hiraganaLookup['semiVoicedSoundMark'];
       const voiced = nextChar === this.hiraganaLookup['voicedSoundMark'];
-      console.log(semiVoiced, voiced);
       const key = semiVoiced
         ? char + nextChar
         : voiced
         ? char + nextChar
         : char;
       const hiragana = this.hiraganaLookup[key];
-      console.log(hiragana, key);
       result += hiragana !== undefined ? hiragana : char;
 
       if (semiVoiced || voiced) {
