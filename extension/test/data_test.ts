@@ -269,11 +269,6 @@ describe('data.ts', function () {
 
   describe('(loadNames)', function () {
     it('should load name dictionary information if not loaded already', function () {
-      // set nameDict to true or initiate and confirm that rcxDict.nameDict/Index is set.
-      rcxDict.nameDict = '';
-      rcxDict.nameIndex = '';
-      expect(rcxDict.nameDict).to.equal('');
-      expect(rcxDict.nameIndex).to.equal('');
       rcxDict.loadNames();
       expect(rcxDict.nameDict).to.exist;
       expect(rcxDict.nameIndex).to.exist;

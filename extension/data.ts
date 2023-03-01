@@ -728,12 +728,10 @@ class RcxDict {
       word = word.substr(0, word.length - 1);
     } // while word.length > 0
 
-    if (entry.data.length === 0) {
-      return null;
+    if (entry.data.length !== 0) {
+      entry.matchLen = maxLen;
+      return entry;
     }
-
-    entry.matchLen = maxLen;
-    return entry;
   }
 
   translate(text: string): (DictEntryData & { textLen: number }) | null {
