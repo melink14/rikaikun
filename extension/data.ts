@@ -573,11 +573,7 @@ class RcxDict {
     return result;
   }
 
-  wordSearch(
-    word: string,
-    doNames: boolean,
-    max?: number
-  ): DictEntryData | null {
+  wordSearch(word: string, doNames: boolean, max?: number): DictEntryData {
     let i;
     const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
@@ -585,12 +581,10 @@ class RcxDict {
     for (let i = 0; i < word.length; i++) {
       isKana = this.isKana(word[i].charCodeAt(0));
     }
-    if (!isKana) {
-      return null;
+    if (isKana) {
+      const newConvertedWord = this.convertToHiragana(word);
+      word = newConvertedWord;
     }
-    const newConvertedWord = this.convertToHiragana(word);
-
-    word = newConvertedWord;
 
     let dict: string;
     let index;
