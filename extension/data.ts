@@ -573,7 +573,11 @@ class RcxDict {
     return result;
   }
 
-  wordSearch(word: string, doNames: boolean, max?: number): DictEntryData {
+  wordSearch(
+    word: string,
+    doNames: boolean,
+    max?: number
+  ): DictEntryData | null {
     let i;
     const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
@@ -728,10 +732,11 @@ class RcxDict {
       word = word.substr(0, word.length - 1);
     } // while word.length > 0
 
-    if (entry.data.length !== 0) {
-      entry.matchLen = maxLen;
-      return entry;
+    if (entry.data.length === 0) {
+      return null;
     }
+    entry.matchLen = maxLen;
+    return entry;
   }
 
   translate(text: string): (DictEntryData & { textLen: number }) | null {
