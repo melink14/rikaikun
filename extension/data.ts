@@ -246,7 +246,6 @@ class RcxDict {
   deinflect(word: string): Deinflection[] {
     const possibleDeinflections = [];
     const have: { [key: string]: number } = {};
-
     possibleDeinflections.push({ word: word, type: 0xff, reason: '' });
     have[word] = 0;
 
@@ -254,7 +253,8 @@ class RcxDict {
       const word = possibleDeinflections[i].word;
       const wordLen = word.length;
       const type = possibleDeinflections[i].type;
-      for (let j = 0; j < this.difRules.length; j++) {
+
+      for (let j = 0; j < this.difRules.length; ++j) {
         const currentDifRule = this.difRules[j];
         // do steps if word is not larger than the rule
         if (currentDifRule.fromLength <= wordLen) {
@@ -284,7 +284,6 @@ class RcxDict {
               }
               o.type = rule.typeMask >> 8;
               o.word = newWord;
-              console.log('pushing:', o);
               possibleDeinflections.push(o);
             }
           }
@@ -581,17 +580,19 @@ class RcxDict {
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
-    let i;
-    const trueLen = [0];
+     const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
+    let newConvertedWord = '';
     let isKana = false;
     for (let i = 0; i < word.length; i++) {
       isKana = this.isKana(word[i].charCodeAt(0));
+      if (isKana) {
+        newConvertedWord += this.convertToHiragana(word[i]);
+      } else {
+        newConvertedWord += word[i];
+      }
     }
-    if (isKana) {
-      const newConvertedWord = this.convertToHiragana(word);
-      word = newConvertedWord;
-    }
+    word = newConvertedWord;
 
     let dict: string;
     let index;
@@ -611,7 +612,6 @@ class RcxDict {
       index = this.nameIndex as string;
       maxTrim = 20; // this.config.namax;
       entry.hasNames = true;
-      console.log('doNames');
     } else {
       dict = this.wordDict;
       index = this.wordIndex;
@@ -634,7 +634,7 @@ class RcxDict {
         trys = this.deinflect(word);
       }
 
-      for (i = 0; i < trys.length; i++) {
+      for (let i = 0; i < trys.length; i++) {
         const currentTry = trys[i];
 
         let ix = cache[currentTry.word];

@@ -36,8 +36,11 @@ describe('data.ts', function () {
 
   describe('deinflect', function () {
     it('should include deinflections of length one or more', function () {
+      console.log(rcxDict.deinflect('です'));
       expect(rcxDict.deinflect('です')).to.include.something.like({
         word: 'だ',
+        reason: 'polite',
+        type: 32,
       });
     });
 
