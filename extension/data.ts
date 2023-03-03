@@ -244,16 +244,16 @@ class RcxDict {
   }
 
   deinflect(word: string): Deinflection[] {
-    const r = [];
+    const possibleDeinflections = [];
     const have: { [key: string]: number } = {};
 
-    r.push({ word: word, type: 0xff, reason: '' });
+    possibleDeinflections.push({ word: word, type: 0xff, reason: '' });
     have[word] = 0;
 
-    for (let i = 0; i < r.length; i++) {
-      const word = r[i].word;
+    for (let i = 0; i < possibleDeinflections.length; i++) {
+      const word = possibleDeinflections[i].word;
       const wordLen = word.length;
-      const type = r[i].type;
+      const type = possibleDeinflections[i].type;
       for (let j = 0; j < this.difRules.length; j++) {
         const currentDifRule = this.difRules[j];
         // do steps if word is not larger than the rule
@@ -269,26 +269,29 @@ class RcxDict {
               }
               let o: Deinflection = { word: word, type: 0xff, reason: '' };
               if (have[newWord] !== undefined) {
-                o = r[have[newWord]];
+                o = possibleDeinflections[have[newWord]];
                 o.type |= rule.typeMask >> 8;
                 continue;
               }
-              have[newWord] = r.length;
-              if (r[i].reason?.length) {
+              have[newWord] = possibleDeinflections.length;
+              if (possibleDeinflections[i].reason?.length) {
                 o.reason =
-                  this.difReasons[rule.reasonIndex] + ' &lt; ' + r[i].reason;
+                  this.difReasons[rule.reasonIndex] +
+                  ' &lt; ' +
+                  possibleDeinflections[i].reason;
               } else {
                 o.reason = this.difReasons[rule.reasonIndex];
               }
               o.type = rule.typeMask >> 8;
               o.word = newWord;
-              r.push(o);
+              console.log('pushing:', o);
+              possibleDeinflections.push(o);
             }
           }
         }
       }
     }
-    return r;
+    return possibleDeinflections;
   }
 
   hiraganaLookup: Record<string, string> = {
