@@ -736,6 +736,221 @@ class RcxDict {
     return entry;
   }
 
+  // wordSearch(
+  //   word: string,
+  //   doNames: boolean,
+  //   max?: number
+  // ): DictEntryData | null {
+  //   let i;
+  //   let u;
+  //   let v;
+  //   let reason: string;
+  //   let p;
+  //   const trueLen = [0];
+  //   const entry = RcxDict.createDefaultDictEntry();
+
+  //   // half & full-width katakana to hiragana conversion
+  //   // note: katakana vu is never converted to hiragana
+
+  //   p = 0;
+  //   reason = '';
+  //   for (i = 0; i < word.length; ++i) {
+  //     u = v = word.charCodeAt(i);
+
+  //     // Skip Zero-width non-joiner used in Google Docs between every
+  //     // character.
+  //     if (u === 8204) {
+  //       p = 0;
+  //       continue;
+  //     }
+
+  //     if (u <= 0x3000) {
+  //       break;
+  //     }
+
+  //     // full-width katakana to hiragana
+  //     if (u >= 0x30a1 && u <= 0x30f3) {
+  //       u -= 0x60;
+  //     } else if (u >= 0xff66 && u <= 0xff9d) {
+  //       // half-width katakana to hiragana
+  //       u = this.ch[u - 0xff66];
+  //     } else if (u === 0xff9e) {
+  //       // voiced (used in half-width katakana) to hiragana
+  //       if (p >= 0xff73 && p <= 0xff8e) {
+  //         reason = reason.substr(0, reason.length - 1);
+  //         u = this.cv[p - 0xff73];
+  //       }
+  //     } else if (u === 0xff9f) {
+  //       // semi-voiced (used in half-width katakana) to hiragana
+  //       if (p >= 0xff8a && p <= 0xff8e) {
+  //         reason = reason.substr(0, reason.length - 1);
+  //         u = this.cs[p - 0xff8a];
+  //       }
+  //     } else if (u === 0xff5e) {
+  //       // ignore J~
+  //       p = 0;
+  //       continue;
+  //     }
+
+  //     reason += String.fromCharCode(u);
+  //     // need to keep real length because of the half-width semi/voiced
+  //     // conversion
+  //     trueLen[reason.length] = i + 1;
+  //     p = v;
+  //   }
+  //   word = reason;
+
+  //   let dict: string;
+  //   let index;
+  //   let maxTrim;
+  //   const cache: { [key: string]: number[] } = {};
+  //   const have = [];
+  //   let count = 0;
+  //   let maxLen = 0;
+
+  //   if (doNames) {
+  //     // check: split this
+
+  //     this.loadNames();
+  //     // After loadNames these are guaranteed to not be null so
+  //     // cast them as strings manually.
+  //     dict = this.nameDict as string;
+  //     index = this.nameIndex as string;
+  //     maxTrim = 20; // this.config.namax;
+  //     entry.hasNames = true;
+  //     console.log('doNames');
+  //   } else {
+  //     dict = this.wordDict;
+  //     index = this.wordIndex;
+  //     maxTrim = this.config.maxDictEntries;
+  //   }
+
+  //   if (max) {
+  //     maxTrim = max;
+  //   }
+
+  //   entry.data = [];
+
+  //   while (word.length > 0) {
+  //     const showInf = count !== 0;
+  //     let trys;
+
+  //     if (doNames) {
+  //       trys = [{ word: word, type: 0xff, reason: null }];
+  //     } else {
+  //       trys = this.deinflect(word);
+  //     }
+
+  //     for (i = 0; i < trys.length; i++) {
+  //       u = trys[i];
+
+  //       let ix = cache[u.word];
+  //       if (!ix) {
+  //         const result = this.find(index, u.word + ',');
+  //         if (!result) {
+  //           cache[u.word] = [];
+  //           continue;
+  //         }
+  //         // The first value in result is the word itself so skip it
+  //         // and parse the remaining values at integers.
+  //         ix = result
+  //           .split(',')
+  //           .slice(1)
+  //           .map((offset) => parseInt(offset));
+  //         cache[u.word] = ix;
+  //       }
+
+  //       for (let j = 0; j < ix.length; ++j) {
+  //         const ofs = ix[j];
+  //         if (have[ofs]) {
+  //           continue;
+  //         }
+
+  //         const dentry = dict.substring(ofs, dict.indexOf('\n', ofs));
+
+  //         let ok = true;
+  //         if (i > 0) {
+  //           // > 0 a de-inflected word
+
+  //           // ex:
+  //           // /(io) (v5r) to finish/to close/
+  //           // /(v5r) to finish/to close/(P)/
+  //           // /(aux-v,v1) to begin to/(P)/
+  //           // /(adj-na,exp,int) thank you/many thanks/
+  //           // /(adj-i) shrill/
+
+  //           let w;
+  //           const x = dentry.split(/[,()]/);
+  //           const y = u.type;
+  //           let z = x.length - 1;
+  //           if (z > 10) {
+  //             z = 10;
+  //           }
+  //           for (; z >= 0; --z) {
+  //             w = x[z];
+  //             if (y & 1 && w === 'v1') {
+  //               break;
+  //             }
+  //             if (y & 4 && w === 'adj-i') {
+  //               break;
+  //             }
+  //             if (y & 2 && w.substr(0, 2) === 'v5') {
+  //               break;
+  //             }
+  //             if (y & 16 && w.substr(0, 3) === 'vs-') {
+  //               break;
+  //             }
+  //             if (y & 8 && w === 'vk') {
+  //               break;
+  //             }
+  //             if (y & 32 && w === 'cop') {
+  //               break;
+  //             }
+  //           }
+  //           ok = z !== -1;
+  //         }
+  //         if (ok) {
+  //           if (count >= maxTrim) {
+  //             entry.hasMore = true;
+  //           }
+
+  //           have[ofs] = 1;
+  //           ++count;
+  //           if (maxLen === 0) {
+  //             maxLen = trueLen[word.length];
+  //           }
+
+  //           let reason: string | undefined;
+  //           if (trys[i].reason) {
+  //             if (showInf) {
+  //               reason = '&lt; ' + trys[i].reason + ' &lt; ' + word;
+  //             } else {
+  //               reason = '&lt; ' + trys[i].reason;
+  //             }
+  //           }
+
+  //           entry.data.push({ entry: dentry, reason });
+  //         }
+  //       } // for j < ix.length
+  //       if (count >= maxTrim) {
+  //         break;
+  //       }
+  //     } // for i < trys.length
+  //     if (count >= maxTrim) {
+  //       break;
+  //     }
+  //     word = word.substr(0, word.length - 1);
+  //   } // while word.length > 0
+
+  //   if (entry.data.length === 0) {
+  //     return null;
+  //   }
+
+  //   entry.matchLen = maxLen;
+  //   console.log(entry);
+  //   return entry;
+  // }
+
   translate(text: string): (DictEntryData & { textLen: number }) | null {
     let e: DictEntryData | null;
     const o: DictEntryData & {
