@@ -15,4 +15,3 @@ export enum PUNCTUATION {
   DAKUTEN = 0x3099,
   HAN_DAKUTEN = 0x309a,
 }
-
