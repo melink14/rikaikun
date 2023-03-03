@@ -580,7 +580,7 @@ class RcxDict {
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
-     const trueLen = [0];
+    const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
     let newConvertedWord = '';
     let isKana = false;
