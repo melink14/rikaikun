@@ -333,6 +333,9 @@ class RcxDict {
     let result = '';
     for (let i = 0; i < str.length; i++) {
       const char = str.charAt(i);
+      if (char.charCodeAt(0) < 0x3000) {
+        break;
+      }
       const nextChar = i + 1 <= str.length - 1 ? str.charAt(i + 1) : null;
       const nextCharCode = nextChar?.charCodeAt(0);
       const isSemiVoiced = nextCharCode === PUNCTUATION.SEMI_VOICED_MARK;
