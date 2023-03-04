@@ -43,12 +43,55 @@
 
 import { Config } from './configuration';
 import {
-  DeinflectionRule,
-  DeinflectionRuleGroup,
-  DictEntryData,
-} from './types/data-types';
-import { KANA, PUNCTUATION } from './types/unicode-constants';
-import { kanaToHiraganaNormalizationMap } from './types/hiraganaLookupMap';
+  KANA,
+  PUNCTUATION,
+  kanaToHiraganaNormalizationMap,
+} from './character_info';
+
+interface Deinflection {
+  word: string;
+  type: number;
+  reason: string;
+}
+type DictData = {
+  entry: string;
+  reason?: string;
+};
+
+type DictEntryData = {
+  kanji: string;
+  onkun: string;
+  nanori: string;
+  bushumei: string;
+  misc: Record<string, string>;
+  eigo: string;
+  hasNames: boolean;
+  data: DictData[];
+  hasMore: boolean;
+  title: string;
+  index: number;
+  matchLen: number;
+};
+
+interface DeinflectionRule {
+  /** The conjugated ending which we are deinflecting from. */
+  from: string;
+  /** The original form we are deinflecting to. */
+  to: string;
+  /** An int mask representing the types of words this rule applies to. */
+  typeMask: number;
+  /** An index into the difReason array that describes this inflection. */
+  reasonIndex: number;
+}
+
+/**
+ * Deinflection rules grouped by their from length. This allows trying all rules
+ * of a given length before trying shorter lengths.
+ */
+interface DeinflectionRuleGroup {
+  fromLength: number;
+  rules: DeinflectionRule[];
+}
 
 // Be careful of using directly due to object keys.
 const defaultDictEntryData: DictEntryData = {
@@ -65,12 +108,6 @@ const defaultDictEntryData: DictEntryData = {
   index: 0,
   matchLen: 0,
 };
-
-interface Deinflection {
-  word: string;
-  type: number;
-  reason: string;
-}
 
 class RcxDict {
   private static instance: RcxDict;
@@ -233,38 +270,38 @@ class RcxDict {
     const have: Record<string, number> = {};
     have[word] = 0;
 
-    for (let i = 0; i < possibleDeinflections.length; i++) {
-      const currentDeinflection = possibleDeinflections[i].word;
-      const wordLen = currentDeinflection.length;
+    let i;
+    let j;
+    let k;
+    let o;
+
+    i = 0;
+    do {
+      word = possibleDeinflections[i].word;
+      const wordLen = word.length;
       const type = possibleDeinflections[i].type;
 
-      for (let j = 0; j < this.difRules.length; j++) {
+      for (j = 0; j < this.difRules.length; ++j) {
         const g = this.difRules[j];
         if (g.fromLength <= wordLen) {
-          const end = currentDeinflection.substr(-g.fromLength);
-          for (let k = 0; k < g.rules.length; k++) {
+          const end = word.substr(-g.fromLength);
+          for (k = 0; k < g.rules.length; ++k) {
             const rule = g.rules[k];
             if (type & rule.typeMask && end === rule.from) {
               const newWord =
-                currentDeinflection.substr(
-                  0,
-                  currentDeinflection.length - rule.from.length
-                ) + rule.to;
+                word.substr(0, word.length - rule.from.length) + rule.to;
               if (newWord.length <= 0) {
                 continue;
               }
-              let o = {
-                word: currentDeinflection,
-                type: 0xff,
-                reason: '',
-              } as Deinflection;
+              o = { word: word, type: 0xff, reason: '' } as Deinflection;
               if (have[newWord] !== undefined) {
                 o = possibleDeinflections[have[newWord]];
                 o.type |= rule.typeMask >> 8;
+
                 continue;
               }
               have[newWord] = possibleDeinflections.length;
-              if (possibleDeinflections[i].reason?.length) {
+              if (possibleDeinflections[i].reason.length) {
                 o.reason =
                   this.difReasons[rule.reasonIndex] +
                   ' &lt; ' +
@@ -279,7 +316,8 @@ class RcxDict {
           }
         }
       }
-    }
+    } while (++i < possibleDeinflections.length);
+
     return possibleDeinflections;
   }
 
@@ -315,6 +353,10 @@ class RcxDict {
     return result;
   }
 
+  normalize(str: string): string {
+    return str.replace(/[\u200C\u301C\uFF5E]+/g, '');
+  }
+
   wordSearch(
     word: string,
     doNames: boolean,
@@ -322,17 +364,8 @@ class RcxDict {
   ): DictEntryData | null {
     const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
-    let newConvertedWord = '';
-    let isKana = false;
-    isKana = Array.from(word).every((char) => this.isKana(char.charCodeAt(0)));
-    for (let i = 0; i < word.length; i++) {
-      isKana = this.isKana(word[i].charCodeAt(0));
-      if (isKana) {
-        newConvertedWord += this.convertToHiragana(word[i]);
-      } else {
-        newConvertedWord += word[i];
-      }
-    }
+    const normalizedWord = this.normalize(word);
+    const newConvertedWord = this.convertToHiragana(normalizedWord);
     word = newConvertedWord;
 
     let dict: string;

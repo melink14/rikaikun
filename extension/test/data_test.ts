@@ -302,8 +302,17 @@ describe('data.ts', function () {
     });
     it('should do correct hiragana lookup when parsing voiced and semi-voiced half-width katakana', function () {
       // const expected = 'ﾃﾞｯｽｸﾄｯﾌﾟ'
-      const expected = 'ﾎﾟｼﾞﾃｨﾌﾞ';
-      expect(rcxDict.convertToHiragana(expected)).to.equal('ぽじてぃぶ');
+      const hwInput = 'ﾎﾟｼﾞﾃｨﾌﾞ';
+      expect(rcxDict.convertToHiragana(hwInput)).to.equal('ぽじてぃぶ');
+    });
+  });
+  describe('normalize', function () {
+    it('should strip any spaces, tabs, new lines or zero-width-joiner', function () {
+      const expected = 'てすと';
+
+      const result = rcxDict.normalize('てす‌‌と'); // also contains ZWJ
+
+      expect(result).to.equal(expected);
     });
   });
 });
