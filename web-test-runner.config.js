@@ -129,7 +129,7 @@ const defaultConfig = {
   browsers: [
     puppeteerLauncher({
       launchOptions: {
-        // executablePath: '/usr/bin/google-chrome',
+        executablePath: '/usr/bin/google-chrome',
         headless: true,
         args: chromeArgs,
       },
