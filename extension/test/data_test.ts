@@ -36,7 +36,6 @@ describe('data.ts', function () {
 
   describe('deinflect', function () {
     it('should include deinflections of length one or more', function () {
-      console.log(rcxDict.deinflect('です'));
       expect(rcxDict.deinflect('です')).to.include.something.like({
         word: 'だ',
         reason: 'polite',
@@ -281,7 +280,6 @@ describe('data.ts', function () {
   describe('isKana', function () {
     it('should return true if charCode is a kana character', function () {
       const kanaCode = 'て'.charCodeAt(0);
-      console.log(kanaCode);
       expect(rcxDict.isKana(kanaCode)).to.be.true;
     });
     it('should return false if non kana character is searched', function () {
@@ -293,7 +291,6 @@ describe('data.ts', function () {
   describe('convertToHiragana', function () {
     it('should return hiragana character when passed half-width katakana', function () {
       const kanaCode = 'ﾃｽﾄ'.charCodeAt(0);
-      console.log(kanaCode);
       expect(rcxDict.isKana(kanaCode)).to.be.true;
     });
     it('should return hiragana character when passed full-width katakana', function () {

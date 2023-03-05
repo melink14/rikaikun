@@ -365,7 +365,6 @@ class RcxDict {
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
-    const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
     const normalizedWord = this.normalize(word);
     const newConvertedWord = this.convertToHiragana(normalizedWord);
@@ -486,7 +485,7 @@ class RcxDict {
             have[ofs] = 1;
             ++count;
             if (maxLen === 0) {
-              maxLen = trueLen[word.length];
+              maxLen = word.length;
             }
 
             let reason: string | undefined;
