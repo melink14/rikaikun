@@ -108,7 +108,6 @@
     "snowpack": "^3.8.8",
     "snowpack-plugin-replace": "^1.0.4",
     "stylelint": "^15.2.0",
-    "stylelint-config-prettier": "<=9.0.4",
     "stylelint-config-standard": "^30.0.1",
     "stylelint-order": "^6.0.3",
     "ts-lit-plugin": "^1.2.1",
