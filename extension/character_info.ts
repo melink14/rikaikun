@@ -174,6 +174,10 @@ export enum KANA {
 }
 
 export enum PUNCTUATION {
+  //characters below are in order for easy copy
+  //Note:3rd character is invisible but copyable
+  //Note:4th and 5th look the same but are actually different.
+  // ﾞ, ﾟ, ‌, ～, 〜
   VOICED_MARK = 0xff9e,
   SEMI_VOICED_MARK = 0xff9f,
   ZERO_WIDTH_JOINER = 0x200c,

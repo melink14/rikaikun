@@ -328,26 +328,42 @@ class RcxDict {
       (charCode >= KANA.HW_KATAKANA_START && charCode <= KANA.HW_KATAKANA_END)
     );
   }
-
-  convertToHiragana(str: string): string {
+  /**
+   * Returns the input string converted into hiragana. If any characters are not
+   * found in the [NormalizationMap](./character_info.ts) then the character
+   * will be returned as is.
+   *
+   * @param kanaWord - A string of kana characters.
+   * @returns The conversion of kanaWord into hiragana.
+   */
+  convertToHiragana(kanaWord: string): string {
     let result = '';
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charAt(i);
-      if (char.charCodeAt(0) < 0x3000) {
+
+    for (let i = 0; i < kanaWord.length; i++) {
+      const currentChar = kanaWord.charAt(i);
+      const currentCharCode = currentChar.charCodeAt(0);
+      let isSemiVoiced = false;
+      let isVoiced = false;
+      const isHalfWidthKatakana =
+        currentCharCode >= KANA.HW_KATAKANA_START &&
+        currentCharCode <= KANA.HW_KATAKANA_END;
+      let key = '';
+      if (currentCharCode < 0x3000) {
         break;
       }
-      const nextChar = i + 1 <= str.length - 1 ? str.charAt(i + 1) : null;
-      const nextCharCode = nextChar?.charCodeAt(0);
-      const isSemiVoiced = nextCharCode === PUNCTUATION.SEMI_VOICED_MARK;
-      const isVoiced = nextCharCode === PUNCTUATION.VOICED_MARK;
 
-      const key = isSemiVoiced
-        ? char + nextChar
-        : isVoiced
-        ? char + nextChar
-        : char;
+      if (isHalfWidthKatakana) {
+        const nextChar = kanaWord.charAt(i + 1);
+        const nextCharCode = nextChar?.charCodeAt(0);
+        isSemiVoiced = nextCharCode === PUNCTUATION.SEMI_VOICED_MARK;
+        isVoiced = nextCharCode === PUNCTUATION.VOICED_MARK;
+        key = isSemiVoiced || isVoiced ? currentChar + nextChar : currentChar;
+      } else {
+        key = currentChar;
+      }
+
       const hiragana = kanaToHiraganaNormalizationMap[key];
-      result += hiragana !== undefined ? hiragana : char;
+      result += hiragana !== undefined ? hiragana : currentChar;
 
       if (isSemiVoiced || isVoiced) {
         i++;
