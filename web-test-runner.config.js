@@ -129,7 +129,9 @@ const defaultConfig = {
   browsers: [
     puppeteerLauncher({
       launchOptions: {
-        executablePath: '/usr/bin/google-chrome',
+        executablePath: process.env.RIKAIKUN_PUPPETEER_EXEC_PATH
+          ? process.env.RIKAIKUN_PUPPETEER_EXEC_PATH
+          : '/usr/bin/google-chrome',
         headless: true,
         args: chromeArgs,
       },
