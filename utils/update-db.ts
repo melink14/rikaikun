@@ -52,6 +52,7 @@ const SUPPORTED_REF_TYPES = [
   'L',
   'E',
   'DK',
+  'DL',
   'DN',
   'N',
   'V',
