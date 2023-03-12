@@ -27,6 +27,7 @@
     "test": "wtr \"extension/test/*_test.ts\"",
     "test:small": "wtr --files \"extension/test/background_test.ts\" \"extension/test/data_test.ts\" \"extension/test/docs-annotate-canvas_test.ts\" \"extension/test/rikaicontent_test.ts\"",
     "test:browserstack": "npm run test -- --browserstack",
+    "test:tiny": "wtr --files \"extension/test/background_test.ts\"",
     "test:watch": "npm run test -- --watch",
     "test:update-baselines": "npm run test -- --update-visual-baseline",
     "update-db": "node --loader ts-node/esm utils/update-db.ts"
