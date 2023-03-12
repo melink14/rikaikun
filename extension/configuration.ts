@@ -20,6 +20,11 @@ const defaultConfig = {
     { code: 'DN', name: 'Heisig 6th Edition', shouldDisplay: true },
     { code: 'E', name: 'Henshall', shouldDisplay: true },
     { code: 'DK', name: 'Kanji Learners Dictionary', shouldDisplay: true },
+    {
+      code: 'DL',
+      name: 'Kanji Learners Dictionary 2nd Edition',
+      shouldDisplay: true,
+    },
     { code: 'N', name: 'Nelson', shouldDisplay: true },
     { code: 'V', name: 'New Nelson', shouldDisplay: true },
     { code: 'Y', name: 'PinYin', shouldDisplay: true },
