@@ -263,10 +263,6 @@ class RcxMain {
 
     const m = this.showMode;
     let e: DictEntryData | null = null;
-    if (text === '') {
-      console.log('search received empty string as text param');
-      return;
-    }
     do {
       switch (this.showMode) {
         case 0:
