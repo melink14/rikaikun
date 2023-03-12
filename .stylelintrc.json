@@ -1,7 +1,9 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-order"],
-  "rules": { "order/properties-alphabetical-order": true },
+  "rules": {
+    "order/properties-alphabetical-order": true
+  },
   "overrides": [
     {
       "files": ["**/*.ts", "**/*.js"],
