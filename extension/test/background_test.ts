@@ -64,10 +64,6 @@ describe('background.ts', function () {
         { config: rcxMain.config }
       );
     });
-
-    it('should throw typeError if tab is undefined', async function () {
-      // }).to.throw(TypeError, 'sender.tab is always defined here.');
-    });
   });
 
   describe('xsearch', function () {
