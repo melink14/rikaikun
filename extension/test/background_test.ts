@@ -66,24 +66,71 @@ describe('background.ts', function () {
       );
     });
   });
+  describe('xsearch', function () {
+    it('should call response callback with search results', async function () {
+      rcxMain.search = sinon
+        .stub()
+        .returns({ type: 'theType', text: 'theText' });
+      const response = sinon.spy();
+
+      await sendMessageToBackground({
+        tabId: 0,
+        type: 'xsearch',
+        text: 'A non empty string',
+        responseCallback: response,
+      });
+
+      expect(response).to.have.been.calledWithMatch({
+        type: 'theType',
+        text: 'theText',
+      });
+      expect(response).to.have.been.calledOnce;
+    });
+
+    it('should not search if text is empty', async function () {
+      const response = sinon.spy();
+
+      await sendMessageToBackground({
+        tabId: 0,
+        type: 'xsearch',
+        text: '',
+        responseCallback: response,
+      });
+
+      expect(response.called).to.be.false;
+    });
+  });
 });
+
+type Payload = {
+  tabId?: number;
+  text?: string;
+  type: string;
+  responseCallback?: (response: unknown) => void;
+};
 
 async function sendMessageToBackground({
   tabId = 0,
   type,
+  text,
   responseCallback = () => {
     // Do nothing by default.
   },
-}: {
-  tabId?: number;
-  type: string;
-  responseCallback?: (response: unknown) => void;
-}): Promise<void> {
+}: Payload): Promise<void> {
+  const request: { type: string; text?: string } = {
+    type,
+  };
+  const sender = {
+    tab: { id: tabId },
+  };
+  if (text !== undefined) {
+    request['text'] = text;
+  }
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
-    { type: type },
-    { tab: { id: tabId } },
+    request,
+    sender,
     responseCallback
   );
   return;

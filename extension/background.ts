@@ -40,6 +40,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, response) => {
       rcxMain.onTabSelect(sender.tab.id);
       break;
     case 'xsearch':
+      if (request.text === '') {
+        console.log('returning early due to empty string search');
+        break;
+      }
       console.log('xsearch');
       response(rcxMain.search(request.text, request.dictOption));
       break;
