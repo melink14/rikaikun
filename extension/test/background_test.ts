@@ -1,35 +1,12 @@
 import { Config } from '../configuration';
 import { RcxMain } from '../rikaichan';
 import { expect, use } from '@esm-bundle/chai';
-import { tts } from '../texttospeech';
 import chrome from 'sinon-chrome';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 use(sinonChai);
 let rcxMain: RcxMain;
-
-// used for stubbing data
-const entry =
-  '小さい [ちいさい] /(adj-i) (1) small/little/tiny\
-        /(adj-i) (2) slight/below average (in degree, amount, etc.)\
-        /minor/small/(adj-i) (3) low (e.g. sound)/soft (e.g. voice)\
-        /(adj-i) (4) unimportant/petty/insignificant/trifling/trivial\
-        /(adj-i) (5) young/juvenile/(P)/';
-const entryStub = {
-  kanji: '',
-  onkun: '',
-  nanori: '',
-  bushumei: '',
-  misc: {} as Record<string, string>,
-  eigo: '',
-  hasNames: false,
-  data: [{ entry, reason: '' }],
-  hasMore: false,
-  title: '',
-  index: 0,
-  matchLen: 0,
-};
 
 describe('background.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
