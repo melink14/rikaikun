@@ -67,10 +67,10 @@ describe('background.ts', function () {
     });
   });
   describe('xsearch', function () {
-    it('should call response callback with search results', async function () {
+    it('should call response callback with search string and dictOptions value', async function () {
       rcxMain.search = sinon
         .stub()
-        .returns({ type: 'theType', text: 'theText' });
+        .returns({ text: 'theText', dictOptions: '0' });
       const response = sinon.spy();
 
       await sendMessageToBackground({
@@ -81,13 +81,13 @@ describe('background.ts', function () {
       });
 
       expect(response).to.have.been.calledWithMatch({
-        type: 'theType',
         text: 'theText',
+        dictOptions: sinon.match.any,
       });
       expect(response).to.have.been.calledOnce;
     });
 
-    it('should not search if text is empty', async function () {
+    it('should not search if request.text is an empty string', async function () {
       const response = sinon.spy();
 
       await sendMessageToBackground({
