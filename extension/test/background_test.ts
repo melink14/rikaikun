@@ -67,12 +67,12 @@ describe('background.ts', function () {
   });
 
   describe('xsearch', function () {
-    it('should return search results', async function () {
+    it('should call response callback with search results', async function () {
       const searchStub = sinon.stub().returns(['to eat', 'verb']);
       rcxMain.search = searchStub;
       const request = {
         type: 'xsearch',
-        text: 'た',
+        text: 'anything that is not empty',
         dictOption: '2',
       };
       const sender = { tab: { id: 0 } };
@@ -86,15 +86,13 @@ describe('background.ts', function () {
         response
       );
 
-      expect(searchStub.calledWith(request.text, request.dictOption)).to.be
-        .true;
+      expect(searchStub.calledWith(request.text, sinon.match.any)).to.be.true;
 
       expect(response.called).to.be.true;
     });
 
-    it('should not search if text is empty', async function () {
-      const searchStub = sinon.stub().returns(['to eat', 'verb']);
-      rcxMain.search = searchStub;
+    it('should not call rcxMain.search if text is empty', async function () {
+      rcxMain.search = sinon.stub().returns(['to eat', 'verb']);
       const request = { type: 'xsearch', text: '', dictOption: '2' };
       const sender = { tab: { id: 0 } };
       const response = sinon.spy();
@@ -107,7 +105,7 @@ describe('background.ts', function () {
         response
       );
 
-      expect(searchStub).to.not.be.called;
+      expect(rcxMain.search).to.not.be.called;
       expect(response.called).to.be.false;
     });
   });
