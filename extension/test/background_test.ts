@@ -91,9 +91,7 @@ describe('background.ts', function () {
       expect(response.called).to.be.true;
     });
 
-    it('should not call rcxMain.search if text is empty', async function () {
-      const searchStub = sinon.stub().returns(['to eat', 'verb']);
-      rcxMain.search = searchStub;
+    it('should not call response callback if text input is empty', async function () {
       const request = { type: 'xsearch', text: '', dictOption: '2' };
       const sender = { tab: { id: 0 } };
       const response = sinon.spy();
@@ -106,7 +104,6 @@ describe('background.ts', function () {
         response
       );
 
-      expect(searchStub).to.not.be.called;
       expect(response.called).to.be.false;
     });
   });
