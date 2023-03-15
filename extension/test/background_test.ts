@@ -67,65 +67,71 @@ describe('background.ts', function () {
   });
 
   describe('xsearch', function () {
-    it('should call response callback with search results', async function () {
-      const searchStub = sinon.stub().returns(['to eat', 'verb']);
-      rcxMain.search = searchStub;
-      const request = {
-        type: 'xsearch',
-        text: 'anything that is not empty',
-        dictOption: '2',
-      };
-      const sender = { tab: { id: 0 } };
+    it('should call response callback with search correct values', async function () {
+      rcxMain.search = sinon
+        .stub()
+        .returns({ text: 'theText', dictOptions: '0' });
       const response = sinon.spy();
 
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await chrome.runtime.onMessage.addListener.callArgWith(
-        0,
-        request,
-        sender,
-        response
-      );
+      await sendMessageToBackground({
+        tabId: 0,
+        type: 'xsearch',
+        text: 'A non empty string',
+        responseCallback: response,
+      });
 
-      expect(searchStub.calledWith(request.text, sinon.match.any)).to.be.true;
-
-      expect(response.called).to.be.true;
+      expect(response).to.have.been.calledWithMatch({
+        text: 'theText',
+        dictOptions: sinon.match.any,
+      });
+      expect(response).to.have.been.calledOnce;
     });
 
-    it('should not call response callback if text input is empty', async function () {
-      const request = { type: 'xsearch', text: '', dictOption: '2' };
-      const sender = { tab: { id: 0 } };
+    it('should not search if request.text is an empty string', async function () {
       const response = sinon.spy();
 
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await chrome.runtime.onMessage.addListener.callArgWith(
-        0,
-        request,
-        sender,
-        response
-      );
+      await sendMessageToBackground({
+        tabId: 0,
+        type: 'xsearch',
+        text: '',
+        responseCallback: response,
+      });
 
       expect(response.called).to.be.false;
     });
   });
-
-  async function sendMessageToBackground({
-    tabId = 0,
-    type,
-    responseCallback = () => {
-      // Do nothing by default.
-    },
-  }: {
-    tabId?: number;
-    type: string;
-    responseCallback?: (response: unknown) => void;
-  }): Promise<void> {
-    // In background.ts, a promise is passed to `addListener` so we can await it here.
-    // eslint-disable-next-line @typescript-eslint/await-thenable
-    await chrome.runtime.onMessage.addListener.yield(
-      { type: type },
-      { tab: { id: tabId } },
-      responseCallback
-    );
-    return;
-  }
 });
+
+type Payload = {
+  tabId?: number;
+  text?: string;
+  type: string;
+  responseCallback?: (response: unknown) => void;
+};
+
+async function sendMessageToBackground({
+  tabId = 0,
+  type,
+  text,
+  responseCallback = () => {
+    // Do nothing by default.
+  },
+}: Payload): Promise<void> {
+  const request: { type: string; text?: string } = {
+    type,
+  };
+  const sender = {
+    tab: { id: tabId },
+  };
+  if (text !== undefined) {
+    request['text'] = text;
+  }
+  // In background.ts, a promise is passed to `addListener` so we can await it here.
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  await chrome.runtime.onMessage.addListener.yield(
+    request,
+    sender,
+    responseCallback
+  );
+  return;
+}
