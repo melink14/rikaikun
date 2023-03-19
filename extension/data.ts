@@ -668,7 +668,7 @@ class RcxDict {
       return '';
     }
 
-    const htmlToRender = [];
+    const htmlToRender: string[] = [];
 
     // kanji view
     if (entry.kanji) {
@@ -743,7 +743,7 @@ class RcxDict {
             <tr>
               <td${nameHtmlData}a">${k[0]}</td>
               <td${nameHtmlData}b">${k[2]}</td>
-              <td${nameHtmlData}${htmlToRender}">${k[3]}</td>
+              <td${nameHtmlData}${htmlToRender.join('')}">${k[3]}</td>
             </tr>`;
           }
         }
@@ -935,8 +935,7 @@ class RcxDict {
         displayedTranslation = translationData.replace(/\//g, '; ');
 
         if (!this.config.onlyreading) {
-          displayedTranslation =
-            `<br/><span class="w-def">${displayedTranslation}</span><br/>`;
+          displayedTranslation = `<br/><span class="w-def">${displayedTranslation}</span><br/>`;
         } else {
           displayedTranslation = '<br/>';
         }
