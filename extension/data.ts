@@ -670,9 +670,10 @@ class RcxDict {
 
     const b = [];
 
+    // kanji view
     if (entry.kanji) {
       let yomi;
-      let box;
+      let boxHtml;
       let k;
       let nums;
 
@@ -704,62 +705,49 @@ class RcxDict {
           k = isNaN(k) ? '-' : 'grade<br/>' + k;
           break;
       }
-      box =
-        '<table class="k-abox-tb"><tr>' +
-        '<td class="k-abox-r">radical<br/>' +
-        this.radData[bn].charAt(0) +
-        ' ' +
-        (bn + 1) +
-        '</td>' +
-        '<td class="k-abox-g">' +
-        k +
-        '</td>' +
-        '</tr><tr>' +
-        '<td class="k-abox-f">freq<br/>' +
-        (entry.misc.F ? entry.misc.F : '-') +
-        '</td>' +
-        '<td class="k-abox-s">strokes<br/>' +
-        entry.misc.S +
-        '</td>' +
-        '</tr></table>';
+      boxHtml = `
+      <table class="k-abox-tb">
+        <tr>
+          <td class="k-abox-r">
+            radical
+            <br/>
+            ${this.radData[bn].charAt(0)} ${bn + 1}
+          </td>
+          <td class="k-abox-g">${k}</td>
+        </tr>
+        <tr>
+          <td class="k-abox-f">
+            freq
+            <br/>${entry.misc.F ? entry.misc.F : '-'}
+          </td>
+          <td class="k-abox-s">strokes<br/>${entry.misc.S}</td>
+        </tr>
+      </table>`;
+
       if (this.config.kanjicomponents) {
         k = this.radData[bn].split('\t');
-        box +=
-          '<table class="k-bbox-tb">' +
-          '<tr><td class="k-bbox-1a">' +
-          k[0] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[2] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[3] +
-          '</td></tr>';
+        boxHtml += `
+        <table class="k-bbox-tb">
+            <tr>
+              <td class="k-bbox-1a">${k[0]}</td>
+              <td class="k-bbox-1b">${k[2]}</td>
+              <td class="k-bbox-1b">${k[3]}</td>
+            </tr>`;
         j = 1;
         for (i = 0; i < this.radData.length; ++i) {
           s = this.radData[i];
           if (bn !== i && s.indexOf(entry.kanji) !== -1) {
             k = s.split('\t');
             c = ' class="k-bbox-' + (j ^= 1);
-            box +=
-              '<tr><td' +
-              c +
-              'a">' +
-              k[0] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[2] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[3] +
-              '</td></tr>';
+            boxHtml += `
+            <tr>
+              <td${c}a">${k[0]}</td>
+              <td${c}b">${k[2]}</td>
+              <td${c}${b}">${k[3]}</td>
+            </tr>`;
           }
         }
-        box += '</table>';
+        boxHtml += '</table>';
       }
 
       nums = '';
@@ -772,33 +760,32 @@ class RcxDict {
         }
         c = info.code;
         s = entry.misc[c];
-        c = ' class="k-mix-td' + (j ^= 1) + '"';
-        nums +=
-          '<tr><td' +
-          c +
-          '>' +
-          info.name +
-          '</td><td' +
-          c +
-          '>' +
-          (s || '-') +
-          '</td></tr>';
+        c = ` class="k-mix-td${(j ^= 1)}"`;
+        nums += `
+        <tr>
+          <td${c}>${info.name}</td>
+          <td${c}>${s || '-'}</td>
+        </tr>`;
       }
-      if (nums.length) {
-        nums = '<table class="k-mix-tb">' + nums + '</table>';
-      }
-
-      b.push('<table class="k-main-tb"><tr><td valign="top">');
-      b.push(box);
-      b.push('<span class="k-kanji">' + entry.kanji + '</span><br/>');
-      b.push('<div class="k-eigo">' + entry.eigo + '</div>');
-      b.push('<div class="k-yomi">' + yomi + '</div>');
-      b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');
-      return b.join('');
+      b.push(`
+        <table class="k-main-tb">
+          <tr>
+            <td valign="top">
+              ${boxHtml}
+              <span class="k-kanji">${entry.kanji}</span><br>
+              <div class="k-eigo">${entry.eigo}</div>
+              <div class="k-yomi">${yomi}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>${nums.length && `<table class="k-mix-tb">${nums}</table>`}</td>
+          </tr>
+        </table>
+      `);
     }
 
     s = t = '';
-
+    // nanori view
     if (entry.hasNames) {
       c = [];
 
