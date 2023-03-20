@@ -269,6 +269,15 @@
       "contributions": [
         "a11y"
       ]
+    },
+    {
+      "login": "tora-pan",
+      "name": "Travis Pandos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81494248?v=4",
+      "profile": "https://github.com/tora-pan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
