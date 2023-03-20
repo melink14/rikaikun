@@ -638,6 +638,8 @@ class RcxDict {
     'Henshall',
     'DK',
     'Kanji Learners Dictionary',
+    'DL',
+    'Kanji Learners Dictionary 2nd Edition',
     'N',
     'Nelson',
     'V',
