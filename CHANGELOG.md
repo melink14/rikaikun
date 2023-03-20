@@ -7,6 +7,12 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.5.0](https://github.com/melink14/rikaikun/compare/v2.4.44...v2.5.0) (2023-03-20)
+
+### Features
+
+- **dict:** Whitelist Kanji Learner's Dictionary 2nd Edition ([#1448](https://github.com/melink14/rikaikun/issues/1448)) ([11935bb](https://github.com/melink14/rikaikun/commit/11935bb8839bc31ddf4f7d03f1b94eaf31768e46)), closes [#1363](https://github.com/melink14/rikaikun/issues/1363)
+
 ## [2.4.44](https://github.com/melink14/rikaikun/compare/v2.4.43...v2.4.44) (2023-03-13)
 
 ### Bug Fixes
