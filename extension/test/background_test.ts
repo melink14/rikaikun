@@ -259,21 +259,6 @@ describe('background.ts', function () {
     });
   });
 
-  // type DictEntry = {
-  //   kanji: string;
-  //   onkun: string;
-  //   nanori: string;
-  //   bushumei: string;
-  //   misc: Record<string, string>;
-  //   eigo: string;
-  //   hasNames: boolean;
-  //   data: [{ entry: string; reason: string }];
-  //   hasMore: boolean;
-  //   title: string;
-  //   index: number;
-  //   matchLen: number;
-  // };
-
   type MessageRequest =
     | { type: 'enable?' }
     | { type: 'xsearch'; text: string | ''; dictOption?: string }
@@ -298,31 +283,4 @@ describe('background.ts', function () {
     );
     return;
   }
-
-  //   async function sendMessageToBackground({
-  //     tabId = 0,
-  //     type,
-  //     text,
-  //     responseCallback = () => {
-  //       // Do nothing by default.
-  //     },
-  //   }: Payload): Promise<void> {
-  //     const request: { type: string; text?: string } = {
-  //       type,
-  //     };
-  //     const sender = {
-  //       tab: { id: tabId },
-  //     };
-  //     if (text !== undefined) {
-  //       request['text'] = text;
-  //     }
-  //     // In background.ts, a promise is passed to `addListener` so we can await it here.
-  //     // eslint-disable-next-line @typescript-eslint/await-thenable
-  //     await chrome.runtime.onMessage.addListener.yield(
-  //       request,
-  //       sender,
-  //       responseCallback
-  //     );
-  //     return;
-  //   }
 });
