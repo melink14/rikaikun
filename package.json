@@ -76,7 +76,7 @@
     "@web/test-runner-browserstack": "^0.5.1",
     "@web/test-runner-chrome": "^0.12.0",
     "@web/test-runner-commands": "^0.6.6",
-    "@web/test-runner-puppeteer": "^0.12.0",
+    "@web/test-runner-puppeteer": "^0.12.1",
     "@web/test-runner-visual-regression": "^0.7.1",
     "byline": "^5.0.0",
     "chai-like": "^1.1.1",
