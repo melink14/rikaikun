@@ -144,6 +144,10 @@ table {
   color: var(--kanji-readings-highlight-color);
 }
 
+.k-yomi-no-hi {
+  color: var(--kanji-readings-highlight-color);
+}
+
 .k-yomi-ti {
   color: var(--primary-color);
   font-size: 11px;

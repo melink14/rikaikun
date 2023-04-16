@@ -680,7 +680,9 @@ class RcxDict {
 
       yomi = entry.onkun.replace(
         /\.([^\u3001]+)/g,
-        '<span class="k-yomi-hi">$1</span>'
+        `<span class="k-yomi${
+          this.config.outlineOkurigana ? '-hi' : '-no-hi'
+        }">$1</span>`
       );
       if (entry.nanori.length) {
         yomi +=
