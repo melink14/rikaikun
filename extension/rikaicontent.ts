@@ -65,7 +65,6 @@ type Rikaichan = {
 };
 
 class RcxContent {
-  private dictCount = 3;
   private altView = 0;
 
   private sameDict = 0;
