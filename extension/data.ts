@@ -86,6 +86,17 @@ interface DeinflectionRuleGroup {
   rules: DeinflectionRule[];
 }
 
+// prettier-ignore
+const CHAR_CODES_BELOW_0x3000_USED_IN_WORDS_IN_DICTIONARY = [
+  '×', 'α', '○', '◎', '△', '※', '-', '°', 'R',
+  'N', 'A', '♀', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ',
+  'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο',
+  'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω',
+  'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ',
+  'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ',
+  'υ', 'φ', 'χ', 'ψ', 'ω'
+].map(char => char.charCodeAt(0));
+
 class RcxDict {
   private static instance: RcxDict;
 
@@ -348,7 +359,10 @@ class RcxDict {
         continue;
       }
 
-      if (u <= 0x3000) {
+      if (
+        u <= 0x3000 &&
+        !CHAR_CODES_BELOW_0x3000_USED_IN_WORDS_IN_DICTIONARY.includes(u)
+      ) {
         break;
       }
 
