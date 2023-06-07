@@ -133,6 +133,22 @@ describe('RcxContent', function () {
       });
     });
 
+    it('triggers xsearch message when above non-Japanese text', function () {
+      const clock = sinon.useFakeTimers();
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>＋αtest</span>'
+      ) as HTMLSpanElement;
+
+      triggerMousemoveAtElementStart(span);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: '＋αtest',
+      });
+    });
+
     describe('inside text area', function () {
       it('triggers xsearch message when above Japanese text', function () {
         const clock = sinon.useFakeTimers();
