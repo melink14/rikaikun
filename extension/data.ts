@@ -348,10 +348,6 @@ class RcxDict {
         continue;
       }
 
-      if (u <= 0x3000) {
-        break;
-      }
-
       // full-width katakana to hiragana
       if (u >= 0x30a1 && u <= 0x30f3) {
         u -= 0x60;

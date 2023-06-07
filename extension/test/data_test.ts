@@ -62,5 +62,11 @@ describe('data.ts', function () {
         rcxDict.wordSearch('ぼんです', /* doNames= */ false)?.data
       ).to.not.include.something.like({ entry: /^凡打 .*/ });
     });
+
+    it('should return results for words with punctuation', function () {
+      expect(
+        rcxDict.wordSearch('ＤＶＤ-ＲＯＭ', /* doNames= */ false)?.data
+      ).to.include.something.like({ entry: /^ＤＶＤ-ＲＯＭ .*/ });
+    });
   });
 });
