@@ -278,8 +278,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bryanjenningz",
+      "name": "Bryan Jennings",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7637655?v=4",
+      "profile": "https://github.com/bryanjenningz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": false
+  "skipCi": false,
+  "commitType": "docs"
 }
