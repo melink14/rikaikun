@@ -155,17 +155,6 @@ class RcxDict {
     return req.responseText;
   }
 
-  fileReadArray(name: string) {
-    const a = this.fileRead(name).split('\n');
-    // Is this just in case there is blank shit in the file.  It was written
-    // by Jon though.
-    // I suppose this is more robust
-    while (a.length > 0 && a[a.length - 1].length === 0) {
-      a.pop();
-    }
-    return a;
-  }
-
   loadNames() {
     if (this.nameDict && this.nameIndex) {
       return;
@@ -946,39 +935,6 @@ class RcxDict {
         b.push('<span class="small-info">... (\'k\' for more)</span><br/>');
       }
     }
-
-    return b.join('');
-  }
-
-  makeHtmlForRuby(entry: DictEntryData | null) {
-    let e;
-    let s;
-    let t;
-    let i;
-
-    if (entry === null) {
-      return '';
-    }
-
-    const b = [];
-
-    s = t = '';
-
-    if (entry.title) {
-      b.push('<div class="w-title">' + entry.title + '</div>');
-    }
-
-    for (i = 0; i < entry.data.length; ++i) {
-      e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-      if (!e) {
-        continue;
-      }
-
-      s = e[3];
-      t = s.replace(/\//g, '; ');
-      t = '<span class="w-def">' + t + '</span><br/>\n';
-    }
-    b.push(t);
 
     return b.join('');
   }
