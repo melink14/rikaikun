@@ -69,4 +69,60 @@ describe('data.ts', function () {
       ).to.include.something.like({ entry: /^ＤＶＤ-ＲＯＭ .*/ });
     });
   });
+
+  describe('makeText', function () {
+    it('should return the text for a word dictionary entry', function () {
+      const entry = rcxDict.wordSearch('あ', /* doNames= */ false);
+      if (!entry) {
+        throw new Error(
+          `rcxDict.wordSearch('あ', /* doNames= */ false) returns null`
+        );
+      }
+      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
+        'あ\t(int) (1) ah; oh; (int) (2) hey!\n',
+        `word: 'あ', doNames: false, max: 1`
+      );
+      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
+        'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n',
+        `word: 'あ', doNames: false, max: 2`
+      );
+    });
+
+    it('should return the text for a name dictionary entry', function () {
+      const entry = rcxDict.wordSearch('あ', /* doNames= */ true);
+      if (!entry) {
+        throw new Error(
+          `rcxDict.wordSearch('あ', /* doNames= */ true) returns null`
+        );
+      }
+      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
+        '亜\tあ\t(f) A\n',
+        `word: 'あ', doNames: true, max: 1`
+      );
+      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
+        '亜\tあ\t(f) A\n阿\tあ\t(s) A\n',
+        `word: 'あ', doNames: true, max: 2`
+      );
+    });
+
+    it('should return the text for a kanji dictionary entry', function () {
+      const entry = rcxDict.kanjiSearch('両');
+      if (!entry) {
+        throw new Error(`rcxDict.kanjiSearch('両') returns null`);
+      }
+      if (!entry.kanji) {
+        throw new Error(
+          `rcxDict.kanjiSearch('両') returns entry with empty kanji property`
+        );
+      }
+      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
+        '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n',
+        `kanji: '両', max: 1`
+      );
+      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
+        '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n',
+        `kanji: '両', max: 2`
+      );
+    });
+  });
 });
