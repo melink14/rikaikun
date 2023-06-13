@@ -72,22 +72,26 @@ describe('data.ts', function () {
 
   describe('makeText', function () {
     describe('with a word dict entry', function () {
-      const wordDictEntry = {
+      const unimportantProperties = {
         kanji: '',
         onkun: '',
         nanori: '',
         bushumei: '',
         misc: {},
         eigo: '',
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 1,
+      };
+
+      const wordDictEntry = {
+        ...unimportantProperties,
         hasNames: false,
         data: [
           { entry: 'あ /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
           { entry: 'ア /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
         ],
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 1,
       };
 
       it('when max is 1, returns 1 data entry as text', function () {
@@ -125,22 +129,26 @@ describe('data.ts', function () {
     });
 
     describe('with a name dict entry', function () {
-      const nameDictEntry = {
+      const unimportantProperties = {
         kanji: '',
         onkun: '',
         nanori: '',
         bushumei: '',
         misc: {},
         eigo: '',
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 1,
+      };
+
+      const nameDictEntry = {
+        ...unimportantProperties,
         hasNames: true,
         data: [
           { entry: '亜 [あ] /(f) A/', reason: undefined },
           { entry: '阿 [あ] /(s) A/', reason: undefined },
         ],
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 1,
       };
 
       it('when max is 1, returns 1 data entry as text', function () {
@@ -172,7 +180,17 @@ describe('data.ts', function () {
     });
 
     describe('with a kanji dict entry', function () {
+      const unimportantProperties = {
+        hasNames: false,
+        data: [],
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 0,
+      };
+
       const kanjiDictEntry = {
+        ...unimportantProperties,
         kanji: '両',
         onkun: 'リョウ、 てる、 ふたつ',
         nanori: 'もろ',
@@ -197,12 +215,6 @@ describe('data.ts', function () {
           Y: 'liang3',
         },
         eigo: 'both; old Japanese coin; counter for carriages (e.g., in a train); two',
-        hasNames: false,
-        data: [],
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 0,
       };
 
       it('when max is 1, returns a single kanji data entry as text', function () {
