@@ -71,58 +71,164 @@ describe('data.ts', function () {
   });
 
   describe('makeText', function () {
-    it('should return the text for a word dictionary entry', function () {
-      const entry = rcxDict.wordSearch('あ', /* doNames= */ false);
-      if (!entry) {
-        throw new Error(
-          `rcxDict.wordSearch('あ', /* doNames= */ false) returns null`
+    describe('with a word dict entry', function () {
+      // wordDictEntry was generated with: rcxDict.wordSearch('あ', /* doNames= */ false)
+      const wordDictEntry = {
+        kanji: '',
+        onkun: '',
+        nanori: '',
+        bushumei: '',
+        misc: {},
+        eigo: '',
+        hasNames: false,
+        data: [
+          { entry: 'あ /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
+          { entry: 'ア /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
+        ],
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 1,
+      };
+
+      it('when max is 1, returns 1 data entry as text', function () {
+        const singleDataEntryAsText = rcxDict.makeText(
+          wordDictEntry,
+          /* max= */ 1
         );
-      }
-      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
-        'あ\t(int) (1) ah; oh; (int) (2) hey!\n',
-        `word: 'あ', doNames: false, max: 1`
-      );
-      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
-        'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n',
-        `word: 'あ', doNames: false, max: 2`
-      );
+
+        expect(singleDataEntryAsText).to.equal(
+          'あ\t(int) (1) ah; oh; (int) (2) hey!\n'
+        );
+      });
+
+      it('when max is 2, returns 2 data entries as text', function () {
+        const twoDataEntriesAsText = rcxDict.makeText(
+          wordDictEntry,
+          /* max= */ 2
+        );
+
+        expect(twoDataEntriesAsText).to.equal(
+          'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n'
+        );
+      });
+
+      it('when max is greater than the number of data entries, returns all data entries as text', function () {
+        const allDataEntriesAsText = rcxDict.makeText(
+          wordDictEntry,
+          /* max= */ 1000
+        );
+
+        expect(allDataEntriesAsText).to.equal(
+          'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n'
+        );
+      });
     });
 
-    it('should return the text for a name dictionary entry', function () {
-      const entry = rcxDict.wordSearch('あ', /* doNames= */ true);
-      if (!entry) {
-        throw new Error(
-          `rcxDict.wordSearch('あ', /* doNames= */ true) returns null`
+    describe('with a name dict entry', function () {
+      // nameDictEntry was generated with: rcxDict.wordSearch('あ', /* doNames= */ true)
+      const nameDictEntry = {
+        kanji: '',
+        onkun: '',
+        nanori: '',
+        bushumei: '',
+        misc: {},
+        eigo: '',
+        hasNames: true,
+        data: [
+          { entry: '亜 [あ] /(f) A/', reason: undefined },
+          { entry: '阿 [あ] /(s) A/', reason: undefined },
+        ],
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 1,
+      };
+
+      it('when max is 1, returns 1 data entry as text', function () {
+        const singleDataEntryAsText = rcxDict.makeText(
+          nameDictEntry,
+          /* max= */ 1
         );
-      }
-      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
-        '亜\tあ\t(f) A\n',
-        `word: 'あ', doNames: true, max: 1`
-      );
-      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
-        '亜\tあ\t(f) A\n阿\tあ\t(s) A\n',
-        `word: 'あ', doNames: true, max: 2`
-      );
+
+        expect(singleDataEntryAsText).to.equal('亜\tあ\t(f) A\n');
+      });
+
+      it('when max is 2, returns 2 data entries as text', function () {
+        const twoDataEntriesAsText = rcxDict.makeText(
+          nameDictEntry,
+          /* max= */ 2
+        );
+
+        expect(twoDataEntriesAsText).to.equal('亜\tあ\t(f) A\n阿\tあ\t(s) A\n');
+      });
+
+      it('when max is greater than the number of data entries, returns all data entries as text', function () {
+        const allDataEntriesAsText = rcxDict.makeText(
+          nameDictEntry,
+          /* max= */ 1000
+        );
+
+        expect(allDataEntriesAsText).to.equal('亜\tあ\t(f) A\n阿\tあ\t(s) A\n');
+      });
     });
 
-    it('should return the text for a kanji dictionary entry', function () {
-      const entry = rcxDict.kanjiSearch('両');
-      if (!entry) {
-        throw new Error(`rcxDict.kanjiSearch('両') returns null`);
-      }
-      if (!entry.kanji) {
-        throw new Error(
-          `rcxDict.kanjiSearch('両') returns entry with empty kanji property`
+    describe('with a kanji dict entry', function () {
+      // kanjiDictEntry was generated with: rcxDict.kanjiSearch('両')
+      const kanjiDictEntry = {
+        kanji: '両',
+        onkun: 'リョウ、 てる、 ふたつ',
+        nanori: 'もろ',
+        bushumei: '',
+        misc: {
+          U: '4E21',
+          B: '1',
+          G: '3',
+          S: '6',
+          F: '247',
+          N: '34',
+          V: '23',
+          H: '3518',
+          DK: '2191',
+          DL: '2949',
+          L: '1168 both',
+          DN: '1252 both',
+          E: '411',
+          IN: '200',
+          P: '4-6-1',
+          I: '0a6.11',
+          Y: 'liang3',
+        },
+        eigo: 'both; old Japanese coin; counter for carriages (e.g., in a train); two',
+        hasNames: false,
+        data: [],
+        hasMore: false,
+        title: '',
+        index: 0,
+        matchLen: 0,
+      };
+
+      it('when max is 1, returns a single kanji data entry as text', function () {
+        const singleKanjiDataEntryAsText = rcxDict.makeText(
+          kanjiDictEntry,
+          /* max= */ 1
         );
-      }
-      expect(rcxDict.makeText(entry, /* max= */ 1)).to.equal(
-        '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n',
-        `kanji: '両', max: 1`
-      );
-      expect(rcxDict.makeText(entry, /* max= */ 2)).to.equal(
-        '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n',
-        `kanji: '両', max: 2`
-      );
+
+        expect(singleKanjiDataEntryAsText).to.equal(
+          '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n'
+        );
+      });
+
+      it('when max is 1000, returns a single kanji data entry as text', function () {
+        const singleKanjiDataEntryAsText = rcxDict.makeText(
+          kanjiDictEntry,
+          /* max= */ 1000
+        );
+
+        expect(singleKanjiDataEntryAsText).to.equal(
+          '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n'
+        );
+      });
     });
   });
 });
