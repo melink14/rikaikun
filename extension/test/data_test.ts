@@ -72,7 +72,6 @@ describe('data.ts', function () {
 
   describe('makeText', function () {
     describe('with a word dict entry', function () {
-      // wordDictEntry was generated with: rcxDict.wordSearch('あ', /* doNames= */ false)
       const wordDictEntry = {
         kanji: '',
         onkun: '',
@@ -126,7 +125,6 @@ describe('data.ts', function () {
     });
 
     describe('with a name dict entry', function () {
-      // nameDictEntry was generated with: rcxDict.wordSearch('あ', /* doNames= */ true)
       const nameDictEntry = {
         kanji: '',
         onkun: '',
@@ -174,7 +172,6 @@ describe('data.ts', function () {
     });
 
     describe('with a kanji dict entry', function () {
-      // kanjiDictEntry was generated with: rcxDict.kanjiSearch('両')
       const kanjiDictEntry = {
         kanji: '両',
         onkun: 'リョウ、 てる、 ふたつ',
