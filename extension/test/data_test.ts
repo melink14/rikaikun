@@ -101,7 +101,7 @@ describe('data.ts', function () {
         ],
       };
 
-      it('when max is 1, returns 1 data entry as text', function () {
+      it('returns 1 data entry as text with tabs separating word, pronunciation, and definitions; with semicolons separating each definition; ending in a newline', function () {
         const singleDataEntryAsText = rcxDict.makeText(
           nonKanjiDictEntry,
           /* max= */ 1
@@ -112,7 +112,7 @@ describe('data.ts', function () {
         );
       });
 
-      it('when max is 2, returns 2 data entries as text', function () {
+      it('returns 2 data entries as text with newlines separating each data entry text; ending in a newline', function () {
         const twoDataEntriesAsText = rcxDict.makeText(
           nonKanjiDictEntry,
           /* max= */ 2
@@ -123,7 +123,7 @@ describe('data.ts', function () {
         );
       });
 
-      it('when max is greater than the number of data entries, returns all data entries as text', function () {
+      it('when max is greater than the number of data entries, it returns all data entries as text with each data entry text separated by newlines; ending in a newline', function () {
         const allDataEntriesAsText = rcxDict.makeText(
           nonKanjiDictEntry,
           /* max= */ 1000
@@ -148,7 +148,7 @@ describe('data.ts', function () {
       const kanjiDictEntry = {
         ...unimportantProperties,
         kanji: '<kanji-entry>',
-        onkun: '<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>',
+        onkun: '<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>',
         nanori: '<nanori-entry>',
         bushumei: '<bushumei-entry>',
         misc: {
@@ -170,28 +170,28 @@ describe('data.ts', function () {
           I: '<I-misc-entry>',
           Y: '<Y-misc-entry>',
         },
-        eigo: '<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>',
+        eigo: '<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>',
       };
 
-      it('when max is 1, returns a single kanji data entry as text', function () {
+      it('returns 1 kanji entry formatted as text with newlines separating kanji, eigo, onkun, nanori, bushumei, and misc lines; misc name and entry separated by a tab; ending in newline', function () {
         const singleKanjiDataEntryAsText = rcxDict.makeText(
           kanjiDictEntry,
           /* max= */ 1
         );
 
         expect(singleKanjiDataEntryAsText).to.equal(
-          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>\n<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
 
-      it('when max is 1000, returns a single kanji data entry as text', function () {
+      it('even with large max, returns a single kanji data entry as text', function () {
         const singleKanjiDataEntryAsText = rcxDict.makeText(
           kanjiDictEntry,
           /* max= */ 1000
         );
 
         expect(singleKanjiDataEntryAsText).to.equal(
-          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>\n<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
     });
