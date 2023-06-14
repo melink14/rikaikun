@@ -195,7 +195,7 @@ describe('data.ts', function () {
         );
       });
 
-      describe('empty fields', function () {
+      describe('with empty fields', function () {
         it('uses a hyphen after kanji field when eigo field is empty', function () {
           const emptyEigoKanjiDictEntry = { ...kanjiDictEntry, eigo: '' };
 
