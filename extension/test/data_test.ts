@@ -196,15 +196,15 @@ describe('data.ts', function () {
       });
 
       describe('empty fields', function () {
-        it('uses a hyphen (-) after kanji field when eigo field is empty', function () {
+        it('uses a hyphen after kanji field when eigo field is empty', function () {
           const emptyEigoKanjiDictEntry = { ...kanjiDictEntry, eigo: '' };
 
-          const dashAsEigoEntryText = rcxDict.makeText(
+          const hyphenAsEigoEntryText = rcxDict.makeText(
             emptyEigoKanjiDictEntry,
             /* max= */ 1
           );
 
-          expect(dashAsEigoEntryText).to.equal(
+          expect(hyphenAsEigoEntryText).to.equal(
             '<kanji-entry>\n-\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
           );
         });
@@ -236,6 +236,58 @@ describe('data.ts', function () {
           expect(noBushumeiFieldKanjiEntryText).to.equal(
             '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
           );
+        });
+
+        describe('empty misc fields', function () {
+          it('uses a hyphen for unicode field when misc U property is empty', function () {
+            const emptyUMiscKanjiDictEntry = {
+              ...kanjiDictEntry,
+              misc: { ...kanjiDictEntry.misc, U: '' },
+            };
+
+            const hyphenAsUnicodeField = rcxDict.makeText(
+              emptyUMiscKanjiDictEntry,
+              /* max= */ 1
+            );
+
+            expect(hyphenAsUnicodeField).to.equal(
+              '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t-\n'
+            );
+          });
+
+          it('uses a hyphen for all misc fields when all misc properties are empty', function () {
+            const emptyMiscKanjiDictEntry = {
+              ...kanjiDictEntry,
+              misc: {
+                U: '',
+                B: '',
+                G: '',
+                S: '',
+                F: '',
+                N: '',
+                V: '',
+                H: '',
+                DK: '',
+                DL: '',
+                L: '',
+                DN: '',
+                E: '',
+                IN: '',
+                P: '',
+                I: '',
+                Y: '',
+              },
+            };
+
+            const hyphenAsAllMiscFields = rcxDict.makeText(
+              emptyMiscKanjiDictEntry,
+              /* max= */ 1
+            );
+
+            expect(hyphenAsAllMiscFields).to.equal(
+              '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t-\nHeisig 5th Edition\t-\nHeisig 6th Edition\t-\nHenshall\t-\nKanji Learners Dictionary\t-\nKanji Learners Dictionary 2nd Edition\t-\nNelson\t-\nNew Nelson\t-\nPinYin\t-\nSkip Pattern\t-\nTuttle Kanji & Kana\t-\nTuttle Kanji Dictionary\t-\nUnicode\t-\n'
+            );
+          });
         });
       });
     });
