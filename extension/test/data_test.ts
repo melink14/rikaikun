@@ -21,6 +21,21 @@ use(chaiThings);
 
 let rcxDict: RcxDict;
 
+const DEFAULT_DICT_ENTRY = {
+  kanji: '',
+  onkun: '',
+  nanori: '',
+  bushumei: '',
+  misc: {},
+  eigo: '',
+  hasNames: false,
+  data: [],
+  hasMore: false,
+  title: '',
+  index: 0,
+  matchLen: 0,
+};
+
 describe('data.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
   // Make it relative to current timeout so config level changes are taken
@@ -72,22 +87,8 @@ describe('data.ts', function () {
 
   describe('makeText', function () {
     describe('with a non-kanji dict entry', function () {
-      const unimportantProperties = {
-        kanji: '',
-        onkun: '',
-        nanori: '',
-        bushumei: '',
-        misc: {},
-        eigo: '',
-        hasNames: false,
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 1,
-      };
-
       const nonKanjiDictEntry = {
-        ...unimportantProperties,
+        ...DEFAULT_DICT_ENTRY,
         data: [
           {
             entry:
@@ -136,17 +137,8 @@ describe('data.ts', function () {
     });
 
     describe('with a kanji dict entry', function () {
-      const unimportantProperties = {
-        hasNames: false,
-        data: [],
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 0,
-      };
-
       const kanjiDictEntry = {
-        ...unimportantProperties,
+        ...DEFAULT_DICT_ENTRY,
         kanji: '<kanji-entry>',
         onkun: '<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>',
         nanori: '<nanori-entry>',
