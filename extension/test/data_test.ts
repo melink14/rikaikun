@@ -71,7 +71,7 @@ describe('data.ts', function () {
   });
 
   describe('makeText', function () {
-    describe('with a word dict entry', function () {
+    describe('with a non-kanji dict entry', function () {
       const unimportantProperties = {
         kanji: '',
         onkun: '',
@@ -79,103 +79,59 @@ describe('data.ts', function () {
         bushumei: '',
         misc: {},
         eigo: '',
+        hasNames: false,
         hasMore: false,
         title: '',
         index: 0,
         matchLen: 1,
       };
 
-      const wordDictEntry = {
+      const nonKanjiDictEntry = {
         ...unimportantProperties,
-        hasNames: false,
         data: [
-          { entry: 'あ /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
-          { entry: 'ア /(int) (1) ah/oh/(int) (2) hey!/', reason: undefined },
+          {
+            entry:
+              '<word-1> [<pronunciation-1>] /<definition-1>/<definition-2>/<definition-3>/',
+            reason: undefined,
+          },
+          {
+            entry: '<word-2> /<definition-1>/<definition-2>/',
+            reason: undefined,
+          },
         ],
       };
 
       it('when max is 1, returns 1 data entry as text', function () {
         const singleDataEntryAsText = rcxDict.makeText(
-          wordDictEntry,
+          nonKanjiDictEntry,
           /* max= */ 1
         );
 
         expect(singleDataEntryAsText).to.equal(
-          'あ\t(int) (1) ah; oh; (int) (2) hey!\n'
+          '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n'
         );
       });
 
       it('when max is 2, returns 2 data entries as text', function () {
         const twoDataEntriesAsText = rcxDict.makeText(
-          wordDictEntry,
+          nonKanjiDictEntry,
           /* max= */ 2
         );
 
         expect(twoDataEntriesAsText).to.equal(
-          'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n'
+          '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
         );
       });
 
       it('when max is greater than the number of data entries, returns all data entries as text', function () {
         const allDataEntriesAsText = rcxDict.makeText(
-          wordDictEntry,
+          nonKanjiDictEntry,
           /* max= */ 1000
         );
 
         expect(allDataEntriesAsText).to.equal(
-          'あ\t(int) (1) ah; oh; (int) (2) hey!\nア\t(int) (1) ah; oh; (int) (2) hey!\n'
+          '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
         );
-      });
-    });
-
-    describe('with a name dict entry', function () {
-      const unimportantProperties = {
-        kanji: '',
-        onkun: '',
-        nanori: '',
-        bushumei: '',
-        misc: {},
-        eigo: '',
-        hasMore: false,
-        title: '',
-        index: 0,
-        matchLen: 1,
-      };
-
-      const nameDictEntry = {
-        ...unimportantProperties,
-        hasNames: true,
-        data: [
-          { entry: '亜 [あ] /(f) A/', reason: undefined },
-          { entry: '阿 [あ] /(s) A/', reason: undefined },
-        ],
-      };
-
-      it('when max is 1, returns 1 data entry as text', function () {
-        const singleDataEntryAsText = rcxDict.makeText(
-          nameDictEntry,
-          /* max= */ 1
-        );
-
-        expect(singleDataEntryAsText).to.equal('亜\tあ\t(f) A\n');
-      });
-
-      it('when max is 2, returns 2 data entries as text', function () {
-        const twoDataEntriesAsText = rcxDict.makeText(
-          nameDictEntry,
-          /* max= */ 2
-        );
-
-        expect(twoDataEntriesAsText).to.equal('亜\tあ\t(f) A\n阿\tあ\t(s) A\n');
-      });
-
-      it('when max is greater than the number of data entries, returns all data entries as text', function () {
-        const allDataEntriesAsText = rcxDict.makeText(
-          nameDictEntry,
-          /* max= */ 1000
-        );
-
-        expect(allDataEntriesAsText).to.equal('亜\tあ\t(f) A\n阿\tあ\t(s) A\n');
       });
     });
 
@@ -191,30 +147,30 @@ describe('data.ts', function () {
 
       const kanjiDictEntry = {
         ...unimportantProperties,
-        kanji: '両',
-        onkun: 'リョウ、 てる、 ふたつ',
-        nanori: 'もろ',
-        bushumei: '',
+        kanji: '<kanji-entry>',
+        onkun: '<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>',
+        nanori: '<nanori-entry>',
+        bushumei: '<bushumei-entry>',
         misc: {
-          U: '4E21',
-          B: '1',
-          G: '3',
-          S: '6',
-          F: '247',
-          N: '34',
-          V: '23',
-          H: '3518',
-          DK: '2191',
-          DL: '2949',
-          L: '1168 both',
-          DN: '1252 both',
-          E: '411',
-          IN: '200',
-          P: '4-6-1',
-          I: '0a6.11',
-          Y: 'liang3',
+          U: '<U-misc-entry>',
+          B: '<B-misc-entry>',
+          G: '<G-misc-entry>',
+          S: '<S-misc-entry>',
+          F: '<F-misc-entry>',
+          N: '<N-misc-entry>',
+          V: '<V-misc-entry>',
+          H: '<H-misc-entry>',
+          DK: '<DK-misc-entry>',
+          DL: '<DL-misc-entry>',
+          L: '<L-misc-entry>',
+          DN: '<DN-misc-entry>',
+          E: '<E-misc-entry>',
+          IN: '<IN-misc-entry>',
+          P: '<P-misc-entry>',
+          I: '<I-misc-entry>',
+          Y: '<Y-misc-entry>',
         },
-        eigo: 'both; old Japanese coin; counter for carriages (e.g., in a train); two',
+        eigo: '<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>',
       };
 
       it('when max is 1, returns a single kanji data entry as text', function () {
@@ -224,7 +180,7 @@ describe('data.ts', function () {
         );
 
         expect(singleKanjiDataEntryAsText).to.equal(
-          '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n'
+          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>\n<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
 
@@ -235,7 +191,7 @@ describe('data.ts', function () {
         );
 
         expect(singleKanjiDataEntryAsText).to.equal(
-          '両\nboth; old Japanese coin; counter for carriages (e.g., in a train); two\nリョウ、 てる、 ふたつ\n名乗り\tもろ\nHalpern\t3518\nHeisig 5th Edition\t1168 both\nHeisig 6th Edition\t1252 both\nHenshall\t411\nKanji Learners Dictionary\t2191\nKanji Learners Dictionary 2nd Edition\t2949\nNelson\t34\nNew Nelson\t23\nPinYin\tliang3\nSkip Pattern\t4-6-1\nTuttle Kanji & Kana\t200\nTuttle Kanji Dictionary\t0a6.11\nUnicode\t4E21\n'
+          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2> (e.g., test entry example 2); <eigo-entry-3>\n<okun-entry-1>、 <okun-entry-2>、 <okun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
     });
