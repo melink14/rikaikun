@@ -258,25 +258,7 @@ describe('data.ts', function () {
           it('uses a hyphen for all misc fields when all misc properties are empty', function () {
             const emptyMiscKanjiDictEntry = {
               ...kanjiDictEntry,
-              misc: {
-                U: '',
-                B: '',
-                G: '',
-                S: '',
-                F: '',
-                N: '',
-                V: '',
-                H: '',
-                DK: '',
-                DL: '',
-                L: '',
-                DN: '',
-                E: '',
-                IN: '',
-                P: '',
-                I: '',
-                Y: '',
-              },
+              misc: {},
             };
 
             const hyphenAsAllMiscFields = rcxDict.makeText(
