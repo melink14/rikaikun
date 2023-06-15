@@ -940,7 +940,6 @@ class RcxDict {
   }
 
   makeText(entry: DictEntryData | null, max: number): string {
-    let i;
     let j;
     let t;
 
@@ -962,7 +961,7 @@ class RcxDict {
         b.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
+      for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
         const e = this.kanjiInfoLabelList[i];
         j = entry.misc[e];
         b.push(
@@ -976,7 +975,7 @@ class RcxDict {
       if (max > entry.data.length) {
         max = entry.data.length;
       }
-      for (i = 0; i < max; ++i) {
+      for (let i = 0; i < max; ++i) {
         const e = entry.data[i].entry.match(
           /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
         );
