@@ -944,24 +944,26 @@ class RcxDict {
       return '';
     }
 
-    const b = [];
+    const result = [];
 
     if (entry.kanji) {
-      b.push(entry.kanji + '\n');
-      b.push((entry.eigo.length ? entry.eigo : '-') + '\n');
+      result.push(entry.kanji + '\n');
+      result.push((entry.eigo.length ? entry.eigo : '-') + '\n');
 
-      b.push(entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n');
+      result.push(
+        entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n'
+      );
       if (entry.nanori.length) {
-        b.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
+        result.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
       }
       if (entry.bushumei.length) {
-        b.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
+        result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
       for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
         const e = this.kanjiInfoLabelList[i];
         const j = entry.misc[e];
-        b.push(
+        result.push(
           this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
             '\t' +
             (j || '-') +
@@ -981,16 +983,16 @@ class RcxDict {
         }
 
         if (e[2]) {
-          b.push(e[1] + '\t' + e[2]);
+          result.push(e[1] + '\t' + e[2]);
         } else {
-          b.push(e[1]);
+          result.push(e[1]);
         }
 
         const t = e[3].replace(/\//g, '; ');
-        b.push('\t' + t + '\n');
+        result.push('\t' + t + '\n');
       }
     }
-    return b.join('');
+    return result.join('');
   }
 }
 
