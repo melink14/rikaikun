@@ -961,8 +961,8 @@ class RcxDict {
       }
 
       for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
-        const e = this.kanjiInfoLabelList[i];
-        const j = entry.misc[e];
+        const kanjiInfoCode = this.kanjiInfoLabelList[i];
+        const j = entry.misc[kanjiInfoCode];
         result.push(
           this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
             '\t' +
