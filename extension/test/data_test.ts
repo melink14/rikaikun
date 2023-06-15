@@ -86,7 +86,7 @@ describe('data.ts', function () {
   });
 
   describe('makeText', function () {
-    describe('with a non-kanji dict entry', function () {
+    describe('with a dict entry consisting of empty kanji but present data properties', function () {
       const nonKanjiDictEntry = {
         ...DEFAULT_DICT_ENTRY,
         data: [
