@@ -224,7 +224,7 @@ describe('data.ts', function () {
           expect(noBushumeiFieldKanjiEntryText).to.not.contain('部首名');
         });
 
-        describe('empty misc fields', function () {
+        describe('with empty misc fields', function () {
           it('uses a hyphen for unicode field when misc U property is empty', function () {
             const emptyUMiscKanjiDictEntry = {
               ...kanjiDictEntry,
