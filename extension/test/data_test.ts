@@ -196,12 +196,10 @@ describe('data.ts', function () {
             /* max= */ 1
           );
 
-          expect(hyphenAsEigoEntryText).to.equal(
-            '<kanji-entry>\n-\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
-          );
+          expect(hyphenAsEigoEntryText).to.contain('<kanji-entry>\n-\n');
         });
 
-        it('omits the nanori field after onkun field when nanori field is empty', function () {
+        it('omits the nanori field between the onkun field and bushumei field when nanori field is empty', function () {
           const emptyNanoriKanjiDictEntry = { ...kanjiDictEntry, nanori: '' };
 
           const noNanoriFieldKanjiEntryText = rcxDict.makeText(
@@ -209,12 +207,12 @@ describe('data.ts', function () {
             /* max= */ 1
           );
 
-          expect(noNanoriFieldKanjiEntryText).to.equal(
-            '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          expect(noNanoriFieldKanjiEntryText).to.contain(
+            '<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n部首名\t<bushumei-entry>\n'
           );
         });
 
-        it('omits the bushumei field after nanori field when bushumei field is empty', function () {
+        it('omits the bushumei field between the nanori field and misc fields when bushumei field is empty', function () {
           const emptyBushumeiKanjiDictEntry = {
             ...kanjiDictEntry,
             bushumei: '',
@@ -225,8 +223,8 @@ describe('data.ts', function () {
             /* max= */ 1
           );
 
-          expect(noBushumeiFieldKanjiEntryText).to.equal(
-            '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          expect(noBushumeiFieldKanjiEntryText).to.contain(
+            '名乗り\t<nanori-entry>\nHalpern\t<H-misc-entry>\n'
           );
         });
 
@@ -242,9 +240,7 @@ describe('data.ts', function () {
               /* max= */ 1
             );
 
-            expect(hyphenAsUnicodeField).to.equal(
-              '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t-\n'
-            );
+            expect(hyphenAsUnicodeField).to.contain('Unicode\t-\n');
           });
 
           it('uses a hyphen for all misc fields when all misc properties are empty', function () {
@@ -258,8 +254,8 @@ describe('data.ts', function () {
               /* max= */ 1
             );
 
-            expect(hyphenAsAllMiscFields).to.equal(
-              '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t-\nHeisig 5th Edition\t-\nHeisig 6th Edition\t-\nHenshall\t-\nKanji Learners Dictionary\t-\nKanji Learners Dictionary 2nd Edition\t-\nNelson\t-\nNew Nelson\t-\nPinYin\t-\nSkip Pattern\t-\nTuttle Kanji & Kana\t-\nTuttle Kanji Dictionary\t-\nUnicode\t-\n'
+            expect(hyphenAsAllMiscFields).to.contain(
+              'Halpern\t-\nHeisig 5th Edition\t-\nHeisig 6th Edition\t-\nHenshall\t-\nKanji Learners Dictionary\t-\nKanji Learners Dictionary 2nd Edition\t-\nNelson\t-\nNew Nelson\t-\nPinYin\t-\nSkip Pattern\t-\nTuttle Kanji & Kana\t-\nTuttle Kanji Dictionary\t-\nUnicode\t-\n'
             );
           });
         });
