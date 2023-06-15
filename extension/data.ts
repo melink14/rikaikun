@@ -940,7 +940,6 @@ class RcxDict {
   }
 
   makeText(entry: DictEntryData | null, max: number): string {
-    let j;
     let t;
 
     if (entry === null) {
@@ -963,7 +962,7 @@ class RcxDict {
 
       for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
         const e = this.kanjiInfoLabelList[i];
-        j = entry.misc[e];
+        const j = entry.misc[e];
         b.push(
           this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
             '\t' +
