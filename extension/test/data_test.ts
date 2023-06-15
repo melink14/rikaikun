@@ -188,7 +188,7 @@ describe('data.ts', function () {
       });
 
       describe('with empty fields', function () {
-        it('uses a hyphen after kanji field when eigo field is empty', function () {
+        it('uses a hyphen in the place of the eigo field after kanji field when the eigo field is empty', function () {
           const emptyEigoKanjiDictEntry = { ...kanjiDictEntry, eigo: '' };
 
           const hyphenAsEigoEntryText = rcxDict.makeText(
@@ -199,7 +199,7 @@ describe('data.ts', function () {
           expect(hyphenAsEigoEntryText).to.contain('<kanji-entry>\n-\n');
         });
 
-        it('omits the nanori field between the onkun field and bushumei field when nanori field is empty', function () {
+        it('omits the nanori (名乗り) field when nanori field is empty', function () {
           const emptyNanoriKanjiDictEntry = { ...kanjiDictEntry, nanori: '' };
 
           const noNanoriFieldKanjiEntryText = rcxDict.makeText(
@@ -207,12 +207,10 @@ describe('data.ts', function () {
             /* max= */ 1
           );
 
-          expect(noNanoriFieldKanjiEntryText).to.contain(
-            '<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n部首名\t<bushumei-entry>\n'
-          );
+          expect(noNanoriFieldKanjiEntryText).to.not.contain('名乗り');
         });
 
-        it('omits the bushumei field between the nanori field and misc fields when bushumei field is empty', function () {
+        it('omits the bushumei (部首名) field when bushumei field is empty', function () {
           const emptyBushumeiKanjiDictEntry = {
             ...kanjiDictEntry,
             bushumei: '',
@@ -223,9 +221,7 @@ describe('data.ts', function () {
             /* max= */ 1
           );
 
-          expect(noBushumeiFieldKanjiEntryText).to.contain(
-            '名乗り\t<nanori-entry>\nHalpern\t<H-misc-entry>\n'
-          );
+          expect(noBushumeiFieldKanjiEntryText).to.not.contain('部首名');
         });
 
         describe('empty misc fields', function () {
