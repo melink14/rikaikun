@@ -962,12 +962,10 @@ class RcxDict {
 
       for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
         const kanjiInfoCode = this.kanjiInfoLabelList[i];
+        const kanjiInfoName = this.kanjiInfoLabelList[i + 1];
         const kanjiInfo = entry.misc[kanjiInfoCode];
         result.push(
-          this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
-            '\t' +
-            (kanjiInfo || '-') +
-            '\n'
+          kanjiInfoName.replace('&amp;', '&') + '\t' + (kanjiInfo || '-') + '\n'
         );
       }
     } else {
