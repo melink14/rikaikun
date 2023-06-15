@@ -973,20 +973,20 @@ class RcxDict {
         max = entry.data.length;
       }
       for (let i = 0; i < max; ++i) {
-        const e = entry.data[i].entry.match(
+        const entryMatch = entry.data[i].entry.match(
           /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
         );
-        if (!e) {
+        if (!entryMatch) {
           continue;
         }
 
-        if (e[2]) {
-          result.push(e[1] + '\t' + e[2]);
+        if (entryMatch[2]) {
+          result.push(entryMatch[1] + '\t' + entryMatch[2]);
         } else {
-          result.push(e[1]);
+          result.push(entryMatch[1]);
         }
 
-        const t = e[3].replace(/\//g, '; ');
+        const t = entryMatch[3].replace(/\//g, '; ');
         result.push('\t' + t + '\n');
       }
     }
