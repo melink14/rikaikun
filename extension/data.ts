@@ -987,8 +987,7 @@ class RcxDict {
           result.push(word);
         }
 
-        const t = definitions.replace(/\//g, '; ');
-        result.push('\t' + t + '\n');
+        result.push('\t' + definitions.replace(/\//g, '; ') + '\n');
       }
     }
     return result.join('');
