@@ -979,14 +979,15 @@ class RcxDict {
         if (!entryMatch) {
           continue;
         }
+        const [_, word, pronunciation, definitions] = entryMatch;
 
-        if (entryMatch[2]) {
-          result.push(entryMatch[1] + '\t' + entryMatch[2]);
+        if (pronunciation) {
+          result.push(word + '\t' + pronunciation);
         } else {
-          result.push(entryMatch[1]);
+          result.push(word);
         }
 
-        const t = entryMatch[3].replace(/\//g, '; ');
+        const t = definitions.replace(/\//g, '; ');
         result.push('\t' + t + '\n');
       }
     }
