@@ -940,8 +940,6 @@ class RcxDict {
   }
 
   makeText(entry: DictEntryData | null, max: number): string {
-    let t;
-
     if (entry === null) {
       return '';
     }
@@ -988,7 +986,7 @@ class RcxDict {
           b.push(e[1]);
         }
 
-        t = e[3].replace(/\//g, '; ');
+        const t = e[3].replace(/\//g, '; ');
         b.push('\t' + t + '\n');
       }
     }
