@@ -601,7 +601,7 @@ class RcxDict {
     return entry;
   }
 
-  kanjiInfoLabelList: string[] = [
+  private kanjiInfoLabelList: string[] = [
     /*
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
