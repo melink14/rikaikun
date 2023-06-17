@@ -601,7 +601,10 @@ class RcxDict {
     return entry;
   }
 
-  private static KANJI_INFO_LABELS = [
+  private static readonly KANJI_INFO_LABELS: {
+    code: string;
+    kanjiInfoLabel: string;
+  }[] = [
     /*
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
@@ -626,7 +629,7 @@ class RcxDict {
     { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji & Kana' },
     { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
     { code: 'U', kanjiInfoLabel: 'Unicode' },
-  ] as const;
+  ];
 
   // TODO: Entry should be extracted as separate type.
   makeHtml(entry: DictEntryData | null) {
