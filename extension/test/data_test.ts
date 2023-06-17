@@ -86,6 +86,12 @@ describe('data.ts', function () {
   });
 
   describe('makeText', function () {
+    it('returns an empty string if null dict entry is passed in', function () {
+      const emptyString = rcxDict.makeText(null, /* max= */ 1);
+
+      expect(emptyString).to.equal('');
+    });
+
     describe('with a dict entry consisting of empty kanji but present data properties', function () {
       const nonKanjiDictEntry = {
         ...DEFAULT_DICT_ENTRY,
@@ -133,6 +139,48 @@ describe('data.ts', function () {
         expect(allDataEntriesAsText).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
         );
+      });
+
+      describe('when data entry is an invalid format', function () {
+        it('returns an empty string when all the data entries are an invalid format', function () {
+          const nonKanjiDictEntryWithInvalidEntry = {
+            ...DEFAULT_DICT_ENTRY,
+            data: [
+              { entry: '<invalid-format-entry>', reason: undefined },
+              { entry: '<invalid-format-entry-2>', reason: undefined },
+            ],
+          };
+
+          const emptyString = rcxDict.makeText(
+            nonKanjiDictEntryWithInvalidEntry,
+            /* max= */ 1
+          );
+
+          expect(emptyString).to.equal('');
+        });
+
+        it('returns a valid format data entry as text when there is an invalid format data entry and a valid format data entry', function () {
+          const nonKanjiDictEntryWithInvalidEntryAndValidEntry = {
+            ...DEFAULT_DICT_ENTRY,
+            data: [
+              { entry: '<invalid-format-entry>', reason: undefined },
+              {
+                entry:
+                  '<valid-word> [<valid-pronunciation>] /<valid-definition>/',
+                reason: undefined,
+              },
+            ],
+          };
+
+          const validEntryAsText = rcxDict.makeText(
+            nonKanjiDictEntryWithInvalidEntryAndValidEntry,
+            /* max= */ 2
+          );
+
+          expect(validEntryAsText).to.equal(
+            '<valid-word>\t<valid-pronunciation>\t<valid-definition>\n'
+          );
+        });
       });
     });
 

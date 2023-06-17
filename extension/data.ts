@@ -940,60 +940,58 @@ class RcxDict {
   }
 
   makeText(entry: DictEntryData | null, max: number): string {
-    let e;
-    let i;
-    let j;
-    let t;
-
     if (entry === null) {
       return '';
     }
 
-    const b = [];
+    const result = [];
 
     if (entry.kanji) {
-      b.push(entry.kanji + '\n');
-      b.push((entry.eigo.length ? entry.eigo : '-') + '\n');
+      result.push(entry.kanji + '\n');
+      result.push((entry.eigo.length ? entry.eigo : '-') + '\n');
 
-      b.push(entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n');
+      result.push(
+        entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n'
+      );
       if (entry.nanori.length) {
-        b.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
+        result.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
       }
       if (entry.bushumei.length) {
-        b.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
+        result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
-        e = this.kanjiInfoLabelList[i];
-        j = entry.misc[e];
-        b.push(
-          this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
-            '\t' +
-            (j || '-') +
-            '\n'
+      for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
+        const kanjiInfoCode = this.kanjiInfoLabelList[i];
+        const kanjiInfoName = this.kanjiInfoLabelList[i + 1].replace(
+          '&amp;',
+          '&'
         );
+        const kanjiInfo = entry.misc[kanjiInfoCode] || '-';
+        result.push(kanjiInfoName + '\t' + kanjiInfo + '\n');
       }
     } else {
       if (max > entry.data.length) {
         max = entry.data.length;
       }
-      for (i = 0; i < max; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-        if (!e) {
+      for (let i = 0; i < max; ++i) {
+        const entryMatch = entry.data[i].entry.match(
+          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
+        );
+        if (!entryMatch) {
           continue;
         }
+        const [_, word, pronunciation, definitions] = entryMatch;
 
-        if (e[2]) {
-          b.push(e[1] + '\t' + e[2]);
+        if (pronunciation) {
+          result.push(word + '\t' + pronunciation);
         } else {
-          b.push(e[1]);
+          result.push(word);
         }
 
-        t = e[3].replace(/\//g, '; ');
-        b.push('\t' + t + '\n');
+        result.push('\t' + definitions.replace(/\//g, '; ') + '\n');
       }
     }
-    return b.join('');
+    return result.join('');
   }
 }
 
