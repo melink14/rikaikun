@@ -623,7 +623,7 @@ class RcxDict {
     { code: 'V', kanjiInfoLabel: 'New Nelson' },
     { code: 'Y', kanjiInfoLabel: 'PinYin' },
     { code: 'P', kanjiInfoLabel: 'Skip Pattern' },
-    { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji &amp; Kana' },
+    { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji & Kana' },
     { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
     { code: 'U', kanjiInfoLabel: 'Unicode' },
   ] as const;
@@ -948,9 +948,8 @@ class RcxDict {
       }
 
       for (const { code, kanjiInfoLabel } of this.kanjiInfoLabelList) {
-        const kanjiInfoName = kanjiInfoLabel.replace('&amp;', '&');
         const kanjiInfo = entry.misc[code] || '-';
-        result.push(kanjiInfoName + '\t' + kanjiInfo + '\n');
+        result.push(kanjiInfoLabel + '\t' + kanjiInfo + '\n');
       }
     } else {
       if (max > entry.data.length) {
