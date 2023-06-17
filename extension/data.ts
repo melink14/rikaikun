@@ -601,7 +601,7 @@ class RcxDict {
     return entry;
   }
 
-  private kanjiInfoLabelList = [
+  private KANJI_INFO_LABELS = [
     /*
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
@@ -947,7 +947,7 @@ class RcxDict {
         result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (const { code, kanjiInfoLabel } of this.kanjiInfoLabelList) {
+      for (const { code, kanjiInfoLabel } of this.KANJI_INFO_LABELS) {
         const kanjiInfo = entry.misc[code] || '-';
         result.push(kanjiInfoLabel + '\t' + kanjiInfo + '\n');
       }
