@@ -87,9 +87,9 @@ describe('data.ts', function () {
 
   describe('makeText', function () {
     it('returns an empty string if null dict entry is passed in', function () {
-      const emptyString = rcxDict.makeText(null, /* max= */ 1);
+      const text = rcxDict.makeText(null, /* max= */ 1);
 
-      expect(emptyString).to.equal('');
+      expect(text).to.equal('');
     });
 
     describe('with a dict entry consisting of empty kanji but present data properties', function () {
@@ -109,41 +109,32 @@ describe('data.ts', function () {
       };
 
       it('returns 1 data entry as text with tabs separating word, pronunciation, and definitions; with semicolons separating each definition; ending in a newline', function () {
-        const singleDataEntryAsText = rcxDict.makeText(
-          nonKanjiDictEntry,
-          /* max= */ 1
-        );
+        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 1);
 
-        expect(singleDataEntryAsText).to.equal(
+        expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n'
         );
       });
 
       it('returns 2 data entries as text with newlines separating each data entry text; ending in a newline', function () {
-        const twoDataEntriesAsText = rcxDict.makeText(
-          nonKanjiDictEntry,
-          /* max= */ 2
-        );
+        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 2);
 
-        expect(twoDataEntriesAsText).to.equal(
+        expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
         );
       });
 
       it('when max is greater than the number of data entries, it returns all data entries as text with each data entry text separated by newlines; ending in a newline', function () {
-        const allDataEntriesAsText = rcxDict.makeText(
-          nonKanjiDictEntry,
-          /* max= */ 1000
-        );
+        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 1000);
 
-        expect(allDataEntriesAsText).to.equal(
+        expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
         );
       });
 
       describe('when data entry is an invalid format', function () {
         it('returns an empty string when all the data entries are an invalid format', function () {
-          const nonKanjiDictEntryWithInvalidEntry = {
+          const nonKanjiDictEntryWithInvalidEntries = {
             ...DEFAULT_DICT_ENTRY,
             data: [
               { entry: '<invalid-format-entry>', reason: undefined },
@@ -151,12 +142,12 @@ describe('data.ts', function () {
             ],
           };
 
-          const emptyString = rcxDict.makeText(
-            nonKanjiDictEntryWithInvalidEntry,
+          const text = rcxDict.makeText(
+            nonKanjiDictEntryWithInvalidEntries,
             /* max= */ 1
           );
 
-          expect(emptyString).to.equal('');
+          expect(text).to.equal('');
         });
 
         it('returns a valid format data entry as text when there is an invalid format data entry and a valid format data entry', function () {
@@ -172,12 +163,12 @@ describe('data.ts', function () {
             ],
           };
 
-          const validEntryAsText = rcxDict.makeText(
+          const text = rcxDict.makeText(
             nonKanjiDictEntryWithInvalidEntryAndValidEntry,
             /* max= */ 2
           );
 
-          expect(validEntryAsText).to.equal(
+          expect(text).to.equal(
             '<valid-word>\t<valid-pronunciation>\t<valid-definition>\n'
           );
         });
@@ -214,23 +205,17 @@ describe('data.ts', function () {
       };
 
       it('returns 1 kanji entry formatted as text with newlines separating kanji, eigo, onkun, nanori, bushumei, and misc lines; misc name and entry separated by a tab; ending in newline', function () {
-        const singleKanjiDataEntryAsText = rcxDict.makeText(
-          kanjiDictEntry,
-          /* max= */ 1
-        );
+        const text = rcxDict.makeText(kanjiDictEntry, /* max= */ 1);
 
-        expect(singleKanjiDataEntryAsText).to.equal(
+        expect(text).to.equal(
           '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
 
       it('even with large max, returns a single kanji data entry as text', function () {
-        const singleKanjiDataEntryAsText = rcxDict.makeText(
-          kanjiDictEntry,
-          /* max= */ 1000
-        );
+        const text = rcxDict.makeText(kanjiDictEntry, /* max= */ 1000);
 
-        expect(singleKanjiDataEntryAsText).to.equal(
+        expect(text).to.equal(
           '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
         );
       });
@@ -239,23 +224,20 @@ describe('data.ts', function () {
         it('uses a hyphen in the place of the eigo field after kanji field when the eigo field is empty', function () {
           const emptyEigoKanjiDictEntry = { ...kanjiDictEntry, eigo: '' };
 
-          const hyphenAsEigoEntryText = rcxDict.makeText(
-            emptyEigoKanjiDictEntry,
-            /* max= */ 1
-          );
+          const text = rcxDict.makeText(emptyEigoKanjiDictEntry, /* max= */ 1);
 
-          expect(hyphenAsEigoEntryText).to.contain('<kanji-entry>\n-\n');
+          expect(text).to.contain('<kanji-entry>\n-\n');
         });
 
         it('omits the nanori (名乗り) field when nanori field is empty', function () {
           const emptyNanoriKanjiDictEntry = { ...kanjiDictEntry, nanori: '' };
 
-          const noNanoriFieldKanjiEntryText = rcxDict.makeText(
+          const text = rcxDict.makeText(
             emptyNanoriKanjiDictEntry,
             /* max= */ 1
           );
 
-          expect(noNanoriFieldKanjiEntryText).to.not.contain('名乗り');
+          expect(text).to.not.contain('名乗り');
         });
 
         it('omits the bushumei (部首名) field when bushumei field is empty', function () {
@@ -264,12 +246,12 @@ describe('data.ts', function () {
             bushumei: '',
           };
 
-          const noBushumeiFieldKanjiEntryText = rcxDict.makeText(
+          const text = rcxDict.makeText(
             emptyBushumeiKanjiDictEntry,
             /* max= */ 1
           );
 
-          expect(noBushumeiFieldKanjiEntryText).to.not.contain('部首名');
+          expect(text).to.not.contain('部首名');
         });
 
         describe('with empty misc fields', function () {
@@ -279,12 +261,12 @@ describe('data.ts', function () {
               misc: { ...kanjiDictEntry.misc, U: '' },
             };
 
-            const hyphenAsUnicodeField = rcxDict.makeText(
+            const text = rcxDict.makeText(
               emptyUMiscKanjiDictEntry,
               /* max= */ 1
             );
 
-            expect(hyphenAsUnicodeField).to.contain('Unicode\t-\n');
+            expect(text).to.contain('Unicode\t-\n');
           });
 
           it('uses a hyphen for all misc fields when all misc properties are empty', function () {
@@ -293,12 +275,12 @@ describe('data.ts', function () {
               misc: {},
             };
 
-            const hyphenAsAllMiscFields = rcxDict.makeText(
+            const text = rcxDict.makeText(
               emptyMiscKanjiDictEntry,
               /* max= */ 1
             );
 
-            expect(hyphenAsAllMiscFields).to.contain(
+            expect(text).to.contain(
               'Halpern\t-\nHeisig 5th Edition\t-\nHeisig 6th Edition\t-\nHenshall\t-\nKanji Learners Dictionary\t-\nKanji Learners Dictionary 2nd Edition\t-\nNelson\t-\nNew Nelson\t-\nPinYin\t-\nSkip Pattern\t-\nTuttle Kanji & Kana\t-\nTuttle Kanji Dictionary\t-\nUnicode\t-\n'
             );
           });
