@@ -601,7 +601,7 @@ class RcxDict {
     return entry;
   }
 
-  private kanjiInfoLabelList: string[] = [
+  private kanjiInfoLabelList = [
     /*
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
@@ -613,33 +613,20 @@ class RcxDict {
         'K',  'Gakken Kanji Dictionary Index',
         'W',  'Korean Reading',
     */
-    'H',
-    'Halpern',
-    'L',
-    'Heisig 5th Edition',
-    'DN',
-    'Heisig 6th Edition',
-    'E',
-    'Henshall',
-    'DK',
-    'Kanji Learners Dictionary',
-    'DL',
-    'Kanji Learners Dictionary 2nd Edition',
-    'N',
-    'Nelson',
-    'V',
-    'New Nelson',
-    'Y',
-    'PinYin',
-    'P',
-    'Skip Pattern',
-    'IN',
-    'Tuttle Kanji &amp; Kana',
-    'I',
-    'Tuttle Kanji Dictionary',
-    'U',
-    'Unicode',
-  ];
+    { code: 'H', kanjiInfoLabel: 'Halpern' },
+    { code: 'L', kanjiInfoLabel: 'Heisig 5th Edition' },
+    { code: 'DN', kanjiInfoLabel: 'Heisig 6th Edition' },
+    { code: 'E', kanjiInfoLabel: 'Henshall' },
+    { code: 'DK', kanjiInfoLabel: 'Kanji Learners Dictionary' },
+    { code: 'DL', kanjiInfoLabel: 'Kanji Learners Dictionary 2nd Edition' },
+    { code: 'N', kanjiInfoLabel: 'Nelson' },
+    { code: 'V', kanjiInfoLabel: 'New Nelson' },
+    { code: 'Y', kanjiInfoLabel: 'PinYin' },
+    { code: 'P', kanjiInfoLabel: 'Skip Pattern' },
+    { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji &amp; Kana' },
+    { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
+    { code: 'U', kanjiInfoLabel: 'Unicode' },
+  ] as const;
 
   // TODO: Entry should be extracted as separate type.
   makeHtml(entry: DictEntryData | null) {
@@ -960,13 +947,9 @@ class RcxDict {
         result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
-        const kanjiInfoCode = this.kanjiInfoLabelList[i];
-        const kanjiInfoName = this.kanjiInfoLabelList[i + 1].replace(
-          '&amp;',
-          '&'
-        );
-        const kanjiInfo = entry.misc[kanjiInfoCode] || '-';
+      for (const { code, kanjiInfoLabel } of this.kanjiInfoLabelList) {
+        const kanjiInfoName = kanjiInfoLabel.replace('&amp;', '&');
+        const kanjiInfo = entry.misc[code] || '-';
         result.push(kanjiInfoName + '\t' + kanjiInfo + '\n');
       }
     } else {
