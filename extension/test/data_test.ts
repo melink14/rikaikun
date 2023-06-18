@@ -1,5 +1,5 @@
 import { Config } from '../configuration';
-import { RcxDict } from '../data';
+import { RcxDict, parseWordDictEntry } from '../data';
 import { expect, use } from '@esm-bundle/chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
@@ -82,6 +82,67 @@ describe('data.ts', function () {
       expect(
         rcxDict.wordSearch('ＤＶＤ-ＲＯＭ', /* doNames= */ false)?.data
       ).to.include.something.like({ entry: /^ＤＶＤ-ＲＯＭ .*/ });
+    });
+  });
+
+  describe('parseWordDictEntry', function () {
+    describe('with a valid word dict line', function () {
+      it('parses a word dict entry from a word dict line which has a word, pronunciation, and definitions', function () {
+        const wordDictLine =
+          '<word> [<pronunciation>] /<definition-1>/<definition-2>/<definition-3>/';
+
+        const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+        expect(wordDictEntry).to.deep.equal({
+          word: '<word>',
+          pronunciation: '<pronunciation>',
+          definitions: ['<definition-1>', '<definition-2>', '<definition-3>'],
+        });
+      });
+
+      it('parses a word dict entry from a word dict line which has a word and definitions, but no pronunciation', function () {
+        const lineFromWordDictWithNoPronunciation =
+          '<word> /<definition-1>/<definition-2>/';
+
+        const wordDictEntry = parseWordDictEntry(
+          lineFromWordDictWithNoPronunciation
+        );
+
+        expect(wordDictEntry).to.deep.equal({
+          word: '<word>',
+          pronunciation: null,
+          definitions: ['<definition-1>', '<definition-2>'],
+        });
+      });
+    });
+
+    describe('with an invalid word dict line', function () {
+      it('returns null when you pass in an empty word dict line', function () {
+        const emptyWordDictLine = '';
+
+        const wordDictEntry = parseWordDictEntry(emptyWordDictLine);
+
+        expect(wordDictEntry).to.equal(null);
+      });
+
+      it('returns null when you pass in a word dict line with badly formatted definitions', function () {
+        const badlyFormattedDefinitionsWordDictLine =
+          '<word> [<pronunciation>] /';
+
+        const wordDictEntry = parseWordDictEntry(
+          badlyFormattedDefinitionsWordDictLine
+        );
+
+        expect(wordDictEntry).to.equal(null);
+      });
+
+      it('returns null when you pass in a word dict line with no definitions', function () {
+        const wordDictLineWithNoDefinitions = '<word> [<pronunciation>] //';
+
+        const wordDictEntry = parseWordDictEntry(wordDictLineWithNoDefinitions);
+
+        expect(wordDictEntry).to.equal(null);
+      });
     });
   });
 
