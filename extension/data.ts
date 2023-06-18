@@ -986,11 +986,11 @@ class RcxDict {
         max = entry.data.length;
       }
       for (let i = 0; i < max; ++i) {
-        const entryMatch = entry.data[i].entry.match(WORD_DICT_ENTRY_REGEX);
-        if (!entryMatch) {
+        const wordDictEntry = parseWordDictEntry(entry.data[i].entry);
+        if (!wordDictEntry) {
           continue;
         }
-        const [_, word, pronunciation, definitions] = entryMatch;
+        const { word, pronunciation, definitions } = wordDictEntry;
 
         if (pronunciation) {
           result.push(word + '\t' + pronunciation);
@@ -998,7 +998,7 @@ class RcxDict {
           result.push(word);
         }
 
-        result.push('\t' + definitions.replace(/\//g, '; ') + '\n');
+        result.push('\t' + definitions.join('; ') + '\n');
       }
     }
     return result.join('');
