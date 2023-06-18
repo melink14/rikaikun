@@ -86,6 +86,8 @@ interface DeinflectionRuleGroup {
   rules: DeinflectionRule[];
 }
 
+const WORD_DICT_ENTRY_REGEX = /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//;
+
 class RcxDict {
   private static instance: RcxDict;
 
@@ -786,14 +788,14 @@ class RcxDict {
         '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>'
       );
       for (i = 0; i < entry.data.length; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = entry.data[i].entry.match(WORD_DICT_ENTRY_REGEX);
         if (!e) {
           continue;
         }
 
         // the next two lines re-process the entries that contain separate
         // search key and spelling due to mixed hiragana/katakana spelling
-        const e3 = e[3].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        const e3 = e[3].match(WORD_DICT_ENTRY_REGEX);
         if (e3) {
           e = e3;
         }
@@ -871,7 +873,7 @@ class RcxDict {
         Math.min(this.config.maxDictEntries + entry.index, entry.data.length);
         ++i
       ) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        e = entry.data[i].entry.match(WORD_DICT_ENTRY_REGEX);
         if (!e) {
           continue;
         }
@@ -962,9 +964,7 @@ class RcxDict {
         max = entry.data.length;
       }
       for (let i = 0; i < max; ++i) {
-        const entryMatch = entry.data[i].entry.match(
-          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
-        );
+        const entryMatch = entry.data[i].entry.match(WORD_DICT_ENTRY_REGEX);
         if (!entryMatch) {
           continue;
         }
