@@ -99,7 +99,7 @@ describe('data.ts', function () {
       });
     });
 
-    it('parses a word dict entry from a word dict line which has a word and definitions', function () {
+    it('parses a word dict entry from a word dict line which has a word and definitions, but no pronunciation', function () {
       const lineFromWordDictWithNoPronunciation =
         '<word> /<definition-1>/<definition-2>/';
       expect(
