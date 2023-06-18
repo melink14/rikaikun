@@ -110,6 +110,16 @@ describe('data.ts', function () {
         definitions: ['<definition-1>', '<definition-2>'],
       });
     });
+
+    describe('with an invalid word dict line', function () {
+      it('returns null when you pass in an empty word dict line', function () {
+        const emptyWordDictLine = '';
+
+        const wordDictEntry = parseWordDictEntry(emptyWordDictLine);
+
+        expect(wordDictEntry).to.equal(null);
+      });
+    });
   });
 
   describe('makeText', function () {
