@@ -606,6 +606,7 @@ class RcxDict {
     kanjiInfoLabel: string;
   }[] = [
     /*
+      This is a small list of kanji info labels we currently don't include:
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
         'DO',  'P.G. O\'Neill Index',
@@ -615,6 +616,8 @@ class RcxDict {
         'MP',  'Morohashi Daikanwajiten Volume/Page',
         'K',  'Gakken Kanji Dictionary Index',
         'W',  'Korean Reading',
+      Here is a comprehensive up-to-date list of all the kanji info labels:
+        http://www.edrdg.org/wiki/index.php/KANJIDIC_Project
     */
     { code: 'H', kanjiInfoLabel: 'Halpern' },
     { code: 'L', kanjiInfoLabel: 'Heisig 5th Edition' },
