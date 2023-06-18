@@ -130,6 +130,14 @@ describe('data.ts', function () {
 
         expect(wordDictEntry).to.equal(null);
       });
+
+      it('returns null when you pass in a word dict line with no definitions', function () {
+        const wordDictLineWithNoDefinitions = '<word> [<pronunciation>] //';
+
+        const wordDictEntry = parseWordDictEntry(wordDictLineWithNoDefinitions);
+
+        expect(wordDictEntry).to.equal(null);
+      });
     });
   });
 
