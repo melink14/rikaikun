@@ -88,6 +88,28 @@ interface DeinflectionRuleGroup {
 
 const WORD_DICT_ENTRY_REGEX = /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//;
 
+type WordDictEntry = {
+  word: string;
+  pronunciation: string | null;
+  definitions: string[];
+};
+
+export const parseWordDictFields = (line: string): WordDictEntry | null => {
+  const fields = line.match(WORD_DICT_ENTRY_REGEX);
+  if (!fields) {
+    return null;
+  }
+  const [, word, pronunciation, definitions] = fields;
+  if (!word || !definitions) {
+    return null;
+  }
+  return {
+    word,
+    pronunciation: pronunciation || null,
+    definitions: definitions.split('/'),
+  };
+};
+
 class RcxDict {
   private static instance: RcxDict;
 
