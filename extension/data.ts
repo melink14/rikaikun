@@ -601,8 +601,12 @@ class RcxDict {
     return entry;
   }
 
-  kanjiInfoLabelList: string[] = [
+  private static readonly KANJI_INFO_LABELS: {
+    code: string;
+    kanjiInfoLabel: string;
+  }[] = [
     /*
+      This is a small list of kanji info labels we currently don't include:
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
         'DO',  'P.G. O\'Neill Index',
@@ -612,33 +616,22 @@ class RcxDict {
         'MP',  'Morohashi Daikanwajiten Volume/Page',
         'K',  'Gakken Kanji Dictionary Index',
         'W',  'Korean Reading',
+      Here is a comprehensive up-to-date list of all the kanji info labels:
+        http://www.edrdg.org/wiki/index.php/KANJIDIC_Project
     */
-    'H',
-    'Halpern',
-    'L',
-    'Heisig 5th Edition',
-    'DN',
-    'Heisig 6th Edition',
-    'E',
-    'Henshall',
-    'DK',
-    'Kanji Learners Dictionary',
-    'DL',
-    'Kanji Learners Dictionary 2nd Edition',
-    'N',
-    'Nelson',
-    'V',
-    'New Nelson',
-    'Y',
-    'PinYin',
-    'P',
-    'Skip Pattern',
-    'IN',
-    'Tuttle Kanji &amp; Kana',
-    'I',
-    'Tuttle Kanji Dictionary',
-    'U',
-    'Unicode',
+    { code: 'H', kanjiInfoLabel: 'Halpern' },
+    { code: 'L', kanjiInfoLabel: 'Heisig 5th Edition' },
+    { code: 'DN', kanjiInfoLabel: 'Heisig 6th Edition' },
+    { code: 'E', kanjiInfoLabel: 'Henshall' },
+    { code: 'DK', kanjiInfoLabel: 'Kanji Learners Dictionary' },
+    { code: 'DL', kanjiInfoLabel: 'Kanji Learners Dictionary 2nd Edition' },
+    { code: 'N', kanjiInfoLabel: 'Nelson' },
+    { code: 'V', kanjiInfoLabel: 'New Nelson' },
+    { code: 'Y', kanjiInfoLabel: 'PinYin' },
+    { code: 'P', kanjiInfoLabel: 'Skip Pattern' },
+    { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji & Kana' },
+    { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
+    { code: 'U', kanjiInfoLabel: 'Unicode' },
   ];
 
   // TODO: Entry should be extracted as separate type.
@@ -960,14 +953,9 @@ class RcxDict {
         result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (let i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
-        const kanjiInfoCode = this.kanjiInfoLabelList[i];
-        const kanjiInfoName = this.kanjiInfoLabelList[i + 1].replace(
-          '&amp;',
-          '&'
-        );
-        const kanjiInfo = entry.misc[kanjiInfoCode] || '-';
-        result.push(kanjiInfoName + '\t' + kanjiInfo + '\n');
+      for (const { code, kanjiInfoLabel } of RcxDict.KANJI_INFO_LABELS) {
+        const kanjiInfo = entry.misc[code] || '-';
+        result.push(kanjiInfoLabel + '\t' + kanjiInfo + '\n');
       }
     } else {
       if (max > entry.data.length) {
