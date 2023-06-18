@@ -1,5 +1,5 @@
 import { Config } from '../configuration';
-import { RcxDict } from '../data';
+import { RcxDict, parseWordDictEntry } from '../data';
 import { expect, use } from '@esm-bundle/chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
@@ -82,6 +82,33 @@ describe('data.ts', function () {
       expect(
         rcxDict.wordSearch('ＤＶＤ-ＲＯＭ', /* doNames= */ false)?.data
       ).to.include.something.like({ entry: /^ＤＶＤ-ＲＯＭ .*/ });
+    });
+  });
+
+  describe('parseWordDictEntry', function () {
+    it('parses a word dict entry from a word dict line which has a word, pronunciation, and definitions', function () {
+      const wordDictLine =
+        '<word> [<pronunciation>] /<definition-1>/<definition-2>/<definition-3>/';
+
+      const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+      expect(wordDictEntry).to.deep.equal({
+        word: '<word>',
+        pronunciation: '<pronunciation>',
+        definitions: ['<definition-1>', '<definition-2>', '<definition-3>'],
+      });
+    });
+
+    it('parses a word dict entry from a word dict line which has a word and definitions', function () {
+      const lineFromWordDictWithNoPronunciation =
+        '<word> /<definition-1>/<definition-2>/';
+      expect(
+        parseWordDictEntry(lineFromWordDictWithNoPronunciation)
+      ).to.deep.equal({
+        word: '<word>',
+        pronunciation: null,
+        definitions: ['<definition-1>', '<definition-2>'],
+      });
     });
   });
 

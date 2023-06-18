@@ -94,7 +94,7 @@ type WordDictEntry = {
   definitions: string[];
 };
 
-export const parseWordDictFields = (line: string): WordDictEntry | null => {
+export const parseWordDictEntry = (line: string): WordDictEntry | null => {
   const fields = line.match(WORD_DICT_ENTRY_REGEX);
   if (!fields) {
     return null;
