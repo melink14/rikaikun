@@ -90,7 +90,7 @@ const WORD_DICT_ENTRY_REGEX = /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//;
 
 type WordDictEntry = {
   word: string;
-  pronunciation: string | null;
+  pronunciation: string;
   definitions: string[];
 };
 
@@ -102,7 +102,7 @@ export const parseWordDictEntry = (line: string): WordDictEntry | null => {
   }
   return {
     word,
-    pronunciation: pronunciation || null,
+    pronunciation: pronunciation || '',
     definitions: definitions.split('/'),
   };
 };

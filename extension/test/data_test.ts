@@ -110,7 +110,7 @@ describe('data.ts', function () {
 
         expect(wordDictEntry).to.deep.equal({
           word: '<word>',
-          pronunciation: null,
+          pronunciation: '',
           definitions: ['<definition-1>', '<definition-2>'],
         });
       });
