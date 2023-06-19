@@ -87,31 +87,54 @@ describe('data.ts', function () {
 
   describe('parseWordDictEntry', function () {
     describe('with a valid word dict line', function () {
-      it('parses a word dict entry from a word dict line which has a word, pronunciation, and definitions', function () {
+      describe('when word dict line has pronunciation', function () {
         const wordDictLine =
           '<word> [<pronunciation>] /<definition-1>/<definition-2>/<definition-3>/';
 
-        const wordDictEntry = parseWordDictEntry(wordDictLine);
+        it('parses the word part of the entry and returns in word property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
 
-        expect(wordDictEntry).to.deep.equal({
-          word: '<word>',
-          pronunciation: '<pronunciation>',
-          definitions: ['<definition-1>', '<definition-2>', '<definition-3>'],
+          expect(wordDictEntry).to.contain({ word: '<word>' });
+        });
+
+        it('parses the pronunciation part of the entry and returns in pronunciation property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+          expect(wordDictEntry).to.contain({
+            pronunciation: '<pronunciation>',
+          });
+        });
+
+        it('parses the definitions part of the entry and returns in definitions property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+          expect(wordDictEntry).to.deep.contain({
+            definitions: ['<definition-1>', '<definition-2>', '<definition-3>'],
+          });
         });
       });
 
-      it('parses a word dict entry from a word dict line which has a word and definitions, but no pronunciation', function () {
-        const lineFromWordDictWithNoPronunciation =
-          '<word> /<definition-1>/<definition-2>/';
+      describe('when word dict line does not have pronunciation', function () {
+        const wordDictLine = '<word> /<definition-1>/<definition-2>/';
 
-        const wordDictEntry = parseWordDictEntry(
-          lineFromWordDictWithNoPronunciation
-        );
+        it('parses the word part of the entry and returns in word property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
 
-        expect(wordDictEntry).to.deep.equal({
-          word: '<word>',
-          pronunciation: '',
-          definitions: ['<definition-1>', '<definition-2>'],
+          expect(wordDictEntry).to.contain({ word: '<word>' });
+        });
+
+        it('parses the pronunciation part of the entry as an empty string and returns in pronunciation property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+          expect(wordDictEntry).to.contain({ pronunciation: '' });
+        });
+
+        it('parses the definitions part of the entry and returns in definitions property', function () {
+          const wordDictEntry = parseWordDictEntry(wordDictLine);
+
+          expect(wordDictEntry).to.deep.contain({
+            definitions: ['<definition-1>', '<definition-2>'],
+          });
         });
       });
     });
