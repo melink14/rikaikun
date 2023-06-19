@@ -42,6 +42,7 @@
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
 import { Config } from './configuration';
+import { parseWordDictEntry } from './parse-word-dict-entry';
 
 // Be careful of using directly due to object keys.
 const defaultDictEntryData = {
@@ -85,27 +86,6 @@ interface DeinflectionRuleGroup {
   fromLength: number;
   rules: DeinflectionRule[];
 }
-
-const WORD_DICT_ENTRY_REGEX = /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//;
-
-type WordDictEntry = {
-  word: string;
-  pronunciation: string;
-  definitions: string[];
-};
-
-export const parseWordDictEntry = (line: string): WordDictEntry | null => {
-  const [, word, pronunciation, definitions] =
-    line.match(WORD_DICT_ENTRY_REGEX) || [];
-  if (!word || !definitions) {
-    return null;
-  }
-  return {
-    word,
-    pronunciation: pronunciation || '',
-    definitions: definitions.split('/'),
-  };
-};
 
 class RcxDict {
   private static instance: RcxDict;

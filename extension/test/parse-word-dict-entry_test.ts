@@ -1,5 +1,5 @@
-import { parseWordDictEntry } from '../data';
 import { expect } from '@esm-bundle/chai';
+import { parseWordDictEntry } from '../parse-word-dict-entry';
 
 describe('parseWordDictEntry', function () {
   describe('with a valid word dict line', function () {
