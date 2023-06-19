@@ -65,12 +65,9 @@ describe('parseWordDictEntry', function () {
     });
 
     it('returns null when you pass in a word dict line where definitions has no closing slash', function () {
-      const badlyFormattedDefinitionsWordDictLine =
-        '<word> [<pronunciation>] /';
+      const wordDictLineWithNoClosingSlash = '<word> [<pronunciation>] /';
 
-      const wordDictEntry = parseWordDictEntry(
-        badlyFormattedDefinitionsWordDictLine
-      );
+      const wordDictEntry = parseWordDictEntry(wordDictLineWithNoClosingSlash);
 
       expect(wordDictEntry).to.equal(null);
     });
