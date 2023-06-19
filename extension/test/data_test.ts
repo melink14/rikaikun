@@ -148,7 +148,7 @@ describe('data.ts', function () {
         expect(wordDictEntry).to.equal(null);
       });
 
-      it('returns null when you pass in a word dict line with badly formatted definitions', function () {
+      it('returns null when you pass in a word dict line where definitions has no closing slash', function () {
         const badlyFormattedDefinitionsWordDictLine =
           '<word> [<pronunciation>] /';
 
