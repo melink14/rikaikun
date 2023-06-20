@@ -1,7 +1,15 @@
-import { expect } from '@esm-bundle/chai';
+import { expect, use } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import { parseWordDictEntry } from '../parse-word-dict-entry';
 
+use(sinonChai);
+
 describe('parseWordDictEntry', function () {
+  afterEach(function () {
+    sinon.restore();
+  });
+
   describe('with a valid word dict line', function () {
     describe('when word dict line has pronunciation', function () {
       const wordDictLine =
@@ -70,6 +78,18 @@ describe('parseWordDictEntry', function () {
       const wordDictEntry = parseWordDictEntry(wordDictLineWithNoClosingSlash);
 
       expect(wordDictEntry).to.equal(null);
+    });
+
+    it('logs the word dict line when you pass in a word dict line where definitions has no closing slash', function () {
+      const wordDictLineWithNoClosingSlash = '<word> [<pronunciation>] /';
+      sinon.spy(console, 'log');
+
+      parseWordDictEntry(wordDictLineWithNoClosingSlash);
+
+      expect(console.log).to.have.been.calledOnceWith(
+        'Improperly formatted word dict line',
+        '<word> [<pronunciation>] /'
+      );
     });
 
     it('returns null when you pass in a word dict line with no definitions', function () {
