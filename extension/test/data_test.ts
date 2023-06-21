@@ -97,8 +97,8 @@ describe('data.ts', function () {
       expect(text).to.equal('');
     });
 
-    describe('with a dict entry consisting of empty kanji but present data properties', function () {
-      const nonKanjiDictEntry = {
+    describe('with a word dict entry', function () {
+      const wordDictEntry = {
         ...DEFAULT_WORD_DICT_ENTRY,
         data: [
           {
@@ -114,7 +114,7 @@ describe('data.ts', function () {
       };
 
       it('returns 1 data entry as text with tabs separating word, pronunciation, and definitions; with semicolons separating each definition; ending in a newline', function () {
-        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 1);
+        const text = rcxDict.makeText(wordDictEntry, /* max= */ 1);
 
         expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n'
@@ -122,7 +122,7 @@ describe('data.ts', function () {
       });
 
       it('returns 2 data entries as text with newlines separating each data entry text; ending in a newline', function () {
-        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 2);
+        const text = rcxDict.makeText(wordDictEntry, /* max= */ 2);
 
         expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
@@ -130,7 +130,7 @@ describe('data.ts', function () {
       });
 
       it('when max is greater than the number of data entries, it returns all data entries as text with each data entry text separated by newlines; ending in a newline', function () {
-        const text = rcxDict.makeText(nonKanjiDictEntry, /* max= */ 1000);
+        const text = rcxDict.makeText(wordDictEntry, /* max= */ 1000);
 
         expect(text).to.equal(
           '<word-1>\t<pronunciation-1>\t<definition-1>; <definition-2>; <definition-3>\n<word-2>\t<definition-1>; <definition-2>\n'
@@ -139,7 +139,7 @@ describe('data.ts', function () {
 
       describe('when data entry is an invalid format', function () {
         it('returns an empty string when all the data entries are an invalid format', function () {
-          const nonKanjiDictEntryWithInvalidEntries = {
+          const wordDictEntryWithInvalidEntries = {
             ...DEFAULT_WORD_DICT_ENTRY,
             data: [
               { entry: '<invalid-format-entry>', reason: undefined },
@@ -148,7 +148,7 @@ describe('data.ts', function () {
           };
 
           const text = rcxDict.makeText(
-            nonKanjiDictEntryWithInvalidEntries,
+            wordDictEntryWithInvalidEntries,
             /* max= */ 1
           );
 
@@ -156,7 +156,7 @@ describe('data.ts', function () {
         });
 
         it('returns a valid format data entry as text when there is an invalid format data entry and a valid format data entry', function () {
-          const nonKanjiDictEntryWithInvalidEntryAndValidEntry = {
+          const wordDictEntryWithInvalidEntryAndValidEntry = {
             ...DEFAULT_WORD_DICT_ENTRY,
             data: [
               { entry: '<invalid-format-entry>', reason: undefined },
@@ -169,7 +169,7 @@ describe('data.ts', function () {
           };
 
           const text = rcxDict.makeText(
-            nonKanjiDictEntryWithInvalidEntryAndValidEntry,
+            wordDictEntryWithInvalidEntryAndValidEntry,
             /* max= */ 2
           );
 
