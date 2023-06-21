@@ -1,6 +1,6 @@
 import { Config } from '../configuration';
-import { DictEntryData } from '../data';
 import { TestOnlyRcxContent } from '../rikaicontent';
+import { WordDictEntryData } from '../data';
 import { expect, use } from '@esm-bundle/chai';
 import { html, render } from 'lit-html';
 import chrome from 'sinon-chrome';
@@ -970,7 +970,7 @@ describe('RcxContent', function () {
         seedRcxContentWithGoogleDocsMouseMove();
         sinon.spy(window, 'getSelection');
 
-        rcxContent.processEntry({} as DictEntryData);
+        rcxContent.processEntry({} as WordDictEntryData);
 
         expect(window.getSelection).to.not.have.been.called;
       });
@@ -980,7 +980,7 @@ describe('RcxContent', function () {
         seedRcxContentWithNormalMouseMove();
         const addRangeSpy = sinon.spy(window.getSelection()!, 'addRange');
 
-        rcxContent.processEntry({} as DictEntryData);
+        rcxContent.processEntry({} as WordDictEntryData);
 
         expect(addRangeSpy).to.have.been.called.calledOnce;
       });

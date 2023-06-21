@@ -21,20 +21,25 @@ use(chaiThings);
 
 let rcxDict: RcxDict;
 
-const DEFAULT_DICT_ENTRY = {
+const DEFAULT_KANJI_DICT_ENTRY = {
+  type: 'KANJI',
   kanji: '',
   onkun: '',
   nanori: '',
   bushumei: '',
-  misc: {},
   eigo: '',
+  misc: {},
+} as const;
+
+const DEFAULT_WORD_DICT_ENTRY = {
+  type: 'WORD',
   hasNames: false,
   data: [],
   hasMore: false,
   title: '',
   index: 0,
   matchLen: 0,
-};
+} as const;
 
 describe('data.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
@@ -94,7 +99,7 @@ describe('data.ts', function () {
 
     describe('with a dict entry consisting of empty kanji but present data properties', function () {
       const nonKanjiDictEntry = {
-        ...DEFAULT_DICT_ENTRY,
+        ...DEFAULT_WORD_DICT_ENTRY,
         data: [
           {
             entry:
@@ -135,7 +140,7 @@ describe('data.ts', function () {
       describe('when data entry is an invalid format', function () {
         it('returns an empty string when all the data entries are an invalid format', function () {
           const nonKanjiDictEntryWithInvalidEntries = {
-            ...DEFAULT_DICT_ENTRY,
+            ...DEFAULT_WORD_DICT_ENTRY,
             data: [
               { entry: '<invalid-format-entry>', reason: undefined },
               { entry: '<invalid-format-entry-2>', reason: undefined },
@@ -152,7 +157,7 @@ describe('data.ts', function () {
 
         it('returns a valid format data entry as text when there is an invalid format data entry and a valid format data entry', function () {
           const nonKanjiDictEntryWithInvalidEntryAndValidEntry = {
-            ...DEFAULT_DICT_ENTRY,
+            ...DEFAULT_WORD_DICT_ENTRY,
             data: [
               { entry: '<invalid-format-entry>', reason: undefined },
               {
@@ -177,7 +182,7 @@ describe('data.ts', function () {
 
     describe('with a kanji dict entry', function () {
       const kanjiDictEntry = {
-        ...DEFAULT_DICT_ENTRY,
+        ...DEFAULT_KANJI_DICT_ENTRY,
         kanji: '<kanji-entry>',
         onkun: '<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>',
         nanori: '<nanori-entry>',

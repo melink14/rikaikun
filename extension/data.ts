@@ -43,22 +43,47 @@
 
 import { Config } from './configuration';
 
-// Be careful of using directly due to object keys.
-const defaultDictEntryData = {
+type DictEntryData = KanjiDictEntryData | WordDictEntryData;
+
+type KanjiDictEntryData = {
+  type: 'KANJI';
+  kanji: string;
+  onkun: string;
+  nanori: string;
+  bushumei: string;
+  eigo: string;
+  misc: Record<string, string>;
+};
+
+export type WordDictEntryData = {
+  type: 'WORD';
+  hasNames: boolean;
+  data: { entry: string; reason: string | undefined }[];
+  hasMore: boolean;
+  title: string;
+  index: number;
+  matchLen: number;
+};
+
+const defaultKanjiDictEntryData: KanjiDictEntryData = {
+  type: 'KANJI',
   kanji: '',
   onkun: '',
   nanori: '',
   bushumei: '',
-  misc: {} as Record<string, string>,
   eigo: '',
+  misc: {},
+};
+
+const defaultWordDictEntryData: WordDictEntryData = {
+  type: 'WORD',
   hasNames: false,
-  data: [] as { entry: string; reason: string | undefined }[],
+  data: [],
   hasMore: false,
   title: '',
   index: 0,
   matchLen: 0,
 };
-type DictEntryData = typeof defaultDictEntryData;
 
 interface Deinflection {
   word: string;
@@ -111,9 +136,16 @@ class RcxDict {
     return RcxDict.instance;
   }
 
-  static createDefaultDictEntry(): DictEntryData {
-    // Use JSON parse round trip for deep copy of default data.
-    return JSON.parse(JSON.stringify(defaultDictEntryData)) as DictEntryData;
+  static createDefaultKanjiDictEntry(): KanjiDictEntryData {
+    return JSON.parse(
+      JSON.stringify(defaultKanjiDictEntryData)
+    ) as KanjiDictEntryData;
+  }
+
+  static createDefaultWordDictEntry(): WordDictEntryData {
+    return JSON.parse(
+      JSON.stringify(defaultWordDictEntryData)
+    ) as WordDictEntryData;
   }
 
   async init() {
@@ -313,14 +345,14 @@ class RcxDict {
     word: string,
     doNames: boolean,
     max?: number
-  ): DictEntryData | null {
+  ): WordDictEntryData | null {
     let i;
     let u;
     let v;
     let reason: string;
     let p;
     const trueLen = [0];
-    const entry = RcxDict.createDefaultDictEntry();
+    const entry = RcxDict.createDefaultWordDictEntry();
 
     // half & full-width katakana to hiragana conversion
     // note: katakana vu is never converted to hiragana
@@ -519,11 +551,11 @@ class RcxDict {
     return entry;
   }
 
-  translate(text: string): (DictEntryData & { textLen: number }) | null {
-    let e: DictEntryData | null;
-    const o: DictEntryData & {
+  translate(text: string): (WordDictEntryData & { textLen: number }) | null {
+    let e: WordDictEntryData | null;
+    const o: WordDictEntryData & {
       textLen: number;
-    } = { textLen: text.length, ...RcxDict.createDefaultDictEntry() };
+    } = { textLen: text.length, ...RcxDict.createDefaultWordDictEntry() };
     let skip;
 
     while (text.length > 0) {
@@ -568,7 +600,7 @@ class RcxDict {
       return null;
     }
 
-    const entry = RcxDict.createDefaultDictEntry();
+    const entry = RcxDict.createDefaultKanjiDictEntry();
     entry.kanji = a[0];
 
     entry.misc = {};
@@ -650,7 +682,7 @@ class RcxDict {
 
     const b = [];
 
-    if (entry.kanji) {
+    if (entry.type === 'KANJI') {
       let yomi;
       let box;
       let k;
@@ -939,7 +971,7 @@ class RcxDict {
 
     const result = [];
 
-    if (entry.kanji) {
+    if (entry.type === 'KANJI') {
       result.push(entry.kanji + '\n');
       result.push((entry.eigo.length ? entry.eigo : '-') + '\n');
 

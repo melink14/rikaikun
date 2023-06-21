@@ -40,7 +40,7 @@
 */
 
 import { Config } from './configuration';
-import { DictEntryData } from './data';
+import type { WordDictEntryData } from './data';
 
 declare global {
   interface Window {
@@ -321,7 +321,7 @@ class RcxContent {
 
   // Array used for storing the last popup content shown, useful for easily
   // operating on the value after rendering (for copying for example).
-  lastFound = [] as DictEntryData[];
+  lastFound = [] as WordDictEntryData[];
 
   keysDown: number[] = [];
   lastPos: { x: number | null; y: number | null } = { x: null, y: null };
@@ -369,7 +369,7 @@ class RcxContent {
     let i;
     let shouldPreventDefault = true;
     const maxDictEntries = window.rikaichan!.config.maxDictEntries;
-    let e: DictEntryData | null;
+    let e: WordDictEntryData | null;
 
     switch (ev.keyCode) {
       case 16: // shift
@@ -862,7 +862,7 @@ class RcxContent {
     return 1;
   }
 
-  processEntry = (e: DictEntryData | null): void => {
+  processEntry = (e: WordDictEntryData | null): void => {
     const tdata = window.rikaichan!;
     const ro = this.lastRo;
     const selEndList = this.lastSelEnd;
@@ -1008,7 +1008,7 @@ class RcxContent {
     );
   }
 
-  processTitle = (e: DictEntryData & { textLen: number }) => {
+  processTitle = (e: WordDictEntryData & { textLen: number }) => {
     const tdata = window.rikaichan!;
 
     if (!e) {
