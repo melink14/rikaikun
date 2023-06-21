@@ -49,7 +49,7 @@ describe('parseWordDictEntry', function () {
     });
   });
 
-  describe('with an invalid word dict line', function () {
+  describe('when word dict line is malformed', function () {
     it('returns null when you pass in an empty word dict line', function () {
       const emptyWordDictLine = '';
 
