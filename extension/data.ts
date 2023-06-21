@@ -42,6 +42,7 @@
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
 import { Config } from './configuration';
+import { parseWordDictEntry } from './parse-word-dict-entry';
 
 type DictEntryData = KanjiDictEntryData | WordDictEntryData;
 
@@ -994,13 +995,11 @@ class RcxDict {
         max = entry.data.length;
       }
       for (let i = 0; i < max; ++i) {
-        const entryMatch = entry.data[i].entry.match(
-          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
-        );
-        if (!entryMatch) {
+        const wordDictEntry = parseWordDictEntry(entry.data[i].entry);
+        if (!wordDictEntry) {
           continue;
         }
-        const [_, word, pronunciation, definitions] = entryMatch;
+        const { word, pronunciation, definitions } = wordDictEntry;
 
         if (pronunciation) {
           result.push(word + '\t' + pronunciation);
@@ -1008,7 +1007,7 @@ class RcxDict {
           result.push(word);
         }
 
-        result.push('\t' + definitions.replace(/\//g, '; ') + '\n');
+        result.push('\t' + definitions.join('; ') + '\n');
       }
     }
     return result.join('');
