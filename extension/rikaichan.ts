@@ -101,7 +101,7 @@ class RcxMain {
     text = '';
     for (i = 0; i < f.length; ++i) {
       e = f[i];
-      if (e.type === 'KANJI') {
+      if (e.type === 'kanji') {
         text += this.dict.makeText(e, 1);
       } else {
         if (maxEntries <= 0) {

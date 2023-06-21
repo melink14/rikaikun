@@ -45,8 +45,8 @@ import { Config } from './configuration';
 
 type DictEntryData = KanjiDictEntryData | WordDictEntryData;
 
-type KanjiDictEntryData = {
-  type: 'KANJI';
+export type KanjiDictEntryData = {
+  type: 'kanji';
   kanji: string;
   onkun: string;
   nanori: string;
@@ -56,7 +56,7 @@ type KanjiDictEntryData = {
 };
 
 export type WordDictEntryData = {
-  type: 'WORD';
+  type: 'word';
   hasNames: boolean;
   data: { entry: string; reason: string | undefined }[];
   hasMore: boolean;
@@ -66,7 +66,7 @@ export type WordDictEntryData = {
 };
 
 const defaultKanjiDictEntryData: KanjiDictEntryData = {
-  type: 'KANJI',
+  type: 'kanji',
   kanji: '',
   onkun: '',
   nanori: '',
@@ -76,7 +76,7 @@ const defaultKanjiDictEntryData: KanjiDictEntryData = {
 };
 
 const defaultWordDictEntryData: WordDictEntryData = {
-  type: 'WORD',
+  type: 'word',
   hasNames: false,
   data: [],
   hasMore: false,
@@ -682,7 +682,7 @@ class RcxDict {
 
     const b = [];
 
-    if (entry.type === 'KANJI') {
+    if (entry.type === 'kanji') {
       let yomi;
       let box;
       let k;
@@ -971,7 +971,7 @@ class RcxDict {
 
     const result = [];
 
-    if (entry.type === 'KANJI') {
+    if (entry.type === 'kanji') {
       result.push(entry.kanji + '\n');
       result.push((entry.eigo.length ? entry.eigo : '-') + '\n');
 

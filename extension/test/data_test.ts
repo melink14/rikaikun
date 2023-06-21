@@ -1,5 +1,5 @@
 import { Config } from '../configuration';
-import { RcxDict } from '../data';
+import { KanjiDictEntryData, RcxDict, WordDictEntryData } from '../data';
 import { expect, use } from '@esm-bundle/chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
@@ -21,25 +21,25 @@ use(chaiThings);
 
 let rcxDict: RcxDict;
 
-const DEFAULT_KANJI_DICT_ENTRY = {
-  type: 'KANJI',
+const DEFAULT_KANJI_DICT_ENTRY: KanjiDictEntryData = {
+  type: 'kanji',
   kanji: '',
   onkun: '',
   nanori: '',
   bushumei: '',
   eigo: '',
   misc: {},
-} as const;
+};
 
-const DEFAULT_WORD_DICT_ENTRY = {
-  type: 'WORD',
+const DEFAULT_WORD_DICT_ENTRY: WordDictEntryData = {
+  type: 'word',
   hasNames: false,
   data: [],
   hasMore: false,
   title: '',
   index: 0,
   matchLen: 0,
-} as const;
+};
 
 describe('data.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
