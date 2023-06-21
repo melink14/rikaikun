@@ -11,7 +11,7 @@ describe('parseWordDictEntry', function () {
   });
 
   describe('with a valid word dict line', function () {
-    describe('when word dict line has pronunciation', function () {
+    describe('when word dict line has all parts', function () {
       const wordDictLine =
         '<word> [<pronunciation>] /<definition-1>/<definition-2>/<definition-3>/';
 
