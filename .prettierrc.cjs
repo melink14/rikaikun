@@ -4,5 +4,5 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'es5',
   arrowParens: 'always',
-  plugins: ['./node_modules/prettier-plugin-jsdoc'],
+  plugins: ['./node_modules/prettier-plugin-jsdoc/dist/index.js'],
 };
