@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/melink14/rikaikun#readme",
   "dependencies": {
-    "lit": "^2.7.5",
+    "lit": "^2.7.6",
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
