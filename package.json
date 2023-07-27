@@ -84,7 +84,7 @@
     "conventional-changelog-conventionalcommits": "^6.1.0",
     "csv-parse": "^5.4.0",
     "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.9.0",
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-json": "^3.1.0",
