@@ -1,6 +1,6 @@
 # rikaikun <!-- omit in toc -->
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jipdnfibhldikgcjhfnomkfpcebammhp?style=revert)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
 [![Mergify Status](https://img.shields.io/endpoint.svg?url=https://api.mergify.com/v1/badges/melink14/rikaikun&style=flat)](https://mergify.com)
 [![codecov](https://codecov.io/gh/melink14/rikaikun/branch/main/graph/badge.svg?token=4nZ7madoqJ)](https://codecov.io/gh/melink14/rikaikun)
