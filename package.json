@@ -63,7 +63,7 @@
     "@types/byline": "^4.2.33",
     "@types/chai": "^4.3.5",
     "@types/chai-like": "^1.1.1",
-    "@types/chai-things": "^0.0.35",
+    "@types/chai-things": "^0.0.36",
     "@types/chrome": "0.0.148",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.5.9",
