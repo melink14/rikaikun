@@ -99,7 +99,7 @@
     "is-docker": "^3.0.0",
     "prettier": "^2.8.8",
     "prettier-plugin-jsdoc": "^0.4.2",
-    "semantic-release": "^22.0.0",
+    "semantic-release": "^22.0.1",
     "semantic-release-chrome": "^3.2.0",
     "simulant": "^0.2.2",
     "sinon": "^16.0.0",
