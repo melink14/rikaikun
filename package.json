@@ -52,7 +52,7 @@
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.1",
+    "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^18.4.2",
     "@esm-bundle/chai": "^4.3.4",
     "@semantic-release/changelog": "^6.0.3",
@@ -99,7 +99,7 @@
     "is-docker": "^3.0.0",
     "prettier": "^2.8.8",
     "prettier-plugin-jsdoc": "^0.4.2",
-    "semantic-release": "^22.0.7",
+    "semantic-release": "^22.0.8",
     "semantic-release-chrome": "^3.2.0",
     "simulant": "^0.2.2",
     "sinon": "^17.0.1",
