@@ -72,7 +72,7 @@
     "@types/sinon-chrome": "^2.2.15",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "@web/test-runner": "^0.16.1",
+    "@web/test-runner": "^0.18.0",
     "@web/test-runner-browserstack": "^0.7.0",
     "@web/test-runner-chrome": "^0.15.0",
     "@web/test-runner-commands": "^0.9.0",
