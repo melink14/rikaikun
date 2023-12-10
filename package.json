@@ -82,7 +82,7 @@
     "chai-like": "^1.1.1",
     "chai-things": "^0.2.0",
     "conventional-changelog-conventionalcommits": "~7.0.2",
-    "csv-parse": "^5.5.2",
+    "csv-parse": "^5.5.3",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -109,7 +109,7 @@
     "snowpack-plugin-replace": "^1.0.4",
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
-    "stylelint-order": "^6.0.3",
+    "stylelint-order": "^6.0.4",
     "ts-lit-plugin": "^2.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
