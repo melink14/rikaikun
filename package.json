@@ -109,7 +109,7 @@
     "snowpack-plugin-replace": "^1.0.4",
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
-    "stylelint-order": "^6.0.3",
+    "stylelint-order": "^6.0.4",
     "ts-lit-plugin": "^2.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.3"
