@@ -7,6 +7,12 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.5.37](https://github.com/melink14/rikaikun/compare/v2.5.36...v2.5.37) (2024-01-02)
+
+### Bug Fixes
+
+- **dict:** Make update-db script resilient to multiple spaces separating kanji entry fields ([#1917](https://github.com/melink14/rikaikun/issues/1917)) ([d101ec8](https://github.com/melink14/rikaikun/commit/d101ec82687671d8804f84ec33a957c533db08a1)), closes [#1913](https://github.com/melink14/rikaikun/issues/1913)
+
 ## [2.5.36](https://github.com/melink14/rikaikun/compare/v2.5.35...v2.5.36) (2024-01-01)
 
 ### Bug Fixes
