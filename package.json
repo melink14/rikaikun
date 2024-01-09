@@ -110,7 +110,7 @@
     "stylelint": "^16.1.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.4",
-    "ts-lit-plugin": "^2.0.1",
+    "ts-lit-plugin": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
