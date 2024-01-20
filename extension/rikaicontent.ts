@@ -65,7 +65,6 @@ type Rikaichan = {
 };
 
 class RcxContent {
-  private dictCount = 3;
   private altView = 0;
 
   private sameDict = 0;
@@ -847,20 +846,6 @@ class RcxContent {
         this.hidePopup();
         return 0;
       }
-    }
-
-    //
-    if (
-      isNaN(u) ||
-      (u !== 0x25cb &&
-        (u < 0x3001 || u > 0x30ff) &&
-        (u < 0x3400 || u > 0x9fff) &&
-        (u < 0xf900 || u > 0xfaff) &&
-        (u < 0xff10 || u > 0xff9d))
-    ) {
-      this.clearHi();
-      this.hidePopup();
-      return -2;
     }
 
     // selection end data
