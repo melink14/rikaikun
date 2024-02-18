@@ -14,6 +14,7 @@ describe('background.ts', function () {
   // Make it relative to current timeout so config level changes are taken
   // into account. (ie browserstack)
   this.timeout(this.timeout() * 2);
+
   before(async function () {
     // Resolve config fetch with minimal config object.
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
