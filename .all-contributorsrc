@@ -288,6 +288,15 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "bruno-queiroz",
+      "name": "Bruno Queiroz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/122624016?v=4",
+      "profile": "https://bruno-queiroz.vercel.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
