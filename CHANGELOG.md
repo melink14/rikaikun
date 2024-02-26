@@ -7,6 +7,13 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.5.45](https://github.com/melink14/rikaikun/compare/v2.5.44...v2.5.45) (2024-02-26)
+
+### Bug Fixes
+
+- **deinflect:** Only deinflect って and friends to く for 行く ([#1974](https://github.com/melink14/rikaikun/issues/1974)) ([30a0e33](https://github.com/melink14/rikaikun/commit/30a0e338c0c9b9f125aeefbf11545f2b2810e953)), closes [#1920](https://github.com/melink14/rikaikun/issues/1920)
+- **dict:** Update dictionaries to latest versions ([#1986](https://github.com/melink14/rikaikun/issues/1986)) ([d628c4b](https://github.com/melink14/rikaikun/commit/d628c4bc5baf9a60108e2306e140d974a6283fbd))
+
 ## [2.5.44](https://github.com/melink14/rikaikun/compare/v2.5.43...v2.5.44) (2024-02-19)
 
 ### Bug Fixes
