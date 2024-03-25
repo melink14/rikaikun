@@ -43,6 +43,7 @@ describe('Visual Regression Tests', function () {
   // Make it relative to current timeout so config level changes are taken
   // into account. (ie browserstack)
   this.timeout(this.timeout() * 5);
+
   before(async function () {
     // When chrome.storage.sync.get is called save the full config for later use.
     sinonChrome.storage.sync.get.callsFake(
@@ -250,6 +251,7 @@ describe('Visual Regression Tests', function () {
       });
     });
   });
+
   describe('with agressive host page styles', function () {
     afterEach(function () {
       document.querySelector('#test-id')?.remove();
