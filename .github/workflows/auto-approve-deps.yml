@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Fetch and confirm dependabot metadata
         id: dependabot-metadata
-        uses: dependabot/fetch-metadata@v2.0.0
+        uses: dependabot/fetch-metadata@v2.1.0
       - uses: actions/checkout@v4.1.3
       - name: Approve a PR if not already approved
         run: |
