@@ -342,6 +342,7 @@ describe('RcxContent', function () {
 
     describe('with Google Docs annotated canvas', function () {
       let docCanvas: HTMLDivElement;
+
       beforeEach(function () {
         markDocumentWithGoogleDocsClass();
         docCanvas = document.querySelector<HTMLDivElement>(
