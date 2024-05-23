@@ -637,10 +637,10 @@ class RcxDict {
 
   // TODO: Entry should be extracted as separate type.
   makeHtml(entry: DictEntryData | null) {
-    let e;
-    let c;
-    let s;
-    let t;
+    let deinflectedWordData;
+    let nameHtmlData;
+    let translationData;
+    let displayedTranslation;
     let i;
     let j;
     let n;
@@ -649,11 +649,12 @@ class RcxDict {
       return '';
     }
 
-    const b = [];
+    const htmlToRender: string[] = [];
 
+    // kanji view
     if (entry.kanji) {
       let yomi;
-      let box;
+      let boxHtml;
       let k;
       let nums;
 
@@ -685,62 +686,49 @@ class RcxDict {
           k = isNaN(k) ? '-' : 'grade<br/>' + k;
           break;
       }
-      box =
-        '<table class="k-abox-tb"><tr>' +
-        '<td class="k-abox-r">radical<br/>' +
-        this.radData[bn].charAt(0) +
-        ' ' +
-        (bn + 1) +
-        '</td>' +
-        '<td class="k-abox-g">' +
-        k +
-        '</td>' +
-        '</tr><tr>' +
-        '<td class="k-abox-f">freq<br/>' +
-        (entry.misc.F ? entry.misc.F : '-') +
-        '</td>' +
-        '<td class="k-abox-s">strokes<br/>' +
-        entry.misc.S +
-        '</td>' +
-        '</tr></table>';
+      boxHtml = `
+      <table class="k-abox-tb">
+        <tr>
+          <td class="k-abox-r">
+            radical
+            <br/>
+            ${this.radData[bn].charAt(0)} ${bn + 1}
+          </td>
+          <td class="k-abox-g">${k}</td>
+        </tr>
+        <tr>
+          <td class="k-abox-f">
+            freq
+            <br/>${entry.misc.F ? entry.misc.F : '-'}
+          </td>
+          <td class="k-abox-s">strokes<br/>${entry.misc.S}</td>
+        </tr>
+      </table>`;
+
       if (this.config.kanjicomponents) {
         k = this.radData[bn].split('\t');
-        box +=
-          '<table class="k-bbox-tb">' +
-          '<tr><td class="k-bbox-1a">' +
-          k[0] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[2] +
-          '</td>' +
-          '<td class="k-bbox-1b">' +
-          k[3] +
-          '</td></tr>';
+        boxHtml += `
+        <table class="k-bbox-tb">
+            <tr>
+              <td class="k-bbox-1a">${k[0]}</td>
+              <td class="k-bbox-1b">${k[2]}</td>
+              <td class="k-bbox-1b">${k[3]}</td>
+            </tr>`;
         j = 1;
         for (i = 0; i < this.radData.length; ++i) {
-          s = this.radData[i];
-          if (bn !== i && s.indexOf(entry.kanji) !== -1) {
-            k = s.split('\t');
-            c = ' class="k-bbox-' + (j ^= 1);
-            box +=
-              '<tr><td' +
-              c +
-              'a">' +
-              k[0] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[2] +
-              '</td>' +
-              '<td' +
-              c +
-              'b">' +
-              k[3] +
-              '</td></tr>';
+          translationData = this.radData[i];
+          if (bn !== i && translationData.indexOf(entry.kanji) !== -1) {
+            k = translationData.split('\t');
+            nameHtmlData = ' class="k-bbox-' + (j ^= 1);
+            boxHtml += `
+            <tr>
+              <td${nameHtmlData}a">${k[0]}</td>
+              <td${nameHtmlData}b">${k[2]}</td>
+              <td${nameHtmlData}${htmlToRender.join('')}">${k[3]}</td>
+            </tr>`;
           }
         }
-        box += '</table>';
+        boxHtml += '</table>';
       }
 
       nums = '';
@@ -751,108 +739,111 @@ class RcxDict {
         if (!info.shouldDisplay) {
           continue;
         }
-        c = info.code;
-        s = entry.misc[c];
-        c = ' class="k-mix-td' + (j ^= 1) + '"';
-        nums +=
-          '<tr><td' +
-          c +
-          '>' +
-          info.name +
-          '</td><td' +
-          c +
-          '>' +
-          (s || '-') +
-          '</td></tr>';
+        nameHtmlData = info.code;
+        translationData = entry.misc[nameHtmlData];
+        nameHtmlData = ` class="k-mix-td${(j ^= 1)}"`;
+        nums += `
+        <tr>
+          <td${nameHtmlData}>${info.name}</td>
+          <td${nameHtmlData}>${translationData || '-'}</td>
+        </tr>`;
       }
-      if (nums.length) {
-        nums = '<table class="k-mix-tb">' + nums + '</table>';
-      }
-
-      b.push('<table class="k-main-tb"><tr><td valign="top">');
-      b.push(box);
-      b.push('<span class="k-kanji">' + entry.kanji + '</span><br/>');
-      b.push('<div class="k-eigo">' + entry.eigo + '</div>');
-      b.push('<div class="k-yomi">' + yomi + '</div>');
-      b.push('</td></tr><tr><td>' + nums + '</td></tr></table>');
-      return b.join('');
+      htmlToRender.push(`
+        <table class="k-main-tb">
+          <tr>
+            <td valign="top">
+              ${boxHtml}
+              <span class="k-kanji">${entry.kanji}</span><br>
+              <div class="k-eigo">${entry.eigo}</div>
+              <div class="k-yomi">${yomi}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>${nums.length && `<table class="k-mix-tb">${nums}</table>`}</td>
+          </tr>
+        </table>
+      `);
     }
 
-    s = t = '';
-
+    translationData = displayedTranslation = '';
+    // nanori view
     if (entry.hasNames) {
-      c = [];
+      nameHtmlData = [];
 
-      b.push(
+      htmlToRender.push(
         '<div class="w-title">Names Dictionary</div><table class="w-na-tb"><tr><td>'
       );
       for (i = 0; i < entry.data.length; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-        if (!e) {
+        deinflectedWordData = entry.data[i].entry.match(
+          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
+        );
+        if (!deinflectedWordData) {
           continue;
         }
 
         // the next two lines re-process the entries that contain separate
         // search key and spelling due to mixed hiragana/katakana spelling
-        const e3 = e[3].match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
+        const e3 = deinflectedWordData[3].match(
+          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
+        );
         if (e3) {
-          e = e3;
+          deinflectedWordData = e3;
         }
 
-        if (s !== e[3]) {
-          c.push(t);
-          t = '';
+        if (translationData !== deinflectedWordData[3]) {
+          nameHtmlData.push(displayedTranslation);
+          displayedTranslation = '';
         }
 
-        if (e[2]) {
-          c.push(
-            '<span class="w-kanji">' +
-              e[1] +
-              '</span> &#32; <span class="w-kana">' +
-              e[2] +
-              '</span><br/> '
+        if (deinflectedWordData[2]) {
+          nameHtmlData.push(
+            `<span class="w-kanji">${deinflectedWordData[1]}</span>&#32; 
+             <span class="w-kana">${deinflectedWordData[2]}</span><br/> `
           );
         } else {
-          c.push('<span class="w-kana">' + e[1] + '</span><br/> ');
+          nameHtmlData.push(
+            `<span class="w-kana">${deinflectedWordData[1]}</span><br/> `
+          );
         }
 
-        s = e[3];
-        console.log('e[1]: ' + e[1]);
-        console.log('e[2]: ' + e[2]);
-        console.log('e[3]: ' + e[3]);
-        t = '<span class="w-def">' + s.replace(/\//g, '; ') + '</span><br/>';
+        translationData = deinflectedWordData[3];
+        console.log('e[1]: ' + deinflectedWordData[1]);
+        console.log('e[2]: ' + deinflectedWordData[2]);
+        console.log('e[3]: ' + deinflectedWordData[3]);
+        displayedTranslation = `<span class="w-def">
+        ${translationData.replace(/\//g, '; ')}</span><br/>`;
       }
-      c.push(t);
-      if (c.length > 4) {
-        n = (c.length >> 1) + 1;
-        b.push(c.slice(0, n + 1).join(''));
+      nameHtmlData.push(displayedTranslation);
+      if (nameHtmlData.length > 4) {
+        n = (nameHtmlData.length >> 1) + 1;
+        htmlToRender.push(nameHtmlData.slice(0, n + 1).join(''));
 
-        t = c[n];
-        c = c.slice(n, c.length);
-        for (i = 0; i < c.length; ++i) {
-          if (c[i].indexOf('w-def') !== -1) {
-            if (t !== c[i]) {
-              b.push(c[i]);
+        displayedTranslation = nameHtmlData[n];
+        nameHtmlData = nameHtmlData.slice(n, nameHtmlData.length);
+        for (i = 0; i < nameHtmlData.length; ++i) {
+          if (nameHtmlData[i].indexOf('w-def') !== -1) {
+            if (displayedTranslation !== nameHtmlData[i]) {
+              htmlToRender.push(nameHtmlData[i]);
             }
             if (i === 0) {
-              c.shift();
+              nameHtmlData.shift();
             }
             break;
           }
         }
 
-        b.push('</td><td>');
-        b.push(c.join(''));
+        htmlToRender.push('</td><td>');
+        htmlToRender.push(nameHtmlData.join(''));
       } else {
-        b.push(c.join(''));
+        htmlToRender.push(nameHtmlData.join(''));
       }
       if (entry.hasMore) {
-        b.push('...<br/>');
+        htmlToRender.push('...<br/>');
       }
-      b.push('</td></tr></table>');
+      htmlToRender.push('</td></tr></table>');
     } else {
       if (entry.title) {
-        b.push('<div class="w-title">' + entry.title + '</div>');
+        htmlToRender.push(`<div class="w-title">${entry.title}</div>`);
       }
 
       let pK = '';
@@ -863,7 +854,9 @@ class RcxDict {
       }
 
       if (entry.index !== 0) {
-        b.push('<span class="small-info">... (\'j\' for more)</span><br/>');
+        htmlToRender.push(
+          '<span class="small-info">... (\'j\' for more)</span><br/>'
+        );
       }
 
       for (
@@ -872,8 +865,10 @@ class RcxDict {
         Math.min(this.config.maxDictEntries + entry.index, entry.data.length);
         ++i
       ) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-        if (!e) {
+        deinflectedWordData = entry.data[i].entry.match(
+          /^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//
+        );
+        if (!deinflectedWordData) {
           continue;
         }
 
@@ -883,54 +878,60 @@ class RcxDict {
           e[3] = definition
         */
 
-        if (s !== e[3]) {
-          b.push(t);
+        if (translationData !== deinflectedWordData[3]) {
+          htmlToRender.push(displayedTranslation);
           pK = k = '';
         } else {
-          k = t.length ? '<br/>' : '';
+          k = displayedTranslation.length ? '<br/>' : '';
         }
 
-        if (e[2]) {
-          if (pK === e[1]) {
-            k = '\u3001 <span class="w-kana">' + e[2] + '</span>';
+        if (deinflectedWordData[2]) {
+          if (pK === deinflectedWordData[1]) {
+            k =
+              '\u3001 <span class="w-kana">' +
+              deinflectedWordData[2] +
+              '</span>';
           } else {
             k +=
               '<span class="w-kanji">' +
-              e[1] +
+              deinflectedWordData[1] +
               '</span> &#32; <span class="w-kana">' +
-              e[2] +
+              deinflectedWordData[2] +
               '</span>';
           }
-          pK = e[1];
+          pK = deinflectedWordData[1];
         } else {
-          k += '<span class="w-kana">' + e[1] + '</span>';
+          k += '<span class="w-kana">' + deinflectedWordData[1] + '</span>';
           pK = '';
         }
-        b.push(k);
+        htmlToRender.push(k);
 
         if (entry.data[i].reason) {
-          b.push(' <span class="w-conj">(' + entry.data[i].reason + ')</span>');
+          htmlToRender.push(
+            ' <span class="w-conj">(' + entry.data[i].reason + ')</span>'
+          );
         }
 
-        s = e[3];
-        t = s.replace(/\//g, '; ');
+        translationData = deinflectedWordData[3];
+        displayedTranslation = translationData.replace(/\//g, '; ');
 
         if (!this.config.onlyreading) {
-          t = '<br/><span class="w-def">' + t + '</span><br/>';
+          displayedTranslation = `<br/><span class="w-def">${displayedTranslation}</span><br/>`;
         } else {
-          t = '<br/>';
+          displayedTranslation = '<br/>';
         }
       }
-      b.push(t);
+      htmlToRender.push(displayedTranslation);
       if (
         entry.hasMore &&
         entry.index < entry.data.length - this.config.maxDictEntries
       ) {
-        b.push('<span class="small-info">... (\'k\' for more)</span><br/>');
+        htmlToRender.push(
+          '<span class="small-info">... (\'k\' for more)</span><br/>'
+        );
       }
     }
-
-    return b.join('');
+    return htmlToRender.join('');
   }
 
   makeText(entry: DictEntryData | null, max: number): string {
