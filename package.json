@@ -93,7 +93,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.2.0",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
-    "eslint-plugin-tsdoc": "^0.2.17",
+    "eslint-plugin-tsdoc": "^0.3.0",
     "husky": "^9.0.11",
     "iconv-lite": "^0.6.3",
     "is-docker": "^3.0.0",
