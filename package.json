@@ -97,7 +97,7 @@
     "husky": "^9.0.11",
     "iconv-lite": "^0.6.3",
     "is-docker": "^3.0.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.3.0",
     "prettier-plugin-jsdoc": "^0.4.2",
     "semantic-release": "^24.0.0",
     "semantic-release-chrome": "^3.2.0",
