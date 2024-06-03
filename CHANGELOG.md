@@ -7,6 +7,16 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.5.55](https://github.com/melink14/rikaikun/compare/v2.5.54...v2.5.55) (2024-06-03)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2056](https://github.com/melink14/rikaikun/issues/2056)) ([3dfe9ab](https://github.com/melink14/rikaikun/commit/3dfe9abb244350f0b57bbae62043ba5b9bb138cb))
+- **dict:** Update dictionaries to latest versions ([#2063](https://github.com/melink14/rikaikun/issues/2063)) ([d33279c](https://github.com/melink14/rikaikun/commit/d33279c0716c09c960b25a0e08d605aeca84e2ae))
+- **dict:** Update dictionaries to latest versions ([#2071](https://github.com/melink14/rikaikun/issues/2071)) ([faad94b](https://github.com/melink14/rikaikun/commit/faad94b74126d691152389fc707ee99be1882c1c))
+- **dict:** Update dictionaries to latest versions ([#2074](https://github.com/melink14/rikaikun/issues/2074)) ([21f6459](https://github.com/melink14/rikaikun/commit/21f6459ad92e9820e134ae5b02f757c05a15ad4f))
+- **dict:** Update dictionaries to latest versions ([#2084](https://github.com/melink14/rikaikun/issues/2084)) ([739f596](https://github.com/melink14/rikaikun/commit/739f596d20826429f7292ecb71a1b3390e069500))
+
 ## [2.5.54](https://github.com/melink14/rikaikun/compare/v2.5.53...v2.5.54) (2024-04-30)
 
 ### Bug Fixes
