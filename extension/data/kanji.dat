@@ -2276,7 +2276,7 @@
 尾|B44 G8 S7 F875 N1383 V1411 H3062 DK1942 DL2635 L1915:tail DN2064:tail E1734 IN1868 P3-3-4 I3r4.2 Ywei3 Yyi3|ビ お|||tail, end, counter for fish, lower slope of mountain
 尿|B44 G8 S7 F1672 N1382 V1410 H3064 DK1944 DL2637 L1053:urine DN1132:urine E1675 IN1869 P3-3-4 I3r4.1 Yniao4 Yni4 Ysui1|ニョウ ゆばり いばり しと|||urine
 局|B44 G3 S7 F286 N1384 V1412 H3063 DK1943 DL2636 L1066:bureau DN1147:bureau E262 IN170 P3-3-4 I3r4.4 Yju2|キョク つぼね|||bureau, board, office, affair, conclusion, court lady, lady-in-waiting, her apartment
-屁|B44 S7 N1381 V1409 L2218:fart DN2329:fart P3-3-4 I3r4.3 Ypi4|ヒ へ おなら|||fart, passing gas
+屁|B44 S7 N1381 V1409 L2218:fart DN2329:fart P3-3-4 I3r4.3 Ypi4|ヒ へ|||fart, passing gas
 居|B44 G5 S8 F836 N1387 V1416 H3080 DK1959 DL2653 L1063:reside DN1143:reside E649 IN171 P3-3-5 I3r5.3 Yju1 Yji1|キョ コ い.る -い お.る|おき ぐ すえ||reside, to be, exist, live with
 屆|B44 S8 V1414 H3081 P3-3-5 I3r5.1 Yjie4|カイ とど.ける とど.く|||reach, arrive, report, notify, forward
 屈|B44 G8 S8 F1434 N1386 V1415 H3079 DK1958 DL2652 L1060:yield DN1140:yield E1188 IN1802 P3-3-5 I3r5.2 Yqu1|クツ かが.む かが.める|くっ||yield, bend, flinch, submit
@@ -3013,7 +3013,7 @@
 惰|B61 G8 S12 F2336 N1727 V1921 H579 DK424 DL531 L629:lazy DN676:lazy E1540 IN1743 P1-3-9 I4k9.6 Yduo4|ダ|||lazy, laziness
 惱|B61 S12 N1717 V1899 H583 P1-3-9 I4k7.11 Ynao3|ノウ なや.む なや.ます なや.ましい なやみ|||angered, filled with hate
 惲|B61 S12 P1-3-9 Yyun4|ウン キン あつ.い|||devise, plan, deliberate, consul
-想|B61 G3 S13 F381 N1728 V1922 H2828 DK1810 DL2462 L609:concept DN656:concept E532 IN147 P2-9-4 I4k9.18 Yxiang3|ソウ ソ おも.う|||concept, think, idea, thought
+想|B61 G3 S13 F381 N1728 V1922 H2828 DK1810 DL2462 L609:concept DN656:concept E532 IN147 P2-9-4 I4k9.18 Yxiang3|ソウ ソ おも.う|||idea, thought, conception, think
 惴|B61 S12 V1900 P1-3-9 I4k9.12 Yzhui4|ズイ スイ おそ.れる|||fear, be afraid
 惵|B61 S12 P1-3-9 Ydie2|チョウ ジョウ キョウ やす.らか|||fear, worry over, fill, satisfy, calm, at ease, tranquil
 惶|B61 S12 N1720 V1912 H581 P1-3-9 I4k9.7 Yhuang2|コウ おそ.れる|||fear
