@@ -7,6 +7,13 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [2.5.59](https://github.com/melink14/rikaikun/compare/v2.5.58...v2.5.59) (2024-07-22)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2118](https://github.com/melink14/rikaikun/issues/2118)) ([8b082c7](https://github.com/melink14/rikaikun/commit/8b082c79aabf0c531a8d49a8466750161116bc06))
+- **tooling:** Remove deprecated lines from husky hooks ([#2119](https://github.com/melink14/rikaikun/issues/2119)) ([8380e94](https://github.com/melink14/rikaikun/commit/8380e94626d032029dfd31e53b1692e5f21573fc))
+
 ## [2.5.58](https://github.com/melink14/rikaikun/compare/v2.5.57...v2.5.58) (2024-07-15)
 
 ### Bug Fixes
