@@ -209,16 +209,17 @@ class RcxMain {
 
     // Send a disable message to all browsers
     chrome.windows.getAll({ populate: true }, (windows) => {
-      for (let i = 0; i < windows.length; ++i) {
-        const tabs = windows[i].tabs;
+      for (const window of windows) {
+        const tabs = window.tabs;
         if (tabs === undefined) {
           continue;
         }
-        for (let j = 0; j < tabs.length; ++j) {
-          if (tabs[j].id === undefined) {
+        for (const tab of tabs) {
+          const tabId = tab.id;
+          if (tabId === undefined) {
             continue;
           }
-          chrome.tabs.sendMessage(tabs[j].id!, { type: 'disable' });
+          chrome.tabs.sendMessage(tabId, { type: 'disable' });
         }
       }
     });
