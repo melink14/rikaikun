@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.1.7
-      - name: Use Node.js 16
+      - name: Use LTS Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '16'
+          node-version: lts/*
       - run: npm ci
         name: Install needed commitlint config
       - uses: melink14/action-lint-pull-request-title@master
