@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "postinstall": "([ \"$CI\" != true ]) && npm run test:update-baselines || exit 0",
     "checktypes": "tsc --noEmit",
     "build": "snowpack build",
