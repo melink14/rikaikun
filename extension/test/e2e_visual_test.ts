@@ -348,8 +348,8 @@ async function triggerMousemoveAtElementStart(element: Element) {
   await sendMouse({
     type: 'move',
     position: [
-      element.getBoundingClientRect().left,
-      element.getBoundingClientRect().top,
+      Math.ceil(element.getBoundingClientRect().left),
+      Math.ceil(element.getBoundingClientRect().top),
     ],
   });
 }
