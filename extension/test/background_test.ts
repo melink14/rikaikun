@@ -18,6 +18,7 @@ describe('background.ts', function () {
   before(async function () {
     // Resolve config fetch with minimal config object.
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
+    chrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
     // Imports only run once so run in `before` to make it deterministic.
     rcxMain = await (await import('../background')).TestOnlyRxcMainPromise;
   });
@@ -31,7 +32,7 @@ describe('background.ts', function () {
 
   describe('when sent enable? message', function () {
     it('should send "enable" message to tab', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
 
       await sendMessageToBackground({ type: 'enable?' });
 
@@ -44,7 +45,7 @@ describe('background.ts', function () {
     });
 
     it('should respond to the same tab it received a message from', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
       const tabId = 10;
 
       await sendMessageToBackground({ tabId: tabId, type: 'enable?' });
@@ -56,7 +57,7 @@ describe('background.ts', function () {
     });
 
     it('should send config in message to tab', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
       rcxMain.config = { copySeparator: 'testValue' } as Config;
 
       await sendMessageToBackground({ type: 'enable?' });

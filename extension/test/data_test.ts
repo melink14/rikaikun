@@ -45,7 +45,7 @@ describe('data.ts', function () {
   before(async function () {
     // stub sinon chrome getURL method to return the path it's given
     // Required to load dictionary files.
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
     rcxDict = await RcxDict.create({} as Config);
   });
 

@@ -41,6 +41,7 @@
 
 import { Config } from './configuration';
 import { DictEntryData, RcxDict } from './data';
+import { setupOffscreenDocument } from './offscreen-setup';
 
 class RcxMain {
   private static instance: RcxMain;
@@ -48,17 +49,19 @@ class RcxMain {
   haveNames = true;
   dictCount = 3;
   altView = 0;
-  enabled = 0;
+  enabled = false;
   dict: RcxDict;
   config: Config;
 
-  private constructor(dict: RcxDict, config: Config) {
+  private constructor(dict: RcxDict, config: Config, enabled: boolean) {
     this.dict = dict;
     this.config = config;
+    this.enabled = enabled;
+    this.updateBadgeBasedOnEnabledState(this.enabled);
   }
-  static create(dict: RcxDict, config: Config) {
+  static create(dict: RcxDict, config: Config, enabled: boolean) {
     if (!RcxMain.instance) {
-      RcxMain.instance = new RcxMain(dict, config);
+      RcxMain.instance = new RcxMain(dict, config, enabled);
     }
     return RcxMain.instance;
   }
@@ -73,8 +76,8 @@ class RcxMain {
     this._onTabSelect(tabId);
   }
   _onTabSelect(tabId: number) {
-    if (this.enabled === 1) {
-      chrome.tabs.sendMessage(tabId, {
+    if (this.enabled) {
+      void chrome.tabs.sendMessage(tabId, {
         type: 'enable',
         config: this.config,
       });
@@ -129,7 +132,7 @@ class RcxMain {
     return text;
   }
 
-  copyToClip(tab: chrome.tabs.Tab | undefined, entries: DictEntryData[]) {
+  async copyToClip(tab: chrome.tabs.Tab | undefined, entries: DictEntryData[]) {
     if (tab?.id === undefined) {
       return;
     }
@@ -138,15 +141,20 @@ class RcxMain {
       return;
     }
 
-    const copyFunction = function (event: ClipboardEvent) {
-      // TODO(https://github.com/w3c/clipboard-apis/issues/64): Remove `!` when spec is fixed
-      // and typescript types are updated.
-      event.clipboardData!.setData('Text', text);
-      event.preventDefault();
-    };
-    document.addEventListener('copy', copyFunction);
-    document.execCommand('Copy');
-    document.removeEventListener('copy', copyFunction);
+    await setupOffscreenDocument();
+    try {
+      await chrome.runtime.sendMessage({
+        target: 'offscreen',
+        type: 'copyToClipboardOffscreen',
+        text: text,
+      });
+    } catch (e) {
+      throw new Error(
+        'Error while having offscreen doc copy text to clipboard.',
+        { cause: e }
+      );
+    }
+
     this.showPopupInTab(tab.id, 'Copied to clipboard.');
   }
 
@@ -169,11 +177,13 @@ class RcxMain {
   // Unlike rikaichan there is no lookup bar so this is the only enable.
   inlineEnable(tabId: number, mode: number) {
     // Send message to current tab to add listeners and create stuff
-    chrome.tabs.sendMessage(tabId, {
+    void chrome.tabs.sendMessage(tabId, {
       type: 'enable',
       config: this.config,
     });
-    this.enabled = 1;
+    this.enabled = true;
+    // Don't wait for this to finish since we're not using it except at startup.
+    void chrome.storage.local.set({ enabled: true });
 
     if (mode === 1) {
       if (this.config.minihelp) {
@@ -182,14 +192,23 @@ class RcxMain {
         this.showPopupInTab(tabId, 'Rikaikun enabled!');
       }
     }
-    void chrome.browserAction.setBadgeBackgroundColor({
-      color: [255, 0, 0, 255],
-    });
-    void chrome.browserAction.setBadgeText({ text: 'On' });
+    this.updateBadgeBasedOnEnabledState(true);
+  }
+
+  private updateBadgeBasedOnEnabledState(enabled: boolean) {
+    if (enabled) {
+      void chrome.action.setBadgeBackgroundColor({
+        color: [255, 0, 0, 255],
+      });
+      void chrome.action.setBadgeText({ text: 'On' });
+    } else {
+      void chrome.action.setBadgeBackgroundColor({ color: [0, 0, 0, 0] });
+      void chrome.action.setBadgeText({ text: '' });
+    }
   }
 
   private showPopupInTab(tabId: number, text: string) {
-    chrome.tabs.sendMessage(
+    void chrome.tabs.sendMessage(
       tabId,
       {
         type: 'showPopup',
@@ -203,9 +222,10 @@ class RcxMain {
 
   // This function disables rikaikun in all tabs.
   inlineDisable() {
-    this.enabled = 0;
-    void chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 0, 0] });
-    void chrome.browserAction.setBadgeText({ text: '' });
+    this.enabled = false;
+    // Don't wait for this to finish since we're not using it except at startup.
+    void chrome.storage.local.set({ enabled: false });
+    this.updateBadgeBasedOnEnabledState(false);
 
     // Send a disable message to all browsers
     chrome.windows.getAll({ populate: true }, (windows) => {
@@ -219,7 +239,7 @@ class RcxMain {
           if (tabId === undefined) {
             continue;
           }
-          chrome.tabs.sendMessage(tabId, { type: 'disable' });
+          void chrome.tabs.sendMessage(tabId, { type: 'disable' });
         }
       }
     });
