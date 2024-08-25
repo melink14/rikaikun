@@ -15,7 +15,7 @@
     "type": "module"
   },
   "action": {
-    // If only one icon available, setting default_icon to string is allowed.
+    "//": "If only one icon available, setting default_icon to string is allowed.",
     "default_icon": "images/ba.png"
   },
   "options_ui": {
