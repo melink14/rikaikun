@@ -125,8 +125,8 @@ class RcxDict {
     [, , this.nameDict, this.nameIndex] = await Promise.all([
       this.loadDictionaries(),
       this.loadDeinflectionData(),
-      this.fileReadAsync(chrome.extension.getURL('data/names.dat')),
-      this.fileReadAsync(chrome.extension.getURL('data/names.idx')),
+      this.fileReadAsync(chrome.runtime.getURL('data/names.dat')),
+      this.fileReadAsync(chrome.runtime.getURL('data/names.idx')),
     ]);
 
     const ended = +new Date();
@@ -161,8 +161,8 @@ class RcxDict {
       return;
     }
 
-    this.nameDict = this.fileRead(chrome.extension.getURL('data/names.dat'));
-    this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
+    this.nameDict = this.fileRead(chrome.runtime.getURL('data/names.dat'));
+    this.nameIndex = this.fileRead(chrome.runtime.getURL('data/names.idx'));
   }
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
@@ -170,16 +170,16 @@ class RcxDict {
   async loadDictionaries(): Promise<void> {
     [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
       await Promise.all([
-        this.fileReadAsync(chrome.extension.getURL('data/dict.dat')),
-        this.fileReadAsync(chrome.extension.getURL('data/dict.idx')),
-        this.fileReadAsync(chrome.extension.getURL('data/kanji.dat')),
-        this.fileReadAsyncAsArray(chrome.extension.getURL('data/radicals.dat')),
+        this.fileReadAsync(chrome.runtime.getURL('data/dict.dat')),
+        this.fileReadAsync(chrome.runtime.getURL('data/dict.idx')),
+        this.fileReadAsync(chrome.runtime.getURL('data/kanji.dat')),
+        this.fileReadAsyncAsArray(chrome.runtime.getURL('data/radicals.dat')),
       ]);
   }
 
   async loadDeinflectionData() {
     const buffer = await this.fileReadAsyncAsArray(
-      chrome.extension.getURL('data/deinflect.dat')
+      chrome.runtime.getURL('data/deinflect.dat')
     );
     let currentLength = -1;
     let group: DeinflectionRuleGroup = {

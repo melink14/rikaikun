@@ -1,11 +1,11 @@
 import { Config } from '../configuration';
 import { TestOnlyRcxContent } from '../rikaicontent';
 import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
+import { stubbedChrome as sinonChrome } from './chrome_stubs';
 import { use } from '@esm-bundle/chai';
 import { visualDiff } from '@web/test-runner-visual-regression';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import sinonChrome from 'sinon-chrome';
 
 use(sinonChai);
 
@@ -30,7 +30,7 @@ sinonChrome.reset();
 // Properties which need to be set separately from where they're used.
 let backgroundOnMessageHandler: BackgroundOnMessageHandler;
 let onStorageChangedHandler: StorageOnChangedHandler;
-let onBrowserActionClickedHandler: (tab: { id: number }) => Promise<void>;
+let onActionClickedHandler: (tab: { id: number }) => Promise<void>;
 let onActivatedHandler: (activeInfo: { tabId: number }) => Promise<void>;
 let defaultConfig: Config;
 
@@ -52,9 +52,10 @@ describe('Visual Regression Tests', function () {
         callback(initialConfig);
       }
     );
+    sinonChrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
 
     // stub sinon chrome getURL method to return the path it's given
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
 
     // Initializing backround page and saving it's onMessage handler allows
     // for simulating full content script -> background functionality.
@@ -72,8 +73,8 @@ describe('Visual Regression Tests', function () {
       sinonChrome.storage.onChanged.addListener.firstCall.args[0];
 
     // Allows simulating clicking the rikaikun button to turn rikaikun on and off.
-    onBrowserActionClickedHandler =
-      sinonChrome.browserAction.onClicked.addListener.firstCall.args[0];
+    onActionClickedHandler =
+      sinonChrome.action.onClicked.addListener.firstCall.args[0];
 
     // Calling this re-enables the content script with fresh config.
     // Simulates returning to a tab after modifying options.
@@ -83,7 +84,7 @@ describe('Visual Regression Tests', function () {
 
   beforeEach(async function () {
     // Return the identity URL when looking up popup CSS file.
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
     root = createAndAppendRoot();
 
     configureMessagePassing();
@@ -284,7 +285,7 @@ describe('Visual Regression Tests', function () {
 });
 
 async function toggleRikaikun() {
-  await onBrowserActionClickedHandler({ id: 0 });
+  await onActionClickedHandler({ id: 0 });
 }
 
 // Simple chrome messaging stub to make content/background communication work.

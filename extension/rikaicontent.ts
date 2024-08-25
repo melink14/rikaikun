@@ -127,7 +127,7 @@ class RcxContent {
     if (!popup) {
       const css = topdoc.createElement('link');
       css.setAttribute('rel', 'stylesheet');
-      css.setAttribute('href', chrome.extension.getURL('css/popup.css'));
+      css.setAttribute('href', chrome.runtime.getURL('css/popup.css'));
 
       popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
       popup.setAttribute('id', 'rikaichan-window');
@@ -433,7 +433,7 @@ class RcxContent {
         if (ev.ctrlKey || ev.metaKey) {
           shouldPreventDefault = false;
         } else {
-          chrome.runtime.sendMessage({
+          void chrome.runtime.sendMessage({
             type: 'copyToClip',
             entry: this.lastFound,
           });
@@ -457,7 +457,7 @@ class RcxContent {
         break;
       }
       case 68: // d
-        chrome.runtime.sendMessage({ type: 'switchOnlyReading' });
+        void chrome.runtime.sendMessage({ type: 'switchOnlyReading' });
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
         break;
       // @ts-expect-error: Fallthrough here used to share lookup logic with different step length.
@@ -996,7 +996,7 @@ class RcxContent {
     if (window.rikaichan!.config.ttsEnabled) {
       const text = sel.toString();
       if (text.length > 0) {
-        chrome.runtime.sendMessage({ type: 'playTTS', text: text });
+        void chrome.runtime.sendMessage({ type: 'playTTS', text: text });
       }
     }
   }
@@ -1407,6 +1407,6 @@ chrome.runtime.onMessage.addListener((request) => {
 });
 
 // When a page first loads, checks to see if it should enable script
-chrome.runtime.sendMessage({ type: 'enable?' });
+void chrome.runtime.sendMessage({ type: 'enable?' });
 
 export { RcxContent as TestOnlyRcxContent };
