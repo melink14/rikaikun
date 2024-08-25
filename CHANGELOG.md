@@ -21,20 +21,6 @@ consistently version releases as follows:
 
 - **manifest:** Remove comment from manifest.json ([#2169](https://github.com/melink14/rikaikun/issues/2169)) ([d76fc31](https://github.com/melink14/rikaikun/commit/d76fc310a09e112d3dbef48fecf16f9ed4ae3ebd))
 
-## [3.0.0](https://github.com/melink14/rikaikun/compare/v2.5.61...v3.0.0) (2024-08-25)
-
-### ⚠ BREAKING CHANGES
-
-- MV3 with offscreen pages requires at least Chrome 109 which is the new minimum version.
-
-### Features
-
-- Migrate to MV3 ([#2168](https://github.com/melink14/rikaikun/issues/2168)) ([8a47af3](https://github.com/melink14/rikaikun/commit/8a47af38261371a9c1e5b9049d0d6b42535f8c1f)), closes [#187](https://github.com/melink14/rikaikun/issues/187) [#65](https://github.com/melink14/rikaikun/issues/65)
-
-### Bug Fixes
-
-- **manifest:** Remove comment from manifest.json ([#2169](https://github.com/melink14/rikaikun/issues/2169)) ([d76fc31](https://github.com/melink14/rikaikun/commit/d76fc310a09e112d3dbef48fecf16f9ed4ae3ebd))
-
 ## [2.5.61](https://github.com/melink14/rikaikun/compare/v2.5.60...v2.5.61) (2024-08-05)
 
 ### Bug Fixes
