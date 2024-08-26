@@ -7,6 +7,14 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.0.1](https://github.com/melink14/rikaikun/compare/v3.0.0...v3.0.1) (2024-08-26)
+
+### Bug Fixes
+
+- Allow popup.css to be accessed from all URLs ([#2174](https://github.com/melink14/rikaikun/issues/2174)) ([5b0f3c1](https://github.com/melink14/rikaikun/commit/5b0f3c145d0333cf2a9e0824e0730ef008020134))
+- **dict:** Update dictionaries to latest versions ([#2148](https://github.com/melink14/rikaikun/issues/2148)) ([c23d032](https://github.com/melink14/rikaikun/commit/c23d03232851755123b3de6adb911410445ed407))
+- **google-docs:** Set docs_annotate_canvas property in a MV3 compliant manner ([#2176](https://github.com/melink14/rikaikun/issues/2176)) ([a09ddaf](https://github.com/melink14/rikaikun/commit/a09ddaf1853da768980c4af901e53c52d05ba89c)), closes [#2175](https://github.com/melink14/rikaikun/issues/2175)
+
 ## [3.0.0](https://github.com/melink14/rikaikun/compare/v2.5.61...v3.0.0) (2024-08-25)
 
 ### ⚠ BREAKING CHANGES
