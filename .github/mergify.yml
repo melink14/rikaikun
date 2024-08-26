@@ -58,4 +58,3 @@ pull_request_rules:
     actions:
       queue:
         name: non-dependabot
-        
