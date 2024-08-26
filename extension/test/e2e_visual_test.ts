@@ -61,7 +61,9 @@ describe('Visual Regression Tests', function () {
     // for simulating full content script -> background functionality.
     // Waiting on the RcxMain promise allows us to know exactly when setup is
     // finished.
-    await (await import('../background')).TestOnlyRxcMainPromise;
+    await (
+      await import('../background')
+    ).TestOnlyRxcMainPromise;
 
     // Handlers must be saved here since they are only captured at initial load
     // and stub will be reset after each test.

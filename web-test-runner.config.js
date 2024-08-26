@@ -56,8 +56,8 @@ class SpecReporter {
             test.duration > 100
               ? ` ${this.color.reset}${this.color.red}(${test.duration}ms)`
               : test.duration > 50
-              ? ` ${this.color.reset}${this.color.yellow}(${test.duration}ms)`
-              : '';
+                ? ` ${this.color.reset}${this.color.yellow}(${test.duration}ms)`
+                : '';
           result += `${this.color.reset}`;
 
           return result;
