@@ -91,7 +91,9 @@ class SpecReporter {
 
   specReporter({ reportResults = true } = {}) {
     return {
-      onTestRunFinished: () => {},
+      onTestRunFinished: () => {
+        // Do nothing
+      },
       reportTestFileResults: async ({
         logger,
         sessionsForTestFile,

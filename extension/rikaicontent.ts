@@ -1179,7 +1179,7 @@ class RcxContent {
           return;
         }
         fake.style.display = 'none';
-        ro = this.getTotalOffset(rp.parentNode!, rp, ro);
+        ro = this.getTotalOffset(rp.parentNode, rp, ro);
       }
 
       // This is to account for bugs in caretRangeFromPoint

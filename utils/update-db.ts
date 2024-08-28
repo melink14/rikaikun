@@ -13,8 +13,6 @@ import {
   WritableOptions,
 } from 'stream';
 import { URL } from 'url';
-// TODO( mysticatea/eslint-plugin-node#255 ): no-missing-import doesn't support export packages.
-// eslint-disable-next-line node/no-missing-import
 import { parse } from 'csv-parse/sync';
 import fs, { WriteStream, promises as promiseFs } from 'fs';
 import http from 'http';
@@ -471,7 +469,5 @@ parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
     return undefined;
   })
   .catch((err) => {
-    // Promise rejection is untyped so allow `any` for this template expression.
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     console.log(`Error: '${err}'`);
   });
