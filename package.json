@@ -67,7 +67,7 @@
     "@types/chai-things": "^0.0.38",
     "@types/chrome": "^0.0.270",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.16.2",
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
@@ -117,6 +117,7 @@
     "typescript-eslint": "^8.3.0"
   },
   "overrides": {
+    "chokidar": ">=3.6.0",
     "esbuild": "^0.23.1",
     "glob-parent": ">=5.1.2"
   },
