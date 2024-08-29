@@ -822,7 +822,6 @@ class RcxContent {
   show(tdata: Rikaichan, dictOption: number) {
     const rp = tdata.prevRangeNode;
     let ro = tdata.prevRangeOfs! + tdata.uofs!;
-    let u;
 
     tdata.uofsNext = 1;
 
@@ -839,7 +838,12 @@ class RcxContent {
     }
 
     // if we have '   XYZ', where whitespace is compressed, X never seems to get selected
-    while ((u = rp.data.charCodeAt(ro)) === 32 || u === 9 || u === 10) {
+    while (
+      [
+        32, 9, 10, 12290, 12289, 12300, 12301, 65281, 12302, 12303, 65288,
+        65289, 91, 93, 12539,
+      ].includes(rp.data.charCodeAt(ro))
+    ) {
       ++ro;
       if (ro >= rp.data.length) {
         this.clearHi();
