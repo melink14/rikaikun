@@ -71,7 +71,7 @@
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
-    "@web/test-runner": "^0.18.3",
+    "@web/test-runner": "^0.19.0",
     "@web/test-runner-browserstack": "^0.7.2",
     "@web/test-runner-chrome": "^0.17.0",
     "@web/test-runner-commands": "^0.9.0",
