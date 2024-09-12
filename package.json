@@ -95,7 +95,7 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-tsdoc": "^0.3.0",
     "globals": "^15.9.0",
-    "husky": "^9.1.5",
+    "husky": "^9.1.6",
     "iconv-lite": "^0.6.3",
     "is-docker": "^3.0.0",
     "prettier": "^3.3.3",
