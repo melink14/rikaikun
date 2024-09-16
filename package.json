@@ -114,7 +114,7 @@
     "ts-lit-plugin": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.5.0"
+    "typescript-eslint": "^8.6.0"
   },
   "overrides": {
     "chokidar": ">=3.6.0",
