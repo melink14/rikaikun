@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.7
       - name: Use LTS Node.js
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: lts/*
       - run: npm ci
