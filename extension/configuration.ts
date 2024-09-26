@@ -2,6 +2,7 @@ const defaultConfig = {
   copySeparator: 'tab',
   disablekeys: false,
   highlight: true,
+  outlineOkurigana: true,
   kanjicomponents: true,
   lineEnding: 'n',
   maxClipCopyEntries: 7,
