@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/melink14/rikaikun#readme",
   "dependencies": {
-    "lit": "^3.2.0",
+    "lit": "^3.2.1",
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
@@ -67,7 +67,7 @@
     "@types/chai-things": "^0.0.38",
     "@types/chrome": "^0.0.270",
     "@types/mocha": "^10.0.8",
-    "@types/node": "^20.16.10",
+    "@types/node": "^20.16.11",
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
@@ -114,7 +114,7 @@
     "ts-lit-plugin": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.8.0"
+    "typescript-eslint": "^8.8.1"
   },
   "overrides": {
     "chokidar": ">=3.6.0",
