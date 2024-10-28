@@ -1,6 +1,6 @@
 {
   "name": "rikaikun",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "rikaikun is a Chrome extension that helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.",
   "private": true,
   "engines": {
@@ -54,7 +54,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
-    "@eslint/js": "^9.12.0",
+    "@eslint/js": "^9.13.0",
     "@esm-bundle/chai": "^4.3.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
@@ -67,7 +67,7 @@
     "@types/chai-things": "^0.0.38",
     "@types/chrome": "^0.0.270",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20.16.12",
+    "@types/node": "^20.17.1",
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
@@ -82,7 +82,7 @@
     "chai-things": "^0.2.0",
     "conventional-changelog-conventionalcommits": "~8.0.0",
     "csv-parse": "^5.5.6",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-chai-friendly": "^1.0.1",
@@ -114,7 +114,7 @@
     "ts-lit-plugin": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.9.0"
+    "typescript-eslint": "^8.10.0"
   },
   "overrides": {
     "chokidar": ">=3.6.0",
