@@ -54,7 +54,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
-    "@eslint/js": "^9.13.0",
+    "@eslint/js": "^9.14.0",
     "@esm-bundle/chai": "^4.3.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
@@ -67,7 +67,7 @@
     "@types/chai-things": "^0.0.38",
     "@types/chrome": "^0.0.270",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20.17.3",
+    "@types/node": "^20.17.6",
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
