@@ -52,7 +52,7 @@
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.5.0",
+    "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.15.0",
     "@esm-bundle/chai": "^4.3.4",
@@ -86,7 +86,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-chai-friendly": "^1.0.1",
-    "eslint-plugin-import-x": "^4.4.2",
+    "eslint-plugin-import-x": "^4.4.3",
     "eslint-plugin-json": "^4.0.1",
     "eslint-plugin-lit": "^1.15.0",
     "eslint-plugin-mocha": "^10.5.0",
