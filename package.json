@@ -67,7 +67,7 @@
     "@types/chai-things": "^0.0.38",
     "@types/chrome": "^0.0.270",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.8",
+    "@types/node": "^20.17.9",
     "@types/simulant": "^0.2.2",
     "@types/sinon-chai": "^3.2.12",
     "@types/sinon-chrome": "^2.2.15",
