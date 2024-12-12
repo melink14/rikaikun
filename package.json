@@ -1,6 +1,6 @@
 {
   "name": "rikaikun",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "description": "rikaikun is a Chrome extension that helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.",
   "private": true,
   "engines": {
