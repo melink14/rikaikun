@@ -104,6 +104,16 @@ class OptionsForm extends LitElement {
                 <br />
                 <input
                   type="checkbox"
+                  ?checked=${options.outlineOkurigana}
+                  @change=${(event: OptionEvent) =>
+                    (event.__update = {
+                      outlineOkurigana: event.target.checked,
+                    })}
+                />
+                Highlight okurigana
+                <br />
+                <input
+                  type="checkbox"
                   ?checked=${options.onlyreading}
                   @change=${(event: OptionEvent) =>
                     (event.__update = { onlyreading: event.target.checked })}
