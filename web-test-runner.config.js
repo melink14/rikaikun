@@ -3,7 +3,8 @@ import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 import isDocker from 'is-docker';
-import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
+//import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
+import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 
 // Set NODE_ENV to test to ensure snowpack builds in test mode.
 process.env.NODE_ENV = 'test';
@@ -124,8 +125,9 @@ if (isDocker) {
 
 /** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
 const defaultConfig = {
+  rootDir: 'extension',
   coverageConfig: {
-    exclude: ['**/snowpack/**/*', '**/*_test.ts*'],
+    exclude: ['**/*_test.ts*'],
   },
 
   browsers: [
@@ -140,7 +142,8 @@ const defaultConfig = {
     }),
   ],
   plugins: [
-    snowpackWebTestRunner(),
+    //    snowpackWebTestRunner(),
+    vitePlugin(),
     visualRegressionPlugin({
       update: process.argv.includes('--update-visual-baseline'),
       // When not running in Github Actions, save to an unpushed local folder.
@@ -152,7 +155,11 @@ const defaultConfig = {
   testRunnerHtml: (testFramework) =>
     `<html>
       <body>
-        <script type="module" src="test/chrome_stubs.js"></script>
+        <-- vite doesn't add global by default so add it here. -->
+        <script>
+          window.global ||= window;
+        </script>
+        <script type="module" src="test/chrome_stubs.ts"></script>
         <script type="module" src="${testFramework}"></script>
       </body>
     </html>`,
