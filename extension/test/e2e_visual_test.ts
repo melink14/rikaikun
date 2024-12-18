@@ -321,16 +321,23 @@ async function takeSnapshot(name: string) {
 }
 
 function waitForVisiblePopup(): Promise<void> {
-  return new Promise((resolve) => {
-    const popup = document.querySelector<HTMLDivElement>('#rikaichan-window');
-    if (!popup) {
-      return;
-    }
-    const o = new IntersectionObserver(() => {
-      resolve();
-      o.disconnect();
-    });
-    o.observe(popup);
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now();
+    const checkElement = () => {
+      if (document.querySelector<HTMLDivElement>('#rikaichan-window')) {
+        resolve();
+        return;
+      }
+      // Timing out here gives a better error message than waiting for
+      // the global test timeout.
+      if (Date.now() - startTime > 2000) {
+        reject(new Error("Rikaikun popup wasn't visible for 2000ms"));
+        return;
+      }
+
+      requestAnimationFrame(checkElement);
+    };
+    checkElement();
   });
 }
 
