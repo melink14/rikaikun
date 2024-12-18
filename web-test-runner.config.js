@@ -127,7 +127,9 @@ if (isDocker) {
 const defaultConfig = {
   rootDir: 'extension',
   coverageConfig: {
-    exclude: ['**/*_test.ts*'],
+    // Including this excludes tests and random node_module files from the report.
+    // Excluding doesn't appear to do anything with vite.
+    include: ['**/extension/*.ts'],
   },
 
   browsers: [
@@ -155,7 +157,7 @@ const defaultConfig = {
   testRunnerHtml: (testFramework) =>
     `<html>
       <body>
-        <-- vite doesn't add global by default so add it here. -->
+        <!-- vite doesn't add global by default so add it here. -->
         <script>
           window.global ||= window;
         </script>
