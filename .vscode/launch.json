@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "type": "chrome",
       "request": "attach",
       "name": "Attach to Web Test Runner",
       "address": "localhost",
