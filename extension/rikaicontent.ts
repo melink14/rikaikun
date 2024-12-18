@@ -442,8 +442,6 @@ class RcxContent {
       case 66: {
         // b
         const rikaichan = (ev.currentTarget! as Window).rikaichan!;
-        // For some reason it claims it can be const even though it's decremented.
-        // eslint-disable-next-line prefer-const
         let ofs = rikaichan.uofs;
         for (i = 50; i > 0; --i) {
           rikaichan.uofs = --ofs!;
