@@ -1,0 +1,23 @@
+diff --git a/node_modules/@remcovaes/web-test-runner-vite-plugin/src/proxy.js b/node_modules/@remcovaes/web-test-runner-vite-plugin/src/proxy.js
+index 4adea1a..249b77c 100644
+--- a/node_modules/@remcovaes/web-test-runner-vite-plugin/src/proxy.js
++++ b/node_modules/@remcovaes/web-test-runner-vite-plugin/src/proxy.js
+@@ -1,7 +1,7 @@
+ import http from 'node:http';
+ 
+-const get = url => new Promise((resolve, reject) => {
+-	const request = http.get(url, (response) => {
++const get = (url, headers) => new Promise((resolve, reject) => {
++	const request = http.get(url, {headers}, (response) => {
+ 		const buffers = [];
+ 		let bufferLen = 0;
+ 
+@@ -28,7 +28,7 @@ const get = url => new Promise((resolve, reject) => {
+  * @param {string} url
+  */
+ export const proxy = (url) => async ctx => {
+-	const { body, headers, status } = await get(url + ctx.originalUrl);
++	const { body, headers, status } = await get(url + ctx.originalUrl, ctx.headers);
+ 	ctx.set(headers);
+ 	ctx.body = body;
+ 	ctx.status = status;

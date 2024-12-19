@@ -1,0 +1,17 @@
+diff --git a/node_modules/vite-multiple-assets/dist/index.d.mts b/node_modules/vite-multiple-assets/dist/index.d.mts
+index a6aa5ff..d03ac0b 100644
+--- a/node_modules/vite-multiple-assets/dist/index.d.mts
++++ b/node_modules/vite-multiple-assets/dist/index.d.mts
+@@ -114,12 +114,6 @@ interface IParameterViteServe {
+ 	viteConfig: IViteResolvedConfig;
+ }
+ 
+-interface IParameterViteServe {
+-	server: ViteDevServer;
+-	assets: string[];
+-	options?: IConfig;
+-}
+-
+ declare function ServerMiddleWare(payload: IParameterViteServe & {
+     data?: TReturnGetFile;
+ }): Promise<(() => void) | undefined>;

@@ -8,7 +8,9 @@
       "address": "localhost",
       "port": 9333,
       "sourceMaps": true,
-      "trace": true
+      "trace": true,
+      // Needed for vite based project.
+      "webRoot": "${workspaceFolder}/extension"
     }
   ]
 }
