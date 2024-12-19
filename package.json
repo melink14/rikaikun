@@ -121,10 +121,6 @@
     "vite-multiple-assets": "^2.2.4",
     "vite-plugin-filter-replace": "^0.1.13"
   },
-  "overrides": {
-    "chokidar": ">=3.6.0",
-    "glob-parent": ">=5.1.2"
-  },
   "release": {
     "plugins": [
       "@semantic-release/commit-analyzer",
