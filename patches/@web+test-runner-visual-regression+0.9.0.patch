@@ -1,0 +1,13 @@
+diff --git a/node_modules/@web/test-runner-visual-regression/dist/visualRegressionPlugin.js b/node_modules/@web/test-runner-visual-regression/dist/visualRegressionPlugin.js
+index bd4e733..416bd33 100644
+--- a/node_modules/@web/test-runner-visual-regression/dist/visualRegressionPlugin.js
++++ b/node_modules/@web/test-runner-visual-regression/dist/visualRegressionPlugin.js
+@@ -42,6 +42,8 @@ function visualRegressionPlugin(options = {}) {
+                         if (!element) {
+                             throw new VisualRegressionError_1.VisualRegressionError('Something went wrong diffing element, the browser could not find it.');
+                         }
++                        // Screenshots must be done in the foreground.
++                        page.bringToFront();
+                         const screenshot = (await element.screenshot({ encoding: 'binary' }));
+                         return (0, visualDiffCommand_1.visualDiffCommand)(mergedOptions, screenshot, payload.name, context);
+                     }
