@@ -42,7 +42,15 @@ export default defineConfig({
       // Set all ts files in extension directory as inputs to prevent them from
       // being bundled.
       input: Object.fromEntries(
-        globSync('extension/*.ts').map((file) => [
+        globSync(
+          // In test mode, marks all tests as inputs as well.
+          // This didn't impact local runs at all but without it rikaicontent hangs
+          // on Github. From the output, the reason might be delayed just in time loading
+          // of deps.
+          process.env.NODE_ENV === 'test'
+            ? 'extension/**/*.ts'
+            : 'extension/*.ts'
+        ).map((file) => [
           // This remove `extension/` as well as the file extension from each
           // file, so e.g. extension/nested/foo.ts becomes nested/foo
           path.relative(
