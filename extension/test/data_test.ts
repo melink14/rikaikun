@@ -1,6 +1,6 @@
 import { Config } from '../configuration';
 import { RcxDict } from '../data';
-import { expect, use } from '@esm-bundle/chai';
+import { expect, use } from 'chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
 import sinonChrome from 'sinon-chrome';

@@ -1,7 +1,7 @@
 import { Config } from '../configuration';
 import { DictEntryData } from '../data';
 import { TestOnlyRcxContent } from '../rikaicontent';
-import { expect, use } from '@esm-bundle/chai';
+import { expect, use } from 'chai';
 import { html, render } from 'lit-html';
 import chrome from 'sinon-chrome';
 import simulant from 'simulant';
