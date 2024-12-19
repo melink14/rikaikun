@@ -2,11 +2,10 @@ import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { defaultReporter } from '@web/test-runner';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import isDocker from 'is-docker';
-//import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
+import isDocker from 'is-docker';
 
-// Set NODE_ENV to test to ensure snowpack builds in test mode.
+// Set NODE_ENV to test for later use in vite.config.ts.
 process.env.NODE_ENV = 'test';
 
 /**
@@ -125,7 +124,7 @@ if (isDocker) {
 
 /** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
 const defaultConfig = {
-  rootDir: 'extension',
+  rootDir: 'extension', // Should match root in vite.config.ts.
   coverageConfig: {
     // Including this excludes tests and random node_module files from the report.
     // Excluding doesn't appear to do anything with vite.
@@ -144,7 +143,6 @@ const defaultConfig = {
     }),
   ],
   plugins: [
-    //    snowpackWebTestRunner(),
     vitePlugin(),
     visualRegressionPlugin({
       update: process.argv.includes('--update-visual-baseline'),

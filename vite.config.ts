@@ -5,10 +5,9 @@ import { globSync } from 'glob';
 import path from 'node:path';
 import replace from 'vite-plugin-filter-replace';
 
-console.log(process.env.NODE_ENV);
-
 export default defineConfig({
   plugins: [
+    // Copies files into output directory.
     DynamicPublicDirectory([
       '{\x01,data}/**',
       '{\x01,images}/**',
@@ -22,7 +21,6 @@ export default defineConfig({
             filter: /.*/,
             replace: {
               // Remove test only exports
-
               from: /export.*TestOnly.*\n/,
               to: '',
             },
@@ -30,32 +28,23 @@ export default defineConfig({
         ])
       : undefined,
   ],
+  // Instead, we use DynamicPublicDirectory plugin.
   publicDir: false,
   root: 'extension',
   build: {
-    target: 'chrome109',
-    assetsDir: '',
+    target: 'chrome109', // Same as manifest.json
+    assetsDir: '', // Keeps files in root of dist.
     outDir: '../dist',
     emptyOutDir: true,
     minify: false,
-    modulePreload: false,
+    modulePreload: false, // Prevents unneeded polyfill in output.
     rollupOptions: {
-      // preserveEntrySignatures: 'exports-only',
-      // input: {
-      //   background: 'extension/background.ts',
-      //   options: 'extension/options.ts',
-      //   offscreen: 'extension/offscreen.ts',
-      //   rikaicontent: 'extension/rikaicontent.ts',
-      //   'docs-annotate-canvas': 'extension/docs-annotate-canvas.ts',
-      // },
+      // Set all ts files in extension directory as inputs to prevent them from
+      // being bundled.
       input: Object.fromEntries(
-        globSync(
-          process.env.NODE_ENV === 'test'
-            ? 'extension/**/*.ts'
-            : 'extension/*.ts'
-        ).map((file) => [
+        globSync('extension/*.ts').map((file) => [
           // This remove `extension/` as well as the file extension from each
-          // file, so e.g. extension/nested/foo.js becomes nested/foo
+          // file, so e.g. extension/nested/foo.ts becomes nested/foo
           path.relative(
             'extension',
             file.slice(0, file.length - path.extname(file).length)
@@ -64,19 +53,13 @@ export default defineConfig({
           // src/nested/foo becomes /project/src/nested/foo.js
           fileURLToPath(new URL(file, import.meta.url)),
         ])
-        // .concat([
-        //   ['lit/index', 'node_modules/lit/index.js'],
-        //   ['lit/directives/until', 'node_modules/lit/directives/until.js'],
-        //   ['lit-toast/lit-toast', 'node_modules/lit-toast/lit-toast.js'],
-        // ])
       ),
       output: {
-        // preserveModules: true,
-        // preserveModulesRoot: 'extension',
-        minifyInternalExports: false,
-        hoistTransitiveImports: false,
-        chunkFileNames: '[name].js',
+        minifyInternalExports: false, // Preserve readability.
+        hoistTransitiveImports: false, // Reduce unneeded imports.
+        chunkFileNames: '[name].js', // Don't include hashes.
         manualChunks(id: string) {
+          // Chunk dependencies based on top level package name.
           if (id.includes('node_modules')) {
             const parts = id.split('/');
 
@@ -84,10 +67,8 @@ export default defineConfig({
           }
           return id;
         },
-        // The default `_virtual` breaks chrome extensions.
-        virtualDirname: 'virtual',
-        entryFileNames: '[name].js',
-        sanitizeFileName: false,
+        virtualDirname: 'virtual', // The default `_virtual` breaks chrome extensions.
+        entryFileNames: '[name].js', // Don't include hashes.
       },
     },
   },
