@@ -13,19 +13,22 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "pretty": true,
     "sourceMap": true,
     "strict": true,
     "experimentalDecorators": true,
     "rootDir": ".",
     "outDir": "dist",
-    "lib": ["ES2018", "DOM", "DOM.Iterable"],
     "esModuleInterop": true,
     "declaration": false,
-    // ES2020 corresponds to Chrome 80+
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "target": "ES2020",
+    // ES2022 corresponds to Chrome 94+
+    // https://caniuse.com/?search=es2022
+    // ES2023 starts at 110+
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     // Added for compatibility with snowback/esbuild builder.
     "isolatedModules": true
   },

@@ -65,7 +65,6 @@ type Rikaichan = {
 };
 
 class RcxContent {
-  private dictCount = 3;
   private altView = 0;
 
   private sameDict = 0;
@@ -128,7 +127,7 @@ class RcxContent {
     if (!popup) {
       const css = topdoc.createElement('link');
       css.setAttribute('rel', 'stylesheet');
-      css.setAttribute('href', chrome.extension.getURL('css/popup.css'));
+      css.setAttribute('href', chrome.runtime.getURL('css/popup.css'));
 
       popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
       popup.setAttribute('id', 'rikaichan-window');
@@ -434,7 +433,7 @@ class RcxContent {
         if (ev.ctrlKey || ev.metaKey) {
           shouldPreventDefault = false;
         } else {
-          chrome.runtime.sendMessage({
+          void chrome.runtime.sendMessage({
             type: 'copyToClip',
             entry: this.lastFound,
           });
@@ -443,8 +442,6 @@ class RcxContent {
       case 66: {
         // b
         const rikaichan = (ev.currentTarget! as Window).rikaichan!;
-        // For some reason it claims it can be const even though it's decremented.
-        // eslint-disable-next-line prefer-const
         let ofs = rikaichan.uofs;
         for (i = 50; i > 0; --i) {
           rikaichan.uofs = --ofs!;
@@ -458,7 +455,7 @@ class RcxContent {
         break;
       }
       case 68: // d
-        chrome.runtime.sendMessage({ type: 'switchOnlyReading' });
+        void chrome.runtime.sendMessage({ type: 'switchOnlyReading' });
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
         break;
       // @ts-expect-error: Fallthrough here used to share lookup logic with different step length.
@@ -849,20 +846,6 @@ class RcxContent {
       }
     }
 
-    //
-    if (
-      isNaN(u) ||
-      (u !== 0x25cb &&
-        (u < 0x3001 || u > 0x30ff) &&
-        (u < 0x3400 || u > 0x9fff) &&
-        (u < 0xf900 || u > 0xfaff) &&
-        (u < 0xff10 || u > 0xff9d))
-    ) {
-      this.clearHi();
-      this.hidePopup();
-      return -2;
-    }
-
     // selection end data
     const selEndList: { node: CharacterData; offset: number }[] = [];
     const text = this.getTextFromRange(rp, ro, selEndList, 13 /* maxlength*/);
@@ -1011,7 +994,7 @@ class RcxContent {
     if (window.rikaichan!.config.ttsEnabled) {
       const text = sel.toString();
       if (text.length > 0) {
-        chrome.runtime.sendMessage({ type: 'playTTS', text: text });
+        void chrome.runtime.sendMessage({ type: 'playTTS', text: text });
       }
     }
   }
@@ -1194,7 +1177,7 @@ class RcxContent {
           return;
         }
         fake.style.display = 'none';
-        ro = this.getTotalOffset(rp.parentNode!, rp, ro);
+        ro = this.getTotalOffset(rp.parentNode, rp, ro);
       }
 
       // This is to account for bugs in caretRangeFromPoint
@@ -1422,6 +1405,6 @@ chrome.runtime.onMessage.addListener((request) => {
 });
 
 // When a page first loads, checks to see if it should enable script
-chrome.runtime.sendMessage({ type: 'enable?' });
+void chrome.runtime.sendMessage({ type: 'enable?' });
 
 export { RcxContent as TestOnlyRcxContent };

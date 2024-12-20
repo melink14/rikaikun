@@ -42,6 +42,7 @@
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
 import { Config } from './configuration';
+import { parseWordDictEntry } from './parse-word-dict-entry';
 
 // Be careful of using directly due to object keys.
 const defaultDictEntryData = {
@@ -124,8 +125,8 @@ class RcxDict {
     [, , this.nameDict, this.nameIndex] = await Promise.all([
       this.loadDictionaries(),
       this.loadDeinflectionData(),
-      this.fileReadAsync(chrome.extension.getURL('data/names.dat')),
-      this.fileReadAsync(chrome.extension.getURL('data/names.idx')),
+      this.fileReadAsync(chrome.runtime.getURL('data/names.dat')),
+      this.fileReadAsync(chrome.runtime.getURL('data/names.idx')),
     ]);
 
     const ended = +new Date();
@@ -155,24 +156,13 @@ class RcxDict {
     return req.responseText;
   }
 
-  fileReadArray(name: string) {
-    const a = this.fileRead(name).split('\n');
-    // Is this just in case there is blank shit in the file.  It was written
-    // by Jon though.
-    // I suppose this is more robust
-    while (a.length > 0 && a[a.length - 1].length === 0) {
-      a.pop();
-    }
-    return a;
-  }
-
   loadNames() {
     if (this.nameDict && this.nameIndex) {
       return;
     }
 
-    this.nameDict = this.fileRead(chrome.extension.getURL('data/names.dat'));
-    this.nameIndex = this.fileRead(chrome.extension.getURL('data/names.idx'));
+    this.nameDict = this.fileRead(chrome.runtime.getURL('data/names.dat'));
+    this.nameIndex = this.fileRead(chrome.runtime.getURL('data/names.idx'));
   }
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
@@ -180,16 +170,16 @@ class RcxDict {
   async loadDictionaries(): Promise<void> {
     [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
       await Promise.all([
-        this.fileReadAsync(chrome.extension.getURL('data/dict.dat')),
-        this.fileReadAsync(chrome.extension.getURL('data/dict.idx')),
-        this.fileReadAsync(chrome.extension.getURL('data/kanji.dat')),
-        this.fileReadAsyncAsArray(chrome.extension.getURL('data/radicals.dat')),
+        this.fileReadAsync(chrome.runtime.getURL('data/dict.dat')),
+        this.fileReadAsync(chrome.runtime.getURL('data/dict.idx')),
+        this.fileReadAsync(chrome.runtime.getURL('data/kanji.dat')),
+        this.fileReadAsyncAsArray(chrome.runtime.getURL('data/radicals.dat')),
       ]);
   }
 
   async loadDeinflectionData() {
     const buffer = await this.fileReadAsyncAsArray(
-      chrome.extension.getURL('data/deinflect.dat')
+      chrome.runtime.getURL('data/deinflect.dat')
     );
     let currentLength = -1;
     let group: DeinflectionRuleGroup = {
@@ -346,10 +336,6 @@ class RcxDict {
       if (u === 8204) {
         p = 0;
         continue;
-      }
-
-      if (u <= 0x3000) {
-        break;
       }
 
       // full-width katakana to hiragana
@@ -616,8 +602,12 @@ class RcxDict {
     return entry;
   }
 
-  kanjiInfoLabelList: string[] = [
+  private static readonly KANJI_INFO_LABELS: {
+    code: string;
+    kanjiInfoLabel: string;
+  }[] = [
     /*
+      This is a small list of kanji info labels we currently don't include:
         'C',   'Classical Radical',
         'DR',  'Father Joseph De Roo Index',
         'DO',  'P.G. O\'Neill Index',
@@ -627,31 +617,22 @@ class RcxDict {
         'MP',  'Morohashi Daikanwajiten Volume/Page',
         'K',  'Gakken Kanji Dictionary Index',
         'W',  'Korean Reading',
+      Here is a comprehensive up-to-date list of all the kanji info labels:
+        http://www.edrdg.org/wiki/index.php/KANJIDIC_Project
     */
-    'H',
-    'Halpern',
-    'L',
-    'Heisig 5th Edition',
-    'DN',
-    'Heisig 6th Edition',
-    'E',
-    'Henshall',
-    'DK',
-    'Kanji Learners Dictionary',
-    'N',
-    'Nelson',
-    'V',
-    'New Nelson',
-    'Y',
-    'PinYin',
-    'P',
-    'Skip Pattern',
-    'IN',
-    'Tuttle Kanji &amp; Kana',
-    'I',
-    'Tuttle Kanji Dictionary',
-    'U',
-    'Unicode',
+    { code: 'H', kanjiInfoLabel: 'Halpern' },
+    { code: 'L', kanjiInfoLabel: 'Heisig 5th Edition' },
+    { code: 'DN', kanjiInfoLabel: 'Heisig 6th Edition' },
+    { code: 'E', kanjiInfoLabel: 'Henshall' },
+    { code: 'DK', kanjiInfoLabel: 'Kanji Learners Dictionary' },
+    { code: 'DL', kanjiInfoLabel: 'Kanji Learners Dictionary 2nd Edition' },
+    { code: 'N', kanjiInfoLabel: 'Nelson' },
+    { code: 'V', kanjiInfoLabel: 'New Nelson' },
+    { code: 'Y', kanjiInfoLabel: 'PinYin' },
+    { code: 'P', kanjiInfoLabel: 'Skip Pattern' },
+    { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji & Kana' },
+    { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
+    { code: 'U', kanjiInfoLabel: 'Unicode' },
   ];
 
   // TODO: Entry should be extracted as separate type.
@@ -952,94 +933,52 @@ class RcxDict {
     return b.join('');
   }
 
-  makeHtmlForRuby(entry: DictEntryData | null) {
-    let e;
-    let s;
-    let t;
-    let i;
-
-    if (entry === null) {
-      return '';
-    }
-
-    const b = [];
-
-    s = t = '';
-
-    if (entry.title) {
-      b.push('<div class="w-title">' + entry.title + '</div>');
-    }
-
-    for (i = 0; i < entry.data.length; ++i) {
-      e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-      if (!e) {
-        continue;
-      }
-
-      s = e[3];
-      t = s.replace(/\//g, '; ');
-      t = '<span class="w-def">' + t + '</span><br/>\n';
-    }
-    b.push(t);
-
-    return b.join('');
-  }
-
   makeText(entry: DictEntryData | null, max: number): string {
-    let e;
-    let i;
-    let j;
-    let t;
-
     if (entry === null) {
       return '';
     }
 
-    const b = [];
+    const result = [];
 
     if (entry.kanji) {
-      b.push(entry.kanji + '\n');
-      b.push((entry.eigo.length ? entry.eigo : '-') + '\n');
+      result.push(entry.kanji + '\n');
+      result.push((entry.eigo.length ? entry.eigo : '-') + '\n');
 
-      b.push(entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n');
+      result.push(
+        entry.onkun.replace(/\.([^\u3001]+)/g, '\uFF08$1\uFF09') + '\n'
+      );
       if (entry.nanori.length) {
-        b.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
+        result.push('\u540D\u4E57\u308A\t' + entry.nanori + '\n');
       }
       if (entry.bushumei.length) {
-        b.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
+        result.push('\u90E8\u9996\u540D\t' + entry.bushumei + '\n');
       }
 
-      for (i = 0; i < this.kanjiInfoLabelList.length; i += 2) {
-        e = this.kanjiInfoLabelList[i];
-        j = entry.misc[e];
-        b.push(
-          this.kanjiInfoLabelList[i + 1].replace('&amp;', '&') +
-            '\t' +
-            (j || '-') +
-            '\n'
-        );
+      for (const { code, kanjiInfoLabel } of RcxDict.KANJI_INFO_LABELS) {
+        const kanjiInfo = entry.misc[code] || '-';
+        result.push(kanjiInfoLabel + '\t' + kanjiInfo + '\n');
       }
     } else {
       if (max > entry.data.length) {
         max = entry.data.length;
       }
-      for (i = 0; i < max; ++i) {
-        e = entry.data[i].entry.match(/^(.+?)\s+(?:\[(.*?)\])?\s*\/(.+)\//);
-        if (!e) {
+      for (let i = 0; i < max; ++i) {
+        const wordDictEntry = parseWordDictEntry(entry.data[i].entry);
+        if (!wordDictEntry) {
           continue;
         }
+        const { word, pronunciation, definitions } = wordDictEntry;
 
-        if (e[2]) {
-          b.push(e[1] + '\t' + e[2]);
+        if (pronunciation) {
+          result.push(word + '\t' + pronunciation);
         } else {
-          b.push(e[1]);
+          result.push(word);
         }
 
-        t = e[3].replace(/\//g, '; ');
-        b.push('\t' + t + '\n');
+        result.push('\t' + definitions.join('; ') + '\n');
       }
     }
-    return b.join('');
+    return result.join('');
   }
 }
 

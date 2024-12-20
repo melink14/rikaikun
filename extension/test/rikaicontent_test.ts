@@ -1,7 +1,7 @@
 import { Config } from '../configuration';
 import { DictEntryData } from '../data';
 import { TestOnlyRcxContent } from '../rikaicontent';
-import { expect, use } from '@esm-bundle/chai';
+import { expect, use } from 'chai';
 import { html, render } from 'lit-html';
 import chrome from 'sinon-chrome';
 import simulant from 'simulant';
@@ -130,6 +130,22 @@ describe('RcxContent', function () {
       expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
         type: 'xsearch',
         text: '先生test',
+      });
+    });
+
+    it('triggers xsearch message when above non-Japanese text', function () {
+      const clock = sinon.useFakeTimers();
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>＋αtest</span>'
+      ) as HTMLSpanElement;
+
+      triggerMousemoveAtElementStart(span);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: '＋αtest',
       });
     });
 
@@ -326,6 +342,7 @@ describe('RcxContent', function () {
 
     describe('with Google Docs annotated canvas', function () {
       let docCanvas: HTMLDivElement;
+
       beforeEach(function () {
         markDocumentWithGoogleDocsClass();
         docCanvas = document.querySelector<HTMLDivElement>(

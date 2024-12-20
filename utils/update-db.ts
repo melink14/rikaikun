@@ -13,8 +13,6 @@ import {
   WritableOptions,
 } from 'stream';
 import { URL } from 'url';
-// TODO( mysticatea/eslint-plugin-node#255 ): no-missing-import doesn't support export packages.
-// eslint-disable-next-line node/no-missing-import
 import { parse } from 'csv-parse/sync';
 import fs, { WriteStream, promises as promiseFs } from 'fs';
 import http from 'http';
@@ -52,6 +50,7 @@ const SUPPORTED_REF_TYPES = [
   'L',
   'E',
   'DK',
+  'DL',
   'DN',
   'N',
   'V',
@@ -270,6 +269,8 @@ class KanjiDictParser extends Writable {
     //              confuse the output.
     //              (Also a comma could confuse it too. Would mean we should
     //              switch to ; as a separator in that case.)
+    // In general, a single space is used as a separator, but sometimes more spaces appear and the spec is unclear so it's best to assume
+    // one or more spaces separate fields.
     //
     // e.g. 士|3B4E U58eb B33 G4 S3 F526 J1 N1160 V1117 H3405 DP4213 DK2129 DL2877 L319 DN341 K301 O41 DO59 MN5638 MP3.0279 E494 IN572 DA581 DS410 DF1173 DH521 DT441 DC386 DJ755 DG393 DM325 P4-3-2 I3p0.1 Q4010.0 DR1472 Yshi4 Wsa シ さむらい T1 お ま T2 さむらい {gentleman} {scholar} {samurai} {samurai radical (no. 33)}
     //
@@ -294,7 +295,7 @@ class KanjiDictParser extends Writable {
     //  - Meanings, command separated
     // (All | delimited)
     const matches = line.match(
-      /^(\S+) (?:.=.=== )?((?:[\x21-\x7a]+ )+)((?:[\x80-\uffff.-]+ )+)?(?:T1 ((?:[\x80-\uffff.-]+ )+))?(?:T2 ((?:[\x80-\uffff.-]+ )+))?((?:\{[^}]+\} ?)*)?$/
+      /^(\S+) +(?:.=.=== )?((?:[\x21-\x7a]+ +)+)((?:[\x80-\uffff.-]+ +)+)?(?:T1 ((?:[\x80-\uffff.-]+ +)+))?(?:T2 ((?:[\x80-\uffff.-]+ +)+))?((?:\{[^}]+\} *)*)?$/
     );
     if (matches === null) {
       console.log(`Failed to parse line: ${line}`);
@@ -303,7 +304,7 @@ class KanjiDictParser extends Writable {
     }
 
     // Trim references
-    const refs = matches[2].trim().split(' ');
+    const refs = matches[2].trim().split(/ +/);
     const refsToKeep = [];
     let hasB = false;
     for (const ref of refs) {
@@ -340,7 +341,7 @@ class KanjiDictParser extends Writable {
 
     // Prepare meanings
     if (matches[6]) {
-      const meanings = matches[6].trim().split('} {');
+      const meanings = matches[6].trim().split(/} *{/);
       if (meanings.length) {
         meanings[0] = meanings[0].slice(1);
         const end = meanings.length - 1;
@@ -361,7 +362,8 @@ class KanjiDictParser extends Writable {
 
     this.#index[matches[1]] = matches
       .slice(2)
-      .map((part) => (part ? part.trim() : ''))
+      // Replace any instances of 2 or more spaces with one space.
+      .map((part) => (part ? part.trim().replace(/ {2,}/, ' ') : ''))
       .join('|');
 
     callback();
@@ -467,7 +469,5 @@ parseEdict('http://ftp.edrdg.org/pub/Nihongo/edict.gz', 'dict.dat', 'dict.idx')
     return undefined;
   })
   .catch((err) => {
-    // Promise rejection is untyped so allow `any` for this template expression.
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     console.log(`Error: '${err}'`);
   });

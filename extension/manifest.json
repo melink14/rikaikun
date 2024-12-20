@@ -1,20 +1,21 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "rikaikun",
-  "version": "2.4.44",
-  "minimum_chrome_version": "80",
+  "version": "3.0.13",
+  "minimum_chrome_version": "109",
   "description": "rikaikun shows the reading and English definition of Japanese words when you hover over Japanese text in the browser.",
   "icons": {
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
   "offline_enabled": true,
-  "permissions": ["clipboardWrite", "storage"],
+  "permissions": ["clipboardWrite", "storage", "offscreen"],
   "background": {
-    "page": "background.html",
-    "persistent": true
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "browser_action": {
+  "action": {
+    "//": "If only one icon available, setting default_icon to string is allowed.",
     "default_icon": "images/ba.png"
   },
   "options_ui": {
@@ -32,8 +33,14 @@
       "matches": ["https://docs.google.com/*"],
       "js": ["docs-annotate-canvas.js"],
       "run_at": "document_start",
-      "all_frames": true
+      "all_frames": true,
+      "world": "MAIN"
     }
   ],
-  "web_accessible_resources": ["css/popup.css"]
+  "web_accessible_resources": [
+    {
+      "resources": ["css/popup.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
