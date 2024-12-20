@@ -6,6 +6,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 use(sinonChai);
+
 let rcxMain: RcxMain;
 
 describe('background.ts', function () {
@@ -68,38 +69,35 @@ describe('background.ts', function () {
     });
   });
 
-  describe('xsearch', function () {
-    it('should call response callback with search correct values', async function () {
-      rcxMain.search = sinon
-        .stub()
-        .returns({ text: 'theText', dictOptions: '0' });
-      const response = sinon.spy();
-
-      await sendMessageToBackground({
-        tabId: 0,
-        type: 'xsearch',
-        text: 'A non empty string',
-        responseCallback: response,
-      });
-
-      expect(response).to.have.been.calledWithMatch({
-        text: 'theText',
-        dictOptions: sinon.match.any,
-      });
-      expect(response).to.have.been.calledOnce;
+  describe('when sent xsearch message', function () {
+    afterEach(function () {
+      sinon.restore();
     });
 
-    it('should not search if request.text is an empty string', async function () {
-      const response = sinon.spy();
+    it('should call rcxMain.search with the value', async function () {
+      const expectedText = 'theText';
+      const searchStub = sinon.stub(rcxMain, 'search');
 
       await sendMessageToBackground({
-        tabId: 0,
         type: 'xsearch',
-        text: '',
-        responseCallback: response,
+        text: expectedText,
       });
 
-      expect(response.called).to.be.false;
+      expect(searchStub).to.have.been.calledOnceWith(
+        expectedText,
+        sinon.match.any
+      );
+    });
+
+    it('should not call rcxMain.search if request.text is an empty string', async function () {
+      const searchStub = sinon.stub(rcxMain, 'search');
+
+      await sendMessageToBackground({
+        type: 'xsearch',
+        text: '',
+      });
+
+      expect(searchStub).to.not.have.been.called;
     });
   });
 });
@@ -121,18 +119,14 @@ async function sendMessageToBackground({
 }: Payload): Promise<void> {
   const request: { type: string; text?: string } = {
     type,
+    text,
   };
-  const sender = {
-    tab: { id: tabId },
-  };
-  if (text !== undefined) {
-    request['text'] = text;
-  }
+
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
     request,
-    sender,
+    { tab: { id: tabId } },
     responseCallback
   );
   return;
