@@ -68,23 +68,64 @@ describe('background.ts', function () {
       );
     });
   });
+
+  describe('when sent xsearch message', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('should call rcxMain.search with the value', async function () {
+      const expectedText = 'theText';
+      const searchStub = sinon.stub(rcxMain, 'search');
+
+      await sendMessageToBackground({
+        type: 'xsearch',
+        text: expectedText,
+      });
+
+      expect(searchStub).to.have.been.calledOnceWith(
+        expectedText,
+        sinon.match.any
+      );
+    });
+
+    it('should not call rcxMain.search if request.text is an empty string', async function () {
+      const searchStub = sinon.stub(rcxMain, 'search');
+
+      await sendMessageToBackground({
+        type: 'xsearch',
+        text: '',
+      });
+
+      expect(searchStub).to.not.have.been.called;
+    });
+  });
 });
+
+type Payload = {
+  tabId?: number;
+  text?: string;
+  type: string;
+  responseCallback?: (response: unknown) => void;
+};
 
 async function sendMessageToBackground({
   tabId = 0,
   type,
+  text,
   responseCallback = () => {
     // Do nothing by default.
   },
-}: {
-  tabId?: number;
-  type: string;
-  responseCallback?: (response: unknown) => void;
-}): Promise<void> {
+}: Payload): Promise<void> {
+  const request: { type: string; text?: string } = {
+    type,
+    text,
+  };
+
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
-    { type: type },
+    request,
     { tab: { id: tabId } },
     responseCallback
   );

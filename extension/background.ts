@@ -41,6 +41,9 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         break;
       case 'xsearch':
         console.log('xsearch');
+        if (request.text === '') {
+          break;
+        }
         response(rcxMain.search(request.text, request.dictOption));
         break;
       case 'resetDict':
