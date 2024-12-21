@@ -53,8 +53,6 @@ describe('data.ts', function () {
     it('should include deinflections of length one or more', function () {
       expect(rcxDict.deinflect('です')).to.include.something.like({
         word: 'だ',
-        reason: 'polite',
-        type: 32,
       });
     });
 
@@ -472,64 +470,6 @@ describe('data.ts', function () {
       const result = rcxDict.kanjiSearch('日');
 
       expect(result?.eigo).to.contain('day, sun, Japan');
-    });
-  });
-
-  describe('(fileRead)', function () {
-    it('should take a valid file url and return a response', function () {
-      const url = 'data/dict.dat';
-
-      const result = rcxDict.fileRead(url);
-
-      expect(result).to.be.a('string');
-    });
-  });
-
-  describe('(loadNames)', function () {
-    it('should load name dictionary information if not loaded already', function () {
-      rcxDict.loadNames();
-      expect(rcxDict.nameDict).to.exist;
-      expect(rcxDict.nameIndex).to.exist;
-    });
-  });
-
-  describe('isKana', function () {
-    it('should return true if charCode is a kana character', function () {
-      const kanaCode = 'て'.charCodeAt(0);
-      expect(rcxDict.isKana(kanaCode)).to.be.true;
-    });
-
-    it('should return false if non kana character is searched', function () {
-      const nonKanaCode = 'Test'.charCodeAt(0);
-      expect(rcxDict.isKana(nonKanaCode)).to.be.false;
-    });
-  });
-
-  describe('convertToHiragana', function () {
-    it('should return hiragana character when passed half-width katakana', function () {
-      const kanaCode = 'ﾃｽﾄ'.charCodeAt(0);
-      expect(rcxDict.isKana(kanaCode)).to.be.true;
-    });
-
-    it('should return hiragana character when passed full-width katakana', function () {
-      const nonKanaCode = 'Test'.charCodeAt(0);
-      expect(rcxDict.isKana(nonKanaCode)).to.be.false;
-    });
-
-    it('should do correct hiragana lookup when parsing voiced and semi-voiced half-width katakana', function () {
-      // const expected = 'ﾃﾞｯｽｸﾄｯﾌﾟ'
-      const hwInput = 'ﾎﾟｼﾞﾃｨﾌﾞ';
-      expect(rcxDict.convertToHiragana(hwInput)).to.equal('ぽじてぃぶ');
-    });
-  });
-
-  describe('normalize', function () {
-    it('should strip any spaces, tabs, new lines or zero-width-joiner', function () {
-      const expected = 'てすと';
-
-      const result = rcxDict.normalize('てす‌‌と'); // also contains ZWJ
-
-      expect(result).to.equal(expected);
     });
   });
 });

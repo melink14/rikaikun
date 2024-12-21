@@ -127,7 +127,7 @@ class RcxDict {
     this.config = config;
   }
 
-  static async create(config: Config) {
+  public static async create(config: Config) {
     if (!RcxDict.instance) {
       RcxDict.instance = new RcxDict(config);
       await RcxDict.instance.init();
@@ -135,7 +135,7 @@ class RcxDict {
     return RcxDict.instance;
   }
 
-  static createDefaultDictEntry(): DictEntryData {
+  private static createDefaultDictEntry(): DictEntryData {
     // Use JSON parse round trip for deep copy of default data.
     return JSON.parse(JSON.stringify(defaultDictEntryData)) as DictEntryData;
   }
@@ -156,7 +156,7 @@ class RcxDict {
     console.log('rcxDict main then in ' + (ended - started));
   }
 
-  async fileReadAsync(url: string): Promise<string> {
+  private async fileReadAsync(url: string): Promise<string> {
     const response = await fetch(url);
     if (response.ok) {
       return response.text();
@@ -165,21 +165,21 @@ class RcxDict {
     return '';
   }
 
-  async fileReadAsyncAsArray(url: string): Promise<string[]> {
+  private async fileReadAsyncAsArray(url: string): Promise<string[]> {
     const file = await this.fileReadAsync(url);
     return file.split('\n').filter((line) => {
       return line && line.length > 0;
     });
   }
 
-  fileRead(url: string) {
+  private fileRead(url: string) {
     const req = new XMLHttpRequest();
     req.open('GET', url, false);
     req.send(null);
     return req.responseText;
   }
 
-  loadNames() {
+  private loadNames() {
     if (this.nameDict && this.nameIndex) {
       return;
     }
@@ -190,7 +190,7 @@ class RcxDict {
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
-  async loadDictionaries(): Promise<void> {
+  private async loadDictionaries(): Promise<void> {
     [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
       await Promise.all([
         this.fileReadAsync(chrome.runtime.getURL('data/dict.dat')),
@@ -200,7 +200,7 @@ class RcxDict {
       ]);
   }
 
-  async loadDeinflectionData() {
+  private async loadDeinflectionData() {
     const buffer = await this.fileReadAsyncAsArray(
       chrome.runtime.getURL('data/deinflect.dat')
     );
@@ -231,7 +231,7 @@ class RcxDict {
     }
   }
 
-  find(data: string, text: string): string | null {
+  private find(data: string, text: string): string | null {
     const textLength = text.length;
     let beginning = 0;
     let end = data.length - 1;
@@ -250,6 +250,7 @@ class RcxDict {
     return null;
   }
 
+  // Make this private later.
   deinflect(word: string): Deinflection[] {
     const possibleDeinflections: Deinflection[] = [
       { word, type: 0xff, reason: '' },
@@ -308,13 +309,6 @@ class RcxDict {
     return possibleDeinflections;
   }
 
-  isKana(charCode: number): boolean {
-    return (
-      (charCode >= KANA.HIRAGANA_START && charCode <= KANA.HIRAGANA_END) ||
-      (charCode >= KANA.KATAKANA_START && charCode <= KANA.KATAKANA_END) ||
-      (charCode >= KANA.HW_KATAKANA_START && charCode <= KANA.HW_KATAKANA_END)
-    );
-  }
   /**
    * Returns the input string converted into hiragana. If any characters are not
    * found in the [NormalizationMap](./character_info.ts) then the character
@@ -323,7 +317,7 @@ class RcxDict {
    * @param kanaWord - A string of kana characters.
    * @returns The conversion of kanaWord into hiragana.
    */
-  convertToHiragana(kanaWord: string): string {
+  private convertToHiragana(kanaWord: string): string {
     let result = '';
 
     for (let i = 0; i < kanaWord.length; i++) {
@@ -356,11 +350,11 @@ class RcxDict {
     return result;
   }
 
-  normalize(str: string): string {
+  private normalize(str: string): string {
     return str.replace(/[\u200C\u301C\uFF5E]+/g, '');
   }
 
-  wordSearch(
+  public wordSearch(
     word: string,
     doNames: boolean,
     max?: number
@@ -518,7 +512,7 @@ class RcxDict {
     return entry;
   }
 
-  translate(text: string): (DictEntryData & { textLen: number }) | null {
+  public translate(text: string): (DictEntryData & { textLen: number }) | null {
     let e: DictEntryData | null;
     const o: DictEntryData & {
       textLen: number;
@@ -548,7 +542,7 @@ class RcxDict {
     return o;
   }
 
-  kanjiSearch(kanji: string): DictEntryData | null {
+  public kanjiSearch(kanji: string): DictEntryData | null {
     const hex = '0123456789ABCDEF';
 
     let kanjiCharCode = kanji.charCodeAt(0);
@@ -633,7 +627,7 @@ class RcxDict {
   ];
 
   // TODO: Entry should be extracted as separate type.
-  makeHtml(entry: DictEntryData | null) {
+  public makeHtml(entry: DictEntryData | null) {
     let e;
     let c;
     let s;
@@ -930,7 +924,7 @@ class RcxDict {
     return b.join('');
   }
 
-  makeText(entry: DictEntryData | null, max: number): string {
+  public makeText(entry: DictEntryData | null, max: number): string {
     if (entry === null) {
       return '';
     }
