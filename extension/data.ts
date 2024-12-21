@@ -45,6 +45,7 @@ import {
   KANA,
   KANA_TO_HIRAGANA_NORMALIZATION_MAP,
   PUNCTUATION,
+  SKIPPABLE,
 } from './character_info';
 import { Config } from './configuration';
 import { parseWordDictEntry } from './parse-word-dict-entry';
@@ -310,46 +311,56 @@ class RcxDict {
   }
 
   /**
-   * Returns the given `kanaWord` with katakana and half width characters
-   * converted to full-width hiragana. ヴ is not converted. If a non-kana
-   * characters is found in `kanaWord`, that and the following characters are
-   * omitted from the returned conversion.
+   * Returns the given `inputText` with katakana and half width characters
+   * converted to full-width hiragana and certain characters omitted ensuring
+   * maximal compatibility with the dictionary.
+   *
+   * ヴ is not converted (for historical reasons). Because some characters are
+   * skipped and some double byte characters are converted to single byte
+   * characters, the `trueLengths` array is returned to map the true length of
+   * the input text to the converted text. This is required so that highlighting
+   * the text on the page works correctly. It is also used by the `translate`
+   * method to properly divide up blocks of text.
    */
-  private convertToHiragana(kanaWord: string): string {
+  private normalizeInputForLookup(inputText: string): {
+    normalizedInput: string;
+    trueLengths: number[];
+  } {
     let result = '';
+    const trueLengths: number[] = [];
 
-    for (let i = 0; i < kanaWord.length; i++) {
-      const currentChar = kanaWord.charAt(i);
+    for (let i = 0; i < inputText.length; i++) {
+      const currentChar = inputText.charAt(i);
       const currentCharCode = currentChar.charCodeAt(0);
       let isSemiVoiced = false;
       let isVoiced = false;
       const isHalfWidthKatakana =
         currentCharCode >= KANA.HW_KATAKANA_START &&
         currentCharCode <= KANA.HW_KATAKANA_END;
-      let key = '';
 
-      if (isHalfWidthKatakana) {
-        const nextChar = kanaWord.charAt(i + 1);
-        const nextCharCode = nextChar?.charCodeAt(0);
+      let key = currentChar;
+      if (Object.values(SKIPPABLE).includes(currentCharCode)) {
+        continue;
+      } else if (isHalfWidthKatakana) {
+        const nextChar = inputText.charAt(i + 1);
+        const nextCharCode = nextChar.charCodeAt(0);
         isSemiVoiced = nextCharCode === PUNCTUATION.SEMI_VOICED_MARK;
         isVoiced = nextCharCode === PUNCTUATION.VOICED_MARK;
-        key = isSemiVoiced || isVoiced ? currentChar + nextChar : currentChar;
-      } else {
-        key = currentChar;
+        if (isSemiVoiced || isVoiced) {
+          // In half-width katakana, voiced and semi-voiced characters are
+          // represented as two characters. By combining them into one, we can
+          // convert the double character into a single hiragana.
+          key += nextChar;
+          i++;
+        }
       }
 
       const hiragana = KANA_TO_HIRAGANA_NORMALIZATION_MAP[key];
       result += hiragana !== undefined ? hiragana : currentChar;
 
-      if (isSemiVoiced || isVoiced) {
-        i++;
-      }
+      trueLengths[result.length] = i + 1;
     }
-    return result;
-  }
-
-  private normalize(str: string): string {
-    return str.replace(/[\u200C\u301C\uFF5E]+/g, '');
+    return { normalizedInput: result, trueLengths };
   }
 
   public wordSearch(
@@ -358,9 +369,8 @@ class RcxDict {
     max?: number
   ): DictEntryData | null {
     const entry = RcxDict.createDefaultDictEntry();
-    const normalizedWord = this.normalize(word);
-    const newConvertedWord = this.convertToHiragana(normalizedWord);
-    word = newConvertedWord;
+    const normalizationResult = this.normalizeInputForLookup(word);
+    word = normalizationResult.normalizedInput;
 
     let dict: string;
     let index;
@@ -478,7 +488,7 @@ class RcxDict {
             have[ofs] = 1;
             ++count;
             if (maxLen === 0) {
-              maxLen = word.length;
+              maxLen = normalizationResult.trueLengths[word.length];
             }
 
             let reason: string | undefined;

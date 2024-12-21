@@ -464,4 +464,33 @@ describe('data.ts', function () {
       expect(result?.eigo).to.contain('day, sun, Japan');
     });
   });
+
+  describe('translate', function () {
+    it('should parse strings that contain skippable characters', function () {
+      const result = rcxDict.translate('い～ぬ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^イヌ.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
+    });
+
+    it('should parse strings that contain semi-voiced half-width katakana', function () {
+      const result = rcxDict.translate('ｱｯﾌﾟﾙ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^アップル.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
+    });
+
+    it('should parse strings that contain voiced half-width katakana', function () {
+      const result = rcxDict.translate('ﾊﾞﾄﾙ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^バトる.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
+    });
+  });
 });

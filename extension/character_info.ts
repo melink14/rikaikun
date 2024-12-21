@@ -174,13 +174,22 @@ export const KANA = {
 } as const;
 
 export const PUNCTUATION = {
-  //characters below are in order for easy copy
-  //Note:3rd character is invisible but copyable
-  //Note:4th and 5th look the same but are actually different.
-  // ﾞ, ﾟ, ‌, ～, 〜
+  // Characters below are in order for easy copy
+  // ﾞ, ﾟ,
   VOICED_MARK: 0xff9e,
   SEMI_VOICED_MARK: 0xff9f,
-  ZERO_WIDTH_NON_JOINER: 0x200c,
-  J_TILDE: 0xff5e,
-  HW_J_TILDE: 0x301c,
 } as const;
+
+// Characters to skip when calculating lookup key for dictionary.
+// Characters below are in order for easy copy
+//  ‌, ～
+export const SKIPPABLE = {
+  // Skip Zero-width non-joiner used in Google Docs between every
+  // character. Now that Google Docs switched to canvas rendering
+  // this might no longer be needed for Docs but it seems useful
+  // to keep just in case.
+  ZERO_WIDTH_NON_JOINER: 0x200c,
+  // Japanese tilde is often inserted into words for emphasis so skipping will get more matches.
+  // TODO(#190): Don't skip this character if it's first.
+  J_TILDE: 0xff5e,
+};
