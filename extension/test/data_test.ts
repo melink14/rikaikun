@@ -1,7 +1,6 @@
 import { Config } from '../configuration';
 import { DictEntryData, RcxDict } from '../data';
 import { expect, use } from 'chai';
-import Sinon from 'sinon';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
 import sinonChrome from 'sinon-chrome';
@@ -328,6 +327,7 @@ describe('data.ts', function () {
         U: '65E5',
       });
     });
+
     it('should set misc -> B to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -335,6 +335,7 @@ describe('data.ts', function () {
         B: '72',
       });
     });
+
     it('should set misc -> G to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -342,6 +343,7 @@ describe('data.ts', function () {
         G: '1',
       });
     });
+
     it('should set misc -> S to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -349,6 +351,7 @@ describe('data.ts', function () {
         S: '4',
       });
     });
+
     it('should set misc -> F to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -356,6 +359,7 @@ describe('data.ts', function () {
         F: '1',
       });
     });
+
     it('should set misc -> N to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -363,6 +367,7 @@ describe('data.ts', function () {
         N: '2097',
       });
     });
+
     it('should set misc -> V to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -370,6 +375,7 @@ describe('data.ts', function () {
         V: '2410',
       });
     });
+
     it('should set misc -> H to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -377,6 +383,7 @@ describe('data.ts', function () {
         H: '3027',
       });
     });
+
     it('should set misc -> DK to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -384,6 +391,7 @@ describe('data.ts', function () {
         DK: '1915',
       });
     });
+
     it('should set misc -> L to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -391,6 +399,7 @@ describe('data.ts', function () {
         L: '12 day',
       });
     });
+
     it('should set misc -> DN to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -398,6 +407,7 @@ describe('data.ts', function () {
         DN: '12 day',
       });
     });
+
     it('should set misc -> E to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -405,6 +415,7 @@ describe('data.ts', function () {
         E: '62',
       });
     });
+
     it('should set misc -> IN to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -412,6 +423,7 @@ describe('data.ts', function () {
         IN: '5',
       });
     });
+
     it('should set misc -> P to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -419,6 +431,7 @@ describe('data.ts', function () {
         P: '3-3-1',
       });
     });
+
     it('should set misc -> I to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -426,6 +439,7 @@ describe('data.ts', function () {
         I: '4c0.1',
       });
     });
+
     it('should set misc -> Y to correct value', function () {
       const result = rcxDict.kanjiSearch('日');
 
@@ -471,30 +485,6 @@ describe('data.ts', function () {
     });
   });
 
-  describe('(fileReadArray)', function () {
-    it('should call fileRead and return an array of data', function () {
-      const fileName = 'data/dict.dat';
-
-      const result = rcxDict.fileReadArray(fileName);
-
-      expect(result).to.be.an('array');
-      expect(result).to.have.lengthOf.at.least(1);
-    });
-    it('should remove any whitespace or newlines from end of array', function () {
-      const stub = Sinon.stub(rcxDict, 'fileReadArray').returns([
-        'testing',
-        'is',
-        'fun  \n',
-      ]);
-
-      const results: string[] = rcxDict.fileReadArray('someFile/here');
-
-      expect(results).to.be.an('array');
-      expect(results[results.length - 1].endsWith(' ')).to.be.false;
-      Sinon.assert.calledOnce(stub);
-    });
-  });
-
   describe('(loadNames)', function () {
     it('should load name dictionary information if not loaded already', function () {
       rcxDict.loadNames();
@@ -508,6 +498,7 @@ describe('data.ts', function () {
       const kanaCode = 'て'.charCodeAt(0);
       expect(rcxDict.isKana(kanaCode)).to.be.true;
     });
+
     it('should return false if non kana character is searched', function () {
       const nonKanaCode = 'Test'.charCodeAt(0);
       expect(rcxDict.isKana(nonKanaCode)).to.be.false;
@@ -519,16 +510,19 @@ describe('data.ts', function () {
       const kanaCode = 'ﾃｽﾄ'.charCodeAt(0);
       expect(rcxDict.isKana(kanaCode)).to.be.true;
     });
+
     it('should return hiragana character when passed full-width katakana', function () {
       const nonKanaCode = 'Test'.charCodeAt(0);
       expect(rcxDict.isKana(nonKanaCode)).to.be.false;
     });
+
     it('should do correct hiragana lookup when parsing voiced and semi-voiced half-width katakana', function () {
       // const expected = 'ﾃﾞｯｽｸﾄｯﾌﾟ'
       const hwInput = 'ﾎﾟｼﾞﾃｨﾌﾞ';
       expect(rcxDict.convertToHiragana(hwInput)).to.equal('ぽじてぃぶ');
     });
   });
+
   describe('normalize', function () {
     it('should strip any spaces, tabs, new lines or zero-width-joiner', function () {
       const expected = 'てすと';

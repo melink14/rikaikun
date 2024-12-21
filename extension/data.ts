@@ -335,9 +335,6 @@ class RcxDict {
         currentCharCode >= KANA.HW_KATAKANA_START &&
         currentCharCode <= KANA.HW_KATAKANA_END;
       let key = '';
-      if (currentCharCode < 0x3000) {
-        break;
-      }
 
       if (isHalfWidthKatakana) {
         const nextChar = kanaWord.charAt(i + 1);

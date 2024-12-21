@@ -164,23 +164,23 @@ export const kanaToHiraganaNormalizationMap: Record<string, string> = {
   // ｳﾞ: 'ゔ',
 };
 
-export enum KANA {
-  HIRAGANA_START = 0x3041,
-  HIRAGANA_END = 0x309f,
-  KATAKANA_START = 0x30a0,
-  KATAKANA_END = 0x30ff,
-  HW_KATAKANA_START = 0xff66,
-  HW_KATAKANA_END = 0xff9d,
-}
+export const KANA = {
+  HIRAGANA_START: 0x3041,
+  HIRAGANA_END: 0x309f,
+  KATAKANA_START: 0x30a0,
+  KATAKANA_END: 0x30ff,
+  HW_KATAKANA_START: 0xff66,
+  HW_KATAKANA_END: 0xff9d,
+} as const;
 
-export enum PUNCTUATION {
+export const PUNCTUATION = {
   //characters below are in order for easy copy
   //Note:3rd character is invisible but copyable
   //Note:4th and 5th look the same but are actually different.
   // ﾞ, ﾟ, ‌, ～, 〜
-  VOICED_MARK = 0xff9e,
-  SEMI_VOICED_MARK = 0xff9f,
-  ZERO_WIDTH_JOINER = 0x200c,
-  J_TILDE = 0xff5e,
-  HW_J_TILDE = 0x301c,
-}
+  VOICED_MARK: 0xff9e,
+  SEMI_VOICED_MARK: 0xff9f,
+  ZERO_WIDTH_JOINER: 0x200c,
+  J_TILDE: 0xff5e,
+  HW_J_TILDE: 0x301c,
+} as const;
