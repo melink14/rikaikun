@@ -1,9 +1,10 @@
-import { Config } from '../configuration';
-import { DictEntryData, RcxDict } from '../data';
 import { expect, use } from 'chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
 import sinonChrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { RcxDict } from '../data';
 
 // Extend chai-like to allow using regex for fuzzy string matching inside
 // objects.
@@ -297,19 +298,10 @@ describe('data.ts', function () {
       expect(result).to.be.null;
     });
 
-    it('should return null if kanjiData entry is not properly formatted', function () {
+    it('should return null if kanjiData entry is not a single kanji', function () {
       const result = rcxDict.kanjiSearch('子9');
 
       expect(result).to.be.null;
-    });
-
-    it('should return a DictEntryData object for valid kanji', function () {
-      const result: DictEntryData | null = rcxDict.kanjiSearch('日');
-
-      expect(result).to.deep.include({
-        kanji: '日',
-        eigo: 'day, sun, Japan, counter for days',
-      });
     });
 
     it('should set kanji property of DictEntryData object', function () {

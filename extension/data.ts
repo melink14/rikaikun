@@ -41,12 +41,12 @@
 
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
-import { Config } from './configuration';
 import {
   KANA,
+  KANA_TO_HIRAGANA_NORMALIZATION_MAP,
   PUNCTUATION,
-  kanaToHiraganaNormalizationMap,
 } from './character_info';
+import { Config } from './configuration';
 import { parseWordDictEntry } from './parse-word-dict-entry';
 
 interface Deinflection {
@@ -310,12 +310,10 @@ class RcxDict {
   }
 
   /**
-   * Returns the input string converted into hiragana. If any characters are not
-   * found in the [NormalizationMap](./character_info.ts) then the character
-   * will be returned as is.
-   *
-   * @param kanaWord - A string of kana characters.
-   * @returns The conversion of kanaWord into hiragana.
+   * Returns the given `kanaWord` with katakana and half width characters
+   * converted to full-width hiragana. ヴ is not converted. If a non-kana
+   * characters is found in `kanaWord`, that and the following characters are
+   * omitted from the returned conversion.
    */
   private convertToHiragana(kanaWord: string): string {
     let result = '';
@@ -340,7 +338,7 @@ class RcxDict {
         key = currentChar;
       }
 
-      const hiragana = kanaToHiraganaNormalizationMap[key];
+      const hiragana = KANA_TO_HIRAGANA_NORMALIZATION_MAP[key];
       result += hiragana !== undefined ? hiragana : currentChar;
 
       if (isSemiVoiced || isVoiced) {
@@ -382,6 +380,7 @@ class RcxDict {
       index = this.nameIndex as string;
       maxTrim = 20; // this.config.namax;
       entry.hasNames = true;
+      console.log('doNames');
     } else {
       dict = this.wordDict;
       index = this.wordIndex;

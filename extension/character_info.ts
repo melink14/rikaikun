@@ -1,4 +1,4 @@
-export const kanaToHiraganaNormalizationMap: Record<string, string> = {
+export const KANA_TO_HIRAGANA_NORMALIZATION_MAP: Record<string, string> = {
   ァ: 'ぁ',
   ア: 'あ',
   ィ: 'ぃ',
@@ -180,7 +180,7 @@ export const PUNCTUATION = {
   // ﾞ, ﾟ, ‌, ～, 〜
   VOICED_MARK: 0xff9e,
   SEMI_VOICED_MARK: 0xff9f,
-  ZERO_WIDTH_JOINER: 0x200c,
+  ZERO_WIDTH_NON_JOINER: 0x200c,
   J_TILDE: 0xff5e,
   HW_J_TILDE: 0x301c,
 } as const;
