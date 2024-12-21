@@ -10,7 +10,10 @@
       "sourceMaps": true,
       "trace": true,
       // Needed for vite based project.
-      "webRoot": "${workspaceFolder}/extension"
+      "webRoot": "${workspaceFolder}/extension",
+      // Without this source maps aren't found for vite.
+      // Might need optimization to avoid the wrong files being loaded sometimes.
+      "resolveSourceMapLocations": null
     }
   ]
 }
