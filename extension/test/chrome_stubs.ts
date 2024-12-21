@@ -3,8 +3,8 @@
  * APIs are available in SUT code.
  */
 
-import * as sinonChrome from 'sinon-chrome';
 import sinon from 'sinon';
+import * as sinonChrome from 'sinon-chrome';
 
 // Start by copying base sinon-chrome stubs into the window chrome
 // object

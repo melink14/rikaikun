@@ -1,15 +1,15 @@
-import { configs as liteslint } from 'eslint-plugin-lit';
-import chaifriendlyeslint from 'eslint-plugin-chai-friendly';
 import eslint from '@eslint/js';
-import globals from 'globals';
+import prettiereslint from 'eslint-config-prettier';
+import chaifriendlyeslint from 'eslint-plugin-chai-friendly';
 import importeslint from 'eslint-plugin-import-x';
 import jsoneslint from 'eslint-plugin-json';
+import { configs as liteslint } from 'eslint-plugin-lit';
 import mochaeslint from 'eslint-plugin-mocha';
 import nodeeslint from 'eslint-plugin-n';
-import prettiereslint from 'eslint-config-prettier';
 import promiseeslint from 'eslint-plugin-promise';
-import sortImportsEs6Autofix from 'eslint-plugin-sort-imports-es6-autofix';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsdoc from 'eslint-plugin-tsdoc';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -29,7 +29,7 @@ export default tseslint.config(
   {
     plugins: {
       tsdoc,
-      'sort-imports-es6-autofix': sortImportsEs6Autofix,
+      'simple-import-sort': simpleImportSort,
       '@typescript-eslint': tseslint.plugin,
     },
 
@@ -78,7 +78,8 @@ export default tseslint.config(
 
       'linebreak-style': ['error', 'unix'],
       'no-tabs': 'error',
-      'sort-imports-es6-autofix/sort-imports-es6': 'error',
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
       'unicode-bom': 'error',
       'promise/prefer-await-to-then': 'error',
       curly: 'error',

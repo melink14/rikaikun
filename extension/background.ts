@@ -1,7 +1,7 @@
-import { RcxDict } from './data';
-import { RcxMain } from './rikaichan';
 import { configPromise } from './configuration';
+import { RcxDict } from './data';
 import { setupOffscreenDocument } from './offscreen-setup';
+import { RcxMain } from './rikaichan';
 
 /**
  * Returns a promise for fully initialized RcxMain. Async due to config and
