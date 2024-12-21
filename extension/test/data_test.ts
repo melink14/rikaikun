@@ -1,9 +1,10 @@
-import { Config } from '../configuration';
-import { RcxDict } from '../data';
 import { expect, use } from 'chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
 import sinonChrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { RcxDict } from '../data';
 
 // Extend chai-like to allow using regex for fuzzy string matching inside
 // objects.

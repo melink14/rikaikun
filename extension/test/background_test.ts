@@ -1,9 +1,10 @@
-import { Config } from '../configuration';
-import { RcxMain } from '../rikaichan';
 import { expect, use } from 'chai';
-import chrome from 'sinon-chrome';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import chrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { RcxMain } from '../rikaichan';
 
 use(sinonChai);
 

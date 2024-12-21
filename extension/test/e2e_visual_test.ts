@@ -1,11 +1,12 @@
-import { Config } from '../configuration';
-import { TestOnlyRcxContent } from '../rikaicontent';
 import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
-import { stubbedChrome as sinonChrome } from './chrome_stubs';
-import { use } from 'chai';
 import { visualDiff } from '@web/test-runner-visual-regression';
+import { use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+
+import { Config } from '../configuration';
+import { TestOnlyRcxContent } from '../rikaicontent';
+import { stubbedChrome as sinonChrome } from './chrome_stubs';
 
 use(sinonChai);
 

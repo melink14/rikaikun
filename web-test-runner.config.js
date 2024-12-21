@@ -1,8 +1,8 @@
-import { browserstackLauncher } from '@web/test-runner-browserstack';
+import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import { defaultReporter } from '@web/test-runner';
+import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import isDocker from 'is-docker';
 
 // Set NODE_ENV to test for later use in vite.config.ts.

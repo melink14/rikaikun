@@ -1,12 +1,13 @@
-import { Config } from '../configuration';
-import { DictEntryData } from '../data';
-import { TestOnlyRcxContent } from '../rikaicontent';
 import { expect, use } from 'chai';
 import { html, render } from 'lit-html';
-import chrome from 'sinon-chrome';
 import simulant from 'simulant';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import chrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { DictEntryData } from '../data';
+import { TestOnlyRcxContent } from '../rikaicontent';
 
 use(sinonChai);
 

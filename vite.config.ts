@@ -1,8 +1,9 @@
-import { DynamicPublicDirectory } from 'vite-multiple-assets';
-import { defineConfig } from 'vite';
-import { fileURLToPath } from 'node:url';
-import { globSync } from 'glob';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { globSync } from 'glob';
+import { defineConfig } from 'vite';
+import { DynamicPublicDirectory } from 'vite-multiple-assets';
 import replace from 'vite-plugin-filter-replace';
 
 export default defineConfig({
