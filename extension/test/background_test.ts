@@ -1,41 +1,18 @@
 import { expect, use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import chrome from 'sinon-chrome';
 
 import { Config } from '../configuration';
 import { DictEntryData } from '../data';
 import { RcxMain } from '../rikaichan';
-import { expect, use } from '@esm-bundle/chai';
-import { tts } from '../texttospeech';
-import chrome from 'sinon-chrome';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import { stubbedChrome as chrome } from './chrome_stubs';
 
 use(sinonChai);
-let rcxMain: RcxMain;
+use(chaiAsPromised);
 
-// used for stubbing data
-const entry =
-  '小さい [ちいさい] /(adj-i) (1) small/little/tiny\
-        /(adj-i) (2) slight/below average (in degree, amount, etc.)\
-        /minor/small/(adj-i) (3) low (e.g. sound)/soft (e.g. voice)\
-        /(adj-i) (4) unimportant/petty/insignificant/trifling/trivial\
-        /(adj-i) (5) young/juvenile/(P)/';
-const entryStub: DictEntryData = {
-  kanji: '',
-  onkun: '',
-  nanori: '',
-  bushumei: '',
-  misc: {} as Record<string, string>,
-  eigo: '',
-  hasNames: false,
-  data: [{ entry, reason: '' }],
-  hasMore: false,
-  title: '',
-  index: 0,
-  matchLen: 0,
-};
+let rcxMain: RcxMain;
+let onMessagePromiseHolder: { onMessagePromise: Promise<void> };
 
 describe('background.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
@@ -48,7 +25,11 @@ describe('background.ts', function () {
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
     chrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
     // Imports only run once so run in `before` to make it deterministic.
-    rcxMain = await (await import('../background')).TestOnlyRxcMainPromise;
+    const { TestOnlyRxcMainPromise, testOnlyPromiseHolder } = await import(
+      '../background'
+    );
+    onMessagePromiseHolder = testOnlyPromiseHolder;
+    rcxMain = await TestOnlyRxcMainPromise;
   });
 
   beforeEach(function () {
@@ -56,15 +37,18 @@ describe('background.ts', function () {
     // the state of `chrome.runtime.onMessage.addListener` for invoking
     // the core functionality of background.ts.
     chrome.tabs.sendMessage.reset();
+    chrome.runtime.sendMessage.reset();
+  });
+
+  afterEach(function () {
+    sinon.restore();
   });
 
   describe('when sent enable? message', function () {
     it('should send "enable" message to tab', async function () {
       rcxMain.enabled = true;
-      const request = { type: 'enable?' } as const;
-      const sender = { tab: { id: 0 } } as const;
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request, sender);
+
+      await sendMessageToBackground({ request: { type: 'enable?' } });
 
       expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(
         /* tabId= */ sinon.match.any,
@@ -77,11 +61,8 @@ describe('background.ts', function () {
     it('should respond to the same tab it received a message from', async function () {
       rcxMain.enabled = true;
       const tabId = 10;
-      const request = { type: 'enable?' } as const;
-      const sender = { tab: { id: 10 } } as const;
 
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request, sender);
+      await sendMessageToBackground({ tabId, request: { type: 'enable?' } });
 
       expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(
         tabId,
@@ -92,11 +73,8 @@ describe('background.ts', function () {
     it('should send config in message to tab', async function () {
       rcxMain.enabled = true;
       rcxMain.config = { copySeparator: 'testValue' } as Config;
-      const request = { type: 'enable?' } as const;
-      const sender = { tab: { id: 0 } } as const;
 
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request, sender);
+      await sendMessageToBackground({ request: { type: 'enable?' } });
 
       expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(
         /* tabId= */ sinon.match.any,
@@ -105,219 +83,193 @@ describe('background.ts', function () {
     });
   });
 
-  describe('xsearch', function () {
-    it('should call response callback with search string and dictOptions value', async function () {
-      rcxMain.search = sinon
-        .stub()
-        .returns({ text: 'theText', dictOptions: '0' });
-      const response = sinon.spy();
-      const request = {
-        type: 'xsearch',
-        text: 'A non empty string',
-        dictOption: '0',
-      } as const;
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(
-        request,
-        /** Sender = */ undefined,
-        response
-      );
-
-      expect(response).to.have.been.calledWithMatch({
-        text: 'theText',
-        dictOptions: sinon.match.any,
-      });
-      expect(response).to.have.been.calledOnce;
-    });
-
-    it('should not search if request.text is an empty string', async function () {
-      const request = { type: 'xsearch', text: '' } as const;
-      const response = sinon.spy();
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(
-        request,
-        /** Sender = */ undefined,
-        response
-      );
-
-      expect(response.called).to.be.false;
-    });
-  });
-
-  describe('resetDict', function () {
-    it('should reset rcxMain.showMode to 0', async function () {
-      const resetStub = sinon.stub();
-      rcxMain.resetDict = resetStub;
-      const request = { type: 'resetDict' } as const;
-      const response = sinon.spy();
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(
-        request,
-        /** Sender = */ undefined,
-        response
-      );
-
-      expect(resetStub).to.be.called;
-      expect(response.called).to.be.false;
-    });
-  });
-  describe('translate', function () {
-    it('should call translate method with title text', async function () {
-      const translateStub = sinon.stub().returns(['translated']);
-      rcxMain.dict.translate = translateStub;
-      const request = {
-        type: 'translate',
-        title: 'た',
-      } as const;
-      const response = sinon.spy();
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(
-        request,
-        /** Sender = */ undefined,
-        response
-      );
-
-      expect(translateStub.calledWith(request.title)).to.be.true;
-      expect(response.called).to.be.true;
-    });
-  });
-
-  describe('makeHtml', function () {
-    it('should call makeHtml method', async function () {
-      const makeHtmlStub = sinon.stub().returns(['makingHtml']);
-      rcxMain.dict.makeHtml = makeHtmlStub;
-      const request = {
-        type: 'makehtml',
-        entry: entryStub,
-      } as const;
-      const response = sinon.spy();
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(
-        request,
-        /** Sender = */ undefined,
-        response
-      );
-
-      expect(makeHtmlStub.calledWith(entryStub)).to.be.true;
-      expect(response.called).to.be.true;
-    });
-  });
-  describe('switchOnlyReading', function () {
-    it('should toggle the value of onlyReading to sync', async function () {
-      const request = { type: 'switchOnlyReading' } as const;
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request);
-
-      expect(chrome.storage.sync.set).to.be.calledWithMatch(
-        sinon.match({ onlyreading: sinon.match.bool })
-      );
-    });
-  });
-  describe('copyToClip', function () {
-    it('should call copyToClip on correct tab with correct entry', async function () {
-      const copyStub = sinon.stub();
-      rcxMain.copyToClip = copyStub;
-      const request = {
-        type: 'copyToClip',
-        entry: entryStub,
-      } as const;
-      const sender = { tab: { id: 0 } } as const;
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request, sender);
-
-      expect(copyStub).to.be.called;
-      expect(copyStub.calledWith(sender.tab, entryStub)).to.be.true;
-    });
-  });
-  describe('playTTS', function () {
-    it('should play text to speech', async function () {
-      const playTTSStub = sinon.stub();
-      tts.play = playTTSStub;
-      const request = {
-        type: 'playTTS',
-        text: 'textToPlay',
-      } as const;
-      const sender = { tab: { id: 0 } } as const;
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request, sender);
-
-      expect(playTTSStub.calledWith(request.text)).to.be.true;
-    });
-  });
-
-  describe('default', function () {
-    it('should return void with console.log if no cases are matched', async function () {
-      const logger = sinon.stub(console, 'log');
-      const request = {
-        type: 'noMatch',
-      } as const;
-
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await sendMessageToBackground(request);
-
-      expect(logger.calledWith({ type: 'noMatch' })).to.be.true;
-      logger.restore();
-    });
-
   describe('when sent xsearch message', function () {
-    afterEach(function () {
-      sinon.restore();
-    });
-
     it('should call rcxMain.search with the value', async function () {
       const expectedText = 'theText';
       const searchStub = sinon.stub(rcxMain, 'search');
 
       await sendMessageToBackground({
-        type: 'xsearch',
-        text: expectedText,
+        request: { type: 'xsearch', text: expectedText },
       });
 
       expect(searchStub).to.have.been.calledOnceWith(
         expectedText,
-        sinon.match.any
+        /* dictOptions= */ sinon.match.any
       );
+    });
+
+    it('should call response callback with search string and dictOptions value', async function () {
+      sinon
+        .stub(rcxMain, 'search')
+        .returns({ title: 'theText' } as DictEntryData);
+      const response = sinon.spy();
+
+      await sendMessageToBackground({
+        request: { type: 'xsearch' },
+        responseCallback: response,
+      });
+
+      expect(response).to.have.been.calledWithMatch({ title: 'theText' });
     });
 
     it('should not call rcxMain.search if request.text is an empty string', async function () {
       const searchStub = sinon.stub(rcxMain, 'search');
 
       await sendMessageToBackground({
-        type: 'xsearch',
-        text: '',
+        request: { type: 'xsearch', text: '' },
       });
 
       expect(searchStub).to.not.have.been.called;
+    });
+  });
+
+  describe('when sent resetDict message', function () {
+    it('should call rcxMain.resetDict', async function () {
+      const resetStub = sinon.stub(rcxMain, 'resetDict');
+
+      await sendMessageToBackground({
+        request: { type: 'resetDict' },
+      });
+
+      expect(resetStub).to.be.called;
+    });
+  });
+
+  describe('when sent translate message', function () {
+    it('should call response callback with result of rcxMain.data.translate', async function () {
+      const request = {
+        type: 'translate',
+        title: 'た',
+      };
+      sinon
+        .stub(rcxMain.dict, 'translate')
+        .withArgs(request.title)
+        .returns({
+          title: 'translateTitle',
+          textLen: 4,
+        } as DictEntryData & { textLen: number });
+      const response = sinon.spy();
+
+      await sendMessageToBackground({ request, responseCallback: response });
+
+      expect(response).to.be.calledWithMatch({
+        title: 'translateTitle',
+        textLen: 4,
+      });
+    });
+  });
+
+  describe('when sent makeHtml message', function () {
+    it('should call response callback with the result of rcxMain.dict.makeHtml', async function () {
+      const request = {
+        type: 'makehtml',
+        entry: { title: 'htmlTest' } as DictEntryData,
+      };
+      sinon
+        .stub(rcxMain.dict, 'makeHtml')
+        .withArgs(request.entry)
+        .returns('myTestHtml');
+      const response = sinon.spy();
+
+      await sendMessageToBackground({
+        request,
+        responseCallback: response,
+      });
+
+      expect(response).to.be.calledWithMatch('myTestHtml');
+    });
+  });
+
+  describe('when sent switchOnlyReading message', function () {
+    it('should toggle the config value of onlyReading in chrome.storage.sync', async function () {
+      const request = { type: 'switchOnlyReading' };
+      rcxMain.config = { onlyreading: false } as Config;
+
+      await sendMessageToBackground({ request });
+
+      expect(chrome.storage.sync.set).to.be.calledWith({ onlyreading: true });
+    });
+  });
+
+  describe('when sent copyToClip message', function () {
+    it('should call copyToClip with given tab and entry', async function () {
+      const copyStub = sinon.stub(rcxMain, 'copyToClip');
+      const request = {
+        type: 'copyToClip',
+        entry: { title: 'copyTest' } as DictEntryData,
+      };
+
+      await sendMessageToBackground({ request, tabId: 12 });
+
+      expect(copyStub).to.be.calledWith({ id: 12 }, request.entry);
+    });
+  });
+
+  describe('when sent playTTS message', function () {
+    it('should call setupOffscreenDocument', async function () {
+      await sendMessageToBackground({ request: { type: 'playTTS', text: '' } });
+
+      expect(chrome.offscreen.createDocument).to.be.called;
+    });
+
+    it('should send a message to the offscreen document to play TTS of text', async function () {
+      const request = {
+        type: 'playTTS',
+        text: 'textToPlay',
+      };
+
+      await sendMessageToBackground({ request });
+
+      expect(chrome.runtime.sendMessage).to.be.calledWith({
+        target: 'offscreen',
+        type: 'playTtsOffscreen',
+        text: request.text,
+      });
+    });
+
+    it('should rethrow any errors that happen while offscreen doc is playing TTS', async function () {
+      const request = {
+        type: 'playTTS',
+      };
+      const expectedError = new Error('testError');
+      chrome.runtime.sendMessage.rejects(expectedError);
+
+      await expect(sendMessageToBackground({ request }))
+        .to.be.rejectedWith('Error while having offscreen doc play TTS')
+        .and.eventually.have.property('cause')
+        .that.deep.equals(expectedError);
+    });
+  });
+
+  describe('when sent unhandled message', function () {
+    it('should log informational message with request', async function () {
+      const logger = sinon.stub(console, 'log');
+      const request = {
+        type: 'noMatch',
+      };
+
+      await sendMessageToBackground({ request });
+
+      expect(logger).to.be.calledWithMatch(sinon.match('Unknown background'));
+      expect(logger).to.be.calledWithMatch(sinon.match(request));
+      logger.restore();
     });
   });
 });
 
 type Payload = {
   tabId?: number;
-  text?: string;
-  type: string;
+  request: object;
   responseCallback?: (response: unknown) => void;
 };
 
 async function sendMessageToBackground({
   tabId = 0,
-  type,
-  text,
+  request = {},
   responseCallback = () => {
     // Do nothing by default.
   },
 }: Payload): Promise<void> {
-  const request: { type: string; text?: string } = {
-    type,
-    text,
-  };
-
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
@@ -325,30 +277,6 @@ async function sendMessageToBackground({
     { tab: { id: tabId } },
     responseCallback
   );
+  await onMessagePromiseHolder.onMessagePromise;
   return;
 }
-
-  // type MessageRequest =
-  //   | { type: 'enable?' }
-  //   | { type: 'xsearch'; text: string | ''; dictOption?: string }
-  //   | { type: 'copyToClip'; entry: DictEntryData }
-  //   | { type: 'makehtml'; entry: DictEntryData }
-  //   | { type: 'translate'; title: string }
-  //   | { type: 'switchOnlyReading' }
-  //   | { type: 'resetDict' }
-  //   | { type: 'playTTS'; text: string }
-  //   | { type: 'noMatch' }; // only for testing
-
-  // async function sendMessageToBackground(
-  //   request: MessageRequest,
-  //   sender?: { tab: { id: 0 | 10 } },
-  //   responseCallback?: () => void
-  // ): Promise<void> {
-  //   // eslint-disable-next-line @typescript-eslint/await-thenable
-  //   await chrome.runtime.onMessage.addListener.yield(
-  //     request,
-  //     sender,
-  //     responseCallback
-  //   );
-  //   return;
-  // }
