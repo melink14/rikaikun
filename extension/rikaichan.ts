@@ -284,7 +284,6 @@ class RcxMain {
 
     const m = this.showMode;
     let e: DictEntryData | null = null;
-
     do {
       switch (this.showMode) {
         case 0:

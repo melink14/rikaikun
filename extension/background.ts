@@ -33,29 +33,24 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     const rcxMain = await rcxMainPromise;
     switch (request.type) {
       case 'enable?':
-        console.log('enable?');
         if (sender.tab === undefined) {
           throw TypeError('sender.tab is always defined here.');
         }
         rcxMain.onTabSelect(sender.tab.id);
         break;
       case 'xsearch':
-        console.log('xsearch');
         if (request.text === '') {
           break;
         }
         response(rcxMain.search(request.text, request.dictOption));
         break;
       case 'resetDict':
-        console.log('resetDict');
         rcxMain.resetDict();
         break;
       case 'translate':
-        console.log('translate');
         response(rcxMain.dict.translate(request.title));
         break;
       case 'makehtml':
-        console.log('makehtml');
         response(rcxMain.dict.makeHtml(request.entry));
         break;
       case 'switchOnlyReading':
@@ -65,11 +60,9 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         });
         break;
       case 'copyToClip':
-        console.log('copyToClip');
         await rcxMain.copyToClip(sender.tab, request.entry);
         break;
       case 'playTTS':
-        console.log('playTTS');
         await setupOffscreenDocument();
         try {
           await chrome.runtime.sendMessage({
