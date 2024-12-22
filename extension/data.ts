@@ -41,31 +41,39 @@
 
 /** Exposes abstraction over dictionary files allowing searches and lookups. */
 
+import {
+  KANA,
+  KANA_TO_HIRAGANA_NORMALIZATION_MAP,
+  PUNCTUATION,
+  SKIPPABLE,
+} from './character_info';
 import { Config } from './configuration';
 import { parseWordDictEntry } from './parse-word-dict-entry';
-
-// Be careful of using directly due to object keys.
-const defaultDictEntryData = {
-  kanji: '',
-  onkun: '',
-  nanori: '',
-  bushumei: '',
-  misc: {} as Record<string, string>,
-  eigo: '',
-  hasNames: false,
-  data: [] as { entry: string; reason: string | undefined }[],
-  hasMore: false,
-  title: '',
-  index: 0,
-  matchLen: 0,
-};
-type DictEntryData = typeof defaultDictEntryData;
 
 interface Deinflection {
   word: string;
   type: number;
   reason: string;
 }
+type DictData = {
+  entry: string;
+  reason?: string;
+};
+
+type DictEntryData = {
+  kanji: string;
+  onkun: string;
+  nanori: string;
+  bushumei: string;
+  misc: Record<string, string>;
+  eigo: string;
+  hasNames: boolean;
+  data: DictData[];
+  hasMore: boolean;
+  title: string;
+  index: number;
+  matchLen: number;
+};
 
 interface DeinflectionRule {
   /** The conjugated ending which we are deinflecting from. */
@@ -87,6 +95,22 @@ interface DeinflectionRuleGroup {
   rules: DeinflectionRule[];
 }
 
+// Be careful of using directly due to object keys.
+const defaultDictEntryData: DictEntryData = {
+  kanji: '',
+  onkun: '',
+  nanori: '',
+  bushumei: '',
+  misc: {},
+  eigo: '',
+  hasNames: false,
+  data: [],
+  hasMore: false,
+  title: '',
+  index: 0,
+  matchLen: 0,
+};
+
 class RcxDict {
   private static instance: RcxDict;
 
@@ -104,7 +128,7 @@ class RcxDict {
     this.config = config;
   }
 
-  static async create(config: Config) {
+  public static async create(config: Config) {
     if (!RcxDict.instance) {
       RcxDict.instance = new RcxDict(config);
       await RcxDict.instance.init();
@@ -112,7 +136,7 @@ class RcxDict {
     return RcxDict.instance;
   }
 
-  static createDefaultDictEntry(): DictEntryData {
+  private static createDefaultDictEntry(): DictEntryData {
     // Use JSON parse round trip for deep copy of default data.
     return JSON.parse(JSON.stringify(defaultDictEntryData)) as DictEntryData;
   }
@@ -133,7 +157,7 @@ class RcxDict {
     console.log('rcxDict main then in ' + (ended - started));
   }
 
-  async fileReadAsync(url: string): Promise<string> {
+  private async fileReadAsync(url: string): Promise<string> {
     const response = await fetch(url);
     if (response.ok) {
       return response.text();
@@ -142,21 +166,21 @@ class RcxDict {
     return '';
   }
 
-  async fileReadAsyncAsArray(url: string): Promise<string[]> {
+  private async fileReadAsyncAsArray(url: string): Promise<string[]> {
     const file = await this.fileReadAsync(url);
-    return file.split('\n').filter((o) => {
-      return o && o.length > 0;
+    return file.split('\n').filter((line) => {
+      return line && line.length > 0;
     });
   }
 
-  fileRead(url: string) {
+  private fileRead(url: string) {
     const req = new XMLHttpRequest();
     req.open('GET', url, false);
     req.send(null);
     return req.responseText;
   }
 
-  loadNames() {
+  private loadNames() {
     if (this.nameDict && this.nameIndex) {
       return;
     }
@@ -167,7 +191,7 @@ class RcxDict {
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
   //  reduce memory use
-  async loadDictionaries(): Promise<void> {
+  private async loadDictionaries(): Promise<void> {
     [this.wordDict, this.wordIndex, this.kanjiData, this.radData] =
       await Promise.all([
         this.fileReadAsync(chrome.runtime.getURL('data/dict.dat')),
@@ -177,7 +201,7 @@ class RcxDict {
       ]);
   }
 
-  async loadDeinflectionData() {
+  private async loadDeinflectionData() {
     const buffer = await this.fileReadAsyncAsArray(
       chrome.runtime.getURL('data/deinflect.dat')
     );
@@ -189,69 +213,62 @@ class RcxDict {
     // i = 1: skip header
     for (let i = 1; i < buffer.length; ++i) {
       const ruleOrReason = buffer[i].split('\t');
-
       if (ruleOrReason.length === 1) {
         this.difReasons.push(ruleOrReason[0]);
       } else if (ruleOrReason.length === 4) {
-        const o: DeinflectionRule = {
+        const deinflectionRule: DeinflectionRule = {
           from: ruleOrReason[0],
           to: ruleOrReason[1],
           typeMask: parseInt(ruleOrReason[2]),
           reasonIndex: parseInt(ruleOrReason[3]),
         };
-
-        if (currentLength !== o.from.length) {
-          currentLength = o.from.length;
+        if (currentLength !== deinflectionRule.from.length) {
+          currentLength = deinflectionRule.from.length;
           group = { fromLength: currentLength, rules: [] };
           this.difRules.push(group);
         }
-        group.rules.push(o);
+        group.rules.push(deinflectionRule);
       }
     }
   }
 
-  find(data: string, text: string): string | null {
-    const tlen = text.length;
-    let beg = 0;
+  private find(data: string, text: string): string | null {
+    const textLength = text.length;
+    let beginning = 0;
     let end = data.length - 1;
-    let i;
-    let mi;
-    let mis;
-
-    while (beg < end) {
-      mi = (beg + end) >> 1;
-      i = data.lastIndexOf('\n', mi) + 1;
-
-      mis = data.substr(i, tlen);
+    while (beginning < end) {
+      const middle = (beginning + end) / 2;
+      const i = data.lastIndexOf('\n', middle) + 1;
+      const mis = data.substr(i, textLength);
       if (text < mis) {
         end = i - 1;
       } else if (text > mis) {
-        beg = data.indexOf('\n', mi + 1) + 1;
+        beginning = data.indexOf('\n', middle + 1) + 1;
       } else {
-        return data.substring(i, data.indexOf('\n', mi + 1));
+        return data.substring(i, data.indexOf('\n', middle + 1));
       }
     }
     return null;
   }
 
-  deinflect(word: string) {
-    const r = [];
-    const have: { [key: string]: number } = {};
-    let o;
-
-    o = { word: word, type: 0xff, reason: '' } as Deinflection;
-    r.push(o);
+  // Make this private later.
+  deinflect(word: string): Deinflection[] {
+    const possibleDeinflections: Deinflection[] = [
+      { word, type: 0xff, reason: '' },
+    ];
+    const have: Record<string, number> = {};
     have[word] = 0;
 
     let i;
     let j;
     let k;
+    let o;
 
     i = 0;
     do {
-      word = r[i].word;
+      word = possibleDeinflections[i].word;
       const wordLen = word.length;
-      const type = r[i].type;
+      const type = possibleDeinflections[i].type;
 
       for (j = 0; j < this.difRules.length; ++j) {
         const g = this.difRules[j];
@@ -267,108 +284,93 @@ class RcxDict {
               }
               o = { word: word, type: 0xff, reason: '' } as Deinflection;
               if (have[newWord] !== undefined) {
-                o = r[have[newWord]];
+                o = possibleDeinflections[have[newWord]];
                 o.type |= rule.typeMask >> 8;
 
                 continue;
               }
-              have[newWord] = r.length;
-              if (r[i].reason.length) {
+              have[newWord] = possibleDeinflections.length;
+              if (possibleDeinflections[i].reason.length) {
                 o.reason =
-                  this.difReasons[rule.reasonIndex] + ' &lt; ' + r[i].reason;
+                  this.difReasons[rule.reasonIndex] +
+                  ' &lt; ' +
+                  possibleDeinflections[i].reason;
               } else {
                 o.reason = this.difReasons[rule.reasonIndex];
               }
               o.type = rule.typeMask >> 8;
               o.word = newWord;
-              r.push(o);
+              possibleDeinflections.push(o);
             }
           }
         }
       }
-    } while (++i < r.length);
+    } while (++i < possibleDeinflections.length);
 
-    return r;
+    return possibleDeinflections;
   }
 
-  // katakana -> hiragana conversion tables
-  ch: number[] = [
-    0x3092, 0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3083, 0x3085, 0x3087,
-    0x3063, 0x30fc, 0x3042, 0x3044, 0x3046, 0x3048, 0x304a, 0x304b, 0x304d,
-    0x304f, 0x3051, 0x3053, 0x3055, 0x3057, 0x3059, 0x305b, 0x305d, 0x305f,
-    0x3061, 0x3064, 0x3066, 0x3068, 0x306a, 0x306b, 0x306c, 0x306d, 0x306e,
-    0x306f, 0x3072, 0x3075, 0x3078, 0x307b, 0x307e, 0x307f, 0x3080, 0x3081,
-    0x3082, 0x3084, 0x3086, 0x3088, 0x3089, 0x308a, 0x308b, 0x308c, 0x308d,
-    0x308f, 0x3093,
-  ];
+  /**
+   * Returns the given `inputText` with katakana and half width characters
+   * converted to full-width hiragana and certain characters omitted ensuring
+   * maximal compatibility with the dictionary.
+   *
+   * ヴ is not converted (for historical reasons). Because some characters are
+   * skipped and some double byte characters are converted to single byte
+   * characters, the `trueLengths` array is returned to map the true length of
+   * the input text to the converted text. This is required so that highlighting
+   * the text on the page works correctly. It is also used by the `translate`
+   * method to properly divide up blocks of text.
+   */
+  private normalizeInputForLookup(inputText: string): {
+    normalizedInput: string;
+    trueLengths: number[];
+  } {
+    let result = '';
+    const trueLengths: number[] = [];
 
-  cv: number[] = [
-    0x30f4, 0xff74, 0xff75, 0x304c, 0x304e, 0x3050, 0x3052, 0x3054, 0x3056,
-    0x3058, 0x305a, 0x305c, 0x305e, 0x3060, 0x3062, 0x3065, 0x3067, 0x3069,
-    0xff85, 0xff86, 0xff87, 0xff88, 0xff89, 0x3070, 0x3073, 0x3076, 0x3079,
-    0x307c,
-  ];
-  cs: number[] = [0x3071, 0x3074, 0x3077, 0x307a, 0x307d];
+    for (let i = 0; i < inputText.length; i++) {
+      const currentChar = inputText.charAt(i);
+      const currentCharCode = currentChar.charCodeAt(0);
+      let isSemiVoiced = false;
+      let isVoiced = false;
+      const isHalfWidthKatakana =
+        currentCharCode >= KANA.HW_KATAKANA_START &&
+        currentCharCode <= KANA.HW_KATAKANA_END;
 
-  wordSearch(
+      let key = currentChar;
+      if (Object.values(SKIPPABLE).includes(currentCharCode)) {
+        continue;
+      } else if (isHalfWidthKatakana) {
+        const nextChar = inputText.charAt(i + 1);
+        const nextCharCode = nextChar.charCodeAt(0);
+        isSemiVoiced = nextCharCode === PUNCTUATION.SEMI_VOICED_MARK;
+        isVoiced = nextCharCode === PUNCTUATION.VOICED_MARK;
+        if (isSemiVoiced || isVoiced) {
+          // In half-width katakana, voiced and semi-voiced characters are
+          // represented as two characters. By combining them into one, we can
+          // convert the double character into a single hiragana.
+          key += nextChar;
+          i++;
+        }
+      }
+
+      const hiragana = KANA_TO_HIRAGANA_NORMALIZATION_MAP[key];
+      result += hiragana !== undefined ? hiragana : currentChar;
+
+      trueLengths[result.length] = i + 1;
+    }
+    return { normalizedInput: result, trueLengths };
+  }
+
+  public wordSearch(
     word: string,
     doNames: boolean,
     max?: number
   ): DictEntryData | null {
-    let i;
-    let u;
-    let v;
-    let reason: string;
-    let p;
-    const trueLen = [0];
     const entry = RcxDict.createDefaultDictEntry();
-
-    // half & full-width katakana to hiragana conversion
-    // note: katakana vu is never converted to hiragana
-
-    p = 0;
-    reason = '';
-    for (i = 0; i < word.length; ++i) {
-      u = v = word.charCodeAt(i);
-
-      // Skip Zero-width non-joiner used in Google Docs between every
-      // character.
-      if (u === 8204) {
-        p = 0;
-        continue;
-      }
-
-      // full-width katakana to hiragana
-      if (u >= 0x30a1 && u <= 0x30f3) {
-        u -= 0x60;
-      } else if (u >= 0xff66 && u <= 0xff9d) {
-        // half-width katakana to hiragana
-        u = this.ch[u - 0xff66];
-      } else if (u === 0xff9e) {
-        // voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff73 && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cv[p - 0xff73];
-        }
-      } else if (u === 0xff9f) {
-        // semi-voiced (used in half-width katakana) to hiragana
-        if (p >= 0xff8a && p <= 0xff8e) {
-          reason = reason.substr(0, reason.length - 1);
-          u = this.cs[p - 0xff8a];
-        }
-      } else if (u === 0xff5e) {
-        // ignore J~
-        p = 0;
-        continue;
-      }
-
-      reason += String.fromCharCode(u);
-      // need to keep real length because of the half-width semi/voiced
-      // conversion
-      trueLen[reason.length] = i + 1;
-      p = v;
-    }
-    word = reason;
+    const normalizationResult = this.normalizeInputForLookup(word);
+    word = normalizationResult.normalizedInput;
 
     let dict: string;
     let index;
@@ -403,22 +405,22 @@ class RcxDict {
 
     while (word.length > 0) {
       const showInf = count !== 0;
-      let trys;
+      let possibleDeinflections: Deinflection[];
 
       if (doNames) {
-        trys = [{ word: word, type: 0xff, reason: null }];
+        possibleDeinflections = [{ word: word, type: 0xff, reason: '' }];
       } else {
-        trys = this.deinflect(word);
+        possibleDeinflections = this.deinflect(word);
       }
 
-      for (i = 0; i < trys.length; i++) {
-        u = trys[i];
+      for (let i = 0; i < possibleDeinflections.length; i++) {
+        const currentDeinflection = possibleDeinflections[i];
 
-        let ix = cache[u.word];
+        let ix = cache[currentDeinflection.word];
         if (!ix) {
-          const result = this.find(index, u.word + ',');
+          const result = this.find(index, currentDeinflection.word + ',');
           if (!result) {
-            cache[u.word] = [];
+            cache[currentDeinflection.word] = [];
             continue;
           }
           // The first value in result is the word itself so skip it
@@ -427,7 +429,7 @@ class RcxDict {
             .split(',')
             .slice(1)
             .map((offset) => parseInt(offset));
-          cache[u.word] = ix;
+          cache[currentDeinflection.word] = ix;
         }
 
         for (let j = 0; j < ix.length; ++j) {
@@ -437,7 +439,6 @@ class RcxDict {
           }
 
           const dentry = dict.substring(ofs, dict.indexOf('\n', ofs));
-
           let ok = true;
           if (i > 0) {
             // > 0 a de-inflected word
@@ -451,7 +452,7 @@ class RcxDict {
 
             let w;
             const x = dentry.split(/[,()]/);
-            const y = u.type;
+            const y = currentDeinflection.type;
             let z = x.length - 1;
             if (z > 10) {
               z = 10;
@@ -487,15 +488,16 @@ class RcxDict {
             have[ofs] = 1;
             ++count;
             if (maxLen === 0) {
-              maxLen = trueLen[word.length];
+              maxLen = normalizationResult.trueLengths[word.length];
             }
 
             let reason: string | undefined;
-            if (trys[i].reason) {
+            if (possibleDeinflections[i].reason) {
               if (showInf) {
-                reason = '&lt; ' + trys[i].reason + ' &lt; ' + word;
+                reason =
+                  '&lt; ' + possibleDeinflections[i].reason + ' &lt; ' + word;
               } else {
-                reason = '&lt; ' + trys[i].reason;
+                reason = '&lt; ' + possibleDeinflections[i].reason;
               }
             }
 
@@ -515,12 +517,11 @@ class RcxDict {
     if (entry.data.length === 0) {
       return null;
     }
-
     entry.matchLen = maxLen;
     return entry;
   }
 
-  translate(text: string): (DictEntryData & { textLen: number }) | null {
+  public translate(text: string): (DictEntryData & { textLen: number }) | null {
     let e: DictEntryData | null;
     const o: DictEntryData & {
       textLen: number;
@@ -550,12 +551,11 @@ class RcxDict {
     return o;
   }
 
-  kanjiSearch(kanji: string): DictEntryData | null {
+  public kanjiSearch(kanji: string): DictEntryData | null {
     const hex = '0123456789ABCDEF';
-    let i;
 
-    i = kanji.charCodeAt(0);
-    if (i < 0x3000) {
+    let kanjiCharCode = kanji.charCodeAt(0);
+    if (kanjiCharCode < 0x3000) {
       return null;
     }
 
@@ -574,14 +574,14 @@ class RcxDict {
 
     entry.misc = {};
     entry.misc.U =
-      hex[(i >>> 12) & 15] +
-      hex[(i >>> 8) & 15] +
-      hex[(i >>> 4) & 15] +
-      hex[i & 15];
+      hex[(kanjiCharCode >>> 12) & 15] +
+      hex[(kanjiCharCode >>> 8) & 15] +
+      hex[(kanjiCharCode >>> 4) & 15] +
+      hex[kanjiCharCode & 15];
 
     const b = a[1].split(' ');
-    for (i = 0; i < b.length; ++i) {
-      if (b[i].match(/^([A-Z]+)(.*)/)) {
+    for (kanjiCharCode = 0; kanjiCharCode < b.length; ++kanjiCharCode) {
+      if (b[kanjiCharCode].match(/^([A-Z]+)(.*)/)) {
         if (!entry.misc[RegExp.$1]) {
           entry.misc[RegExp.$1] = RegExp.$2;
         } else {
@@ -636,7 +636,7 @@ class RcxDict {
   ];
 
   // TODO: Entry should be extracted as separate type.
-  makeHtml(entry: DictEntryData | null) {
+  public makeHtml(entry: DictEntryData | null) {
     let e;
     let c;
     let s;
@@ -933,7 +933,7 @@ class RcxDict {
     return b.join('');
   }
 
-  makeText(entry: DictEntryData | null, max: number): string {
+  public makeText(entry: DictEntryData | null, max: number): string {
     if (entry === null) {
       return '';
     }
