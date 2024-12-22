@@ -1,9 +1,10 @@
-import { Config } from '../configuration';
-import { RcxDict } from '../data';
-import { expect, use } from '@esm-bundle/chai';
+import { expect, use } from 'chai';
 import chaiLike from 'chai-like';
 import chaiThings from 'chai-things';
 import sinonChrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { RcxDict } from '../data';
 
 // Extend chai-like to allow using regex for fuzzy string matching inside
 // objects.
@@ -41,10 +42,11 @@ describe('data.ts', function () {
   // Make it relative to current timeout so config level changes are taken
   // into account. (ie browserstack)
   this.timeout(this.timeout() * 3);
+
   before(async function () {
     // stub sinon chrome getURL method to return the path it's given
     // Required to load dictionary files.
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
     rcxDict = await RcxDict.create({} as Config);
   });
 
@@ -286,6 +288,209 @@ describe('data.ts', function () {
           });
         });
       });
+    });
+  });
+
+  describe('kanjiSearch', function () {
+    it('should return null for kanji with char code < 0x3000', function () {
+      const result = rcxDict.kanjiSearch('A');
+
+      expect(result).to.be.null;
+    });
+
+    it('should return null if kanjiData entry is not a single kanji', function () {
+      const result = rcxDict.kanjiSearch('子9');
+
+      expect(result).to.be.null;
+    });
+
+    it('should set kanji property of DictEntryData object', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.kanji).to.equal('日');
+    });
+
+    it('should set misc -> U to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        U: '65E5',
+      });
+    });
+
+    it('should set misc -> B to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        B: '72',
+      });
+    });
+
+    it('should set misc -> G to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        G: '1',
+      });
+    });
+
+    it('should set misc -> S to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        S: '4',
+      });
+    });
+
+    it('should set misc -> F to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        F: '1',
+      });
+    });
+
+    it('should set misc -> N to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        N: '2097',
+      });
+    });
+
+    it('should set misc -> V to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        V: '2410',
+      });
+    });
+
+    it('should set misc -> H to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        H: '3027',
+      });
+    });
+
+    it('should set misc -> DK to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        DK: '1915',
+      });
+    });
+
+    it('should set misc -> L to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        L: '12 day',
+      });
+    });
+
+    it('should set misc -> DN to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        DN: '12 day',
+      });
+    });
+
+    it('should set misc -> E to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        E: '62',
+      });
+    });
+
+    it('should set misc -> IN to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        IN: '5',
+      });
+    });
+
+    it('should set misc -> P to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        P: '3-3-1',
+      });
+    });
+
+    it('should set misc -> I to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        I: '4c0.1',
+      });
+    });
+
+    it('should set misc -> Y to correct value', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.misc).to.deep.include({
+        Y: 'ri4',
+      });
+    });
+
+    it('should set onkun property of DictEntryData object', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.onkun).to.contain('ニチ、 ジツ、 ひ、 -び、 -か');
+    });
+
+    it('should set nanori property of DictEntryData object', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.nanori).to.contain(
+        'あ、 あき、 いる、 く、 くさ、 こう、 す、 たち、 に、 にっ、 につ、 へ'
+      );
+    });
+
+    it('should set bushumei property of DictEntryData object to empty string if null', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.bushumei).to.equal('');
+    });
+
+    it('should set eigo property of DictEntryData object', function () {
+      const result = rcxDict.kanjiSearch('日');
+
+      expect(result?.eigo).to.contain('day, sun, Japan');
+    });
+  });
+
+  describe('translate', function () {
+    it('should parse strings that contain skippable characters', function () {
+      const result = rcxDict.translate('い～ぬ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^イヌ.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
+    });
+
+    it('should parse strings that contain semi-voiced half-width katakana', function () {
+      const result = rcxDict.translate('ｱｯﾌﾟﾙ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^アップル.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
+    });
+
+    it('should parse strings that contain voiced half-width katakana', function () {
+      const result = rcxDict.translate('ﾊﾞﾄﾙ可愛い');
+
+      expect(result?.data).to.be.like([
+        { entry: /^バトる.*/ },
+        { entry: /^可愛い.*/ },
+      ]);
     });
   });
 });

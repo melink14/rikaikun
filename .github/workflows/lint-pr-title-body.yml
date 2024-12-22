@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.1.1
-      - name: Use Node.js 16
-        uses: actions/setup-node@v4.0.1
+      - uses: actions/checkout@v4.2.2
+      - name: Use LTS Node.js
+        uses: actions/setup-node@v4.1.0
         with:
-          node-version: '16'
+          node-version: lts/*
       - run: npm ci
         name: Install needed commitlint config
       - uses: melink14/action-lint-pull-request-title@master

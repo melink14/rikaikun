@@ -7,6 +7,239 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.0.13](https://github.com/melink14/rikaikun/compare/v3.0.12...v3.0.13) (2024-12-19)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2321](https://github.com/melink14/rikaikun/issues/2321)) ([26f1743](https://github.com/melink14/rikaikun/commit/26f174334074e5142e1e7a44cca8630ab2592d07))
+
+## [3.0.12](https://github.com/melink14/rikaikun/compare/v3.0.11...v3.0.12) (2024-12-12)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2313](https://github.com/melink14/rikaikun/issues/2313)) ([835926d](https://github.com/melink14/rikaikun/commit/835926db1cf4578d41091a1fbbb41f01cc48b568))
+
+## [3.0.11](https://github.com/melink14/rikaikun/compare/v3.0.10...v3.0.11) (2024-12-04)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2297](https://github.com/melink14/rikaikun/issues/2297)) ([0a01e3c](https://github.com/melink14/rikaikun/commit/0a01e3c8ffdf0a8ec348450698c1d54d84f5ba65))
+
+## [3.0.10](https://github.com/melink14/rikaikun/compare/v3.0.9...v3.0.10) (2024-11-19)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2279](https://github.com/melink14/rikaikun/issues/2279)) ([ccff421](https://github.com/melink14/rikaikun/commit/ccff42176926d2fca25f630eeafe147f1cfb0be6))
+
+## [3.0.9](https://github.com/melink14/rikaikun/compare/v3.0.8...v3.0.9) (2024-11-04)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2275](https://github.com/melink14/rikaikun/issues/2275)) ([31b37b8](https://github.com/melink14/rikaikun/commit/31b37b8b17518205d9ef44a31e650c50858d91c9))
+
+## [3.0.8](https://github.com/melink14/rikaikun/compare/v3.0.7...v3.0.8) (2024-10-28)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2258](https://github.com/melink14/rikaikun/issues/2258)) ([1269ae3](https://github.com/melink14/rikaikun/commit/1269ae3c552f5f31a0dc932bf18466a19a1261d5))
+
+## [3.0.7](https://github.com/melink14/rikaikun/compare/v3.0.6...v3.0.7) (2024-10-14)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2250](https://github.com/melink14/rikaikun/issues/2250)) ([5cb4f71](https://github.com/melink14/rikaikun/commit/5cb4f71503ba29bff64859da040c6f451310f2cc))
+
+## [3.0.6](https://github.com/melink14/rikaikun/compare/v3.0.5...v3.0.6) (2024-10-09)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2240](https://github.com/melink14/rikaikun/issues/2240)) ([0645a27](https://github.com/melink14/rikaikun/commit/0645a279d6ede6f3ecfbdbb6d4ac9b15eeecc144))
+
+## [3.0.5](https://github.com/melink14/rikaikun/compare/v3.0.4...v3.0.5) (2024-09-30)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2235](https://github.com/melink14/rikaikun/issues/2235)) ([52ca237](https://github.com/melink14/rikaikun/commit/52ca23748bb8d1c4a18e570cc154e979f825dbf4))
+
+## [3.0.4](https://github.com/melink14/rikaikun/compare/v3.0.3...v3.0.4) (2024-09-23)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2223](https://github.com/melink14/rikaikun/issues/2223)) ([23ee1ee](https://github.com/melink14/rikaikun/commit/23ee1ee08203f05cb3a311dbe0a35bd2eb7ea639))
+
+## [3.0.3](https://github.com/melink14/rikaikun/compare/v3.0.2...v3.0.3) (2024-09-16)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2201](https://github.com/melink14/rikaikun/issues/2201)) ([cd650bf](https://github.com/melink14/rikaikun/commit/cd650bf4cf5332ea40e30b15fe2351ed11095c24))
+- **dict:** Update dictionaries to latest versions ([#2216](https://github.com/melink14/rikaikun/issues/2216)) ([93a2812](https://github.com/melink14/rikaikun/commit/93a2812662ff936124d09e3fa7df61a66cf0708d))
+
+## [3.0.2](https://github.com/melink14/rikaikun/compare/v3.0.1...v3.0.2) (2024-09-02)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2192](https://github.com/melink14/rikaikun/issues/2192)) ([f2f90ec](https://github.com/melink14/rikaikun/commit/f2f90ec8f912adc31e0fef0bf163f03e93ee4e25))
+
+## [3.0.1](https://github.com/melink14/rikaikun/compare/v3.0.0...v3.0.1) (2024-08-26)
+
+### Bug Fixes
+
+- Allow popup.css to be accessed from all URLs ([#2174](https://github.com/melink14/rikaikun/issues/2174)) ([5b0f3c1](https://github.com/melink14/rikaikun/commit/5b0f3c145d0333cf2a9e0824e0730ef008020134))
+- **dict:** Update dictionaries to latest versions ([#2148](https://github.com/melink14/rikaikun/issues/2148)) ([c23d032](https://github.com/melink14/rikaikun/commit/c23d03232851755123b3de6adb911410445ed407))
+- **google-docs:** Set docs_annotate_canvas property in a MV3 compliant manner ([#2176](https://github.com/melink14/rikaikun/issues/2176)) ([a09ddaf](https://github.com/melink14/rikaikun/commit/a09ddaf1853da768980c4af901e53c52d05ba89c)), closes [#2175](https://github.com/melink14/rikaikun/issues/2175)
+
+## [3.0.0](https://github.com/melink14/rikaikun/compare/v2.5.61...v3.0.0) (2024-08-25)
+
+### ⚠ BREAKING CHANGES
+
+- MV3 with offscreen pages requires at least Chrome 109 which is the new minimum version.
+
+### Features
+
+- Migrate to MV3 ([#2168](https://github.com/melink14/rikaikun/issues/2168)) ([8a47af3](https://github.com/melink14/rikaikun/commit/8a47af38261371a9c1e5b9049d0d6b42535f8c1f)), closes [#187](https://github.com/melink14/rikaikun/issues/187) [#65](https://github.com/melink14/rikaikun/issues/65)
+
+### Bug Fixes
+
+- **manifest:** Remove comment from manifest.json ([#2169](https://github.com/melink14/rikaikun/issues/2169)) ([d76fc31](https://github.com/melink14/rikaikun/commit/d76fc310a09e112d3dbef48fecf16f9ed4ae3ebd))
+
+## [2.5.61](https://github.com/melink14/rikaikun/compare/v2.5.60...v2.5.61) (2024-08-05)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2138](https://github.com/melink14/rikaikun/issues/2138)) ([adcd3f7](https://github.com/melink14/rikaikun/commit/adcd3f763f7beb99ee431c060eb8c9dcbbf5d381))
+
+## [2.5.60](https://github.com/melink14/rikaikun/compare/v2.5.59...v2.5.60) (2024-07-29)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2129](https://github.com/melink14/rikaikun/issues/2129)) ([9123410](https://github.com/melink14/rikaikun/commit/9123410907556c03b983718f83b65df13cb587f7))
+
+## [2.5.59](https://github.com/melink14/rikaikun/compare/v2.5.58...v2.5.59) (2024-07-22)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2118](https://github.com/melink14/rikaikun/issues/2118)) ([8b082c7](https://github.com/melink14/rikaikun/commit/8b082c79aabf0c531a8d49a8466750161116bc06))
+- **tooling:** Remove deprecated lines from husky hooks ([#2119](https://github.com/melink14/rikaikun/issues/2119)) ([8380e94](https://github.com/melink14/rikaikun/commit/8380e94626d032029dfd31e53b1692e5f21573fc))
+
+## [2.5.58](https://github.com/melink14/rikaikun/compare/v2.5.57...v2.5.58) (2024-07-15)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2109](https://github.com/melink14/rikaikun/issues/2109)) ([ba3a29f](https://github.com/melink14/rikaikun/commit/ba3a29f1125f9543071feb5501adc370134bc573))
+
+## [2.5.57](https://github.com/melink14/rikaikun/compare/v2.5.56...v2.5.57) (2024-07-02)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2104](https://github.com/melink14/rikaikun/issues/2104)) ([1fd965e](https://github.com/melink14/rikaikun/commit/1fd965e4b3d884fa329aabdb20a58ab61ad3910b))
+
+## [2.5.56](https://github.com/melink14/rikaikun/compare/v2.5.55...v2.5.56) (2024-06-28)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2090](https://github.com/melink14/rikaikun/issues/2090)) ([84e069f](https://github.com/melink14/rikaikun/commit/84e069fc707d7e06e0bc926e435f5eb29005227c))
+
+## [2.5.55](https://github.com/melink14/rikaikun/compare/v2.5.54...v2.5.55) (2024-06-03)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2056](https://github.com/melink14/rikaikun/issues/2056)) ([3dfe9ab](https://github.com/melink14/rikaikun/commit/3dfe9abb244350f0b57bbae62043ba5b9bb138cb))
+- **dict:** Update dictionaries to latest versions ([#2063](https://github.com/melink14/rikaikun/issues/2063)) ([d33279c](https://github.com/melink14/rikaikun/commit/d33279c0716c09c960b25a0e08d605aeca84e2ae))
+- **dict:** Update dictionaries to latest versions ([#2071](https://github.com/melink14/rikaikun/issues/2071)) ([faad94b](https://github.com/melink14/rikaikun/commit/faad94b74126d691152389fc707ee99be1882c1c))
+- **dict:** Update dictionaries to latest versions ([#2074](https://github.com/melink14/rikaikun/issues/2074)) ([21f6459](https://github.com/melink14/rikaikun/commit/21f6459ad92e9820e134ae5b02f757c05a15ad4f))
+- **dict:** Update dictionaries to latest versions ([#2084](https://github.com/melink14/rikaikun/issues/2084)) ([739f596](https://github.com/melink14/rikaikun/commit/739f596d20826429f7292ecb71a1b3390e069500))
+
+## [2.5.54](https://github.com/melink14/rikaikun/compare/v2.5.53...v2.5.54) (2024-04-30)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2048](https://github.com/melink14/rikaikun/issues/2048)) ([42fcb6c](https://github.com/melink14/rikaikun/commit/42fcb6c7bef042b3ab510a8ebc735a357fd52a6c))
+
+## [2.5.53](https://github.com/melink14/rikaikun/compare/v2.5.52...v2.5.53) (2024-04-22)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2042](https://github.com/melink14/rikaikun/issues/2042)) ([45a69d9](https://github.com/melink14/rikaikun/commit/45a69d91509f587cd10417b0c43c4f3e5eb54d5c))
+
+## [2.5.52](https://github.com/melink14/rikaikun/compare/v2.5.51...v2.5.52) (2024-04-15)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2038](https://github.com/melink14/rikaikun/issues/2038)) ([512ca43](https://github.com/melink14/rikaikun/commit/512ca4334f437fb7728a873d3636cbce9a01829e))
+
+## [2.5.51](https://github.com/melink14/rikaikun/compare/v2.5.50...v2.5.51) (2024-04-08)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2031](https://github.com/melink14/rikaikun/issues/2031)) ([bd7b689](https://github.com/melink14/rikaikun/commit/bd7b6898c6dd75e641e48734a1551e41d7eeb647))
+
+## [2.5.50](https://github.com/melink14/rikaikun/compare/v2.5.49...v2.5.50) (2024-04-01)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2024](https://github.com/melink14/rikaikun/issues/2024)) ([4df5105](https://github.com/melink14/rikaikun/commit/4df51059590b6f1dfb121ad4384ee687f38e5dee))
+
+## [2.5.49](https://github.com/melink14/rikaikun/compare/v2.5.48...v2.5.49) (2024-03-25)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2021](https://github.com/melink14/rikaikun/issues/2021)) ([1bdfbc0](https://github.com/melink14/rikaikun/commit/1bdfbc01ade37bac1a9f52776c9771fa40d38faa))
+
+## [2.5.48](https://github.com/melink14/rikaikun/compare/v2.5.47...v2.5.48) (2024-03-18)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2010](https://github.com/melink14/rikaikun/issues/2010)) ([f05bfcb](https://github.com/melink14/rikaikun/commit/f05bfcbe5d6e38170116d27619bf08b2768511cd))
+
+## [2.5.47](https://github.com/melink14/rikaikun/compare/v2.5.46...v2.5.47) (2024-03-11)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2001](https://github.com/melink14/rikaikun/issues/2001)) ([b68da99](https://github.com/melink14/rikaikun/commit/b68da99ea360cfbdced6f67876d8920f7d096433))
+
+## [2.5.46](https://github.com/melink14/rikaikun/compare/v2.5.45...v2.5.46) (2024-03-04)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1995](https://github.com/melink14/rikaikun/issues/1995)) ([5e1bfb2](https://github.com/melink14/rikaikun/commit/5e1bfb28bbb1839c0841ec780cfba32ab19aff97))
+
+## [2.5.45](https://github.com/melink14/rikaikun/compare/v2.5.44...v2.5.45) (2024-02-26)
+
+### Bug Fixes
+
+- **deinflect:** Only deinflect って and friends to く for 行く ([#1974](https://github.com/melink14/rikaikun/issues/1974)) ([30a0e33](https://github.com/melink14/rikaikun/commit/30a0e338c0c9b9f125aeefbf11545f2b2810e953)), closes [#1920](https://github.com/melink14/rikaikun/issues/1920)
+- **dict:** Update dictionaries to latest versions ([#1986](https://github.com/melink14/rikaikun/issues/1986)) ([d628c4b](https://github.com/melink14/rikaikun/commit/d628c4bc5baf9a60108e2306e140d974a6283fbd))
+
+## [2.5.44](https://github.com/melink14/rikaikun/compare/v2.5.43...v2.5.44) (2024-02-19)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1979](https://github.com/melink14/rikaikun/issues/1979)) ([0b5ebc2](https://github.com/melink14/rikaikun/commit/0b5ebc2c4141d1e1cb559c244282e37c97e19dd0))
+
+## [2.5.43](https://github.com/melink14/rikaikun/compare/v2.5.42...v2.5.43) (2024-02-13)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1969](https://github.com/melink14/rikaikun/issues/1969)) ([9ec5f30](https://github.com/melink14/rikaikun/commit/9ec5f309c0c9d944849c15c0eaafc53568a6b3df))
+
+## [2.5.42](https://github.com/melink14/rikaikun/compare/v2.5.41...v2.5.42) (2024-02-05)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1962](https://github.com/melink14/rikaikun/issues/1962)) ([96e6bbb](https://github.com/melink14/rikaikun/commit/96e6bbbcd19b2ad3eec9ef5fae401a42eb25835d))
+
+## [2.5.41](https://github.com/melink14/rikaikun/compare/v2.5.40...v2.5.41) (2024-01-31)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1950](https://github.com/melink14/rikaikun/issues/1950)) ([f0c6031](https://github.com/melink14/rikaikun/commit/f0c603124d1dd1251431354a51c9e8913df46287))
+
+## [2.5.40](https://github.com/melink14/rikaikun/compare/v2.5.39...v2.5.40) (2024-01-22)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#1939](https://github.com/melink14/rikaikun/issues/1939)) ([4180a6f](https://github.com/melink14/rikaikun/commit/4180a6f529de148b32d0706d4e7d3edac329f752))
+
 ## [2.5.39](https://github.com/melink14/rikaikun/compare/v2.5.38...v2.5.39) (2024-01-16)
 
 ### Bug Fixes

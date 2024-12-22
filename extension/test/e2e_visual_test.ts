@@ -1,11 +1,12 @@
-import { Config } from '../configuration';
-import { TestOnlyRcxContent } from '../rikaicontent';
 import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
-import { use } from '@esm-bundle/chai';
 import { visualDiff } from '@web/test-runner-visual-regression';
+import { use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import sinonChrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { TestOnlyRcxContent } from '../rikaicontent';
+import { stubbedChrome as sinonChrome } from './chrome_stubs';
 
 use(sinonChai);
 
@@ -30,7 +31,7 @@ sinonChrome.reset();
 // Properties which need to be set separately from where they're used.
 let backgroundOnMessageHandler: BackgroundOnMessageHandler;
 let onStorageChangedHandler: StorageOnChangedHandler;
-let onBrowserActionClickedHandler: (tab: { id: number }) => Promise<void>;
+let onActionClickedHandler: (tab: { id: number }) => Promise<void>;
 let onActivatedHandler: (activeInfo: { tabId: number }) => Promise<void>;
 let defaultConfig: Config;
 
@@ -43,6 +44,7 @@ describe('Visual Regression Tests', function () {
   // Make it relative to current timeout so config level changes are taken
   // into account. (ie browserstack)
   this.timeout(this.timeout() * 5);
+
   before(async function () {
     // When chrome.storage.sync.get is called save the full config for later use.
     sinonChrome.storage.sync.get.callsFake(
@@ -51,15 +53,18 @@ describe('Visual Regression Tests', function () {
         callback(initialConfig);
       }
     );
+    sinonChrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
 
     // stub sinon chrome getURL method to return the path it's given
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
 
     // Initializing backround page and saving it's onMessage handler allows
     // for simulating full content script -> background functionality.
     // Waiting on the RcxMain promise allows us to know exactly when setup is
     // finished.
-    await (await import('../background')).TestOnlyRxcMainPromise;
+    await (
+      await import('../background')
+    ).TestOnlyRxcMainPromise;
 
     // Handlers must be saved here since they are only captured at initial load
     // and stub will be reset after each test.
@@ -71,8 +76,8 @@ describe('Visual Regression Tests', function () {
       sinonChrome.storage.onChanged.addListener.firstCall.args[0];
 
     // Allows simulating clicking the rikaikun button to turn rikaikun on and off.
-    onBrowserActionClickedHandler =
-      sinonChrome.browserAction.onClicked.addListener.firstCall.args[0];
+    onActionClickedHandler =
+      sinonChrome.action.onClicked.addListener.firstCall.args[0];
 
     // Calling this re-enables the content script with fresh config.
     // Simulates returning to a tab after modifying options.
@@ -82,7 +87,7 @@ describe('Visual Regression Tests', function () {
 
   beforeEach(async function () {
     // Return the identity URL when looking up popup CSS file.
-    sinonChrome.extension.getURL.returnsArg(0);
+    sinonChrome.runtime.getURL.returnsArg(0);
     root = createAndAppendRoot();
 
     configureMessagePassing();
@@ -250,6 +255,7 @@ describe('Visual Regression Tests', function () {
       });
     });
   });
+
   describe('with agressive host page styles', function () {
     afterEach(function () {
       document.querySelector('#test-id')?.remove();
@@ -282,7 +288,7 @@ describe('Visual Regression Tests', function () {
 });
 
 async function toggleRikaikun() {
-  await onBrowserActionClickedHandler({ id: 0 });
+  await onActionClickedHandler({ id: 0 });
 }
 
 // Simple chrome messaging stub to make content/background communication work.
@@ -316,16 +322,23 @@ async function takeSnapshot(name: string) {
 }
 
 function waitForVisiblePopup(): Promise<void> {
-  return new Promise((resolve) => {
-    const popup = document.querySelector<HTMLDivElement>('#rikaichan-window');
-    if (!popup) {
-      return;
-    }
-    const o = new IntersectionObserver(() => {
-      resolve();
-      o.disconnect();
-    });
-    o.observe(popup);
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now();
+    const checkElement = () => {
+      if (document.querySelector<HTMLDivElement>('#rikaichan-window')) {
+        resolve();
+        return;
+      }
+      // Timing out here gives a better error message than waiting for
+      // the global test timeout.
+      if (Date.now() - startTime > 2000) {
+        reject(new Error("Rikaikun popup wasn't visible for 2000ms"));
+        return;
+      }
+
+      requestAnimationFrame(checkElement);
+    };
+    checkElement();
   });
 }
 
@@ -346,8 +359,8 @@ async function triggerMousemoveAtElementStart(element: Element) {
   await sendMouse({
     type: 'move',
     position: [
-      element.getBoundingClientRect().left,
-      element.getBoundingClientRect().top,
+      Math.ceil(element.getBoundingClientRect().left),
+      Math.ceil(element.getBoundingClientRect().top),
     ],
   });
 }

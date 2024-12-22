@@ -1,7 +1,8 @@
-import { expect, use } from '@esm-bundle/chai';
-import { parseWordDictEntry } from '../parse-word-dict-entry';
+import { expect, use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+
+import { parseWordDictEntry } from '../parse-word-dict-entry';
 
 use(sinonChai);
 

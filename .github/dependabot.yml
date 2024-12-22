@@ -11,6 +11,10 @@ updates:
     open-pull-requests-limit: 10
     # Disable auto rebasing to allow Mergify to do it efficiently.
     rebase-strategy: 'disabled'
+    groups:
+      web-test-runner:
+        patterns:
+          - '@web/test-runner*'
     schedule:
       interval: 'daily'
       time: '03:00'

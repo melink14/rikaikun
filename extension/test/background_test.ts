@@ -1,9 +1,10 @@
-import { Config } from '../configuration';
-import { RcxMain } from '../rikaichan';
-import { expect, use } from '@esm-bundle/chai';
-import chrome from 'sinon-chrome';
+import { expect, use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import chrome from 'sinon-chrome';
+
+import { Config } from '../configuration';
+import { RcxMain } from '../rikaichan';
 
 use(sinonChai);
 
@@ -14,9 +15,11 @@ describe('background.ts', function () {
   // Make it relative to current timeout so config level changes are taken
   // into account. (ie browserstack)
   this.timeout(this.timeout() * 2);
+
   before(async function () {
     // Resolve config fetch with minimal config object.
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
+    chrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
     // Imports only run once so run in `before` to make it deterministic.
     rcxMain = await (await import('../background')).TestOnlyRxcMainPromise;
   });
@@ -30,7 +33,7 @@ describe('background.ts', function () {
 
   describe('when sent enable? message', function () {
     it('should send "enable" message to tab', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
 
       await sendMessageToBackground({ type: 'enable?' });
 
@@ -43,7 +46,7 @@ describe('background.ts', function () {
     });
 
     it('should respond to the same tab it received a message from', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
       const tabId = 10;
 
       await sendMessageToBackground({ tabId: tabId, type: 'enable?' });
@@ -55,7 +58,7 @@ describe('background.ts', function () {
     });
 
     it('should send config in message to tab', async function () {
-      rcxMain.enabled = 1;
+      rcxMain.enabled = true;
       rcxMain.config = { copySeparator: 'testValue' } as Config;
 
       await sendMessageToBackground({ type: 'enable?' });
@@ -66,23 +69,64 @@ describe('background.ts', function () {
       );
     });
   });
+
+  describe('when sent xsearch message', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('should call rcxMain.search with the value', async function () {
+      const expectedText = 'theText';
+      const searchStub = sinon.stub(rcxMain, 'search');
+
+      await sendMessageToBackground({
+        type: 'xsearch',
+        text: expectedText,
+      });
+
+      expect(searchStub).to.have.been.calledOnceWith(
+        expectedText,
+        sinon.match.any
+      );
+    });
+
+    it('should not call rcxMain.search if request.text is an empty string', async function () {
+      const searchStub = sinon.stub(rcxMain, 'search');
+
+      await sendMessageToBackground({
+        type: 'xsearch',
+        text: '',
+      });
+
+      expect(searchStub).to.not.have.been.called;
+    });
+  });
 });
+
+type Payload = {
+  tabId?: number;
+  text?: string;
+  type: string;
+  responseCallback?: (response: unknown) => void;
+};
 
 async function sendMessageToBackground({
   tabId = 0,
   type,
+  text,
   responseCallback = () => {
     // Do nothing by default.
   },
-}: {
-  tabId?: number;
-  type: string;
-  responseCallback?: (response: unknown) => void;
-}): Promise<void> {
+}: Payload): Promise<void> {
+  const request: { type: string; text?: string } = {
+    type,
+    text,
+  };
+
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
-    { type: type },
+    request,
     { tab: { id: tabId } },
     responseCallback
   );

@@ -1,11 +1,11 @@
-import { browserstackLauncher } from '@web/test-runner-browserstack';
+import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import { defaultReporter } from '@web/test-runner';
+import { browserstackLauncher } from '@web/test-runner-browserstack';
 import { puppeteerLauncher } from '@web/test-runner-puppeteer';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 import isDocker from 'is-docker';
-import snowpackWebTestRunner from '@snowpack/web-test-runner-plugin';
 
-// Set NODE_ENV to test to ensure snowpack builds in test mode.
+// Set NODE_ENV to test for later use in vite.config.ts.
 process.env.NODE_ENV = 'test';
 
 /**
@@ -56,8 +56,8 @@ class SpecReporter {
             test.duration > 100
               ? ` ${this.color.reset}${this.color.red}(${test.duration}ms)`
               : test.duration > 50
-              ? ` ${this.color.reset}${this.color.yellow}(${test.duration}ms)`
-              : '';
+                ? ` ${this.color.reset}${this.color.yellow}(${test.duration}ms)`
+                : '';
           result += `${this.color.reset}`;
 
           return result;
@@ -91,7 +91,9 @@ class SpecReporter {
 
   specReporter({ reportResults = true } = {}) {
     return {
-      onTestRunFinished: () => {},
+      onTestRunFinished: () => {
+        // Do nothing
+      },
       reportTestFileResults: async ({
         logger,
         sessionsForTestFile,
@@ -122,8 +124,11 @@ if (isDocker) {
 
 /** @type {import('@web/test-runner').TestRunnerGroupConfig[]} */
 const defaultConfig = {
+  rootDir: 'extension', // Should match root in vite.config.ts.
   coverageConfig: {
-    exclude: ['**/snowpack/**/*', '**/*_test.ts*'],
+    // Including this excludes tests and random node_module files from the report.
+    // Excluding doesn't appear to do anything with vite.
+    include: ['**/extension/*.ts'],
   },
 
   browsers: [
@@ -138,7 +143,7 @@ const defaultConfig = {
     }),
   ],
   plugins: [
-    snowpackWebTestRunner(),
+    vitePlugin(),
     visualRegressionPlugin({
       update: process.argv.includes('--update-visual-baseline'),
       // When not running in Github Actions, save to an unpushed local folder.
@@ -150,7 +155,11 @@ const defaultConfig = {
   testRunnerHtml: (testFramework) =>
     `<html>
       <body>
-        <script type="module" src="test/chrome_stubs.js"></script>
+        <!-- vite doesn't add global by default so add it here. -->
+        <script>
+          window.global ||= window;
+        </script>
+        <script type="module" src="test/chrome_stubs.ts"></script>
         <script type="module" src="${testFramework}"></script>
       </body>
     </html>`,

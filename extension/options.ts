@@ -1,7 +1,9 @@
 import 'lit-toast/lit-toast.js';
-import { Config, configPromise } from './configuration';
-import { LitElement, TemplateResult, css, html } from 'lit';
+
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { until } from 'lit/directives/until.js';
+
+import { Config, configPromise } from './configuration';
 
 type OptionEvent = {
   target: HTMLInputElement;

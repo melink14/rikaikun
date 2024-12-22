@@ -1,6 +1,15 @@
 queue_rules:
-  - name: default
-    conditions: [] # no extra conditions needed to get merged
+  - name: dependabot
+    # Each PR is one commit, but mergify may add merge commits when updating.
+    merge_method: squash
+  - name: non-dependabot
+    # Each PR is one commit, but may have extras added during review so squash.
+    merge_method: squash
+    # Uses original PR title and body for squashed commit message.
+    commit_message_template: |
+      {{ title }} (#{{ number }})
+
+      {{ body }}
 
 pull_request_rules:
   - name: Auto-merge dependabot
@@ -10,9 +19,7 @@ pull_request_rules:
       - author=dependabot[bot]
     actions:
       queue:
-        name: default
-        # Each PR is one commit, but mergify may add merge commits when updating.
-        method: squash
+        name: dependabot
 
   - name: Have Dependabot rebase when conflict at head of queue
     # It's not unusual for there to be a conflict between subsequent dependabot
@@ -50,11 +57,4 @@ pull_request_rules:
       - author~=^(?:(?!dependabot).)*$
     actions:
       queue:
-        name: default
-        # Each PR is one commit, but may have extras added during review so squash.
-        method: squash
-        # Uses original PR title and body for squashed commit message.
-        commit_message_template: |
-          {{ title }} (#{{ number }})
-
-          {{ body }}
+        name: non-dependabot

@@ -2,13 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "type": "chrome",
       "request": "attach",
       "name": "Attach to Web Test Runner",
       "address": "localhost",
       "port": 9333,
       "sourceMaps": true,
-      "trace": true
+      "trace": true,
+      // Needed for vite based project.
+      "webRoot": "${workspaceFolder}/extension",
+      // Without this source maps aren't found for vite.
+      // Might need optimization to avoid the wrong files being loaded sometimes.
+      "resolveSourceMapLocations": null
     }
   ]
 }
