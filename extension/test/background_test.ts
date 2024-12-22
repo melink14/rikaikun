@@ -70,6 +70,15 @@ describe('background.ts', function () {
       );
     });
 
+    it('should throw an error if sender.tab is undefined', async function () {
+      await expect(
+        sendMessageToBackground({
+          tabId: null,
+          request: { type: 'enable?' },
+        })
+      ).to.be.rejectedWith(TypeError, 'sender.tab is always defined here.');
+    });
+
     it('should send config in message to tab', async function () {
       rcxMain.enabled = true;
       rcxMain.config = { copySeparator: 'testValue' } as Config;
@@ -84,28 +93,20 @@ describe('background.ts', function () {
   });
 
   describe('when sent xsearch message', function () {
-    it('should call rcxMain.search with the value', async function () {
-      const expectedText = 'theText';
-      const searchStub = sinon.stub(rcxMain, 'search');
-
-      await sendMessageToBackground({
-        request: { type: 'xsearch', text: expectedText },
-      });
-
-      expect(searchStub).to.have.been.calledOnceWith(
-        expectedText,
-        /* dictOptions= */ sinon.match.any
-      );
-    });
-
-    it('should call response callback with search string and dictOptions value', async function () {
+    it('should call response callback with the value returned by rcxMain.search', async function () {
+      const request = {
+        type: 'xsearch',
+        text: 'testXsearch',
+        dictOption: '-10',
+      };
       sinon
         .stub(rcxMain, 'search')
+        .withArgs(request.text, request.dictOption)
         .returns({ title: 'theText' } as DictEntryData);
       const response = sinon.spy();
 
       await sendMessageToBackground({
-        request: { type: 'xsearch' },
+        request,
         responseCallback: response,
       });
 
@@ -258,7 +259,7 @@ describe('background.ts', function () {
 });
 
 type Payload = {
-  tabId?: number;
+  tabId?: number | null;
   request: object;
   responseCallback?: (response: unknown) => void;
 };
@@ -270,11 +271,14 @@ async function sendMessageToBackground({
     // Do nothing by default.
   },
 }: Payload): Promise<void> {
+  // Allow a null tabId to denote it should be undefined (for testing error cases);
+  const sender = { tab: tabId !== null ? { id: tabId } : undefined };
+
   // In background.ts, a promise is passed to `addListener` so we can await it here.
   // eslint-disable-next-line @typescript-eslint/await-thenable
   await chrome.runtime.onMessage.addListener.yield(
     request,
-    { tab: { id: tabId } },
+    sender,
     responseCallback
   );
   await onMessagePromiseHolder.onMessagePromise;

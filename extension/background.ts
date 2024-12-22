@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       case 'enable?':
         console.log('enable?');
         if (sender.tab === undefined) {
-          throw TypeError('sender.tab is always defined here.');
+          throw new TypeError('sender.tab is always defined here.');
         }
         rcxMain.onTabSelect(sender.tab.id);
         break;
