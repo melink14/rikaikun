@@ -5,5 +5,4 @@ export default {
   trailingComma: 'es5',
   arrowParens: 'always',
   plugins: ['./node_modules/prettier-plugin-jsdoc/dist/index.js'],
-  jsdocCapitalizeDescription: false,
 };
