@@ -152,6 +152,30 @@ describe('Visual Regression Tests', function () {
         await takeSnapshot(`kanji-entries-${color}`);
       });
     });
+
+    describe('without okurigana highlighting', function () {
+      // Disable ban on logic in describe in order to dynamically generate color tests
+      // eslint-disable-next-line mocha/no-setup-in-describe
+      ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
+        it(`should render with ${color} theme`, async function () {
+          await updateConfiguration({
+            popupcolor: color,
+            outlineOkurigana: false,
+          });
+          const clock = sinon.useFakeTimers();
+          const span = insertHtmlIntoDomAndReturnFirstTextNode(
+            '<span>立</span>'
+          ) as HTMLSpanElement;
+
+          await triggerMousemoveAtElementStart(span);
+          // Tick the clock forward to account for the popup delay.
+          clock.tick(150);
+          await waitForVisiblePopup();
+
+          await takeSnapshot(`kanji-entries-${color}-no-highlight`);
+        });
+      });
+    });
   });
 
   describe('name entries', function () {
