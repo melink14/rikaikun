@@ -21,8 +21,8 @@ export default defineConfig({
           {
             filter: /.*/,
             replace: {
-              // Remove test only exports
-              from: /export.*TestOnly.*\n/,
+              // Remove test only exports and declarations.
+              from: /(export|const).*TestOnly.*\n/i,
               to: '',
             },
           },

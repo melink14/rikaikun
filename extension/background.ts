@@ -29,13 +29,13 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
-  void (async () => {
+  testOnlyPromiseHolder.onMessagePromise = (async () => {
     const rcxMain = await rcxMainPromise;
     switch (request.type) {
       case 'enable?':
         console.log('enable?');
         if (sender.tab === undefined) {
-          throw TypeError('sender.tab is always defined here.');
+          throw new TypeError('sender.tab is always defined here.');
         }
         rcxMain.onTabSelect(sender.tab.id);
         break;
@@ -91,4 +91,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   return true;
 });
 
+// This allows us to await the anonymouse promise in tests.
+const testOnlyPromiseHolder = { onMessagePromise: Promise.resolve() };
+export { testOnlyPromiseHolder };
 export { rcxMainPromise as TestOnlyRxcMainPromise };
