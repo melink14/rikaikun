@@ -7,6 +7,17 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.1.0](https://github.com/melink14/rikaikun/compare/v3.0.13...v3.1.0) (2024-12-23)
+
+### Features
+
+- **kanji:** Add option to remove okurigana highlighting ([#1521](https://github.com/melink14/rikaikun/issues/1521)) ([f6afba8](https://github.com/melink14/rikaikun/commit/f6afba80db2d2e3285dfe271756a951425bd6e01)), closes [#1120](https://github.com/melink14/rikaikun/issues/1120)
+
+### Bug Fixes
+
+- Add logic to return early if hover returns empty string ([#1446](https://github.com/melink14/rikaikun/issues/1446)) ([a5dcdc4](https://github.com/melink14/rikaikun/commit/a5dcdc4238d534fcf504b35e486eed573c7fd1da)), closes [#1417](https://github.com/melink14/rikaikun/issues/1417)
+- **dict:** Update dictionaries to latest versions ([#2349](https://github.com/melink14/rikaikun/issues/2349)) ([cd16362](https://github.com/melink14/rikaikun/commit/cd163629a63e22a4784f435cfe84a00639a4b7e8))
+
 ## [3.0.13](https://github.com/melink14/rikaikun/compare/v3.0.12...v3.0.13) (2024-12-19)
 
 ### Bug Fixes
