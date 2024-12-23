@@ -26,6 +26,15 @@ export default defineConfig({
               to: '',
             },
           },
+          {
+            filter: /.*/,
+            replace: {
+              // Remove the code that sets the testOnlyPromiseHolder to avoid runtime errors after the
+              // declaration is removed.
+              from: /testOnlyPromiseHolder.onMessagePromise =/i,
+              to: 'void',
+            },
+          },
         ])
       : undefined,
   ],
