@@ -57,7 +57,7 @@
     "@eslint/js": "^9.19.0",
     "@remcovaes/web-test-runner-vite-plugin": "^1.2.2",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/exec": "^7.0.2",
     "@semantic-release/git": "^10.0.1",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@types/byline": "^4.2.36",
