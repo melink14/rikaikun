@@ -7,6 +7,12 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.1.8](https://github.com/melink14/rikaikun/compare/v3.1.7...v3.1.8) (2025-02-17)
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2416](https://github.com/melink14/rikaikun/issues/2416)) ([b235738](https://github.com/melink14/rikaikun/commit/b23573883fdbbdd9a01ea3f69f700d830a799a8e))
+
 ## [3.1.7](https://github.com/melink14/rikaikun/compare/v3.1.6...v3.1.7) (2025-02-10)
 
 ### Bug Fixes
