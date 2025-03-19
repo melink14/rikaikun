@@ -106,7 +106,7 @@
     "semantic-release": "^24.2.3",
     "semantic-release-chrome": "^3.2.0",
     "simulant": "^0.2.2",
-    "sinon": "^19.0.2",
+    "sinon": "^19.0.4",
     "sinon-chai": "^4.0.0",
     "sinon-chrome": "^3.0.1",
     "stylelint": "^16.16.0",
