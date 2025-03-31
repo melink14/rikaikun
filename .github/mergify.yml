@@ -58,3 +58,8 @@ pull_request_rules:
     actions:
       queue:
         name: non-dependabot
+priority_rules:
+  - name: priority for queue `dependabot`
+    conditions:
+      - queue-name=dependabot
+    priority: 2250
