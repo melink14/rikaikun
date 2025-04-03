@@ -63,3 +63,7 @@ priority_rules:
     conditions:
       - queue-name=dependabot
     priority: 2250
+  - name: priority for queue `dependabot`
+    conditions:
+      - queue-name=dependabot
+    priority: 2250
