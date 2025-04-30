@@ -19,7 +19,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   liteslint['flat/recommended'],
   jsoneslint.configs['recommended-with-comments'],
-  mochaeslint.configs.flat.recommended,
+  mochaeslint.configs.recommended,
   promiseeslint.configs['flat/recommended'],
   importeslint.flatConfigs.recommended,
   importeslint.flatConfigs.typescript,
