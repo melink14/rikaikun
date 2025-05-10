@@ -110,8 +110,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('scrollable word entries', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
@@ -134,8 +132,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('kanji entries', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
@@ -154,8 +150,6 @@ describe('Visual Regression Tests', function () {
     });
 
     describe('without okurigana highlighting', function () {
-      // Disable ban on logic in describe in order to dynamically generate color tests
-      // eslint-disable-next-line mocha/no-setup-in-describe
       ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
         it(`should render with ${color} theme`, async function () {
           await updateConfiguration({
@@ -179,8 +173,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('name entries', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
@@ -202,8 +194,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('title translation', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
@@ -223,8 +213,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('enable mini help', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
@@ -241,8 +229,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('enable no help', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color, minihelp: false });
@@ -259,8 +245,6 @@ describe('Visual Regression Tests', function () {
   });
 
   describe('copy to clipboard', function () {
-    // Disable ban on logic in describe in order to dynamically generate color tests
-    // eslint-disable-next-line mocha/no-setup-in-describe
     ['blue', 'black', 'lightblue', 'yellow'].forEach((color) => {
       it(`should render correctly with ${color} theme`, async function () {
         await updateConfiguration({ popupcolor: color });
