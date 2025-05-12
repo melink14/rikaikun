@@ -29,7 +29,7 @@
     "test:browserstack": "npm run test -- --browserstack",
     "test:watch": "npm run test -- --watch",
     "test:update-baselines": "npm run test -- --update-visual-baseline",
-    "update-db": "node --loader ts-node/esm utils/update-db.ts"
+    "update-db": "tsx utils/update-db.ts"
   },
   "repository": {
     "type": "git",
@@ -113,7 +113,7 @@
     "stylelint-config-standard": "^38.0.0",
     "stylelint-order": "^7.0.0",
     "ts-lit-plugin": "^2.0.2",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.0",
     "vite": "^6.3.5",
