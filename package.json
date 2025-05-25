@@ -96,7 +96,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-tsdoc": "^0.4.0",
     "glob": "^11.0.2",
-    "globals": "^16.1.0",
+    "globals": "^16.2.0",
     "husky": "^9.1.7",
     "iconv-lite": "^0.6.3",
     "is-docker": "^3.0.0",
