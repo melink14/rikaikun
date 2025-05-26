@@ -114,8 +114,8 @@ const defaultDictEntryData: DictEntryData = {
 class RcxDict {
   private static instance: RcxDict;
 
-  nameDict: string;
-  nameIndex: string;
+  nameDict = '';
+  nameIndex = '';
   wordDict = '';
   wordIndex = '';
   kanjiData = '';
