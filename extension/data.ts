@@ -114,8 +114,8 @@ const defaultDictEntryData: DictEntryData = {
 class RcxDict {
   private static instance: RcxDict;
 
-  nameDict?: string;
-  nameIndex?: string;
+  nameDict = '';
+  nameIndex = '';
   wordDict = '';
   wordIndex = '';
   kanjiData = '';
@@ -171,22 +171,6 @@ class RcxDict {
     return file.split('\n').filter((line) => {
       return line && line.length > 0;
     });
-  }
-
-  private fileRead(url: string) {
-    const req = new XMLHttpRequest();
-    req.open('GET', url, false);
-    req.send(null);
-    return req.responseText;
-  }
-
-  private loadNames() {
-    if (this.nameDict && this.nameIndex) {
-      return;
-    }
-
-    this.nameDict = this.fileRead(chrome.runtime.getURL('data/names.dat'));
-    this.nameIndex = this.fileRead(chrome.runtime.getURL('data/names.idx'));
   }
 
   //  Note: These are mostly flat text files; loaded as one continuous string to
@@ -383,11 +367,8 @@ class RcxDict {
     if (doNames) {
       // check: split this
 
-      this.loadNames();
-      // After loadNames these are guaranteed to not be null so
-      // cast them as strings manually.
-      dict = this.nameDict as string;
-      index = this.nameIndex as string;
+      dict = this.nameDict;
+      index = this.nameIndex;
       maxTrim = 20; // this.config.namax;
       entry.hasNames = true;
       console.log('doNames');
