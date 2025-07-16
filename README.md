@@ -94,6 +94,7 @@ You can access the options from [the extension page](chrome://extensions/?option
 | Key         | Explanation                |
 | ----------- | -------------------------- |
 | A           | Alternate popup location   |
+| Z           | Zoom popup                 |
 | Y           | Move popup location down   |
 | C           | Copy to clipboard          |
 | D           | Hide/show definitions      |

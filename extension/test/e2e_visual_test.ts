@@ -133,6 +133,27 @@ describe('Visual Regression Tests', function () {
     });
   });
 
+  describe('zoom', function () {
+    for (const level of [1, 2, 3, 4]) {
+      it(`should work at zoom level ${level}`, async function () {
+        const clock = sinon.useFakeTimers();
+        const span = insertHtmlIntoDomAndReturnFirstTextNode(
+          '<span>虫眼鏡</span>'
+        ) as HTMLSpanElement;
+
+        await triggerMousemoveAtElementStart(span);
+        // Tick the clock forward to account for the popup delay.
+        clock.tick(150);
+        await waitForVisiblePopup();
+        for (let i = 0; i < level; i++) {
+          await sendKeys({ press: 'z' });
+        }
+        // Note that zoom level 4 should appear unzoomed.
+        await visualDiff(document.body, `zoom-${level}`);
+      });
+    }
+  });
+
   describe('kanji entries', function () {
     // Disable ban on logic in describe in order to dynamically generate color tests
     // eslint-disable-next-line mocha/no-setup-in-describe
