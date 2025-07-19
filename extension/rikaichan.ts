@@ -162,6 +162,7 @@ class RcxMain {
     '<span style="font-weight:bold">Rikaikun enabled!</span><br><br>' +
     '<table cellspacing=5>' +
     '<tr><td>A</td><td>Alternate popup location</td></tr>' +
+    '<tr><td>Z</td><td>Zoom popup</td></tr>' +
     '<tr><td>Y</td><td>Move popup location down</td></tr>' +
     '<tr><td>C</td><td>Copy to clipboard</td></tr>' +
     '<tr><td>D</td><td>Hide/show definitions</td></tr>' +
