@@ -7,6 +7,16 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.2.0](https://github.com/melink14/rikaikun/compare/v3.1.29...v3.2.0) (2025-07-21)
+
+### Features
+
+- **ui:** Add Z key shortcut for zooming popup up to three times ([#2662](https://github.com/melink14/rikaikun/issues/2662)) ([fdc79fa](https://github.com/melink14/rikaikun/commit/fdc79fab0258873b3404df9384df112256d465dd))
+
+### Bug Fixes
+
+- **dict:** Update dictionaries to latest versions ([#2668](https://github.com/melink14/rikaikun/issues/2668)) ([9fa4d95](https://github.com/melink14/rikaikun/commit/9fa4d95452040d6cd856122090d4c15f75fd6f99))
+
 ## [3.1.29](https://github.com/melink14/rikaikun/compare/v3.1.28...v3.1.29) (2025-07-14)
 
 ### Bug Fixes
