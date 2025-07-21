@@ -66,6 +66,7 @@ type Rikaichan = {
 
 class RcxContent {
   private altView = 0;
+  private zoom = 0;
 
   private sameDict = 0;
   private forceKanji = 0;
@@ -84,6 +85,7 @@ class RcxContent {
     }
     window.rikaichan.config = config;
     this.altView = config.popupLocation;
+    this.zoom = 0;
   }
 
   // Removes the listeners and stuff
@@ -262,6 +264,9 @@ class RcxContent {
     shadowcontainer.style.left = x + 'px';
     shadowcontainer.style.top = y + 'px';
     shadowcontainer.style.display = '';
+    shadowcontainer.style.transform = this.zoom
+      ? `scale(${1 + this.zoom / 2})`
+      : '';
   }
 
   hidePopup() {
@@ -423,6 +428,10 @@ class RcxContent {
         break;
       case 65: // a
         this.altView = (this.altView + 1) % 3;
+        this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
+        break;
+      case 90: // z
+        this.zoom = (this.zoom + 1) % 4;
         this.show((ev.currentTarget! as Window).rikaichan!, this.sameDict);
         break;
       case 67: // c

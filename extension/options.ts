@@ -188,6 +188,10 @@ class OptionsForm extends LitElement {
                   <td>Move popup location down</td>
                 </tr>
                 <tr>
+                  <td>Z</td>
+                  <td>Zoom popup</td>
+                </tr>
+                <tr>
                   <td>C</td>
                   <td>Copy to clipboard</td>
                 </tr>
