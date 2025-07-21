@@ -148,6 +148,7 @@ describe('Visual Regression Tests', function () {
         for (let i = 0; i < level; i++) {
           await sendKeys({ press: 'z' });
         }
+
         // Note that zoom level 4 should appear unzoomed.
         await visualDiff(document.body, `zoom-${level}`);
       });
