@@ -1,4 +1,4 @@
-# rikaikun <!-- omit in toc --> 
+# rikaikun <!-- omit in toc -->
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jipdnfibhldikgcjhfnomkfpcebammhp?style=flat)](https://chrome.google.com/webstore/detail/rikaikun/jipdnfibhldikgcjhfnomkfpcebammhp)
