@@ -256,7 +256,7 @@
 來|B4 G10 S8 N204 V173 H3570 DL2988 P4-8-3 I0a7.6 Ylai2|ライ タイ く.る きた.る きた.す き.たす き.たる|||come, due, next, cause, become
 侈|B9 S8 N414 V180 P1-2-6 I2a6.6 Ychi3|シ おご.る|||luxury, pride
 侉|B9 S8 P1-2-6 Ykua1 Ykua3|カ ケ ア おご.る ほこ.る|||
-侊|B9 S8 P1-2-6 Yguang1|コウ さかん|て.る みつ||big
+侊|B9 S8 P1-2-6 Yguang1|コウ さかん|てる みつ||big
 例|B9 G4 S8 F399 N428 V193 H89 DK67 DL71 L972:example DN1046:example E605 IN612 P1-2-6 I2a6.7 Yli4|レイ たと.える|||example, custom, usage, precedent
 侌|B9 S8 P2-2-6 Yyin1|イン かげ かげ.る|||
 侍|B9 G8 S8 F1939 N427 V192 H85 DK62 DL66 L976:waiter DN1050:waiter E1326 IN571 P1-2-6 I2a6.11 Yshi4|ジ シ さむらい はべ.る|かみ||waiter, samurai, wait upon, serve
@@ -905,7 +905,7 @@
 匥|B22 S7 P3-2-5 Yfan2|ヘン はこ|||
 匧|B22 S9 P3-2-7 Yqie4|キョウ はこ|||trunk, portfolio
 匨|B22 S9 P3-2-7 Ycang2 Yzang4|ソウ くら おさ.める かく.れる|||
-匩|B22 S9 P3-2-7 Ykuang1|キョウ すく.う|ただ.す||
+匩|B22 S9 P3-2-7 Ykuang1|キョウ すく.う ただ.す|||
 匪|B22 S10 N765 V592 P3-2-8 I2t8.1 Yfei3|ヒ あら.ず かたみ|||negation, wicked person
 匫|B22 S10 P3-2-8 Yhu1|コツ コチ いつわ.る|||
 匬|B22 S11 P3-2-9 Yyu3|ユ トウ ズ ます もたい|||
@@ -5989,7 +5989,7 @@
 瓟|B97 S11 P1-6-5 Ypao2|ハク ホウ ビョウ|||the bottle-gourd
 瓠|B97 S12 N2974 V3687 P1-6-6 I0a12.2 Yhu4|コ カク ひさご|||gourd
 瓢|B97 G9 S17 N2975 V3688 DL1657 L2911:gourd DN2920:gourd P1-11-6 I4e12.3 Ypiao2|ヒョウ ひさご ふくべ|||gourd
-瓣|B28 S20 N845 V1664 V3689 H1644 P1-7-13 I0a5.30 Yban4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||petal, valve
+瓣|B28 S20 N845 V3689 H1644 P1-7-13 I0a5.30 Yban4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||petal, valve
 瓤|B97 S23 P1-17-6 Yrang2|ショウ ニョウ ドウ ノウ うりわた|||flesh, core, pulp, pith
 瓦|B98 G8 S5 F1850 N2977 V3690 H3476 DL2918 L1031:tile DN1108:tile P4-5-1 I0a5.11 Ywa3 Ywa4|ガ かわら ぐらむ|||tile, gram
 瓧|B98 S7 N2978 V3691 P3-5-2 I2k5.2|デカグラム|||ten grams, (kokuji)
@@ -9966,11 +9966,11 @@
 辤|B160 S15 P1-8-7 Yci2|ジ や.める|||words, speech, sentence, expression or phrase, message
 辥|B160 S16 P1-9-7 Yxue1|セツ セチ つみ|||variety of marsh grass
 辦|B160 S16 H1609 P1-9-7 Yban4|ハン つと.める|||manage, do, handle, deal with
-辧|B160 S16 V1665 V6003 P1-7-9 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||manage, do, handle, deal with
-辨|B160 S16 N4648 V1665 V6002 P1-7-9 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||discrimination, dispose of, distinguish
+辧|B160 S16 V6003 P1-7-9 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||manage, do, handle, deal with
+辨|B160 S16 N4648 V6002 P1-7-9 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||discrimination, dispose of, distinguish
 辭|B160 S19 N4650 V6004 H1899 P1-12-7 I5b8.4 Yci2|ジ や.める|||words, speech, expression, phrase
 辮|B28 S20 N844 V4604 H1653 P1-7-13 I6a14.4 Ybian4|ベン ヘン あ.む|||braid
-辯|B28 S21 N847 V1666 V6005 H1660 P1-7-14 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||speech, dialect
+辯|B28 S21 N847 V6005 H1660 P1-7-14 I0a5.30 Ybian4|ベン ヘン わきま.える わ.ける はなびら あらそ.う|||speech, dialect
 辰|B161 G9 S7 F1600 N4653 V6006 H2992 DK1901 DL2582 L2008:sign:of:the:dragon DN2164:sign:of:the:dragon IN2246 P3-2-5 I2p5.1 Ychen2|シン ジン たつ|とき のぶ のぶる|しんのたつ|sign of the dragon, 7-9AM, fifth sign of Chinese zodiac, shin dragon radical (no. 161)
 辱|B161 G8 S10 F1769 N4655 V6007 H2736 DK1751 DL2384 L2009:embarrass DN2165:embarrass E1430 IN1738 P2-7-3 I2p8.2 Yru4 Yru3|ジョク はずかし.める|||embarrass, humiliate, shame
 農|B161 G3 S13 F385 N4658 V6008 H2698 DK1733 DL2353 L2014:agriculture DN2170:agriculture E366 IN369 P2-6-7 I2p11.1 Ynong2|ノウ|な の み||agriculture, farmers
@@ -10128,7 +10128,7 @@
 遽|B162 S17 S15 N4746 V6117 P3-4-13 I2q13.5 Yju4|キョ あわ.てる あわただ.しい すみやか にわか|||fear, agitation, confusion, hurry
 避|B162 G8 S16 S15 F756 N4749 V6120 H3179 DK2031 DL2742 L1501:evade DN1618:evade E1733 IN1491 P3-3-13 I2q13.3 Ybi4|ヒ さ.ける よ.ける|||evade, avoid, avert, ward off, shirk, shun
 邀|B162 S17 S15 N4748 V6119 P3-4-13 I2q13.1 Yyao1|ヨウ むか.える もと.める|||go to meet, call
-邁|B162 S17 S15 N4740 V6110 L2970:pass:through DN2975:pass:through P3-4-13 I2q12.7 Ymai4|マイ バイ ゆ.く|すす.む||go, excel
+邁|B162 S17 S15 N4740 V6110 L2970:pass:through DN2975:pass:through P3-4-13 I2q12.7 Ymai4|マイ バイ ゆ.く|すすむ||go, excel
 邂|B162 S17 N4747 V6118 P3-4-13 I2q13.2 Yxie4|カイ あ.う|||meet unexpectedly
 邃|B162 S18 N4752 V6123 P3-4-14 I2q14.2 Ysui4|スイ おくぶか.い|||deep, profound
 還|B162 G8 S16 S15 F910 N4750 V6121 H3180 DK2032 DL2743 L837:send:back DN900:send:back E1114 IN866 P3-3-13 I2q13.4 Yhuan2 Yhai2 Yxuan2|カン かえ.る|||send back, return
