@@ -2,14 +2,22 @@ queue_rules:
   - name: dependabot
     # Each PR is one commit, but mergify may add merge commits when updating.
     merge_method: squash
+    # Required for in-place checks
+    batch_size: 1
   - name: non-dependabot
     # Each PR is one commit, but may have extras added during review so squash.
     merge_method: squash
+    # Required for in-place checks
+    batch_size: 1
     # Uses original PR title and body for squashed commit message.
     commit_message_template: |
       {{ title }} (#{{ number }})
 
       {{ body }}
+
+merge_queue:
+  # Required for in-place checks
+  max_parallel_checks: 1
 
 pull_request_rules:
   - name: Auto-merge dependabot
