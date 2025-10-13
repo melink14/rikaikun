@@ -7,6 +7,8 @@ queue_rules:
   - name: non-dependabot
     # Each PR is one commit, but may have extras added during review so squash.
     merge_method: squash
+    # Required for in-place checks
+    batch_size: 1
     # Uses original PR title and body for squashed commit message.
     commit_message_template: |
       {{ title }} (#{{ number }})
