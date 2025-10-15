@@ -52,7 +52,7 @@
     "lit-toast": "^1.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.35.0",
     "@remcovaes/web-test-runner-vite-plugin": "^1.2.2",
