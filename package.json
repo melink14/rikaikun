@@ -83,7 +83,7 @@
     "chai-things": "^0.2.0",
     "conventional-changelog-conventionalcommits": "~9.1.0",
     "csv-parse": "^5.6.0",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-chai-friendly": "^1.1.0",
