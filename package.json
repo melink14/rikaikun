@@ -117,7 +117,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^6.3.6",
-    "vite-multiple-assets": "^2.2.5",
+    "vite-multiple-assets": "^2.2.6",
     "vite-plugin-filter-replace": "^0.1.14"
   },
   "release": {
