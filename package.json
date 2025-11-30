@@ -109,7 +109,7 @@
     "sinon": "^21.0.0",
     "sinon-chai": "^4.0.1",
     "sinon-chrome": "^3.0.1",
-    "stylelint": "^16.26.0",
+    "stylelint": "^16.26.1",
     "stylelint-config-standard": "^39.0.1",
     "stylelint-order": "^7.0.0",
     "ts-lit-plugin": "^2.0.2",
