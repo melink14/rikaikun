@@ -25,9 +25,8 @@ describe('background.ts', function () {
     chrome.storage.sync.get.yields({ kanjiInfo: [] });
     chrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
     // Imports only run once so run in `before` to make it deterministic.
-    const { TestOnlyRxcMainPromise, testOnlyPromiseHolder } = await import(
-      '../background'
-    );
+    const { TestOnlyRxcMainPromise, testOnlyPromiseHolder } =
+      await import('../background');
     onMessagePromiseHolder = testOnlyPromiseHolder;
     rcxMain = await TestOnlyRxcMainPromise;
   });
