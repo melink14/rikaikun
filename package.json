@@ -98,7 +98,7 @@
     "glob": "^13.0.0",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
-    "iconv-lite": "^0.7.0",
+    "iconv-lite": "^0.7.1",
     "is-docker": "^4.0.0",
     "patch-package": "^8.0.1",
     "prettier": "^3.7.4",
