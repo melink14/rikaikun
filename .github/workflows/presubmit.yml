@@ -44,7 +44,7 @@ jobs:
         if: failure()
         run: echo "screenshot_failure=$(ls -1 screenshots/Chromium/failed 2>/dev/null | wc -l)" >> $GITHUB_OUTPUT
       - name: Upload failing screenshots and diffs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0
         with:
           name: screenshot_failures
