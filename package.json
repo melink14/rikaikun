@@ -116,7 +116,7 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.52.0",
-    "vite": "^7.3.0",
+    "vite": "^7.3.1",
     "vite-multiple-assets": "^2.2.6",
     "vite-plugin-filter-replace": "^0.1.14"
   },
