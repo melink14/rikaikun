@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^20.3.1",
-    "@commitlint/config-conventional": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^9.39.2",
     "@remcovaes/web-test-runner-vite-plugin": "^1.4.0",
     "@semantic-release/changelog": "^6.0.3",
