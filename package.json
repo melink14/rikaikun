@@ -101,7 +101,7 @@
     "iconv-lite": "^0.7.2",
     "is-docker": "^4.0.0",
     "patch-package": "^8.0.1",
-    "prettier": "^3.8.0",
+    "prettier": "^3.8.1",
     "prettier-plugin-jsdoc": "^1.8.0",
     "semantic-release": "^25.0.2",
     "semantic-release-chrome": "^3.2.0",
