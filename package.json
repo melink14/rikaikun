@@ -103,7 +103,7 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.8.1",
     "prettier-plugin-jsdoc": "^1.8.0",
-    "semantic-release": "^25.0.2",
+    "semantic-release": "^25.0.3",
     "semantic-release-chrome": "^3.2.0",
     "simulant": "^0.2.2",
     "sinon": "^21.0.1",
