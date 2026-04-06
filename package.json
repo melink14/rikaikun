@@ -93,7 +93,7 @@
     "eslint-plugin-mocha": "^11.2.0",
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-tsdoc": "^0.5.2",
     "glob": "^13.0.6",
     "globals": "^17.4.0",
