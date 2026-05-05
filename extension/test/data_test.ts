@@ -475,6 +475,16 @@ describe('data.ts', function () {
       ]);
     });
 
+    it('should not skip ～ when it is the first character (#190)', function () {
+      // ～ in the middle of a word is skipped (see 'い～ぬ可愛い' test above).
+      // But when ～ is the first character, it should NOT be skipped,
+      // allowing the following word to be looked up normally.
+      const result = rcxDict.translate('～可愛い');
+
+      expect(result?.data).to.have.length(1);
+      expect(result?.data[0].entry).to.match(/可愛/);
+    });
+
     it('should parse strings that contain semi-voiced half-width katakana', function () {
       const result = rcxDict.translate('ｱｯﾌﾟﾙ可愛い');
 

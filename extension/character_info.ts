@@ -190,6 +190,6 @@ export const SKIPPABLE = {
   // to keep just in case.
   ZERO_WIDTH_NON_JOINER: 0x200c,
   // Japanese tilde is often inserted into words for emphasis so skipping will get more matches.
-  // TODO(#190): Don't skip this character if it's first.
+  // Don't skip when it's the first character since ～ by itself has meaning (#190).
   J_TILDE: 0xff5e,
 };
