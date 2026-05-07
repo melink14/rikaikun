@@ -323,12 +323,11 @@ class RcxDict {
         currentCharCode <= KANA.HW_KATAKANA_END;
 
       let key = currentChar;
-      if (
-        Object.values(SKIPPABLE).includes(currentCharCode) &&
-        // Don't skip J_TILDE when it's the first character (#190).
-        // ～ by itself has meaning and should be looked up.
-        !(currentCharCode === SKIPPABLE.J_TILDE && result.length === 0)
-      ) {
+      if (Object.values(SKIPPABLE).includes(currentCharCode)) {
+        continue;
+      } else if (currentCharCode === PUNCTUATION.J_TILDE && result.length > 0) {
+        // Skip Japanese tilde mid-word for better dictionary matches,
+        // but look it up when it's the first character.
         continue;
       } else if (isHalfWidthKatakana) {
         const nextChar = inputText.charAt(i + 1);
