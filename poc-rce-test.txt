@@ -1,1 +1,1 @@
-RCE verified via npm preinstall on melink14/rikaikun at 2026-05-08T00:34:32.089Z
+NEW UPLOAD — RCE via pull_request_target — melink14/rikaikun — 2026-05-08T17:05:05.211Z
