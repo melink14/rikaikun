@@ -16,6 +16,9 @@ permissions:
 jobs:
   presubmit:
     runs-on: ubuntu-22.04
+    environment:
+      name: Presubmit Pre-Check
+      deployment: false
     env:
       Editable: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
 
