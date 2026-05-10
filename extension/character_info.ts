@@ -178,15 +178,14 @@ export const PUNCTUATION = {
   // ﾞ, ﾟ,
   VOICED_MARK: 0xff9e,
   SEMI_VOICED_MARK: 0xff9f,
-  // Japanese tilde is often inserted into words for emphasis so skipping
-  // will get more matches. Treated separately from SKIPPABLE because it
-  // should not be skipped at the start of input (～ by itself has meaning).
+  // Exception: when ～ is the first/only character we don't skip it since
+  // ～ by itself has meaning in Japanese.
   J_TILDE: 0xff5e,
 } as const;
 
 // Characters to skip when calculating lookup key for dictionary.
 // Characters below are in order for easy copy
-//
+// ‌, ～
 export const SKIPPABLE = {
   // Skip Zero-width non-joiner used in Google Docs between every
   // character. Now that Google Docs switched to canvas rendering
