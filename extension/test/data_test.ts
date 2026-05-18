@@ -475,6 +475,15 @@ describe('data.ts', function () {
       ]);
     });
 
+    it('returns dictionary entry for ～ when it is the first character', function () {
+      const result = rcxDict.translate('～可愛い');
+
+      // Verify ～ is not skipped when it's the first character.
+      expect(result).to.not.be.null;
+      expect(result!.matchLen).to.be.greaterThan(0);
+      expect(result!.data).to.have.length.greaterThan(0);
+    });
+
     it('should parse strings that contain semi-voiced half-width katakana', function () {
       const result = rcxDict.translate('ｱｯﾌﾟﾙ可愛い');
 
