@@ -325,6 +325,10 @@ class RcxDict {
       let key = currentChar;
       if (Object.values(SKIPPABLE).includes(currentCharCode)) {
         continue;
+      } else if (currentCharCode === PUNCTUATION.J_TILDE && result.length > 0) {
+        // Skip Japanese tilde mid-word for better dictionary matches,
+        // but look it up when it's the first character.
+        continue;
       } else if (isHalfWidthKatakana) {
         const nextChar = inputText.charAt(i + 1);
         const nextCharCode = nextChar.charCodeAt(0);
