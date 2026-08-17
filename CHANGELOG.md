@@ -7,6 +7,8 @@ consistently version releases as follows:
 - Minor: New user visible feature added. (contains feat commits)
 - Patch: Bug fix to previous feature. (contains only fix commits)
 
+## [3.2.39](https://github.com/melink14/rikaikun/compare/v3.2.38...v3.2.39) (2026-08-17)
+
 ## [3.2.38](https://github.com/melink14/rikaikun/compare/v3.2.37...v3.2.38) (2026-08-11)
 
 ## [3.2.37](https://github.com/melink14/rikaikun/compare/v3.2.36...v3.2.37) (2026-08-04)
