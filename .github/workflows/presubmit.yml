@@ -56,7 +56,7 @@ jobs:
         run: npm run test:update-baselines
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && env.Editable
       - name: Push new baselines to pull request branch
-        uses: EndBug/add-and-commit@v11.0.0
+        uses: EndBug/add-and-commit@v11.1.1
         if: failure() && steps.check-screenshots.outputs.screenshot_failure > 0 && env.Editable
         with:
           message: 'test(visual): Update baselines with new screenshots'
@@ -67,7 +67,7 @@ jobs:
         run: npm run fix
         if: failure() && env.Editable
       - name: Push lint fixes to pull request branch
-        uses: EndBug/add-and-commit@v11.0.0
+        uses: EndBug/add-and-commit@v11.1.1
         if: failure() && env.Editable
         with:
           message: 'style: Fix lint/formatting errors'
