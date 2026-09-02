@@ -10,11 +10,9 @@ queue_rules:
     # Required for in-place checks
     batch_size: 1
     # Uses original PR title and body for squashed commit message.
-    commit_message_template: |
-      {{ title }} (#{{ number }})
-
-      {{ body }}
-
+    commit_message_format:
+      title: pr-title
+      body: pr-body
 merge_queue:
   # Required for in-place checks
   max_parallel_checks: 1
@@ -71,3 +69,4 @@ priority_rules:
     conditions:
       - queue-name=dependabot
     priority: 2250
+    allow_checks_interruption: true
