@@ -125,11 +125,12 @@ Here are examples of the types currently in use ([partial source](http://karma-r
     ci (changing the github checks which continuously run on pushed code)
 
 These are the common scopes used, though feel free to suggest a new one if it makes sense:
-| Scope | Explanation |
-|-------|------------------------------------------------------------|
-| deps | Used when changing the node dependencies of the project. |
-| ui | Used for fixes and features affecting the popup UI. |
-| dict | Used for fixes and features affecting the dictionary data. |
+
+| Scope | Explanation                                                |
+| ----- | ---------------------------------------------------------- |
+| deps  | Used when changing the node dependencies of the project.   |
+| ui    | Used for fixes and features affecting the popup UI.        |
+| dict  | Used for fixes and features affecting the dictionary data. |
 
 See the (recent) [commit history](https://github.com/melink14/rikaikun/commits/main) for more examples of correctly formatted messages.
 
