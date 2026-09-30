@@ -25,7 +25,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const rcxMain = await rcxMainPromise;
-  rcxMain.onTabSelect(activeInfo.tabId);
+  await rcxMain.onTabSelect(activeInfo.tabId);
 });
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         if (sender.tab === undefined) {
           throw new TypeError('sender.tab is always defined here.');
         }
-        rcxMain.onTabSelect(sender.tab.id);
+        await rcxMain.onTabSelect(sender.tab.id);
         break;
       case 'xsearch':
         console.log('xsearch');
