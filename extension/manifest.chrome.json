@@ -1,0 +1,12 @@
+{
+  "offline_enabled": true,
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": ["clipboardWrite", "storage", "offscreen"],
+  "action": {
+    "//": "If only one icon available, setting default_icon to string is allowed.",
+    "default_icon": "images/ba.png"
+  }
+}

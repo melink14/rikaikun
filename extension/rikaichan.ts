@@ -40,6 +40,7 @@
 */
 
 import { Config } from './configuration';
+import { copyLocally } from './copy-locally';
 import { DictEntryData, RcxDict } from './data';
 import { setupOffscreenDocument } from './offscreen-setup';
 
@@ -140,19 +141,22 @@ class RcxMain {
     if (text === null) {
       return;
     }
-
-    await setupOffscreenDocument();
-    try {
-      await chrome.runtime.sendMessage({
-        target: 'offscreen',
-        type: 'copyToClipboardOffscreen',
-        text: text,
-      });
-    } catch (e) {
-      throw new Error(
-        'Error while having offscreen doc copy text to clipboard.',
-        { cause: e }
-      );
+    if (chrome.offscreen) {
+      await setupOffscreenDocument();
+      try {
+        await chrome.runtime.sendMessage({
+          target: 'offscreen',
+          type: 'copyToClipboardOffscreen',
+          text: text,
+        });
+      } catch (e) {
+        throw new Error(
+          'Error while having offscreen doc copy text to clipboard.',
+          { cause: e }
+        );
+      }
+    } else {
+      copyLocally(text);
     }
 
     this.showPopupInTab(tab.id, 'Copied to clipboard.');

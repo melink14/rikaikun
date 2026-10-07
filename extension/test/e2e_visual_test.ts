@@ -47,12 +47,10 @@ describe('Visual Regression Tests', function () {
 
   before(async function () {
     // When chrome.storage.sync.get is called save the full config for later use.
-    sinonChrome.storage.sync.get.callsFake(
-      (initialConfig: Config, callback: (config: Config) => void) => {
-        defaultConfig = { ...initialConfig };
-        callback(initialConfig);
-      }
-    );
+    sinonChrome.storage.sync.get.callsFake((initialConfig: Config) => {
+      defaultConfig = { ...initialConfig };
+      return initialConfig;
+    });
     sinonChrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
 
     // stub sinon chrome getURL method to return the path it's given

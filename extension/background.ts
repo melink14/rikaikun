@@ -2,6 +2,7 @@ import { configPromise } from './configuration';
 import { RcxDict } from './data';
 import { setupOffscreenDocument } from './offscreen-setup';
 import { RcxMain } from './rikaichan';
+import { tts } from './texttospeech';
 
 /**
  * Returns a promise for fully initialized RcxMain. Async due to config and
@@ -11,7 +12,7 @@ async function createRcxMainPromise(): Promise<RcxMain> {
   const config = await configPromise;
   const dict = await RcxDict.create(config);
   const { enabled } = await chrome.storage.local.get({ enabled: false });
-  return RcxMain.create(dict, config, enabled);
+  return RcxMain.create(dict, config, enabled as boolean);
 }
 const rcxMainPromise: Promise<RcxMain> = createRcxMainPromise();
 
@@ -30,7 +31,12 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   testOnlyPromiseHolder.onMessagePromise = (async () => {
-    const rcxMain = await rcxMainPromise;
+    let rcxMain: RcxMain;
+    try {
+      rcxMain = await rcxMainPromise;
+    } catch {
+      throw Error('failed to load rcxMain');
+    }
     switch (request.type) {
       case 'enable?':
         console.log('enable?');
@@ -70,17 +76,21 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         break;
       case 'playTTS':
         console.log('playTTS');
-        await setupOffscreenDocument();
-        try {
-          await chrome.runtime.sendMessage({
-            target: 'offscreen',
-            type: 'playTtsOffscreen',
-            text: request.text,
-          });
-        } catch (e) {
-          throw new Error('Error while having offscreen doc play TTS.', {
-            cause: e,
-          });
+        if (chrome.offscreen) {
+          await setupOffscreenDocument();
+          try {
+            await chrome.runtime.sendMessage({
+              target: 'offscreen',
+              type: 'playTtsOffscreen',
+              text: request.text,
+            });
+          } catch (e) {
+            throw new Error('Error while having offscreen doc play TTS.', {
+              cause: e,
+            });
+          }
+        } else {
+          tts.play(request.text);
         }
         break;
       default:
