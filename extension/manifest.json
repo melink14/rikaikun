@@ -1,26 +1,15 @@
 {
   "manifest_version": 3,
   "name": "rikaikun",
-  "version": "3.2.42",
   "minimum_chrome_version": "109",
   "description": "rikaikun shows the reading and English definition of Japanese words when you hover over Japanese text in the browser.",
   "icons": {
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
-  "offline_enabled": true,
-  "permissions": ["clipboardWrite", "storage", "offscreen"],
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
+  "permissions": ["clipboardWrite", "storage"],
   "action": {
-    "//": "If only one icon available, setting default_icon to string is allowed.",
     "default_icon": "images/ba.png"
-  },
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": false
   },
   "content_scripts": [
     {

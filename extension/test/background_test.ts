@@ -6,6 +6,7 @@ import sinonChai from 'sinon-chai';
 import { Config } from '../configuration';
 import { DictEntryData } from '../data';
 import { RcxMain } from '../rikaichan';
+import { tts } from '../texttospeech';
 import { stubbedChrome as chrome } from './chrome_stubs';
 
 use(sinonChai);
@@ -13,6 +14,7 @@ use(chaiAsPromised);
 
 let rcxMain: RcxMain;
 let onMessagePromiseHolder: { onMessagePromise: Promise<void> };
+const offscreen = chrome.offscreen;
 
 describe('background.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
@@ -22,7 +24,7 @@ describe('background.ts', function () {
 
   before(async function () {
     // Resolve config fetch with minimal config object.
-    chrome.storage.sync.get.yields({ kanjiInfo: [] });
+    chrome.storage.sync.get.resolves({ kanjiInfo: [] });
     chrome.storage.local.get.returns(Promise.resolve({ enabled: false }));
     // Imports only run once so run in `before` to make it deterministic.
     const { TestOnlyRxcMainPromise, testOnlyPromiseHolder } =
@@ -203,6 +205,79 @@ describe('background.ts', function () {
 
       expect(copyStub).to.be.calledWith({ id: 12 }, request.entry);
     });
+
+    describe('with offscreen API available', function () {
+      it('should send text to the offscreen document and show a popup', async function () {
+        sinon.stub(rcxMain, 'savePrep').returns('textToCopy');
+
+        await sendMessageToBackground({
+          request: { type: 'copyToClip', entry: [] },
+          tabId: 12,
+        });
+
+        expect(chrome.runtime.sendMessage).to.be.calledWith({
+          target: 'offscreen',
+          type: 'copyToClipboardOffscreen',
+          text: 'textToCopy',
+        });
+        expect(chrome.tabs.sendMessage).to.be.calledWithMatch(12, {
+          type: 'showPopup',
+          text: 'Copied to clipboard.',
+        });
+      });
+
+      it('should rethrow any errors from the offscreen document', async function () {
+        sinon.stub(rcxMain, 'savePrep').returns('textToCopy');
+        const expectedError = new Error('testError');
+        chrome.runtime.sendMessage.rejects(expectedError);
+
+        await expect(
+          sendMessageToBackground({
+            request: { type: 'copyToClip', entry: [] },
+          })
+        )
+          .to.be.rejectedWith(
+            'Error while having offscreen doc copy text to clipboard.'
+          )
+          .and.eventually.have.property('cause')
+          .that.deep.equals(expectedError);
+      });
+    });
+
+    describe('without offscreen API (Firefox)', function () {
+      beforeEach(function () {
+        delete (chrome as Partial<typeof chrome>).offscreen;
+      });
+
+      afterEach(function () {
+        chrome.offscreen = offscreen;
+      });
+
+      it('should copy text locally and show a popup', async function () {
+        sinon.stub(rcxMain, 'savePrep').returns('textToCopy');
+        let copiedText: string | undefined;
+        const execCommand = sinon
+          .stub(document, 'execCommand')
+          .callsFake(() => {
+            copiedText =
+              document.querySelector<HTMLTextAreaElement>('#text')?.value;
+            return true;
+          });
+
+        await sendMessageToBackground({
+          request: { type: 'copyToClip', entry: [] },
+          tabId: 12,
+        });
+
+        expect(execCommand).to.be.calledWith('copy');
+        expect(copiedText).to.equal('textToCopy');
+        expect(chrome.runtime.sendMessage).to.not.be.called;
+        expect(chrome.tabs.sendMessage).to.be.calledWithMatch(12, {
+          type: 'showPopup',
+          text: 'Copied to clipboard.',
+        });
+      });
+    });
   });
 
   describe('when sent playTTS message', function () {
@@ -238,6 +313,27 @@ describe('background.ts', function () {
         .to.be.rejectedWith('Error while having offscreen doc play TTS')
         .and.eventually.have.property('cause')
         .that.deep.equals(expectedError);
+    });
+
+    describe('without offscreen API (Firefox)', function () {
+      beforeEach(function () {
+        delete (chrome as Partial<typeof chrome>).offscreen;
+      });
+
+      afterEach(function () {
+        chrome.offscreen = offscreen;
+      });
+
+      it('should play TTS directly instead of using an offscreen document', async function () {
+        const playStub = sinon.stub(tts, 'play');
+
+        await sendMessageToBackground({
+          request: { type: 'playTTS', text: 'textToPlay' },
+        });
+
+        expect(playStub).to.be.calledWith('textToPlay');
+        expect(chrome.runtime.sendMessage).to.not.be.called;
+      });
     });
   });
 

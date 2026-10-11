@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -6,6 +7,11 @@ import { defineConfig } from 'vite';
 import { DynamicPublicDirectory } from 'vite-multiple-assets';
 import replace from 'vite-plugin-filter-replace';
 
+import pkg from './package.json';
+
+const target = process.env.TARGET || 'chrome';
+const buildTarget = target === 'chrome' ? 'chrome109' : 'firefox128'; // Same as manifest.json
+
 export default defineConfig({
   plugins: [
     // Copies files into output directory.
@@ -13,9 +19,25 @@ export default defineConfig({
       '{\x01,data}/**',
       '{\x01,images}/**',
       '{\x01,css}/**',
-      'manifest.json',
       '*.html',
     ]),
+    {
+      name: 'emit-manifest',
+      generateBundle() {
+        const base = JSON.parse(
+          fs.readFileSync('extension/manifest.json', 'utf8')
+        );
+        const extra = JSON.parse(
+          fs.readFileSync(`extension/manifest.${target}.json`, 'utf8')
+        );
+        const manifest = { ...base, ...extra, version: pkg.version };
+        this.emitFile({
+          type: 'asset',
+          fileName: 'manifest.json',
+          source: JSON.stringify(manifest, null, 2),
+        });
+      },
+    },
     process.env.NODE_ENV !== 'test'
       ? replace([
           {
@@ -42,9 +64,9 @@ export default defineConfig({
   publicDir: false,
   root: 'extension',
   build: {
-    target: 'chrome109', // Same as manifest.json
+    target: buildTarget,
     assetsDir: '', // Keeps files in root of dist.
-    outDir: '../dist',
+    outDir: `../dist/${target}`,
     emptyOutDir: true,
     minify: false,
     modulePreload: false, // Prevents unneeded polyfill in output.

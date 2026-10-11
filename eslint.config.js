@@ -81,7 +81,8 @@ export default tseslint.config(
         },
       ],
 
-      'linebreak-style': ['error', 'unix'],
+      // Line endings are normalized by git; accept CRLF checkouts on Windows.
+      'linebreak-style': 'off',
       'no-tabs': 'error',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',

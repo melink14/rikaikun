@@ -8,6 +8,12 @@ import isDocker from 'is-docker';
 // Set NODE_ENV to test for later use in vite.config.ts.
 process.env.NODE_ENV = 'test';
 
+try {
+  process.loadEnvFile();
+} catch {
+  // No .env file (e.g. CI); using defaults
+}
+
 /**
  * Test result reporter which supports detailed output of chai/jasmine/etc test
  * results. Inspired by code here:

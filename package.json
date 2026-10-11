@@ -1,7 +1,7 @@
 {
   "name": "rikaikun",
   "version": "3.2.42",
-  "description": "rikaikun is a Chrome extension that helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.",
+  "description": "rikaikun is a Chrome/Firefox extension that helps you to read Japanese web pages by showing the reading and English definition of Japanese words when you hover over them.",
   "private": true,
   "engines": {
     "node": ">=22.0.0"
@@ -12,17 +12,20 @@
     "postinstall": "patch-package && ([ \"$CI\" != true ]) && npm run test:update-baselines || exit 0",
     "checktypes": "tsc --noEmit",
     "build": "vite build",
+    "build:chrome": "cross-env TARGET=chrome vite build",
+    "build:firefox": "cross-env TARGET=firefox vite build",
     "eslint:check": "eslint \"**/*.cjs\" \"**/*.ts\" \"**/*.js\" \"**/*.json\"",
     "eslint:fix": "npm run eslint:check --silent -- --fix",
     "fix": "npm run prettier:format --silent && npm run eslint:fix --silent && npm run stylelint:fix --silent",
     "lint": "npm run eslint:check --silent && npm run prettier:check --silent && npm run stylelint:check --silent",
-    "presubmit:base": "npm run lint && npm run checktypes && npm run build",
+    "lint:web-ext": "npm run build:firefox && web-ext lint -s dist/firefox",
+    "presubmit:base": "npm run lint && npm run checktypes && npm run build:chrome && npm run build:firefox",
     "presubmit": "npm run presubmit:base && npm run test:small",
     "presubmit:coverage": "npm run presubmit:base && npm test -- --coverage",
-    "prettier:base": "prettier --config .prettierrc.js --ignore-path '.gitignore' .",
+    "prettier:base": "prettier --config .prettierrc.js --ignore-path .gitignore .",
     "prettier:check": "npm run prettier:base --silent -- --check",
     "prettier:format": "npm run prettier:base --silent -- --write",
-    "stylelint:check": "stylelint '**/*.css' '**/*.ts' --ignore-path '.gitignore'",
+    "stylelint:check": "stylelint \"**/*.css\" \"**/*.ts\" --ignore-path .gitignore",
     "stylelint:fix": "npm run stylelint:check --silent -- --fix",
     "test": "wtr \"extension/test/*_test.ts\"",
     "test:small": "wtr --files \"extension/test/background_test.ts\" \"extension/test/data_test.ts\" \"extension/test/docs-annotate-canvas_test.ts\" \"extension/test/rikaicontent_test.ts\"",
@@ -48,8 +51,10 @@
   },
   "homepage": "https://github.com/melink14/rikaikun#readme",
   "dependencies": {
+    "cross-env": "^10.1.0",
     "lit": "^3.3.3",
-    "lit-toast": "^1.5.1"
+    "lit-toast": "^1.5.1",
+    "web-ext": "^10.7.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
