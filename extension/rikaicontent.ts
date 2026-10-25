@@ -1112,10 +1112,81 @@ class RcxContent {
     return realO;
   }
 
+  private getEventTarget(ev: Event): EventTarget | null {
+    if ((ev.target as Element)?.id === 'rikaichan-window') {
+      return ev.target;
+    }
+    return ev.composedPath?.()[0] ?? ev.target;
+  }
+
+  private isRangeNodeInTarget(rp: Node, eventTarget: Element): boolean {
+    if (
+      rp.parentNode === eventTarget ||
+      rp.parentNode === eventTarget.shadowRoot
+    ) {
+      return true;
+    }
+    let slot = (rp as Text).assignedSlot;
+    while (slot) {
+      if (slot === eventTarget || slot.parentNode === eventTarget) {
+        return true;
+      }
+      slot = slot.assignedSlot;
+    }
+    if (
+      rp.parentNode?.nodeName === 'SLOT' &&
+      rp.parentNode.parentNode === eventTarget
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  // Descends through open shadow roots so lookups reach text rendered inside
+  // web components; document.caretRangeFromPoint() stops at the outermost host.
+  private caretRangeFromPointInShadow(
+    x: number,
+    y: number,
+    ev?: MouseEvent
+  ): Range | null {
+    const shadowRoots: ShadowRoot[] = [];
+    for (const node of ev?.composedPath?.() ?? []) {
+      if (
+        node instanceof ShadowRoot &&
+        node.host.id !== 'rikaichan-window' &&
+        !shadowRoots.includes(node)
+      ) {
+        shadowRoots.push(node);
+      }
+    }
+    let el = document.elementFromPoint(x, y);
+    while (
+      el?.shadowRoot &&
+      el.id !== 'rikaichan-window' &&
+      !shadowRoots.includes(el.shadowRoot)
+    ) {
+      shadowRoots.push(el.shadowRoot);
+      el = el.shadowRoot.elementFromPoint(x, y);
+    }
+    if (
+      shadowRoots.length === 0 ||
+      typeof document.caretPositionFromPoint !== 'function'
+    ) {
+      return document.caretRangeFromPoint(x, y);
+    }
+    const pos = document.caretPositionFromPoint(x, y, { shadowRoots });
+    if (!pos) {
+      return null;
+    }
+    const range = document.createRange();
+    range.setStart(pos.offsetNode, pos.offset);
+    return range;
+  }
+
   onMouseMove = (ev: MouseEvent) => {
     this.lastPos.x = ev.clientX;
     this.lastPos.y = ev.clientY;
-    this.lastTarget = ev.target;
+    this.lastTarget = this.getEventTarget(ev);
     this.tryUpdatePopup(ev);
   };
   tryUpdatePopup(ev: MouseEvent & { noDelay?: boolean }) {
@@ -1139,7 +1210,7 @@ class RcxContent {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let rp: any;
     let ro: number;
-    const eventTarget = ev.target as HTMLElement &
+    const eventTarget = this.getEventTarget(ev) as HTMLElement &
       (HTMLTextAreaElement | HTMLInputElement) &
       HTMLImageElement &
       HTMLOptionElement &
@@ -1166,7 +1237,7 @@ class RcxContent {
         document.body.appendChild(fake);
       }
       // Calculate range and friends here after we've made our fake textarea/input divs.
-      range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
+      range = this.caretRangeFromPointInShadow(ev.clientX, ev.clientY, ev);
       // If we don't have a valid range, don't do any more work
       if (range === null) {
         if (fake) {
@@ -1205,7 +1276,7 @@ class RcxContent {
         // If we're to the right of an inline character we can use the target.
         // However, if we're just in a blank spot don't do anything.
         else if (this.isInline(eventTarget)) {
-          if (rp.parentNode === eventTarget) {
+          if (this.isRangeNodeInTarget(rp, eventTarget)) {
             // TODO(melink14): Figure out why this is empty
           } else if (fake && rp.parentNode.innerText === eventTarget.value) {
             // TODO(melink14): Figure out why this is empty
@@ -1230,7 +1301,7 @@ class RcxContent {
         !fake &&
         !('form' in eventTarget) &&
         rp &&
-        rp.parentNode !== eventTarget &&
+        !this.isRangeNodeInTarget(rp, eventTarget) &&
         ro === 1
       ) {
         rp = this.getFirstTextChild(eventTarget);
@@ -1239,7 +1310,7 @@ class RcxContent {
 
       // Otherwise, we're off in nowhere land and we should go home.
       // offset should be 0 or max in this case.
-      else if (!fake && (!rp || rp.parentNode !== eventTarget)) {
+      else if (!fake && (!rp || !this.isRangeNodeInTarget(rp, eventTarget))) {
         rp = null;
         ro = -1;
       }
