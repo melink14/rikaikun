@@ -47,6 +47,17 @@ declare global {
     rikaichan?: Rikaichan;
   }
 }
+/**
+ * The node `tryUpdatePopup` records as the one under the mouse. Besides text
+ * nodes, it can be a textarea, input or Google Docs rect that has been given a
+ * `data` string so that it can be read like a text node.
+ */
+type RangeNode =
+  | CharacterData
+  | ((HTMLTextAreaElement | HTMLInputElement | SVGRectElement) & {
+      data: string;
+    });
+
 type Rikaichan = {
   config: Config;
   prevTarget?: HTMLElement;
@@ -58,7 +69,7 @@ type Rikaichan = {
   oldCaret?: number;
   uofs?: number;
   uofsNext?: number;
-  prevRangeNode?: CharacterData;
+  prevRangeNode?: RangeNode | null;
   prevRangeOfs?: number;
   title?: string;
   timer?: number;
@@ -1136,8 +1147,8 @@ class RcxContent {
     let gdocRect: SVGRectElement | undefined;
     const tdata = window.rikaichan!; // per-tab data
     let range;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let rp: any;
+    let rp: RangeNode | null;
+    let rangeNode: Node | null;
     let ro: number;
     const eventTarget = ev.target as HTMLElement &
       (HTMLTextAreaElement | HTMLInputElement) &
@@ -1177,16 +1188,20 @@ class RcxContent {
       const startNode = range.startContainer;
       ro = range.startOffset;
 
-      rp = startNode as CharacterData;
+      rangeNode = startNode;
 
       if (fake) {
         // At the end of a line, don't do anything or you just get beginning of next line
-        if (rp.data && rp.data.length === ro) {
+        if (
+          rangeNode instanceof CharacterData &&
+          rangeNode.data &&
+          rangeNode.data.length === ro
+        ) {
           document.body.removeChild(fake);
           return;
         }
         fake.style.display = 'none';
-        ro = this.getTotalOffset(rp.parentNode, rp, ro);
+        ro = this.getTotalOffset(rangeNode.parentNode!, rangeNode, ro);
       }
 
       // This is to account for bugs in caretRangeFromPoint
@@ -1195,29 +1210,37 @@ class RcxContent {
 
       // If the range offset is equal to the node data length
       // Then we have the second case and need to correct.
-      if (rp.data && ro === rp.data.length) {
+      if (
+        rangeNode instanceof CharacterData &&
+        rangeNode.data &&
+        ro === rangeNode.data.length
+      ) {
         // A special exception is the WBR tag which is inline but doesn't
         // contain text.
-        if (rp.nextSibling && rp.nextSibling.nodeName === 'WBR') {
-          rp = rp.nextSibling.nextSibling;
+        if (rangeNode.nextSibling && rangeNode.nextSibling.nodeName === 'WBR') {
+          rangeNode = rangeNode.nextSibling.nextSibling;
           ro = 0;
         }
         // If we're to the right of an inline character we can use the target.
         // However, if we're just in a blank spot don't do anything.
         else if (this.isInline(eventTarget)) {
-          if (rp.parentNode === eventTarget) {
+          if (rangeNode.parentNode === eventTarget) {
             // TODO(melink14): Figure out why this is empty
-          } else if (fake && rp.parentNode.innerText === eventTarget.value) {
+          } else if (
+            fake &&
+            (rangeNode.parentNode as HTMLElement).innerText ===
+              eventTarget.value
+          ) {
             // TODO(melink14): Figure out why this is empty
           } else {
-            rp = eventTarget.firstChild;
+            rangeNode = eventTarget.firstChild;
             ro = 0;
           }
         }
         // Otherwise we're on the right and can take the next sibling of the
         // inline element.
         else {
-          rp = rp.parentNode.nextSibling;
+          rangeNode = rangeNode.parentNode!.nextSibling;
           ro = 0;
         }
       }
@@ -1229,18 +1252,18 @@ class RcxContent {
       if (
         !fake &&
         !('form' in eventTarget) &&
-        rp &&
-        rp.parentNode !== eventTarget &&
+        rangeNode &&
+        rangeNode.parentNode !== eventTarget &&
         ro === 1
       ) {
-        rp = this.getFirstTextChild(eventTarget);
+        rangeNode = this.getFirstTextChild(eventTarget);
         ro = 0;
       }
 
       // Otherwise, we're off in nowhere land and we should go home.
       // offset should be 0 or max in this case.
-      else if (!fake && (!rp || rp.parentNode !== eventTarget)) {
-        rp = null;
+      else if (!fake && (!rangeNode || rangeNode.parentNode !== eventTarget)) {
+        rangeNode = null;
         ro = -1;
       }
 
@@ -1248,16 +1271,18 @@ class RcxContent {
       // we make rp the text area and keep the offset the same
       // we give the text area data so it can act normal
       // Google Docs case also uses a fake so exclude it here
+      // The fix-ups can leave a non-text node here, as the old `any` allowed.
+      // This cast keeps the previous behavior; it adds no protection.
+      rp = rangeNode as RangeNode | null;
       if (fake && !gdocRect) {
-        rp = eventTarget;
-        rp.data = rp.value;
+        const textField = eventTarget as HTMLTextAreaElement | HTMLInputElement;
+        rp = Object.assign(textField, { data: textField.value });
       }
 
       // Same as text case above except we use the found gdocRect instead of
       // eventTarget
       if (gdocRect) {
-        rp = gdocRect;
-        rp.data = rp.ariaLabel;
+        rp = Object.assign(gdocRect, { data: gdocRect.ariaLabel ?? '' });
       }
 
       if (eventTarget === tdata.prevTarget && this.isVisible()) {
@@ -1303,7 +1328,7 @@ class RcxContent {
       tdata.popX = ev.clientX;
       tdata.popY = ev.clientY;
       tdata.timer = window.setTimeout(
-        (rangeNode: CharacterData | undefined, rangeOffset: number) => {
+        (rangeNode: RangeNode | null | undefined, rangeOffset: number) => {
           // TODO(melink14): This was using `ro` directly instead of `rangeOffset`
           // do we even need to pass arguments if we can use the closure?
           if (
