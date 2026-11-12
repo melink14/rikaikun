@@ -33,6 +33,23 @@ const defaultConfig = {
     { code: 'IN', name: 'Tuttle Kanji &amp; Kana', shouldDisplay: true },
     { code: 'I', name: 'Tuttle Kanji Dictionary', shouldDisplay: true },
     { code: 'U', name: 'Unicode', shouldDisplay: true },
+    { code: 'C', name: 'Classical Radical', shouldDisplay: false },
+    { code: 'DR', name: 'Father Joseph De Roo Index', shouldDisplay: false },
+    { code: 'DO', name: "P.G. O'Neill Index", shouldDisplay: false },
+    {
+      code: 'O',
+      name: "P.G. O'Neill Japanese Names Index",
+      shouldDisplay: false,
+    },
+    { code: 'Q', name: 'Four Corner Code', shouldDisplay: false },
+    { code: 'MN', name: 'Morohashi Daikanwajiten Index', shouldDisplay: false },
+    {
+      code: 'MP',
+      name: 'Morohashi Daikanwajiten Volume/Page',
+      shouldDisplay: false,
+    },
+    { code: 'K', name: 'Gakken Kanji Dictionary Index', shouldDisplay: false },
+    { code: 'W', name: 'Korean Reading', shouldDisplay: false },
   ],
 };
 type MutableConfig = typeof defaultConfig;
