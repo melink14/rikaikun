@@ -147,7 +147,7 @@
 ＪＡ広島病院前駅 [ジェーエーひろしまびょういんまええき] /(st) JA Hiroshimabyōinmae Station/
 ＪＥＴＲＯ [ジェトロ] /(o) Japanese External Trade Organization/JETRO/
 ＪＩＣＡ [ジャイカ] /(o) Japan International Cooperation Agency (JICA)/
-ＪＭｎｅｄｉｃｔ [ジェイエムエヌイーディクト] /(wk) Japanese-Multilingual Named Entity Dictionary Project - Creation Date: 2026-09-28/
+ＪＭｎｅｄｉｃｔ [ジェイエムエヌイーディクト] /(wk) Japanese-Multilingual Named Entity Dictionary Project - Creation Date: 2026-11-09/
 ＪＯＣ [ジェーオーシー] /(o) Japan Olympic Committee/
 ＪＰＮＩＣ [ジェイピーニック] /(o) JPNIC/Japan Network Information Center/
 ＪＲ桂駅 [ジェイアールかつらえき] /(st) JR Katsura Station/
@@ -4198,6 +4198,7 @@
 ちかぜ /(f) Chikaze/
 ちかな /(f) Chikana/
 ちかの /(f) Chikano/
+ちかはく /(p) Tokyo Metro Museum (abbr)/
 ちかほ /(f) Chikaho/
 ちかよ /(f) Chikayo/
 ちかり /(f) Chikari/
@@ -9195,6 +9196,7 @@
 アエラス /(u) Aeras/
 アエリアカピトリナ /(p) Aelia Capitolina/
 アエリアヌス /(u) Aelianus/
+アエルダリ /(fic) Aeldari (humanoid species in Warhammer 40,000)/
 アエルヒタム /(p) Ayer Hitam/
 アエルヒタム海峡 [アエルヒタムかいきょう] /(p) Selat Airhitam (channel)/
 アエロジル /(pr) Aerosil/
@@ -9825,11 +9827,15 @@
 アゼチ /(p) Azechi/
 アゼチ岬 [アゼチみさき] /(p) Azechimisaki/
 アゼツ /(p) Azetsu/
+アゼベード /(s) Azevedo/
+アゼベド /(s) Azevedo/
 アゼリー /(u) Azeri/
 アゼルバイジャン /(p) Azerbaijan/
 アゼルバイジャンソビエト社会主義共和国 [アゼルバイジャンソビエトしゃかいしゅぎきょうわこく] /(p) (former) Azerbaijan Soviet Socialist Republic/Azerbaijan SSR/AzSSR/
 アゼルリドー /(p) Azay-le-Rideau (France)/
 アゼンムール /(p) Azemmour (Morocco)/
+アゼヴェード /(s) Azevedo/
+アゼヴェド /(s) Azevedo/
 アソール /(u) Athol/
 アソゲス /(p) Azogues (Ecuador)/
 アソサ /(p) Asosa/
@@ -26306,6 +26312,8 @@
 キャッチ /(u) Katch/
 キャッチ２２ [キャッチにじゅうに] /(wk) Catch-22 (film)/
 キャッチポール /(s) Catchpole/
+キャッチャー・イン・ザ・ライ /(wk) Catcher in the Rye (1951 novel by J. D. Salinger)/
+キャッチャーインザライ /(wk) Catcher in the Rye (1951 novel by J. D. Salinger)/
 キャッツ＆ドッグス [キャッツアンドドッグス] /(wk) Cats & Dogs (film)/
 キャッテル /(u) Cattell/
 キャット /(u) Catt/
@@ -32174,6 +32182,7 @@
 ケンタッキー湖 [ケンタッキーこ] /(p) Kentucky Lake/
 ケンタニ /(p) Kentani/
 ケンタル /(u) Quental/
+ケンタロス /(cr,fic) Tauros (Pokémon)/
 ケンダル /(u) Kendal/
 ケンダルビル /(p) Kendallville/
 ケンチ /(p) Kety/
@@ -64602,6 +64611,7 @@
 バタイスク /(p) Bataysk (Russia)/
 バタイユ /(h) Georges Bataille/
 バタシー /(p) Battersea/
+バタネス州 [バタネスしゅう] /(p) Batanes (Philippines)/
 バタネン /(u) Vatanen/
 バタバノ /(p) Batabano/
 バタビア /(p) Batavia (former name of Jakarta)/
@@ -67161,7 +67171,7 @@
 パンゼラ /(u) Panzera/
 パンゼラバイヨ /(u) Panzera-Baillot/
 パンソリ /(u) Pansori/
-パンター /(u) Panter/
+パンター /(obj) Panther (German WWII medium tank)/
 パンタグリュエル /(u) Pantagruel/
 パンタナール /(p) Pantanal/
 パンタナル /(p) Pantanal (wetland in South America)/
@@ -77040,6 +77050,7 @@
 ベベアール /(u) Bebear/
 ベベシレト岬 [ベベシレトみさき] /(p) Bebeshiretomisaki/
 ベベツ岳 [ベベツだけ] /(p) Bebetsudake/
+ベベルイ /(p) Beberui/
 ベベルイ川 [ベベルイかわ] /(p) Beberuikawa/
 ベベルイ川 [ベベルイがわ] /(p) Beberuigawa/
 ベベルイ零号線 [ベベルイぜろごうせん] /(p) Beberuizerogousen/
@@ -78064,7 +78075,7 @@
 ペドロミゲル /(p) Pedro Miguel/
 ペナ /(s) Pena/Penna/
 ペナー川 [ペナーがわ] /(p) Penner (river)/
-ペナイン山脈 [ペナインさんみゃく] /(p) Pennine Chain/
+ペナイン山脈 [ペナインさんみゃく] /(p) Pennines (England)/Pennine Chain/Pennine Hills/
 ペナクシュベツ川 [ペナクシュベツがわ] /(p) Penakushubetsugawa/
 ペナコリ川 [ペナコリかわ] /(p) Penakorikawa/
 ペナコレ川 [ペナコレかわ] /(p) Penakorekawa/
@@ -82762,8 +82773,8 @@
 マシニョン /(u) Massignon/
 マシノ /(f) Mashino/
 マシプ /(u) Macip/
-マシャード /(u) Machado/
-マシャド /(p) Machado/
+マシャード /(s) Machado/(p) Machado (Brazil)/
+マシャド /(s) Machado/(p) Machado (Brazil)/
 マシャドデアシス /(u) Machado de Assis/
 マシャム /(u) Masham/
 マシャン /(u) Machin/
@@ -83064,8 +83075,9 @@
 マチス /(g) Machisu/Matisse/Matthies/
 マチバー /(u) Mathivat/
 マチャード /(s) Machado y Ruiz/
+マチャード /(s) Machado/(p) Machado (Brazil)/
 マチャチェ山 [マチャチェさん] /(p) Machache (mountain)/
-マチャド /(u) Machado/
+マチャド /(s) Machado/(p) Machado (Brazil)/
 マチャドイモラレス /(s) Machado y Morales/
 マチャドイルイス /(s) Machado y Ruiz/
 マチャラ /(p) Machala (Ecuador)/
@@ -86019,6 +86031,7 @@
 ミリチュ /(u) Milic/
 ミリッシュ /(u) Mirisch/
 ミリッジビル /(p) Milledgeville/
+ミリテク /(pr) Militech (Cyberpunk series)/
 ミリテロ /(u) Militelo/
 ミリネア /(u) Milinaire/
 ミリネル /(u) Milner/
@@ -86986,7 +86999,6 @@
 メガトン /(u) Megaton/
 メガドラ /(pr) Mega Drive (abbr)/
 メガドライブ /(pr) (Sega) Mega Drive/(pr) MD (US equiv: Genesis)/
-メガネウラ /(u) Meganeura/
 メガネ岩 [メガネいわ] /(p) Meganeiwa/
 メガラ /(p) Megara/
 メガロポリス /(p) Megalopolis/
@@ -88576,7 +88588,7 @@
 モラル・マジョリティー /(o) Moral Majority (American political organization)/
 モラルト /(u) Moralt/
 モラルマジョリティー /(o) Moral Majority (American political organization)/
-モラレス /(u) Morales/
+モラレス /(s) Morales/
 モラレスデロスアンヘレス /(h) Morales de los Angeles/
 モラレスベルムデス /(h) Morales Bermudez/
 モラン /(u) Moran/Morand/Morin/
@@ -95539,6 +95551,7 @@
 ルモワン /(u) Lemoine/
 ルモンド /(pr) Le Monde (French newspaper)/
 ルヤンペナイ川 [ルヤンペナイがわ] /(p) Ruyanpenaigawa/
+ルラ /(h) Luiz Inácio "Lula" da Silva (1945.10.27-)/
 ルラーブ /(u) Relave/
 ルラシェ /(u) Relacher/
 ルラッシュ /(u) Rurarz/
@@ -99086,6 +99099,7 @@
 ワナンディ /(u) Wanandi/
 ワニアー /(u) Wannier/
 ワニタ /(u) Juanita/
+ワニノコ /(cr,fic) Totodile (Pokémon)/
 ワヌコ /(p) Huanuco/
 ワヌニ /(p) Huanuni/
 ワネ /(u) Vane/
@@ -132913,7 +132927,8 @@
 宇多天皇 [うだてんのう] /(h) Emperor Uda/Uda Tenno (867-931 CE, reigning: 887-897 CE)/
 宇多天皇陵 [うたてんのうりょう] /(p) Utatennouryō/
 宇多田 [うただ] /(s) Utada/
-宇多田ヒカル [うただヒカル] /(f,h) Utada Hikaru (1983.1-)/
+宇多田ヒカル [うただヒカル] /(h) Hikaru Utada (1983.1.19-; Japanese-American singer and songwriter)/
+宇多田光 [うただヒカル] /(h) Hikaru Utada (1983.1.19-; Japanese-American singer and songwriter)/
 宇多田照實 [うただてるざね] /(h) Utada Teruzane (1948.7.21-)/
 宇多也 [うたや] /(g) Utaya/
 宇多野 [うたの] /(s) Utano/
@@ -172772,6 +172787,7 @@
 火燧山 [ひうちやま] /(p) Hiuchiyama/
 火籠 [ひごもり] /(p) Higomori/
 火蜥蜴 [ひとかげ] /(wk) Salamander (poem by Octavio Paz)/
+火鉈 [ひなた] /(f,fic) Hinata/
 火霖 [ころな] /(f) Korona/
 珂菜 [かな] /(f) Kana/
 珂山 [かざん] /(g) Kazan/
@@ -195560,6 +195576,7 @@
 韓国古典文学研究所 [かんこくこてんぶんがくけんきゅうじょ] /(o) Korean Classics Research Institute/
 韓国航空宇宙研究所 [かんこくこうくううちゅうけんきゅうじょ] /(o) Korea Aerospace Research Institute/KARI/
 韓国高速鉄道 [かんこくこうそくてつどう] /(serv) Korea Train Express (South Korean bullet train service)/KTX/
+韓国国際協力団 [かんこくこくさいきょうりょくだん] /(o) Korea International Cooperation Agency/KOICA/
 韓国国立図書館 [かんこくこくりつとしょかん] /(o) National Library of Korea/
 韓国産業安全公団 [かんこくさんぎょうあんぜんこうだん] /(o) Korea Industrial Safety Corporation/Korea Occupational Safety and Health Administration/
 韓国取引所 [かんこくとりひきじょ] /(o) Korea Exchange/KRX/
@@ -223202,6 +223219,7 @@
 京浜運河 [けいひんうんが] /(p) Keihin'unga/
 京浜急行 [けいひんきゅうこう] /(c) Keikyu/
 京浜急行空港線 [けいひんきゅうこうくうこうせん] /(serv) Keihin Airport Line/
+京浜工業地帯 [けいひんこうぎょうちたい] /(p) Keihin Industrial Zone (industrial belt encompassing Tokyo, Kanagawa, and Saitama)/
 京浜港 [けいひんこう] /(p) Keihinkou/
 京浜港 [とうきょうこう] /(p) Toukyōkou/
 京浜大橋 [けいひんおおはし] /(p) Keihin'oohashi/
@@ -416988,6 +417006,8 @@
 真嘉比 [まかび] /(p) Makabi/
 真夏 [まな] /(f) Mana/
 真夏 [まなつ] /(f,s) Manatsu/
+真夏の夜の淫夢 [まなつのよのいんむ] /(wk) Manatsu no Yo no Inmu (adult film)/A Midsummer Night's Lewd Dream/
+真夏の夜の淫夢 [まなつのよるのいんむ] /(wk) Manatsu no Yo no Inmu (adult film)/A Midsummer Night's Lewd Dream/
 真夏栄 [まなえ] /(f) Manae/
 真夏花 [まなか] /(f) Manaka/
 真夏海 [まなみ] /(f) Manami/
@@ -492313,7 +492333,7 @@
 台湾原子力公社 [たいわんげんしりょくこうしゃ] /(o) Taiwan Power Company/
 台湾国民党 [たいわんこくみんとう] /(o) Taiwan Nationalist Party (dissolved 2020)/
 台湾手話 [たいわんしゅわ] /(u) Taiwan Sign Language/TSL/
-台湾省 [たいわんしょう] /(p) Taiwan Province/
+台湾省 [たいわんしょう] /(p) Taiwan Province (nominal ROC province, claimed PRC province)/
 台湾証券取引所 [たいわんしょうけんとりひきじょ] /(o) Taiwan Stock Exchange/TWSE/
 台湾積体電路製造 [たいわんせきたいでんろせいぞう] /(c) Taiwan Semiconductor Manufacturing Company/TSMC/
 台湾繊維連盟 [たいわんせんいれんめい] /(o) Taiwan Textile Federation/TTF/
@@ -492405,6 +492425,7 @@
 大カン [だいカン] /(p) Daikan/
 大ガイシコ [おおガイシコ] /(p) Oogaishiko/
 大キイ沢 [おおキイさわ] /(p) Ookiisawa/
+大キレット [だいきれっと] /(p) Daikiretto (V-shaped ridge in the Hida Mountains)/
 大ギラ [おおギラ] /(p) Oogira/
 大クツ沢 [おおクツさわ] /(p) Ookutsusawa/
 大クビト沢 [おおクビトさわ] /(p) Ookubitosawa/
@@ -498326,7 +498347,7 @@
 大切 [おおきり] /(p) Ookiri/
 大切 [おおぎり] /(p,s) Oogiri/
 大切橋 [だいきりばし] /(p) Daikiribashi/
-大切戸 [だいきれっと] /(p) Daikiretto/
+大切戸 [だいきれっと] /(p) Daikiretto (V-shaped ridge in the Hida Mountains)/
 大切沢 [おおきりさわ] /(p) Ookirisawa/
 大切谷 [おおぎりだに] /(p) Oogiridani/
 大切峠 [おおきりとうげ] /(u) Ookiritōge/
@@ -503643,6 +503664,7 @@
 大梨 [おおなし] /(p) Oonashi/
 大理 [おおり] /(s) Oori/
 大理 [たいり] /(f) Tairi/
+大理 [だいり] /(p) Dali (China)/
 大理石海岸 [だいりせきかいがん] /(p) Dairisekikaigan/
 大理石村 [だいりせきむら] /(p) Dairisekimura/
 大理石沢 [だいりせきざわ] /(p) Dairisekizawa/
@@ -513456,6 +513478,7 @@
 地下鉄東西線 [ちかてつとうざいせん] /(p) Chikatetsutouzaisen/
 地下鉄東豊線 [ちかてつひがしとよせん] /(p) Chikatetsuhigashitoyosen/
 地下鉄南北線 [ちかてつなんぼくせん] /(p) Chikatetsunanbokusen/
+地下鉄博物館 [ちかてつはくぶつかん] /(p) Tokyo Metro Museum/
 地家 [じけ] /(p) Jike/
 地家 [じげ] /(s) Jige/
 地家室 [じかむろ] /(p) Jikamuro/
@@ -527155,6 +527178,7 @@
 鋳山 [いかけやま] /(s) Ikakeyama/
 鋳山 [いやま] /(s) Iyama/
 鋳師原 [いもじばら] /(p) Imojibara/
+鋳車 [いぐるま] /(s,fic) Iguruma/
 鋳場崎 [いばさき] /(s) Ibasaki/
 鋳銭司 [すぜんじ] /(p) Suzenji/
 鋳銭場 [いせんば] /(p) Isenba/
@@ -539091,7 +539115,7 @@
 椿草里 [つばきぞうり] /(p) Tsubakizouri/
 椿村 [つばきむら] /(s) Tsubakimura/
 椿台 [つばきだい] /(p) Tsubakidai/
-椿大神社 [つばきだいじんじゃ] /(p) Tsubakidai Shrine/
+椿大神社 [つばきおおかみやしろ] /(p) Tsubaki Grand Shrine/
 椿沢 [つばきさわ] /(s) Tsubakisawa/
 椿沢町 [つばきざわまち] /(p) Tsubakizawamachi/
 椿谷 [つばきたに] /(s) Tsubakitani/
@@ -545703,7 +545727,6 @@
 天福寺 [てんぷくじ] /(p) Tenpukuji/
 天福寺原 [でんぷくじばら] /(p) Denpukujibara/
 天文 [てんもん] /(p) Tenmon/
-天文科学館 [てんもんかがくかん] /(p) Tenmonkagakukan/
 天文学研究所 [てんもんがくけんきゅうじょ] /(o) Institute of Astronomy/IoA/
 天文館 [てんもんかん] /(p) Tenmonkan/
 天文館通 [てんもんかんどうり] /(p) Tenmonkandouri/
@@ -556784,6 +556807,7 @@
 東エルサレム [ひがしエルサレム] /(p) Higashierusaremu/
 東オサワ [ひがしオサワ] /(u) Higashiosawa/
 東オサワ信号場 [ひがしオサワしんごうじょう] /(p) Higashiosawashingoujō/
+東オングル島 [ひがしオングルとう] /(p) East Ongul Island (Antarctica)/
 東クルディスタン [ひがしクルディスタン] /(p) Iranian Kurdistan/East Kurdistan/Rojhelat/
 東ケ丘 [あずまがおか] /(p) Azumagaoka/
 東ケ丘 [ひがしがおか] /(p) Higashigaoka/
@@ -563825,6 +563849,7 @@
 淘江 [ゆりえ] /(s) Yurie/
 淘江 [ゆるえ] /(s) Yurue/
 淘子 [とうこ] /(f) Touko/
+淘宝 [タオバオ] /(serv) Taobao (Chinese online shopping platform)/
 淘宝網 [タオバオワン] /(serv) Taobao (Chinese online shopping platform)/
 湯 [たん] /(s) Tan/
 湯 [とう] /(s) Tou/
@@ -608855,6 +608880,7 @@
 秘田 [ひだ] /(s) Hida/
 秘都 [ひと] /(f) Hito/
 秘府略 [ひふりゃく] /(wk) Hifuryaku (Japanese proto-encyclopedia)/
+秘密軍事組織 [ひみつぐんじそしき] /(o) Organisation armée secrète/OAS/
 秘密尾 [ひみつお] /(p) Himitsuo/
 秘来子 [ぴくるす] /(f) Pikurusu/
 秘露 [ぺるぜ] /(p) Peruze/
@@ -630213,7 +630239,7 @@
 福田工業団地 [ふくでこうぎょうだんち] /(p) Fukude Industrial Park/
 福田幸広 [ふくだゆきひろ] /(h) Fukuda Yukihiro/
 福田幸弘 [ふくだゆきひろ] /(h) Fukuda Yukihiro (1924.12.3-1988.12.23)/
-福田康夫 [ふくだやすお] /(h) Yasuo Fukuda (1936.7.16-; prime minister of Japan 2007-2008)/
+福田康夫 [ふくだやすお] /(h) Yasuo Fukuda (1936.7.16-2026.10.22; prime minister of Japan 2007-2008)/
 福田恒存 [ふくだつねあり] /(h) Fukuda Tsuneari/
 福田浩子 [ふくだひろこ] /(h) Fukuda Hiroko (1975.3.14-)/
 福田甲子雄 [ふくだきねお] /(h) Fukuda Kineo/
@@ -648168,7 +648194,7 @@
 北の里 [きたのさと] /(p) Kitanosato/
 北の路 [きたのじ] /(p) Kitanoji/
 北ほうりょう [きたほうりょう] /(p) Kitahōryō/
-北ア [きたあ] /(u) Kitaa/
+北ア [きたア] /(p) Northern Alps (Japan) (abbr)/Hida Mountains/
 北アイルランド [きたアイルランド] /(p) Kitaairurando/
 北アイルランド警察庁 [きたアイルランドけいさつちょう] /(o) Police Service of Northern Ireland/PSNI/Royal Ulster Constabulary/
 北アルプス [きたアルプス] /(p) Northern Alps (Japan)/Hida Mountains/
@@ -651859,7 +651885,7 @@
 北方部 [きたほうべ] /(p) Kitahoube/
 北方文化博物館 [きたかたぶんかはくぶつかん] /(p) Kitakata Cultural Museum/
 北方民族資料館 [ほっぽうみんぞくしりょうかん] /(p) Hoppouminzokushiryōkan/
-北方領土 [ほっぽうりょうど] /(p) Southern Kuril Islands (administered by Russia, claimed by Japan)/Northern Territories/
+北方領土 [ほっぽうりょうど] /(p) Northern Territories (administered by Russia, claimed by Japan)/Southern Kuril Islands/
 北方領土の日 [ほっぽうりょうどのひ] /(ev) Northern Territories Day (February 7)/
 北方領土問題対策協会 [ほっぽうりょうどもんだいたいさくきょうかい] /(o) Northern Territories Issue Association/
 北豊中 [きたとよなか] /(p) Kitatoyonaka/
@@ -660658,6 +660684,7 @@
 万世佳 [まよか] /(f) Mayoka/
 万世吉 [まよきち] /(g) Mayokichi/
 万世橋 [まんせいばし] /(p) Manseibashi/
+万世橋駅 [まんせいばしえき] /(st) Manseibashi Station/
 万世実 [まよみ] /(f) Mayomi/
 万世町 [ばんせいちょう] /(p) Banseichō/
 万世町 [まんせいちょう] /(p) Manseichō/
@@ -668784,6 +668811,8 @@
 明達 [あきみち] /(u) Akimichi/
 明達 [はるたつ] /(u) Harutatsu/
 明達 [みょうたつ] /(g) Myōtatsu/
+明辰 [あきたつ] /(m) Akitatsu/
+明辰 [あきのぶ] /(m) Akinobu/
 明辰川 [めいしんがわ] /(p) Meishingawa/
 明谷 [あかたに] /(s) Akatani/
 明谷 [あかだに] /(s) Akadani/
@@ -724191,6 +724220,7 @@
 惑涯岬 [わくがいみさき] /(p) Wakugaimisaki/
 惑実 [わくみ] /(f) Wakumi/
 惑星 [わくせい] /(h) Wakusei/
+惑星大戦争 [わくせいだいせんそう] /(wk) The War in Space (1977 film)/
 惑星連邦 [わくせいれんぽう] /(o) United Federation of Planets (Star Trek)/
 惑美 [わくみ] /(f) Wakumi/
 枠 [はすお] /(u) Hasuo/
