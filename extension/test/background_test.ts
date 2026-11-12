@@ -13,6 +13,12 @@ use(chaiAsPromised);
 
 let rcxMain: RcxMain;
 let onMessagePromiseHolder: { onMessagePromise: Promise<void> };
+let onActivatedListener: (activeInfo: { tabId: number }) => Promise<void>;
+
+// Chrome reports this exact message when tabs.sendMessage has no receiver.
+// Internal pages and tabs that predate the content script share it.
+const MISSING_RECEIVER_MESSAGE =
+  'Could not establish connection. Receiving end does not exist.';
 
 describe('background.ts', function () {
   // Increase timeout from 2000ms since data tests can take longer.
@@ -29,14 +35,17 @@ describe('background.ts', function () {
       await import('../background');
     onMessagePromiseHolder = testOnlyPromiseHolder;
     rcxMain = await TestOnlyRxcMainPromise;
+    onActivatedListener = chrome.tabs.onActivated.addListener.firstCall.args[0];
   });
 
   beforeEach(function () {
     // Only reset the spies we're using since we need to preserve
     // the state of `chrome.runtime.onMessage.addListener` for invoking
-    // the core functionality of background.ts.
+    // the core functionality of background.ts. `reset` clears rejects/resolves
+    // behavior as well as call history. Listeners registered at import stay.
     chrome.tabs.sendMessage.reset();
     chrome.runtime.sendMessage.reset();
+    rcxMain.enabled = false;
   });
 
   afterEach(function () {
@@ -88,6 +97,119 @@ describe('background.ts', function () {
         /* tabId= */ sinon.match.any,
         { config: rcxMain.config }
       );
+    });
+
+    it('should resolve when the tab has no receiver', async function () {
+      rcxMain.enabled = true;
+      rcxMain.config = { copySeparator: 'testValue' } as Config;
+      chrome.tabs.sendMessage.rejects(new Error(MISSING_RECEIVER_MESSAGE));
+
+      await sendMessageToBackground({ tabId: 6, request: { type: 'enable?' } });
+
+      expect(chrome.tabs.sendMessage).to.have.been.calledOnce;
+      expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(6, {
+        type: 'enable',
+        config: rcxMain.config,
+      });
+    });
+
+    it('should surface unrelated sendMessage failures', async function () {
+      rcxMain.enabled = true;
+      chrome.tabs.sendMessage.rejects(new Error('tabs are unavailable'));
+
+      await expect(
+        sendMessageToBackground({ tabId: 6, request: { type: 'enable?' } })
+      ).to.be.rejectedWith('tabs are unavailable');
+    });
+  });
+
+  describe('when a tab is activated', function () {
+    it('should send one enable message and wait until sendMessage resolves', async function () {
+      rcxMain.enabled = true;
+      rcxMain.config = { copySeparator: 'testValue' } as Config;
+      let resolveSendMessage!: () => void;
+      chrome.tabs.sendMessage.returns(
+        new Promise<void>((resolve) => {
+          resolveSendMessage = resolve;
+        })
+      );
+
+      const activationPromise = onActivatedListener({ tabId: 4 });
+      let listenerSettled = false;
+      const listenerSettledPromise = (async () => {
+        await activationPromise;
+        listenerSettled = true;
+      })();
+
+      // onActivated awaits the already-initialized RcxMain, then sendMessage.
+      await Promise.resolve();
+
+      try {
+        expect(chrome.tabs.sendMessage).to.have.been.calledOnce;
+        expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(4, {
+          type: 'enable',
+          config: rcxMain.config,
+        });
+        expect(listenerSettled).to.equal(false);
+      } finally {
+        resolveSendMessage();
+      }
+
+      await listenerSettledPromise;
+      expect(listenerSettled).to.equal(true);
+    });
+
+    it('should resolve when sendMessage reports a missing receiver', async function () {
+      // Stub of the API failure Chrome reports for internal pages and for tabs
+      // opened before install or update. This does not launch the browser.
+      rcxMain.enabled = true;
+      chrome.tabs.sendMessage.rejects(new Error(MISSING_RECEIVER_MESSAGE));
+
+      await onActivatedListener({ tabId: 8 });
+
+      expect(chrome.tabs.sendMessage).to.have.been.calledOnce;
+    });
+
+    it('should surface unrelated sendMessage failures', async function () {
+      rcxMain.enabled = true;
+      const portClosed =
+        'The message port closed before a response was received.';
+      chrome.tabs.sendMessage.rejects(new Error(portClosed));
+
+      await expect(onActivatedListener({ tabId: 3 })).to.be.rejectedWith(
+        portClosed
+      );
+    });
+
+    it('should not send a message when rikaikun is disabled', async function () {
+      rcxMain.enabled = false;
+      chrome.tabs.sendMessage.resolves();
+
+      await onActivatedListener({ tabId: 0 });
+
+      expect(chrome.tabs.sendMessage).to.not.have.been.called;
+    });
+
+    it('should not send a message when the tab id is undefined', async function () {
+      rcxMain.enabled = true;
+      chrome.tabs.sendMessage.resolves();
+
+      await rcxMain.onTabSelect(undefined);
+
+      expect(chrome.tabs.sendMessage).to.not.have.been.called;
+    });
+
+    it('should send enable to tab id 0', async function () {
+      rcxMain.enabled = true;
+      chrome.tabs.sendMessage.resolves();
+
+      await onActivatedListener({ tabId: 0 });
+
+      expect(chrome.tabs.sendMessage).to.have.been.calledOnce;
+      expect(chrome.tabs.sendMessage).to.have.been.calledWithMatch(0, {
+        type: 'enable',
+        config: rcxMain.config,
+      });
     });
   });
 
