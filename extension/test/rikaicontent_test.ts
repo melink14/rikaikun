@@ -150,6 +150,232 @@ describe('RcxContent', function () {
       });
     });
 
+    describe('inside shadow DOM', function () {
+      it('triggers xsearch message when above Japanese text in open shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const span = document.createElement('span');
+        span.textContent = '先生test';
+        shadow.appendChild(span);
+
+        triggerMousemoveAtElementStart(span);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when above Japanese text in nested open shadow roots', function () {
+        const clock = sinon.useFakeTimers();
+        const outerHost = document.createElement('div');
+        root.appendChild(outerHost);
+        const outerShadow = outerHost.attachShadow({ mode: 'open' });
+        const innerHost = document.createElement('div');
+        outerShadow.appendChild(innerHost);
+        const innerShadow = innerHost.attachShadow({ mode: 'open' });
+        const span = document.createElement('span');
+        span.textContent = '先生test';
+        innerShadow.appendChild(span);
+
+        triggerMousemoveAtElementStart(span);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when shadow host has display: contents', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        host.style.display = 'contents';
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const span = document.createElement('span');
+        span.textContent = '先生test';
+        shadow.appendChild(span);
+
+        triggerMousemoveAtElementStart(span);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when Japanese text is a direct child of shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        shadow.appendChild(document.createTextNode('先生test'));
+
+        triggerMousemoveAtElementStart(host);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message with all text when split across inline spans in shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const wrapper = document.createElement('span');
+        wrapper.appendChild(document.createTextNode('試'));
+        const inner = document.createElement('span');
+        inner.textContent = 'test';
+        wrapper.appendChild(inner);
+        wrapper.appendChild(document.createTextNode('す'));
+        shadow.appendChild(wrapper);
+
+        triggerMousemoveAtElementStart(wrapper);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '試testす',
+        });
+      });
+
+      it('triggers xsearch message when Japanese text is slotted into a shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const container = document.createElement('div');
+        const slot = document.createElement('slot');
+        container.appendChild(slot);
+        shadow.appendChild(container);
+        const slottedSpan = document.createElement('span');
+        slottedSpan.textContent = '先生test';
+        host.appendChild(slottedSpan);
+
+        triggerMousemoveAtElementStart(slottedSpan);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when a bare text node is slotted into a shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const container = document.createElement('div');
+        const slot = document.createElement('slot');
+        container.appendChild(slot);
+        shadow.appendChild(container);
+        host.appendChild(document.createTextNode('先生test'));
+
+        triggerMousemoveAtElementStart(container);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when shadow host is slotted into another shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const outerHost = document.createElement('div');
+        root.appendChild(outerHost);
+        const outerShadow = outerHost.attachShadow({ mode: 'open' });
+        const outerSlot = document.createElement('slot');
+        outerShadow.appendChild(outerSlot);
+
+        const innerHost = document.createElement('div');
+        outerHost.appendChild(innerHost);
+        const innerShadow = innerHost.attachShadow({ mode: 'open' });
+        const span = document.createElement('span');
+        span.textContent = '先生test';
+        innerShadow.appendChild(span);
+
+        triggerMousemoveAtElementStart(span);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message for fallback text inside a slot element', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const container = document.createElement('div');
+        const slot = document.createElement('slot');
+        slot.textContent = '先生test';
+        container.appendChild(slot);
+        shadow.appendChild(container);
+
+        triggerMousemoveAtElementStart(container);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '先生test',
+        });
+      });
+
+      it('triggers xsearch message when above textarea inside shadow root', function () {
+        const clock = sinon.useFakeTimers();
+        const host = document.createElement('div');
+        root.appendChild(host);
+        const shadow = host.attachShadow({ mode: 'open' });
+        const textarea = document.createElement('textarea');
+        textarea.value = '生test';
+        shadow.appendChild(textarea);
+
+        triggerMousemoveAtElementStart(textarea);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+          type: 'xsearch',
+          text: '生test',
+        });
+      });
+
+      it('does not trigger xsearch when hovering over rikaikun own popup shadow DOM', function () {
+        const clock = sinon.useFakeTimers();
+        rcxContent.showPopup('<span class="w-kanji">先生</span>');
+        const popup = document.getElementById('rikaichan-window')!;
+        const popupKanji =
+          popup.shadowRoot!.querySelector<HTMLElement>('.w-kanji')!;
+
+        triggerMousemoveAtElementStart(popupKanji);
+        clock.tick(1);
+        clock.restore();
+
+        expect(chrome.runtime.sendMessage).to.not.have.been.called;
+      });
+    });
+
     describe('inside text area', function () {
       it('triggers xsearch message when above Japanese text', function () {
         const clock = sinon.useFakeTimers();
@@ -1046,10 +1272,18 @@ function initializeRcxContent(config = {} as Partial<Config>) {
 }
 
 function triggerMousemoveAtElementStart(element: Element) {
-  simulant.fire(element, 'mousemove', {
-    clientX: Math.ceil(element.getBoundingClientRect().left),
-    clientY: Math.ceil(element.getBoundingClientRect().top),
-  });
+  // Use native MouseEvent with `composed: true` instead of `simulant.fire`
+  // because simulant strips `composed`, preventing synthetic events dispatched
+  // inside a ShadowRoot from bubbling across the shadow boundary to `window`.
+  element.dispatchEvent(
+    new MouseEvent('mousemove', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      clientX: Math.ceil(element.getBoundingClientRect().left),
+      clientY: Math.ceil(element.getBoundingClientRect().top),
+    })
+  );
 }
 
 function triggerMousemoveAtElementCenter(element: Element) {
