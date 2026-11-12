@@ -150,6 +150,93 @@ describe('RcxContent', function () {
       });
     });
 
+    it('triggers xsearch message with the text after a `<wbr>` when the caret is at the end of the text before it', function () {
+      const clock = sinon.useFakeTimers();
+      const span = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>先生<wbr>テスト</span>'
+      ) as HTMLSpanElement;
+      // Put the caret at the very end of the text node that comes before the <wbr>.
+      const textBeforeWbr = span.firstChild as Text;
+      const range = document.createRange();
+      range.setStart(textBeforeWbr, textBeforeWbr.length);
+      sinon.stub(document, 'caretRangeFromPoint').returns(range);
+
+      triggerMousemoveAtElementStart(span);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: 'テスト',
+      });
+    });
+
+    it('triggers xsearch message from the start of an inline target when the caret is at the end of a nested text node', function () {
+      const clock = sinon.useFakeTimers();
+      const outer = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<span>テスト<span>先生</span></span>'
+      ) as HTMLSpanElement;
+      // Put the caret at the very end of the text inside the nested span.
+      const nestedText = outer.querySelector('span')!.firstChild as Text;
+      const range = document.createRange();
+      range.setStart(nestedText, nestedText.length);
+      sinon.stub(document, 'caretRangeFromPoint').returns(range);
+
+      // The event target is the outer span, which is inline and not the text's parent.
+      triggerMousemoveAtElementStart(outer);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: 'テスト先生',
+      });
+    });
+
+    it('triggers xsearch message from the next sibling of the parent when the target is not inline and the caret is at the end of a nested text node', function () {
+      const clock = sinon.useFakeTimers();
+      const div = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<div><span>先生</span>テスト</div>'
+      ) as HTMLDivElement;
+      // Put the caret at the very end of the text inside the nested span.
+      const nestedText = div.querySelector('span')!.firstChild as Text;
+      const range = document.createRange();
+      range.setStart(nestedText, nestedText.length);
+      sinon.stub(document, 'caretRangeFromPoint').returns(range);
+
+      // The event target is the div, which is not inline.
+      triggerMousemoveAtElementStart(div);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: 'テスト',
+      });
+    });
+
+    it('triggers xsearch message from the first text node of the target when the caret is one character into a nested text node', function () {
+      const clock = sinon.useFakeTimers();
+      const div = insertHtmlIntoDomAndReturnFirstTextNode(
+        '<div><span>先生</span></div>'
+      ) as HTMLDivElement;
+      // Put the caret one character into the text inside the nested span.
+      const nestedText = div.querySelector('span')!.firstChild as Text;
+      const range = document.createRange();
+      range.setStart(nestedText, 1);
+      sinon.stub(document, 'caretRangeFromPoint').returns(range);
+
+      // The event target is the div, which is not the text node's parent.
+      triggerMousemoveAtElementStart(div);
+      // Tick the clock forward to account for the popup delay.
+      clock.tick(1);
+
+      expect(chrome.runtime.sendMessage).to.have.been.calledWithMatch({
+        type: 'xsearch',
+        text: '先生',
+      });
+    });
+
     describe('inside text area', function () {
       it('triggers xsearch message when above Japanese text', function () {
         const clock = sinon.useFakeTimers();
@@ -376,6 +463,48 @@ describe('RcxContent', function () {
         clock.tick(1);
 
         expect(chrome.runtime.sendMessage).to.not.have.been.called;
+      });
+
+      it('hides the popup on keydown after a small move from a labelled rect onto a rect with no ariaLabel', function () {
+        sinon.useFakeTimers();
+        render(
+          html`<svg style="position:absolute">
+            <g>
+              <rect
+                x="0"
+                y="0"
+                width="2"
+                height="17"
+                aria-label="あれ"
+                fill="none"
+                data-font-css='400 14.6667px "Arial"'
+              ></rect>
+              <rect
+                x="3"
+                y="0"
+                width="30"
+                height="17"
+                fill="none"
+                data-font-css='400 14.6667px "Arial"'
+              ></rect>
+            </g>
+          </svg>`,
+          docCanvas
+        );
+        const [labelledRect, unlabelledRect] = Array.from(
+          docCanvas.querySelectorAll('rect')
+        );
+
+        // A valid hover records where the popup belongs, then the popup is shown.
+        triggerMousemoveAtElementStart(labelledRect);
+        rcxContent.showPopup('test text');
+        // A move of only 3px is under the 4px limit, so the popup stays open.
+        triggerMousemoveAtElementStart(unlabelledRect);
+        expect(rcxContent.isVisible()).to.be.ok;
+
+        simulant.fire(document, 'keydown', { keyCode: 78 });
+
+        expect(rcxContent.isVisible()).to.not.be.ok;
       });
 
       it('does not trigger xsearch when over svg but not rect', function () {
