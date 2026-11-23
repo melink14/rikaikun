@@ -202,6 +202,15 @@ describe('data.ts', function () {
           P: '<P-misc-entry>',
           I: '<I-misc-entry>',
           Y: '<Y-misc-entry>',
+          C: '<C-misc-entry>',
+          DR: '<DR-misc-entry>',
+          DO: '<DO-misc-entry>',
+          O: '<O-misc-entry>',
+          Q: '<Q-misc-entry>',
+          MN: '<MN-misc-entry>',
+          MP: '<MP-misc-entry>',
+          K: '<K-misc-entry>',
+          W: '<W-misc-entry>',
         },
         eigo: '<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>',
       };
@@ -210,7 +219,7 @@ describe('data.ts', function () {
         const text = rcxDict.makeText(kanjiDictEntry, /* max= */ 1);
 
         expect(text).to.equal(
-          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          "<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\nClassical Radical\t<C-misc-entry>\nFather Joseph De Roo Index\t<DR-misc-entry>\nP.G. O'Neill Index\t<DO-misc-entry>\nP.G. O'Neill Japanese Names Index\t<O-misc-entry>\nFour Corner Code\t<Q-misc-entry>\nMorohashi Daikanwajiten Index\t<MN-misc-entry>\nMorohashi Daikanwajiten Volume/Page\t<MP-misc-entry>\nGakken Kanji Dictionary Index\t<K-misc-entry>\nKorean Reading\t<W-misc-entry>\n"
         );
       });
 
@@ -218,7 +227,7 @@ describe('data.ts', function () {
         const text = rcxDict.makeText(kanjiDictEntry, /* max= */ 1000);
 
         expect(text).to.equal(
-          '<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\n'
+          "<kanji-entry>\n<eigo-entry-1>; <eigo-entry-2>; <eigo-entry-3>\n<onkun-entry-1>、 <onkun-entry-2>、 <onkun-entry-3>\n名乗り\t<nanori-entry>\n部首名\t<bushumei-entry>\nHalpern\t<H-misc-entry>\nHeisig 5th Edition\t<L-misc-entry>\nHeisig 6th Edition\t<DN-misc-entry>\nHenshall\t<E-misc-entry>\nKanji Learners Dictionary\t<DK-misc-entry>\nKanji Learners Dictionary 2nd Edition\t<DL-misc-entry>\nNelson\t<N-misc-entry>\nNew Nelson\t<V-misc-entry>\nPinYin\t<Y-misc-entry>\nSkip Pattern\t<P-misc-entry>\nTuttle Kanji & Kana\t<IN-misc-entry>\nTuttle Kanji Dictionary\t<I-misc-entry>\nUnicode\t<U-misc-entry>\nClassical Radical\t<C-misc-entry>\nFather Joseph De Roo Index\t<DR-misc-entry>\nP.G. O'Neill Index\t<DO-misc-entry>\nP.G. O'Neill Japanese Names Index\t<O-misc-entry>\nFour Corner Code\t<Q-misc-entry>\nMorohashi Daikanwajiten Index\t<MN-misc-entry>\nMorohashi Daikanwajiten Volume/Page\t<MP-misc-entry>\nGakken Kanji Dictionary Index\t<K-misc-entry>\nKorean Reading\t<W-misc-entry>\n"
         );
       });
 

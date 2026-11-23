@@ -588,16 +588,6 @@ class RcxDict {
     kanjiInfoLabel: string;
   }[] = [
     /*
-      This is a small list of kanji info labels we currently don't include:
-        'C',   'Classical Radical',
-        'DR',  'Father Joseph De Roo Index',
-        'DO',  'P.G. O\'Neill Index',
-        'O',   'P.G. O\'Neill Japanese Names Index',
-        'Q',   'Four Corner Code',
-        'MN',  'Morohashi Daikanwajiten Index',
-        'MP',  'Morohashi Daikanwajiten Volume/Page',
-        'K',  'Gakken Kanji Dictionary Index',
-        'W',  'Korean Reading',
       Here is a comprehensive up-to-date list of all the kanji info labels:
         http://www.edrdg.org/wiki/index.php/KANJIDIC_Project
     */
@@ -614,6 +604,15 @@ class RcxDict {
     { code: 'IN', kanjiInfoLabel: 'Tuttle Kanji & Kana' },
     { code: 'I', kanjiInfoLabel: 'Tuttle Kanji Dictionary' },
     { code: 'U', kanjiInfoLabel: 'Unicode' },
+    { code: 'C', kanjiInfoLabel: 'Classical Radical' },
+    { code: 'DR', kanjiInfoLabel: 'Father Joseph De Roo Index' },
+    { code: 'DO', kanjiInfoLabel: "P.G. O'Neill Index" },
+    { code: 'O', kanjiInfoLabel: "P.G. O'Neill Japanese Names Index" },
+    { code: 'Q', kanjiInfoLabel: 'Four Corner Code' },
+    { code: 'MN', kanjiInfoLabel: 'Morohashi Daikanwajiten Index' },
+    { code: 'MP', kanjiInfoLabel: 'Morohashi Daikanwajiten Volume/Page' },
+    { code: 'K', kanjiInfoLabel: 'Gakken Kanji Dictionary Index' },
+    { code: 'W', kanjiInfoLabel: 'Korean Reading' },
   ];
 
   // TODO: Entry should be extracted as separate type.
