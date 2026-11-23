@@ -69,18 +69,32 @@ class RcxMain {
   // The callback for `onActivated`
   // Just sends a message to the tab to enable itself if it hasn't
   // already
-  onTabSelect(tabId: number | undefined) {
+  async onTabSelect(tabId: number | undefined) {
     if (tabId === undefined) {
       return;
     }
-    this._onTabSelect(tabId);
+    await this._onTabSelect(tabId);
   }
-  _onTabSelect(tabId: number) {
+  async _onTabSelect(tabId: number) {
     if (this.enabled) {
-      void chrome.tabs.sendMessage(tabId, {
-        type: 'enable',
-        config: this.config,
-      });
+      try {
+        await chrome.tabs.sendMessage(tabId, {
+          type: 'enable',
+          config: this.config,
+        });
+      } catch (e) {
+        // Internal pages and tabs that predate the content script have no
+        // receiver. Restoring those stale tabs is tracked separately.
+        // Refs #2156.
+        if (
+          e instanceof Error &&
+          e.message ===
+            'Could not establish connection. Receiving end does not exist.'
+        ) {
+          return;
+        }
+        throw e;
+      }
     }
   }
 
